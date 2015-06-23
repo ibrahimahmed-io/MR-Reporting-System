@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System", "MR Reporting System\MR Reporting System.csproj", "{930231C0-285C-4652-9A16-8B111F1F244E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Data Service", "MR Reporting System Data Service\MR Reporting System Data Service.csproj", "{6E128AFB-22F9-4844-A01A-E372E1EE7427}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Data Service", "MR Reporting System Data Service\MR Reporting System Data Service.csproj", "{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{930231C0-285C-4652-9A16-8B111F1F244E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{930231C0-285C-4652-9A16-8B111F1F244E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{930231C0-285C-4652-9A16-8B111F1F244E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E128AFB-22F9-4844-A01A-E372E1EE7427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E128AFB-22F9-4844-A01A-E372E1EE7427}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E128AFB-22F9-4844-A01A-E372E1EE7427}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E128AFB-22F9-4844-A01A-E372E1EE7427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

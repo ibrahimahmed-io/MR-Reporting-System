@@ -2,19 +2,15 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E128AFB-22F9-4844-A01A-E372E1EE7427}</ProjectGuid>
+    <ProjectGuid>{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MR_Reporting_System_Data_Service</RootNamespace>
     <AssemblyName>MR Reporting System Data Service</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile32</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,18 +30,125 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Context\" />
-    <Folder Include="Repository\" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
-    <TargetPlatform Include="Windows, Version=8.1" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Context\Agent.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\AgentArea.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\AgentDistributer.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\AgentDrug.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\AgentHospital.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\AgentPharmacy.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Area.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Company.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\DefaultList.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Distributer.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Docotor.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Drug.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Group.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\GroupPermission.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Hospital.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Location.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MrReportingDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MrReportingDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MrReportingDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MrReportingDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MrReportingDb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Pharmacy.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Visit.cs">
+      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <EntityDeploy Include="Context\MrReportingDb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MrReportingDb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Context\MrReportingDb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MrReportingDb.edmx</DependentUpon>
+      <LastGenOutput>MrReportingDb.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Context\MrReportingDb.edmx.diagram">
+      <DependentUpon>MrReportingDb.edmx</DependentUpon>
+    </None>
+    <None Include="Context\MrReportingDb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MrReportingDb.edmx</DependentUpon>
+      <LastGenOutput>MrReportingDb.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
