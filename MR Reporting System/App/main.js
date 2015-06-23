@@ -25,7 +25,7 @@ define('knockout', ko);
 //});
 
 
-define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'plugins/router', 'services/dataservice', 'services/authInterceptor', 'services/tokenstore', 'config', 'plugins/durandal-exception-catch-all'], function (system, app, viewLocator, router, dataservice, authInterceptor, tokenStore, config, exceptionCatchAll) {
+define('main', ['durandal/system', 'durandal/app', 'durandal/viewLocator', 'plugins/router', 'services/dataservice', 'services/authInterceptor', 'services/tokenstore', 'config'], function (system, app, viewLocator, router, dataservice, authInterceptor, tokenStore, config) {
     system.debug(true);
 
     app.title = 'Medical';

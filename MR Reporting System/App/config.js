@@ -1,4 +1,4 @@
-﻿define(['text!resources.json', 'services/tokenstore', 'services/export'], function (resources, permissions, tokenStore, exportService) {
+﻿define(['text!resources.json', 'services/tokenstore', 'services/export'], function (resources, tokenStore, exportService) {
     var routes = [{
         route: '',
         moduleId: 'dashboard',
