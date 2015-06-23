@@ -1,0 +1,1898 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MedicalTechnoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="PassWord" Type="nvarchar(max)" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PostionId" Type="int" />
+          <Property Name="AreaId" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="Salary" Type="float" />
+          <Property Name="NoOfVisits" Type="int" />
+          <Property Name="SupervisorId" Type="int" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="AgentArea">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentId" Type="int" />
+          <Property Name="AreaId" Type="int" />
+        </EntityType>
+        <EntityType Name="AgentDistributer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentId" Type="int" />
+          <Property Name="DistributerId" Type="int" />
+        </EntityType>
+        <EntityType Name="AgentDrug">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentId" Type="int" />
+          <Property Name="DrugsId" Type="int" />
+        </EntityType>
+        <EntityType Name="AgentHospital">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentId" Type="int" />
+          <Property Name="HospitalId" Type="int" />
+        </EntityType>
+        <EntityType Name="AgentPharmacy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentId" Type="int" />
+          <Property Name="PharmacyId" Type="int" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DefaultList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="Action" Type="int" />
+        </EntityType>
+        <EntityType Name="Distributer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="AreaId" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="NoOfVisits" Type="int" />
+          <Property Name="DeletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Docotor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="SpecializeId" Type="int" />
+          <Property Name="IsMorning" Type="bit" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="AreaId" Type="int" />
+          <Property Name="ClassTypeId" Type="int" />
+          <Property Name="NoOfVisits" Type="int" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Drug">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="float" />
+          <Property Name="SectionId" Type="int" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="DeletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="GroupPermission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="PermissionCode" Type="int" />
+          <Property Name="Value" Type="bit" />
+        </EntityType>
+        <EntityType Name="Hospital">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="AreaId" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Pharmacy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="AreaId" Type="int" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="OwnerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="OwnerPhone" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Visit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgentId" Type="int" />
+          <Property Name="DrugsId" Type="int" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="VisitTo" Type="int" />
+          <Property Name="VisitDate" Type="date" />
+          <Property Name="Duration" Type="time" Precision="7" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsMorning" Type="bit" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastEditBy" Type="int" />
+          <Property Name="LastEditDate" Type="date" />
+          <Property Name="CreationDate" Type="date" />
+        </EntityType>
+        <Association Name="distributers_deletedBy">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Distributer" Type="Self.Distributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Distributer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="docotors_deletedBy">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Docotor" Type="Self.Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="drugs_deletedBy">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Drug" Type="Self.Drug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Drug">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantArea_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="AgentArea" Type="Self.AgentArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentArea">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantdistributer_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="AgentDistributer" Type="Self.AgentDistributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentDistributer">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantdistributer_distributers">
+          <End Role="Distributer" Type="Self.Distributer" Multiplicity="0..1" />
+          <End Role="AgentDistributer" Type="Self.AgentDistributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Distributer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentDistributer">
+              <PropertyRef Name="DistributerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantDoctors_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="AgentArea" Type="Self.AgentArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentArea">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantDrugs_agantDrugs">
+          <End Role="Drug" Type="Self.Drug" Multiplicity="0..1" />
+          <End Role="AgentDrug" Type="Self.AgentDrug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drug">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentDrug">
+              <PropertyRef Name="DrugsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantDrugs_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="AgentDrug" Type="Self.AgentDrug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentDrug">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantHospital_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="AgentHospital" Type="Self.AgentHospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentHospital">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantHospital_hospitals">
+          <End Role="Hospital" Type="Self.Hospital" Multiplicity="0..1" />
+          <End Role="AgentHospital" Type="Self.AgentHospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hospital">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentHospital">
+              <PropertyRef Name="HospitalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantPharmacies_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="AgentPharmacy" Type="Self.AgentPharmacy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentPharmacy">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantPharmacies_pharmacies">
+          <End Role="Pharmacy" Type="Self.Pharmacy" Multiplicity="0..1" />
+          <End Role="AgentPharmacy" Type="Self.AgentPharmacy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pharmacy">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentPharmacy">
+              <PropertyRef Name="PharmacyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_Agants1">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Agent1" Type="Self.Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Agent1">
+              <PropertyRef Name="SupervisorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Agent" Type="Self.Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_defaultList">
+          <End Role="DefaultList" Type="Self.DefaultList" Multiplicity="0..1" />
+          <End Role="Agent" Type="Self.Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="PostionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_Groups">
+          <End Role="Group" Type="Self.Group" Multiplicity="0..1" />
+          <End Role="Agent" Type="Self.Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Area_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Area" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Area">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Area_Locations">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Area" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Area">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_distributers_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Distributer" Type="Self.Distributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Distributer">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_docotors_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Docotor" Type="Self.Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_docotors_defaultList">
+          <End Role="DefaultList" Type="Self.DefaultList" Multiplicity="0..1" />
+          <End Role="Docotor" Type="Self.Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="SpecializeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_docotors_defaultList1">
+          <End Role="DefaultList" Type="Self.DefaultList" Multiplicity="0..1" />
+          <End Role="Docotor" Type="Self.Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="ClassTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_drugs_companies">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Drug" Type="Self.Drug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Drug">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_drugs_drugs">
+          <End Role="DefaultList" Type="Self.DefaultList" Multiplicity="0..1" />
+          <End Role="Drug" Type="Self.Drug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Drug">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_groupPermissions_groupPermissions">
+          <End Role="Group" Type="Self.Group" Multiplicity="0..1" />
+          <End Role="GroupPermission" Type="Self.GroupPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupPermission">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_hospitals_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Hospital" Type="Self.Hospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hospital">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_hospitals_defaultList">
+          <End Role="DefaultList" Type="Self.DefaultList" Multiplicity="0..1" />
+          <End Role="Hospital" Type="Self.Hospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hospital">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pharmacies_Area">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Pharmacy" Type="Self.Pharmacy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pharmacy">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_Agants">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_Agants1">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="LastEditBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_defaultList">
+          <End Role="DefaultList" Type="Self.DefaultList" Multiplicity="0..1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_drugs">
+          <End Role="Drug" Type="Self.Drug" Multiplicity="0..1" />
+          <End Role="Visit" Type="Self.Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drug">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="DrugsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="hospitals_deletedBy">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Hospital" Type="Self.Hospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Hospital">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Locations_deletedBy">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MedicalTechnoModelStoreContainer">
+          <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentArea" EntityType="Self.AgentArea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentDistributer" EntityType="Self.AgentDistributer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentDrug" EntityType="Self.AgentDrug" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentHospital" EntityType="Self.AgentHospital" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentPharmacy" EntityType="Self.AgentPharmacy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefaultList" EntityType="Self.DefaultList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Distributer" EntityType="Self.Distributer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Docotor" EntityType="Self.Docotor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Drug" EntityType="Self.Drug" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupPermission" EntityType="Self.GroupPermission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hospital" EntityType="Self.Hospital" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pharmacy" EntityType="Self.Pharmacy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visit" EntityType="Self.Visit" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="distributers_deletedBy" Association="Self.distributers_deletedBy">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Distributer" EntitySet="Distributer" />
+          </AssociationSet>
+          <AssociationSet Name="docotors_deletedBy" Association="Self.docotors_deletedBy">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Docotor" EntitySet="Docotor" />
+          </AssociationSet>
+          <AssociationSet Name="drugs_deletedBy" Association="Self.drugs_deletedBy">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Drug" EntitySet="Drug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantArea_Area" Association="Self.FK_agantArea_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="AgentArea" EntitySet="AgentArea" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantdistributer_Agants" Association="Self.FK_agantdistributer_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="AgentDistributer" EntitySet="AgentDistributer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantdistributer_distributers" Association="Self.FK_agantdistributer_distributers">
+            <End Role="Distributer" EntitySet="Distributer" />
+            <End Role="AgentDistributer" EntitySet="AgentDistributer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantDoctors_Agants" Association="Self.FK_agantDoctors_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="AgentArea" EntitySet="AgentArea" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantDrugs_agantDrugs" Association="Self.FK_agantDrugs_agantDrugs">
+            <End Role="Drug" EntitySet="Drug" />
+            <End Role="AgentDrug" EntitySet="AgentDrug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantDrugs_Agants" Association="Self.FK_agantDrugs_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="AgentDrug" EntitySet="AgentDrug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantHospital_Agants" Association="Self.FK_agantHospital_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="AgentHospital" EntitySet="AgentHospital" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantHospital_hospitals" Association="Self.FK_agantHospital_hospitals">
+            <End Role="Hospital" EntitySet="Hospital" />
+            <End Role="AgentHospital" EntitySet="AgentHospital" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantPharmacies_Agants" Association="Self.FK_agantPharmacies_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="AgentPharmacy" EntitySet="AgentPharmacy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantPharmacies_pharmacies" Association="Self.FK_agantPharmacies_pharmacies">
+            <End Role="Pharmacy" EntitySet="Pharmacy" />
+            <End Role="AgentPharmacy" EntitySet="AgentPharmacy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_Agants1" Association="Self.FK_Agants_Agants1">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Agent1" EntitySet="Agent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_Area" Association="Self.FK_Agants_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Agent" EntitySet="Agent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_defaultList" Association="Self.FK_Agants_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultList" />
+            <End Role="Agent" EntitySet="Agent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_Groups" Association="Self.FK_Agants_Groups">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Agent" EntitySet="Agent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Area_Agants" Association="Self.FK_Area_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Area" EntitySet="Area" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Area_Locations" Association="Self.FK_Area_Locations">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Area" EntitySet="Area" />
+          </AssociationSet>
+          <AssociationSet Name="FK_distributers_Area" Association="Self.FK_distributers_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Distributer" EntitySet="Distributer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_docotors_Area" Association="Self.FK_docotors_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Docotor" EntitySet="Docotor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_docotors_defaultList" Association="Self.FK_docotors_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultList" />
+            <End Role="Docotor" EntitySet="Docotor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_docotors_defaultList1" Association="Self.FK_docotors_defaultList1">
+            <End Role="DefaultList" EntitySet="DefaultList" />
+            <End Role="Docotor" EntitySet="Docotor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_drugs_companies" Association="Self.FK_drugs_companies">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Drug" EntitySet="Drug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_drugs_drugs" Association="Self.FK_drugs_drugs">
+            <End Role="DefaultList" EntitySet="DefaultList" />
+            <End Role="Drug" EntitySet="Drug" />
+          </AssociationSet>
+          <AssociationSet Name="FK_groupPermissions_groupPermissions" Association="Self.FK_groupPermissions_groupPermissions">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="GroupPermission" EntitySet="GroupPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_hospitals_Area" Association="Self.FK_hospitals_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Hospital" EntitySet="Hospital" />
+          </AssociationSet>
+          <AssociationSet Name="FK_hospitals_defaultList" Association="Self.FK_hospitals_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultList" />
+            <End Role="Hospital" EntitySet="Hospital" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pharmacies_Area" Association="Self.FK_pharmacies_Area">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Pharmacy" EntitySet="Pharmacy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_Agants" Association="Self.FK_visits_Agants">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_Agants1" Association="Self.FK_visits_Agants1">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_defaultList" Association="Self.FK_visits_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultList" />
+            <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_drugs" Association="Self.FK_visits_drugs">
+            <End Role="Drug" EntitySet="Drug" />
+            <End Role="Visit" EntitySet="Visit" />
+          </AssociationSet>
+          <AssociationSet Name="hospitals_deletedBy" Association="Self.hospitals_deletedBy">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Hospital" EntitySet="Hospital" />
+          </AssociationSet>
+          <AssociationSet Name="Locations_deletedBy" Association="Self.Locations_deletedBy">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MedicalTechnoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MedicalTechnoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agents" EntityType="MedicalTechnoModel.Agent" />
+          <EntitySet Name="AgentAreas" EntityType="MedicalTechnoModel.AgentArea" />
+          <EntitySet Name="AgentDistributers" EntityType="MedicalTechnoModel.AgentDistributer" />
+          <EntitySet Name="AgentDrugs" EntityType="MedicalTechnoModel.AgentDrug" />
+          <EntitySet Name="AgentHospitals" EntityType="MedicalTechnoModel.AgentHospital" />
+          <EntitySet Name="AgentPharmacies" EntityType="MedicalTechnoModel.AgentPharmacy" />
+          <EntitySet Name="Areas" EntityType="MedicalTechnoModel.Area" />
+          <EntitySet Name="Companies" EntityType="MedicalTechnoModel.Company" />
+          <EntitySet Name="DefaultLists" EntityType="MedicalTechnoModel.DefaultList" />
+          <EntitySet Name="Distributers" EntityType="MedicalTechnoModel.Distributer" />
+          <EntitySet Name="Docotors" EntityType="MedicalTechnoModel.Docotor" />
+          <EntitySet Name="Drugs" EntityType="MedicalTechnoModel.Drug" />
+          <EntitySet Name="Groups" EntityType="MedicalTechnoModel.Group" />
+          <EntitySet Name="GroupPermissions" EntityType="MedicalTechnoModel.GroupPermission" />
+          <EntitySet Name="Hospitals" EntityType="MedicalTechnoModel.Hospital" />
+          <EntitySet Name="Locations" EntityType="MedicalTechnoModel.Location" />
+          <EntitySet Name="Pharmacies" EntityType="MedicalTechnoModel.Pharmacy" />
+          <EntitySet Name="Visits" EntityType="MedicalTechnoModel.Visit" />
+          <AssociationSet Name="distributers_deletedBy" Association="MedicalTechnoModel.distributers_deletedBy">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Distributer" EntitySet="Distributers" />
+          </AssociationSet>
+          <AssociationSet Name="docotors_deletedBy" Association="MedicalTechnoModel.docotors_deletedBy">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Docotor" EntitySet="Docotors" />
+          </AssociationSet>
+          <AssociationSet Name="drugs_deletedBy" Association="MedicalTechnoModel.drugs_deletedBy">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Drug" EntitySet="Drugs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantdistributer_Agants" Association="MedicalTechnoModel.FK_agantdistributer_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="AgentDistributer" EntitySet="AgentDistributers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantDoctors_Agants" Association="MedicalTechnoModel.FK_agantDoctors_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="AgentArea" EntitySet="AgentAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantDrugs_Agants" Association="MedicalTechnoModel.FK_agantDrugs_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="AgentDrug" EntitySet="AgentDrugs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantHospital_Agants" Association="MedicalTechnoModel.FK_agantHospital_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="AgentHospital" EntitySet="AgentHospitals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantPharmacies_Agants" Association="MedicalTechnoModel.FK_agantPharmacies_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="AgentPharmacy" EntitySet="AgentPharmacies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_Agants1" Association="MedicalTechnoModel.FK_Agants_Agants1">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Agent1" EntitySet="Agents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_Area" Association="MedicalTechnoModel.FK_Agants_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Agent" EntitySet="Agents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_defaultList" Association="MedicalTechnoModel.FK_Agants_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultLists" />
+            <End Role="Agent" EntitySet="Agents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Agants_Groups" Association="MedicalTechnoModel.FK_Agants_Groups">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="Agent" EntitySet="Agents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Area_Agants" Association="MedicalTechnoModel.FK_Area_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Area" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_Agants" Association="MedicalTechnoModel.FK_visits_Agants">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Visit" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_Agants1" Association="MedicalTechnoModel.FK_visits_Agants1">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Visit" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="hospitals_deletedBy" Association="MedicalTechnoModel.hospitals_deletedBy">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Hospital" EntitySet="Hospitals" />
+          </AssociationSet>
+          <AssociationSet Name="Locations_deletedBy" Association="MedicalTechnoModel.Locations_deletedBy">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantArea_Area" Association="MedicalTechnoModel.FK_agantArea_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="AgentArea" EntitySet="AgentAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantdistributer_distributers" Association="MedicalTechnoModel.FK_agantdistributer_distributers">
+            <End Role="Distributer" EntitySet="Distributers" />
+            <End Role="AgentDistributer" EntitySet="AgentDistributers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantDrugs_agantDrugs" Association="MedicalTechnoModel.FK_agantDrugs_agantDrugs">
+            <End Role="Drug" EntitySet="Drugs" />
+            <End Role="AgentDrug" EntitySet="AgentDrugs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantHospital_hospitals" Association="MedicalTechnoModel.FK_agantHospital_hospitals">
+            <End Role="Hospital" EntitySet="Hospitals" />
+            <End Role="AgentHospital" EntitySet="AgentHospitals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_agantPharmacies_pharmacies" Association="MedicalTechnoModel.FK_agantPharmacies_pharmacies">
+            <End Role="Pharmacy" EntitySet="Pharmacies" />
+            <End Role="AgentPharmacy" EntitySet="AgentPharmacies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Area_Locations" Association="MedicalTechnoModel.FK_Area_Locations">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Area" EntitySet="Areas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_distributers_Area" Association="MedicalTechnoModel.FK_distributers_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Distributer" EntitySet="Distributers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_docotors_Area" Association="MedicalTechnoModel.FK_docotors_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Docotor" EntitySet="Docotors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_hospitals_Area" Association="MedicalTechnoModel.FK_hospitals_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Hospital" EntitySet="Hospitals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pharmacies_Area" Association="MedicalTechnoModel.FK_pharmacies_Area">
+            <End Role="Area" EntitySet="Areas" />
+            <End Role="Pharmacy" EntitySet="Pharmacies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_drugs_companies" Association="MedicalTechnoModel.FK_drugs_companies">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Drug" EntitySet="Drugs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_docotors_defaultList" Association="MedicalTechnoModel.FK_docotors_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultLists" />
+            <End Role="Docotor" EntitySet="Docotors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_docotors_defaultList1" Association="MedicalTechnoModel.FK_docotors_defaultList1">
+            <End Role="DefaultList" EntitySet="DefaultLists" />
+            <End Role="Docotor" EntitySet="Docotors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_drugs_drugs" Association="MedicalTechnoModel.FK_drugs_drugs">
+            <End Role="DefaultList" EntitySet="DefaultLists" />
+            <End Role="Drug" EntitySet="Drugs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_hospitals_defaultList" Association="MedicalTechnoModel.FK_hospitals_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultLists" />
+            <End Role="Hospital" EntitySet="Hospitals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_defaultList" Association="MedicalTechnoModel.FK_visits_defaultList">
+            <End Role="DefaultList" EntitySet="DefaultLists" />
+            <End Role="Visit" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_visits_drugs" Association="MedicalTechnoModel.FK_visits_drugs">
+            <End Role="Drug" EntitySet="Drugs" />
+            <End Role="Visit" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_groupPermissions_groupPermissions" Association="MedicalTechnoModel.FK_groupPermissions_groupPermissions">
+            <End Role="Group" EntitySet="Groups" />
+            <End Role="GroupPermission" EntitySet="GroupPermissions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PassWord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostionId" Type="Int32" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="Salary" Type="Double" />
+          <Property Name="NoOfVisits" Type="Int32" />
+          <Property Name="SupervisorId" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Distributers" Relationship="MedicalTechnoModel.distributers_deletedBy" FromRole="Agent" ToRole="Distributer" />
+          <NavigationProperty Name="Docotors" Relationship="MedicalTechnoModel.docotors_deletedBy" FromRole="Agent" ToRole="Docotor" />
+          <NavigationProperty Name="Drugs" Relationship="MedicalTechnoModel.drugs_deletedBy" FromRole="Agent" ToRole="Drug" />
+          <NavigationProperty Name="AgentDistributers" Relationship="MedicalTechnoModel.FK_agantdistributer_Agants" FromRole="Agent" ToRole="AgentDistributer" />
+          <NavigationProperty Name="AgentAreas" Relationship="MedicalTechnoModel.FK_agantDoctors_Agants" FromRole="Agent" ToRole="AgentArea" />
+          <NavigationProperty Name="AgentDrugs" Relationship="MedicalTechnoModel.FK_agantDrugs_Agants" FromRole="Agent" ToRole="AgentDrug" />
+          <NavigationProperty Name="AgentHospitals" Relationship="MedicalTechnoModel.FK_agantHospital_Agants" FromRole="Agent" ToRole="AgentHospital" />
+          <NavigationProperty Name="AgentPharmacies" Relationship="MedicalTechnoModel.FK_agantPharmacies_Agants" FromRole="Agent" ToRole="AgentPharmacy" />
+          <NavigationProperty Name="Agent1" Relationship="MedicalTechnoModel.FK_Agants_Agants1" FromRole="Agent" ToRole="Agent1" />
+          <NavigationProperty Name="Agent2" Relationship="MedicalTechnoModel.FK_Agants_Agants1" FromRole="Agent1" ToRole="Agent" />
+          <NavigationProperty Name="Area" Relationship="MedicalTechnoModel.FK_Agants_Area" FromRole="Agent" ToRole="Area" />
+          <NavigationProperty Name="DefaultList" Relationship="MedicalTechnoModel.FK_Agants_defaultList" FromRole="Agent" ToRole="DefaultList" />
+          <NavigationProperty Name="Group" Relationship="MedicalTechnoModel.FK_Agants_Groups" FromRole="Agent" ToRole="Group" />
+          <NavigationProperty Name="Areas" Relationship="MedicalTechnoModel.FK_Area_Agants" FromRole="Agent" ToRole="Area" />
+          <NavigationProperty Name="Visits" Relationship="MedicalTechnoModel.FK_visits_Agants" FromRole="Agent" ToRole="Visit" />
+          <NavigationProperty Name="Visits1" Relationship="MedicalTechnoModel.FK_visits_Agants1" FromRole="Agent" ToRole="Visit" />
+          <NavigationProperty Name="Hospitals" Relationship="MedicalTechnoModel.hospitals_deletedBy" FromRole="Agent" ToRole="Hospital" />
+          <NavigationProperty Name="Locations" Relationship="MedicalTechnoModel.Locations_deletedBy" FromRole="Agent" ToRole="Location" />
+        </EntityType>
+        <EntityType Name="AgentArea">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentId" Type="Int32" />
+          <Property Name="AreaId" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_agantDoctors_Agants" FromRole="AgentArea" ToRole="Agent" />
+          <NavigationProperty Name="Area" Relationship="MedicalTechnoModel.FK_agantArea_Area" FromRole="AgentArea" ToRole="Area" />
+        </EntityType>
+        <EntityType Name="AgentDistributer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentId" Type="Int32" />
+          <Property Name="DistributerId" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_agantdistributer_Agants" FromRole="AgentDistributer" ToRole="Agent" />
+          <NavigationProperty Name="Distributer" Relationship="MedicalTechnoModel.FK_agantdistributer_distributers" FromRole="AgentDistributer" ToRole="Distributer" />
+        </EntityType>
+        <EntityType Name="AgentDrug">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentId" Type="Int32" />
+          <Property Name="DrugsId" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_agantDrugs_Agants" FromRole="AgentDrug" ToRole="Agent" />
+          <NavigationProperty Name="Drug" Relationship="MedicalTechnoModel.FK_agantDrugs_agantDrugs" FromRole="AgentDrug" ToRole="Drug" />
+        </EntityType>
+        <EntityType Name="AgentHospital">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentId" Type="Int32" />
+          <Property Name="HospitalId" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_agantHospital_Agants" FromRole="AgentHospital" ToRole="Agent" />
+          <NavigationProperty Name="Hospital" Relationship="MedicalTechnoModel.FK_agantHospital_hospitals" FromRole="AgentHospital" ToRole="Hospital" />
+        </EntityType>
+        <EntityType Name="AgentPharmacy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentId" Type="Int32" />
+          <Property Name="PharmacyId" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_agantPharmacies_Agants" FromRole="AgentPharmacy" ToRole="Agent" />
+          <NavigationProperty Name="Pharmacy" Relationship="MedicalTechnoModel.FK_agantPharmacies_pharmacies" FromRole="AgentPharmacy" ToRole="Pharmacy" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="Int32" />
+          <NavigationProperty Name="Agents" Relationship="MedicalTechnoModel.FK_Agants_Area" FromRole="Area" ToRole="Agent" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_Area_Agants" FromRole="Area" ToRole="Agent" />
+          <NavigationProperty Name="AgentAreas" Relationship="MedicalTechnoModel.FK_agantArea_Area" FromRole="Area" ToRole="AgentArea" />
+          <NavigationProperty Name="Location" Relationship="MedicalTechnoModel.FK_Area_Locations" FromRole="Area" ToRole="Location" />
+          <NavigationProperty Name="Distributers" Relationship="MedicalTechnoModel.FK_distributers_Area" FromRole="Area" ToRole="Distributer" />
+          <NavigationProperty Name="Docotors" Relationship="MedicalTechnoModel.FK_docotors_Area" FromRole="Area" ToRole="Docotor" />
+          <NavigationProperty Name="Hospitals" Relationship="MedicalTechnoModel.FK_hospitals_Area" FromRole="Area" ToRole="Hospital" />
+          <NavigationProperty Name="Pharmacies" Relationship="MedicalTechnoModel.FK_pharmacies_Area" FromRole="Area" ToRole="Pharmacy" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Drugs" Relationship="MedicalTechnoModel.FK_drugs_companies" FromRole="Company" ToRole="Drug" />
+        </EntityType>
+        <EntityType Name="DefaultList">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="Int32" />
+          <NavigationProperty Name="Agents" Relationship="MedicalTechnoModel.FK_Agants_defaultList" FromRole="DefaultList" ToRole="Agent" />
+          <NavigationProperty Name="Docotors" Relationship="MedicalTechnoModel.FK_docotors_defaultList" FromRole="DefaultList" ToRole="Docotor" />
+          <NavigationProperty Name="Docotors1" Relationship="MedicalTechnoModel.FK_docotors_defaultList1" FromRole="DefaultList" ToRole="Docotor" />
+          <NavigationProperty Name="Drugs" Relationship="MedicalTechnoModel.FK_drugs_drugs" FromRole="DefaultList" ToRole="Drug" />
+          <NavigationProperty Name="Hospitals" Relationship="MedicalTechnoModel.FK_hospitals_defaultList" FromRole="DefaultList" ToRole="Hospital" />
+          <NavigationProperty Name="Visits" Relationship="MedicalTechnoModel.FK_visits_defaultList" FromRole="DefaultList" ToRole="Visit" />
+        </EntityType>
+        <EntityType Name="Distributer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfVisits" Type="Int32" />
+          <Property Name="DeletedBy" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.distributers_deletedBy" FromRole="Distributer" ToRole="Agent" />
+          <NavigationProperty Name="AgentDistributers" Relationship="MedicalTechnoModel.FK_agantdistributer_distributers" FromRole="Distributer" ToRole="AgentDistributer" />
+          <NavigationProperty Name="Area" Relationship="MedicalTechnoModel.FK_distributers_Area" FromRole="Distributer" ToRole="Area" />
+        </EntityType>
+        <EntityType Name="Docotor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SpecializeId" Type="Int32" />
+          <Property Name="IsMorning" Type="Boolean" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="ClassTypeId" Type="Int32" />
+          <Property Name="NoOfVisits" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.docotors_deletedBy" FromRole="Docotor" ToRole="Agent" />
+          <NavigationProperty Name="Area" Relationship="MedicalTechnoModel.FK_docotors_Area" FromRole="Docotor" ToRole="Area" />
+          <NavigationProperty Name="DefaultList" Relationship="MedicalTechnoModel.FK_docotors_defaultList" FromRole="Docotor" ToRole="DefaultList" />
+          <NavigationProperty Name="DefaultList1" Relationship="MedicalTechnoModel.FK_docotors_defaultList1" FromRole="Docotor" ToRole="DefaultList" />
+        </EntityType>
+        <EntityType Name="Drug">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="SectionId" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="DeletedBy" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.drugs_deletedBy" FromRole="Drug" ToRole="Agent" />
+          <NavigationProperty Name="AgentDrugs" Relationship="MedicalTechnoModel.FK_agantDrugs_agantDrugs" FromRole="Drug" ToRole="AgentDrug" />
+          <NavigationProperty Name="Company" Relationship="MedicalTechnoModel.FK_drugs_companies" FromRole="Drug" ToRole="Company" />
+          <NavigationProperty Name="DefaultList" Relationship="MedicalTechnoModel.FK_drugs_drugs" FromRole="Drug" ToRole="DefaultList" />
+          <NavigationProperty Name="Visits" Relationship="MedicalTechnoModel.FK_visits_drugs" FromRole="Drug" ToRole="Visit" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Agents" Relationship="MedicalTechnoModel.FK_Agants_Groups" FromRole="Group" ToRole="Agent" />
+          <NavigationProperty Name="GroupPermissions" Relationship="MedicalTechnoModel.FK_groupPermissions_groupPermissions" FromRole="Group" ToRole="GroupPermission" />
+        </EntityType>
+        <EntityType Name="GroupPermission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="PermissionCode" Type="Int32" />
+          <Property Name="Value" Type="Boolean" />
+          <NavigationProperty Name="Group" Relationship="MedicalTechnoModel.FK_groupPermissions_groupPermissions" FromRole="GroupPermission" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="Hospital">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.hospitals_deletedBy" FromRole="Hospital" ToRole="Agent" />
+          <NavigationProperty Name="AgentHospitals" Relationship="MedicalTechnoModel.FK_agantHospital_hospitals" FromRole="Hospital" ToRole="AgentHospital" />
+          <NavigationProperty Name="Area" Relationship="MedicalTechnoModel.FK_hospitals_Area" FromRole="Hospital" ToRole="Area" />
+          <NavigationProperty Name="DefaultList" Relationship="MedicalTechnoModel.FK_hospitals_defaultList" FromRole="Hospital" ToRole="DefaultList" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeletedBy" Type="Int32" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.Locations_deletedBy" FromRole="Location" ToRole="Agent" />
+          <NavigationProperty Name="Areas" Relationship="MedicalTechnoModel.FK_Area_Locations" FromRole="Location" ToRole="Area" />
+        </EntityType>
+        <EntityType Name="Pharmacy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AreaId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AgentPharmacies" Relationship="MedicalTechnoModel.FK_agantPharmacies_pharmacies" FromRole="Pharmacy" ToRole="AgentPharmacy" />
+          <NavigationProperty Name="Area" Relationship="MedicalTechnoModel.FK_pharmacies_Area" FromRole="Pharmacy" ToRole="Area" />
+        </EntityType>
+        <EntityType Name="Visit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgentId" Type="Int32" />
+          <Property Name="DrugsId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="VisitTo" Type="Int32" />
+          <Property Name="VisitDate" Type="DateTime" Precision="0" />
+          <Property Name="Duration" Type="Time" Precision="7" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsMorning" Type="Boolean" />
+          <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastEditBy" Type="Int32" />
+          <Property Name="LastEditDate" Type="DateTime" Precision="0" />
+          <Property Name="CreationDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Agent" Relationship="MedicalTechnoModel.FK_visits_Agants" FromRole="Visit" ToRole="Agent" />
+          <NavigationProperty Name="Agent1" Relationship="MedicalTechnoModel.FK_visits_Agants1" FromRole="Visit" ToRole="Agent" />
+          <NavigationProperty Name="DefaultList" Relationship="MedicalTechnoModel.FK_visits_defaultList" FromRole="Visit" ToRole="DefaultList" />
+          <NavigationProperty Name="Drug" Relationship="MedicalTechnoModel.FK_visits_drugs" FromRole="Visit" ToRole="Drug" />
+        </EntityType>
+        <Association Name="distributers_deletedBy">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Distributer" Role="Distributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Distributer">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="docotors_deletedBy">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Docotor" Role="Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="drugs_deletedBy">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Drug" Role="Drug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Drug">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantdistributer_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentDistributer" Role="AgentDistributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentDistributer">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantDoctors_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentArea" Role="AgentArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentArea">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantDrugs_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentDrug" Role="AgentDrug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentDrug">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantHospital_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentHospital" Role="AgentHospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentHospital">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantPharmacies_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentPharmacy" Role="AgentPharmacy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AgentPharmacy">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_Agants1">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Agent" Role="Agent1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Agent1">
+              <PropertyRef Name="SupervisorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_Area">
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_defaultList">
+          <End Type="MedicalTechnoModel.DefaultList" Role="DefaultList" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="PostionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Agants_Groups">
+          <End Type="MedicalTechnoModel.Group" Role="Group" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Agent">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Area_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Area">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_Agants">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_Agants1">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="LastEditBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="hospitals_deletedBy">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Hospital" Role="Hospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Hospital">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Locations_deletedBy">
+          <End Type="MedicalTechnoModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Location" Role="Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="DeletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantArea_Area">
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentArea" Role="AgentArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentArea">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantdistributer_distributers">
+          <End Type="MedicalTechnoModel.Distributer" Role="Distributer" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentDistributer" Role="AgentDistributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Distributer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentDistributer">
+              <PropertyRef Name="DistributerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantDrugs_agantDrugs">
+          <End Type="MedicalTechnoModel.Drug" Role="Drug" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentDrug" Role="AgentDrug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drug">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentDrug">
+              <PropertyRef Name="DrugsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantHospital_hospitals">
+          <End Type="MedicalTechnoModel.Hospital" Role="Hospital" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentHospital" Role="AgentHospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hospital">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentHospital">
+              <PropertyRef Name="HospitalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_agantPharmacies_pharmacies">
+          <End Type="MedicalTechnoModel.Pharmacy" Role="Pharmacy" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.AgentPharmacy" Role="AgentPharmacy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pharmacy">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AgentPharmacy">
+              <PropertyRef Name="PharmacyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Area_Locations">
+          <End Type="MedicalTechnoModel.Location" Role="Location" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Area">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_distributers_Area">
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Distributer" Role="Distributer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Distributer">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_docotors_Area">
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Docotor" Role="Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_hospitals_Area">
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Hospital" Role="Hospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hospital">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pharmacies_Area">
+          <End Type="MedicalTechnoModel.Area" Role="Area" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Pharmacy" Role="Pharmacy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pharmacy">
+              <PropertyRef Name="AreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_drugs_companies">
+          <End Type="MedicalTechnoModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Drug" Role="Drug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Drug">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_docotors_defaultList">
+          <End Type="MedicalTechnoModel.DefaultList" Role="DefaultList" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Docotor" Role="Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="SpecializeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_docotors_defaultList1">
+          <End Type="MedicalTechnoModel.DefaultList" Role="DefaultList" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Docotor" Role="Docotor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Docotor">
+              <PropertyRef Name="ClassTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_drugs_drugs">
+          <End Type="MedicalTechnoModel.DefaultList" Role="DefaultList" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Drug" Role="Drug" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Drug">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_hospitals_defaultList">
+          <End Type="MedicalTechnoModel.DefaultList" Role="DefaultList" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Hospital" Role="Hospital" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Hospital">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_defaultList">
+          <End Type="MedicalTechnoModel.DefaultList" Role="DefaultList" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefaultList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_visits_drugs">
+          <End Type="MedicalTechnoModel.Drug" Role="Drug" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.Visit" Role="Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drug">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visit">
+              <PropertyRef Name="DrugsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_groupPermissions_groupPermissions">
+          <End Type="MedicalTechnoModel.Group" Role="Group" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.GroupPermission" Role="GroupPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Group">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GroupPermission">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MedicalTechnoModelStoreContainer" CdmEntityContainer="MedicalTechnoEntities">
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Agent">
+              <MappingFragment StoreEntitySet="Agent">
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="SupervisorId" ColumnName="SupervisorId" />
+                <ScalarProperty Name="NoOfVisits" ColumnName="NoOfVisits" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="PostionId" ColumnName="PostionId" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentAreas">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.AgentArea">
+              <MappingFragment StoreEntitySet="AgentArea">
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentDistributers">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.AgentDistributer">
+              <MappingFragment StoreEntitySet="AgentDistributer">
+                <ScalarProperty Name="DistributerId" ColumnName="DistributerId" />
+                <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentDrugs">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.AgentDrug">
+              <MappingFragment StoreEntitySet="AgentDrug">
+                <ScalarProperty Name="DrugsId" ColumnName="DrugsId" />
+                <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentHospitals">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.AgentHospital">
+              <MappingFragment StoreEntitySet="AgentHospital">
+                <ScalarProperty Name="HospitalId" ColumnName="HospitalId" />
+                <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentPharmacies">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.AgentPharmacy">
+              <MappingFragment StoreEntitySet="AgentPharmacy">
+                <ScalarProperty Name="PharmacyId" ColumnName="PharmacyId" />
+                <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Area">
+              <MappingFragment StoreEntitySet="Area">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefaultLists">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.DefaultList">
+              <MappingFragment StoreEntitySet="DefaultList">
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Distributers">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Distributer">
+              <MappingFragment StoreEntitySet="Distributer">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="NoOfVisits" ColumnName="NoOfVisits" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Docotors">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Docotor">
+              <MappingFragment StoreEntitySet="Docotor">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="NoOfVisits" ColumnName="NoOfVisits" />
+                <ScalarProperty Name="ClassTypeId" ColumnName="ClassTypeId" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsMorning" ColumnName="IsMorning" />
+                <ScalarProperty Name="SpecializeId" ColumnName="SpecializeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drugs">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Drug">
+              <MappingFragment StoreEntitySet="Drug">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupPermissions">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.GroupPermission">
+              <MappingFragment StoreEntitySet="GroupPermission">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="PermissionCode" ColumnName="PermissionCode" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hospitals">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Hospital">
+              <MappingFragment StoreEntitySet="Hospital">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pharmacies">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Pharmacy">
+              <MappingFragment StoreEntitySet="Pharmacy">
+                <ScalarProperty Name="OwnerPhone" ColumnName="OwnerPhone" />
+                <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visits">
+            <EntityTypeMapping TypeName="MedicalTechnoModel.Visit">
+              <MappingFragment StoreEntitySet="Visit">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+                <ScalarProperty Name="LastEditBy" ColumnName="LastEditBy" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="IsMorning" ColumnName="IsMorning" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
+                <ScalarProperty Name="VisitTo" ColumnName="VisitTo" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="DrugsId" ColumnName="DrugsId" />
+                <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

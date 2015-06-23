@@ -1,0 +1,96 @@
+﻿<!-- HEADER -->
+<header id="header" class="hidden-print">
+    <div id="logo-group">
+        <div id="hide-menu" class="btn-header" data-bind="style: { float: language.direction[currentLanguage()] }">
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="mdi-navigation-menu" style="font-size: 2.75rem;"></i></a> </span>
+        </div>
+        <span id="logo">
+            <a href="#">
+                <img src="../../img/procoor_logo_text.svg" alt="PROCOOR" />
+            </a>
+        </span>
+
+        <span id="activity" class="activity-dropdown">
+            <i class="fa fa-bell-o"></i>
+            <b class="badge bounceIn animated">10</b>
+        </span>
+
+        <div class="ajax-dropdown" style="display: none;">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label type="button" class="btn btn-default btn-notify" data-bind="click: getNotifications">
+                    Tasks
+                </label>
+                <label type="button" class="btn btn-default btn-notify notified" data-bind="click: getPostitNotifications">
+                    Notifications
+                </label>
+            </div>
+
+            <div class="ajax-notifications custom-scroll" style="opacity: 1; padding: 0;">
+                <!-- ko if: !(!!notificationModel()) -->
+                <div class="alert alert-transparent">
+                    <h4>Click a button to show notifications here</h4>
+                    This blank page message helps protect your privacy
+                </div>
+
+                <i class="fa fa-lock fa-4x fa-border"></i>
+                <!-- /ko -->
+                <!-- ko compose: { model: notificationModel } -->
+                <!-- /ko -->
+            </div>
+            <span>
+                Last updated on: <!-- ko text: lastUpdatedNotification --><!-- /ko -->
+                <button data-bind="click: loadMoreOfCurrentNotifications" type="button" class="btn btn-xs btn-default pull-right" data-loading-text="&gt;i class='fa fa-refresh fa-spin'&lt;&gt;/i&lt; Loading...">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+    <!-- pulled right: nav area -->
+    <div class="pull-right">
+
+    </div>
+    <!-- end pulled right: nav area -->
+
+</header>
+<!-- END HEADER -->
+
+<!-- Left panel : Navigation area -->
+<aside id="left-panel" class="hidden-print clearfix">
+
+    <!-- User info -->
+    <div class="login-info hidden">
+        <span>
+            <!-- User image size is adjusted inside CSS, it should stay as it -->
+
+            <a href="javaScript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+                <img src="img/avatars/sunny.png" alt="me" class="online" />
+                <span>
+                    Ibrahim Amin
+                </span>
+                <i class="fa fa-angle-down"></i>
+            </a>
+
+        </span>
+    </div>
+    <!-- end user info -->
+
+    <nav>
+        <ul>
+        </ul>
+    </nav>
+
+    <span class="minifyme" data-action="minifyMenu">
+        <i class="fa fa-arrow-circle-left hit"></i>
+    </span>
+
+</aside>
+<!-- END NAVIGATION -->
+
+<!-- MAIN PANEL -->
+<div id="main" class="no-margin-print" role="main">
+    <div class="row" data-part="content-menu" style="text-align: center;">
+        <!-- ko compose: { model: currentModuleMenu } --><!-- /ko -->
+    </div>
+    <!-- ko router: { cacheViews: false, transition: 'entrance' } --><!-- /ko -->
+</div>
+<!-- END MAIN PANEL -->

@@ -1,0 +1,51 @@
+﻿<header id="header">
+</header>
+
+<div id="main" role="main">
+    <!-- MAIN CONTENT -->
+    <div id="content" class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+                <div class="row">
+                    <div class="h1" style="font-family: 'Francois One'; font-weight: bold; font-size: 65px; text-shadow: 2px 2px 0px rgba(191, 189, 182, 0.75);">MANAGEMENT</div>
+                    <div class="h1" style="font-family: 'Francois One'; font-weight: bold; font-size: 45px; color: #3887BE; text-shadow: 2px 2px 0px rgba(191, 189, 182, 0.75);">AND MORE</div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                <div class="well no-padding">
+                    <form id="login-form" class="smart-form client-form">
+                        <header>
+                            Sign In
+                        </header>
+
+                        <fieldset>
+                            <section>
+                                <label class="label">User Name</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-user"></i>
+                                    <input type="text" name="username" required="" data-bind="value: userName">
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Enter your username</b>
+                                </label>
+                            </section>
+                            <section>
+                                <label class="label">Password</label>
+                                <label class="input">
+                                    <i class="icon-append fa fa-lock"></i>
+                                    <input type="password" required="" name="password" data-bind="value: userPassword">
+                                    <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b>
+                                </label>
+                            </section>
+                        </fieldset>
+
+                        <footer>
+                            <button type="button" data-bind="click: attemptLoginUser" class="btn btn-primary">
+                                Sign in
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿<div id="content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark" data-bind="text: title"></h1>
+        </div>
+    </div>
+
+    <section id="widget-grid">
+        <div class="row">
+            <article class="col col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="foreach: centerSelectedWidgets">
+                <!-- ko compose: { model: moduleId, mode:'templated' } -->
+                <div data-part="content-projects-dropdown">
+                    <select class="form-control" data-bind="value: selectedProject, options: projects, optionsText: 'projectName', optionsValue: 'projectId', optionsCaption: '-- Please Select a Project --'"></select>
+                </div>
+                <div data-part="content-loader"></div>
+                <div data-part="content-add-btn"></div>
+                <div data-part="content-menu"></div>
+                <!-- /ko -->
+            </article>
+            <article class="col col-xs-12 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: leftSelectedWidgets">
+                <!-- ko compose: { model: moduleId, mode:'templated' } -->
+                <div data-part="content-projects-dropdown">
+                    <select class="form-control" data-bind="value: selectedProject, options: projects, optionsText: 'projectName', optionsValue: 'projectId', optionsCaption: '-- Please Select a Project --'"></select>
+                </div>
+                <div data-part="content-loader"></div>
+                <div data-part="content-add-btn"></div>
+                <div data-part="content-menu"></div>
+                <!-- /ko -->
+            </article>
+            <article class="col col-xs-12 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: rightSelectedWidgets">
+                <!-- ko compose: { model: moduleId, mode:'templated' } -->
+                <div data-part="content-projects-dropdown">
+                    <select class="form-control" data-bind="value: selectedProject, options: projects, optionsText: 'projectName', optionsValue: 'projectId', optionsCaption: '-- Please Select a Project --'"></select>
+                </div>
+                <div data-part="content-loader"></div>
+                <div data-part="content-add-btn"></div>
+                <div data-part="content-menu"></div>
+                <!-- /ko -->
+            </article>
+        </div>
+    </section>
+
+    <div class="fixed-action-btn" data-toggle="tooltip" data-placement="left" data-bind="attr: { title: language.addWidget[currentLanguage()] }">
+        <a class="btn-floating btn-large waves-effect red" data-toggle="modal" data-target="#WidgetsModal">
+            <i class="mdi-content-add"></i>
+        </a>
+    </div>
+
+    <div class="modal fade in" tabindex="-1" role="dialog" id="WidgetsModal" aria-labelledby="WidgetsModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" data-bind="text: language.addWidget[currentLanguage()]"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 vertical-bootstrap-tab-container">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 vertical-bootstrap-tab-menu">
+                                <div class="list-group" data-bind="foreach: availableWidgets">
+                                    <a href="#" class="list-group-item text-center">
+                                        <h4 data-bind="text: $data"></h4>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 vertical-bootstrap-tab" data-bind="foreach: widgets">
+                                <div class="vertical-bootstrap-tab-content">
+                                    <table class="table table-striped">
+                                        <tbody data-bind="foreach: widgets">
+                                            <!-- ko if: $root.checkAdded($data) -->
+                                            <tr data-bind="visible: canView">
+                                                <td class="no-cell-border">
+                                                    <span data-bind="text: moduleTitle"></span>
+
+                                                    <button type="button" class="btn btn-xs pull-right btn-primary" data-bind="click: $root.addToWidgets, text: $root.language.goAdd[$root.currentLanguage()]"></button>
+                                                </td>
+                                            </tr>
+                                            <!-- /ko -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-bind="click: saveWidgets, text: language.save[currentLanguage()]"></button>
+                    <button type="button" class="btn btn-default" data-bind="text: language.cancel[currentLanguage()]" data-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<bundle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://vswebessentials.com/schemas/v1/bundle.xsd">
+  <settings>
+    <!--Determines if the bundle file should be automatically optimized after creation/update.-->
+    <minify>true</minify>
+    <!--Determine whether to generate/re-generate this bundle on building the solution.-->
+    <runOnBuild>true</runOnBuild>
+    <!--Use absolute path in the generated CSS files. By default, the URLs are relative to generated bundled CSS file.-->
+    <adjustRelativePaths>true</adjustRelativePaths>
+    <!--Specifies a custom subfolder to save files to. By default, compiled output will be placed in the same folder and nested under the original file.-->
+    <outputDirectory />
+  </settings>
+  <!--The order of the <file> elements determines the order of the files in the bundle.-->
+  <files>
+    <file>/css/bootmetro-icons.css</file>
+    <file>/css/bootstrap-datetimepicker.css</file>
+    <file>/css/bootstrap-editable.css</file>
+    <file>/css/bootstrap-select.css</file>
+    <file>/css/bootstrap-sortable.css</file>
+    <file>/css/bootstrap.css</file>
+    <file>/css/bootstrap.min.css</file>
+    <file>/css/datepicker3.css</file>
+    <file>/css/daterangepicker-bs3.css</file>
+    <file>/css/durandal.css</file>
+    <file>/css/font-awesome.min.css</file>
+    <file>/css/highslide.css</file>
+    <file>/css/jqx.base.css</file>
+    <file>/css/jqx.bootstrap.css</file>
+    <file>/css/lockscreen.min.css</file>
+    <file>/css/smartadmin-production.css</file>
+    <file>/css/smartadmin-skins.css</file>
+    <file>/css/smartadmin-rtl.css</file>
+    <file>/css/main.css</file>
+    <file>/css/calendar.css</file>
+  </files>
+</bundle>

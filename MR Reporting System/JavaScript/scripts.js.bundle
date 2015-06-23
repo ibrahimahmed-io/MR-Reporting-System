@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<bundle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://vswebessentials.com/schemas/v1/bundle.xsd">
+  <settings>
+    <!--Determines if the bundle file should be automatically optimized after creation/update.-->
+    <minify>true</minify>
+    <!--Determin whether to generate/re-generate this bundle on building the solution.-->
+    <runOnBuild>true</runOnBuild>
+    <!--Specifies a custom subfolder to save files to. By default, compiled output will be placed in the same folder and nested under the original file.-->
+    <outputDirectory />
+  </settings>
+  <!--The order of the <file> elements determines the order of the files in the bundle.-->
+  <files>
+    <file>/javaScript/jquery/jquery-2.1.1.js</file>
+    <file>/javaScript/jqueryui/jquery-ui-1.11.1.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxcore.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxdata.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxdata.export.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxbuttons.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxcheckbox.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxcalendar.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.aggregates.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.columnsreorder.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.columnsresize.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.edit.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.export.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.filter.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.grouping.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.pager.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.selection.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.sort.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxgrid.storage.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxscrollbar.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxmenu.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxlistbox.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxdatetimeinput.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxtree.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxcalendar.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxdropdownlist.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxpanel.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxtreegrid.js</file>
+    <file>/javaScript/smartAdmin/plugin/jqx/jqxdragdrop.js</file>
+    <file>/javaScript/smartAdmin/plugin/dropzone/dropzone.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/jquery-validate/jquery.validate.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/select2/select2.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/jquery-touch/jquery.ui.touch-punch.min.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootstrap.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootmetro.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootmetro-icons-ie7.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootmetro-charms.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootmetro-panorama.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootmetro-pivot.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/jquery.mousewheel.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/jquery.touchSwipe.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootstrap-editable.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootstrap-enhancement.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootstrap-select.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootstrap-sortable.js</file>
+    <file>/javaScript/smartAdmin/bootstrap/bootstrap-datepicker.js</file>
+    <file>/javaScript/smartAdmin/app.config.js</file>
+    <file>/javaScript/smartAdmin/notification/SmartNotification.js</file>
+    <file>/javaScript/smartAdmin/smartwidgets/jarvis.widget.js</file>
+    <file>/javaScript/smartAdmin/app.js</file>
+    <file>/javaScript/smartAdmin/plugin/bootstrap-slider/bootstrap-slider.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/msie-fix/jquery.mb.browser.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/fastclick/fastclick.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/summernote/summernote.min.js</file>
+    <file>/javaScript/knockout/knockout-3.2.0.js</file>
+    <file>/javaScript/knockout/knockout-mapping.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/nicescroll/nicescroll.min.js</file>
+    <file>/javaScript/smartAdmin/plugin/nicescroll/nicescroll.plus.js</file>
+    <file>/javaScript/smartAdmin/plugin/jquery-form/jquery-form.min.js</file>
+    <file>/javaScript/moment/moment.min.js</file>
+    <file>/javaScript/daterangepicker/daterangepicker.js</file>
+    <file>/javaScript/crypto/core-min.js</file>
+    <file>/javaScript/crypto/enc-base64-min.js</file>
+    <file>/javaScript/HighSlide/highslide-full.min.js</file>
+    <file>/javaScript/HighSlide/highslide.config.js</file>
+    <file>/javaScript/HighCharts/highcharts.js</file>
+    <file>/javaScript/HighCharts/modules/data.js</file>
+    <file>/javaScript/HighCharts/modules/exporting.js</file>
+    <file>/javaScript/HighCharts/themes/sand-signika.js</file>
+  </files>
+</bundle>

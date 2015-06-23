@@ -48,105 +48,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\Agent.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\AgentArea.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\AgentDistributer.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\AgentDrug.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\AgentHospital.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\AgentPharmacy.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Area.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Company.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\DefaultList.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Distributer.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Docotor.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Drug.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Group.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\GroupPermission.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Hospital.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Location.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\MrReportingDb.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MrReportingDb.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\MrReportingDb.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\MrReportingDb.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Pharmacy.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Context\Visit.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="Context\MrReportingDb.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MrReportingDb.Designer.cs</LastGenOutput>
-    </EntityDeploy>
+    <Compile Include="Repository\AgantAreaRepository.cs" />
+    <Compile Include="Repository\AgantdistributerRepository.cs" />
+    <Compile Include="Repository\AgantDrugsRepository.cs" />
+    <Compile Include="Repository\AgantHospitalRepository.cs" />
+    <Compile Include="Repository\AgantPharmaciesRepository.cs" />
+    <Compile Include="Repository\AgantsRepository.cs" />
+    <Compile Include="Repository\AreaRepository.cs" />
+    <Compile Include="Repository\CompaniesRepository.cs" />
+    <Compile Include="Repository\DefaultListRepository.cs" />
+    <Compile Include="Repository\DistributersRepository.cs" />
+    <Compile Include="Repository\DocotorsRepository.cs" />
+    <Compile Include="Repository\DrugsRepository.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Repository\GroupPermissionsRepository.cs" />
+    <Compile Include="Repository\GroupsRepository.cs" />
+    <Compile Include="Repository\HospitalsRepository.cs" />
+    <Compile Include="Repository\PharmaciesRepository.cs" />
+    <Compile Include="Repository\SysdiagramsRepository.cs" />
+    <Compile Include="Repository\VisitsRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="Context\MrReportingDb.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
-      <LastGenOutput>MrReportingDb.Context.cs</LastGenOutput>
-    </None>
-    <None Include="Context\MrReportingDb.edmx.diagram">
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
-    </None>
-    <None Include="Context\MrReportingDb.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
-      <LastGenOutput>MrReportingDb.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <ProjectReference Include="..\MR Reporting System Data Context\MR Reporting System Data Context.csproj">
+      <Project>{dfdf9ae2-aefa-414b-8c07-f02088840e3b}</Project>
+      <Name>MR Reporting System Data Context</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MR Reporting System Interface\MR Reporting System Interface.csproj">
+      <Project>{49f2a606-874b-4a0a-9585-3d1180b6849f}</Project>
+      <Name>MR Reporting System Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MR Reporting System Model\MR Reporting System Model.csproj">
+      <Project>{0bcbafe0-fdfb-4c2f-a2b8-398b2eaeb22f}</Project>
+      <Name>MR Reporting System Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

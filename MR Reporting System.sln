@@ -7,6 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System", "MR R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Data Service", "MR Reporting System Data Service\MR Reporting System Data Service.csproj", "{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Interface", "MR Reporting System Interface\MR Reporting System Interface.csproj", "{49F2A606-874B-4A0A-9585-3D1180B6849F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Model", "MR Reporting System Model\MR Reporting System Model.csproj", "{0BCBAFE0-FDFB-4C2F-A2B8-398B2EAEB22F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Data Context", "MR Reporting System Data Context\MR Reporting System Data Context.csproj", "{DFDF9AE2-AEFA-414B-8C07-F02088840E3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MR Reporting System Security", "MR Reporting System Security\MR Reporting System Security.csproj", "{73E44347-1078-458D-BEDE-9225B7C8FF3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +29,22 @@ Global
 		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{042F8D03-8414-4D09-AF24-BBDFB9E0BAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F2A606-874B-4A0A-9585-3D1180B6849F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F2A606-874B-4A0A-9585-3D1180B6849F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F2A606-874B-4A0A-9585-3D1180B6849F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F2A606-874B-4A0A-9585-3D1180B6849F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BCBAFE0-FDFB-4C2F-A2B8-398B2EAEB22F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BCBAFE0-FDFB-4C2F-A2B8-398B2EAEB22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BCBAFE0-FDFB-4C2F-A2B8-398B2EAEB22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BCBAFE0-FDFB-4C2F-A2B8-398B2EAEB22F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFDF9AE2-AEFA-414B-8C07-F02088840E3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDF9AE2-AEFA-414B-8C07-F02088840E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFDF9AE2-AEFA-414B-8C07-F02088840E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFDF9AE2-AEFA-414B-8C07-F02088840E3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73E44347-1078-458D-BEDE-9225B7C8FF3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73E44347-1078-458D-BEDE-9225B7C8FF3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73E44347-1078-458D-BEDE-9225B7C8FF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73E44347-1078-458D-BEDE-9225B7C8FF3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
