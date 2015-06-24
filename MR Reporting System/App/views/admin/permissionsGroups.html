@@ -1,0 +1,107 @@
+﻿<div id="content">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li data-bind="text: language.configuration[currentLanguage()]"></li>
+            <li data-bind="text: language.accountPermissionsGroups[currentLanguage()]"></li>
+        </ol>
+        <!-- end breadcrumb -->
+
+    </div>
+    <!-- END RIBBON -->
+    
+
+    <div class="fixed-action-btn" data-toggle="tooltip" data-placement="left" data-bind="attr: { title: language.addNew[currentLanguage()] }, click: add">
+        <a class="btn-floating btn-large waves-effect red">
+            <i class="mdi-content-add"></i>
+        </a>
+    </div>
+
+    <div class="row">
+        <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="widget-grid">
+            <!-- row -->
+            <div class="row">
+                <!-- SINGLE GRID -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="well jarviswidget no-padding" data-widget-sortable="false" id="wid-id-0">
+                        <header data-bind="css: { rtlTable: language.rtl[currentLanguage()] }"></header><!-- widget div-->
+                        <div>
+                            <!-- widget content -->
+                            <div class="widget-body" data-bind="css: { rtlTable: language.rtl[currentLanguage()] }" style="overflow-x: hidden">
+                                <div class="row page-header-row">
+                                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span class="page-header-text" style="font-family: Lato; color: rgb(37, 128, 247);" data-bind="text: language.groupsPermissions[currentLanguage()]"></span>
+                                        <button class="btn btn-trans btn-xs pull-right dropdown-toggle" id="exportDropdownMenu" data-toggle="dropdown" data-bind="attr:{ title: language.export[currentLanguage()] }">
+                                            <i class="fa fa-gear fa-2x"></i>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" style="right: 15px;" role="menu" aria-labelledby="exportDropdownMenu">
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-bind="click: exportToExcel" href="javascript:void(0);">Excel</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-bind="click: exportToWord" href="javascript:void(0);">Word</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-bind="click: exportToPdf" href="javascript:void(0);">PDF</a>
+                                            </li>
+                                        </ul>
+                                        <button id="fullscreen" class="btn btn-trans btn-trans-full btn-xs pull-right" data-bind="attr:{ title: language.fullscreen[currentLanguage()] }" data-action="launchFullscreen">
+                                            <i class="fa fa-arrows-alt fa-2x"></i>
+                                        </button>
+                                    </article>
+                                </div>
+
+                                <hr />
+                                <div data-bind="style: { visibility: !!(selectedRowId()) ? 'visible' : 'hidden' }">
+                                    <a href="javascript:void(0);" class="pull-right" data-bind="click: deletePermission">
+                                        <i style="font-size: 1.6em; margin-right: 5px;" class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                                <div id="accountsPermssionGrid" data-bind="jqxGridDataSource: dataSource, jqxGridColumns: columns,  jqxGrid: accountsPermissionsGroups">
+                                </div>
+                                <div class="modal fade" id="AccountsPermssionGroupModal" tabindex="-1" role="dialog" data-bind="attr: { dir: language.dir[currentLanguage()]}" aria-labelledby="AccountsPermssionGroupModal" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-bind="style: { float: language.btnFloat[currentLanguage()] }" data-dismiss="modal" aria-hidden="true">
+                                                    ×
+                                                </button>
+                                                <h4 class="modal-title" data-bind="visible: !changeStatus(), text: language.editTitle[currentLanguage()]"></h4>
+                                                <h4 class="modal-title" data-bind="visible: changeStatus(), text: language.addTitle[currentLanguage()]"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="smart-form" id="accountsPermissionGroupForm" data-bind="attr: { dir: language.dir[currentLanguage()]}" novalidate="novalidate">
+                                                    <fieldset data-bind="with: permissionGroup">
+                                                        <section>
+                                                            <label class="label" data-bind="text: $root.language.GroupName[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
+                                                            <label class="input">
+                                                                <i class="icon-append fa fa-question-circle"></i>
+                                                                <input type="text" class="form-control" name="groupName" data-bind="value: groupName, attr: { placeholder: $root.language.GroupName[$root.currentLanguage()] }" required>
+                                                                <b class="tooltip tooltip-top-right">
+                                                                    <i class="fa fa-warning txt-color-teal"></i>
+                                                                    <span data-bind="text: $root.language.GroupName[$root.currentLanguage()]"></span>
+                                                                </b>
+                                                            </label>
+                                                        </section>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer" data-bind="attr: { dir: language.dir[currentLanguage()]}">
+                                                <button type="submit" class="btn btn-primary" style="margin-left: 5px;" id="editPermissionGroup" data-bind="click: editPermissionGroup, visible: changeStatus(), text: language.edit[currentLanguage()], style: { float: language.btnFloat[currentLanguage()] }"></button>
+                                                <button type="submit" class="btn btn-primary" style="margin-left: 5px;" id="addPermissionGroup" data-bind="click: addPermissionGroup, visible: !changeStatus(), text: language.add[currentLanguage()], style: { float: language.btnFloat[currentLanguage()] }"></button>
+                                                <button type="button" class="btn btn-default" data-bind="text: language.cancel[currentLanguage()], style: { float: language.btnFloat[currentLanguage()] }" data-dismiss="modal"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!-- end widget content -->
+                        </div><!-- end widget div -->
+                    </div><!-- end widget -->
+                </article><!-- GRID END -->
+            </div><!-- end row -->
+        </section>
+    </div>
+    <!-- END MAIN CONTENT -->
+</div>

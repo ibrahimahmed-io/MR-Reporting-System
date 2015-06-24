@@ -1,0 +1,130 @@
+﻿<div id="content">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li data-bind="text: language.configuration[currentLanguage()]"></li>
+            <li data-bind="text: language.AccountsDefaultList[currentLanguage()]"></li>
+        </ol>
+        <!-- end breadcrumb -->
+
+    </div>
+    <!-- END RIBBON -->
+
+
+    <div class="fixed-action-btn" data-toggle="tooltip" data-placement="left" data-bind="attr: { title: language.addNew[currentLanguage()] }, click: add, visible: changeStatus()">
+        <a class="btn-floating btn-large waves-effect red">
+            <i class="mdi-content-add"></i>
+        </a>
+    </div>
+
+    <div class="row">
+        <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="widget-grid">
+            <!-- row -->
+            <div class="row">
+                <!-- SINGLE GRID -->
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="well jarviswidget no-padding" data-widget-sortable="false" id="wid-id-0">
+                        <header data-bind="css: { rtlTable: language.rtl[currentLanguage()] }"></header><!-- widget div-->
+                        <div>
+                            <!-- widget content -->
+                            <div class="widget-body" data-bind="css: { rtlTable: language.rtl[currentLanguage()] }" style="overflow-x: hidden">
+                                <div class="row page-header-row">
+                                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <span class="page-header-text" style="font-family: Lato; color: rgb(37, 128, 247);" data-bind="text: language.AccountsDefaultList[currentLanguage()]"></span>
+                                        <button class="btn btn-trans btn-xs pull-right dropdown-toggle" id="exportDropdownMenu" data-toggle="dropdown" data-bind="attr:{ title: language.export[currentLanguage()] }">
+                                            <i class="fa fa-gear fa-2x"></i>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" style="right: 15px;" role="menu" aria-labelledby="exportDropdownMenu">
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-bind="click: exportToExcel" href="javascript:void(0);">Excel</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-bind="click: exportToWord" href="javascript:void(0);">Word</a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a role="menuitem" tabindex="-1" data-bind="click: exportToPdf" href="javascript:void(0);">PDF</a>
+                                            </li>
+                                        </ul>
+                                        <button id="fullscreen" class="btn btn-trans btn-trans-full btn-xs pull-right" data-bind="attr:{ title: language.fullscreen[currentLanguage()] }" data-action="launchFullscreen">
+                                            <i class="fa fa-arrows-alt fa-2x"></i>
+                                        </button>
+                                    </article>
+                                </div>
+
+                                <hr />
+                                <form action="" id="list-form" class="smart-form" novalidate="novalidate">
+                                    <fieldset>
+                                        <div class="row">
+                                            <section class="col col-6" style="padding-left: 1px;">
+                                                <label class="select">
+                                                    <select id="status" name="status" class="form-control" data-bind="value: listType, attr: { placeholder: $root.language.selectStatus[$root.currentLanguage()] }, attr: { dir: $root.language.dir[$root.currentLanguage()]}" required>
+                                                        <option data-bind="text: $root.language.selectStatus[$root.currentLanguage()]"></option>
+                                                        <option value="classType" data-bind="text: 'classType'"></option>
+                                                        <option value="position" data-bind="text: 'position'"></option>
+                                                        <option value="medicenType" data-bind="text: 'medicenType'"></option>
+                                                        <option value="specailiz" data-bind="text: 'specailiz'"></option>
+                                                    </select>
+                                                </label>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <div style="height:25px;" data-bind="style: { visibility: !!(selectedRowId()) ? 'visible' : 'hidden' }">
+                                    <a href="javascript:void(0);" class="pull-right" data-bind="click: deleteDefault">
+                                        <i style="font-size: 1.6em; margin-right: 5px;" class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+
+                                <div class="gridStyle" id="accountsDefaultList" data-bind="koGrid: gridOptions()"></div>
+
+                                <div class="modal fade" id="accountsDefaultListModal" tabindex="-1" role="dialog" aria-labelledby="accountsDefaultListModal" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    ×
+                                                </button>
+                                                <h4 class="modal-title" data-bind="visible: changeStatus(), text: language.goEdit[currentLanguage()]"></h4>
+                                                <h4 class="modal-title" data-bind="visible: !changeStatus(), text: language.goAdd[currentLanguage()]"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="smart-form" id="accountsDefaultListForm" novalidate="novalidate">
+                                                    <fieldset data-bind="with: accountsDefalutListPopUp">
+                                                        <section>
+                                                            <label class="label">Title</label>
+                                                            <label class="input">
+                                                                <i class="icon-append fa fa-question-circle"></i>
+                                                                <input type="text" class="form-control" name="title" data-bind="value: title, attr: { placeholder: $root.language.titleEn[$root.currentLanguage()] }" required>
+                                                                <b class="tooltip tooltip-top-right">
+                                                                    <i class="fa fa-warning txt-color-teal"></i>
+                                                                    <span data-bind="text: $root.language.titleEnValid[$root.currentLanguage()]"></span>
+                                                                </b>
+                                                            </label>
+                                                        </section>
+
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Cancel
+                                                </button>
+                                                <button type="submit" class="btn btn-primary" id="editAccountsDefaultList" data-bind="click: editAccountsDefaultList, visible: changeStatus()">
+                                                    Edit
+                                                </button>
+                                                <button type="submit" class="btn btn-primary" id="addAccountsDefaultList" data-bind="click: addAccountsDefaultList, visible: !changeStatus()">
+                                                    Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</div>

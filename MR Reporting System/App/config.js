@@ -5,6 +5,24 @@
         title: 'Dashboard',
         nav: true,
         settings: { Dashboard: true }
+    }, {
+        route: 'accounts',
+        moduleId: 'admin/accounts',
+        title: 'agents',
+        nav: true,
+        settings: { admin: true }
+    }, {
+        route: 'accountsAdd',
+        moduleId: 'admin/accountsAdd',
+        title: 'agents',
+        nav: true,
+        settings: { admin: false }
+    }, {
+        route: 'accountsDefaultList',
+        moduleId: 'admin/accountsDefaultList',
+        title: 'agents',
+        nav: true,
+        settings: { admin: true }
     }];
 
     var isPageSetup = ko.observable(false);

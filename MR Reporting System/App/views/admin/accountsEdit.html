@@ -1,0 +1,136 @@
+﻿<!-- RIBBON -->
+<div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li data-bind="text: language.titleAccounts[currentLanguage()]"></li>
+        <li data-bind="text: language.edit[currentLanguage()]"></li>
+    </ol>
+    <!-- end breadcrumb -->
+</div>
+<!-- END RIBBON -->
+<!-- MAIN CONTENT -->
+<div id="content">
+    <div class="row" data-bind="visible: !account()">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-cog fa-spin"></i> Loading...
+            </h1>
+        </div>
+    </div>
+    <section id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- SINGLE GRID -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" data-widget-sortable="false" id="wid-id-0">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+
+                        <h2 data-bind=" text:language.titleAccounts[currentLanguage()] + ' - '"></h2>
+                        <h2 data-bind=" text:language.goEdit[currentLanguage()]"></h2>
+                    </header><!-- widget div-->
+
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <form class="smart-form" id="AccountEditForm" novalidate="novalidate">
+
+                                    <fieldset data-bind="with: account">
+                                        <div class="row">
+                                            <section class="col col-6">
+                                                <label class="label" data-bind="text: $root.language.UserName[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="userName" name="userName" data-bind="value: userName,attr:{ placeholder: $root.language.UserName[$root.currentLanguage()]}" required>
+
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label class="label" data-bind="text: $root.language.hours[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" name="defaultHours" id="defaultHours" data-bind="value: defaultHours,atrr:{placeholder:$root.language.hours[$root.currentLanguage()]}" required>
+
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                        <div class="row">
+                                            <section class="col col-6">
+                                                <label class="label" data-bind="text:$root.language.Supervisor[$root.currentLanguage()]">Supervisor Company</label>
+                                                <label class="select">
+                                                    <select id="supervisorCompanyId" name="supervisorCompanyId" class="form-control" data-bind="options: $root.companies, optionsText: 'companyName', optionsValue: 'id', optionsCaption: $parent.language.supervisorSelection[$parent.currentLanguage()], value: companySupervisorId, valueAllowUnset: true"></select><i></i>
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label class="label" data-bind="text:$root.language.ContactName[$root.currentLanguage()]"></label>
+                                                <div class="select">
+                                                    <select id="contactSupervisorId" name="contactSupervisorId" class="form-control" data-bind="options: $root.supervisorContacts, optionsText: 'contactName', optionsValue: 'id', optionsCaption: $parent.language.selectContact[$parent.currentLanguage()], value: contactSupervisorId, valueAllowUnset: true"></select><i></i>
+
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-6">
+                                                <label class="label" data-bind="text:$root.language.GroupName[$root.currentLanguage()]"></label>
+                                                <div class="select">
+                                                    <select id="groupId" name="groupId" class="form-control" data-bind="options: $root.groups, optionsText: 'groupName', optionsValue: 'id', optionsCaption: $parent.language.groupSelection[$parent.currentLanguage()], value: groupId, valueAllowUnset: true"></select><i></i>
+                                                </div>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label class="label" data-bind="text:$root.language.employeeCode[$root.currentLanguage()]"></label>
+                                                <label class="input">
+                                                    <input type="text" class="form-control" id="empCode" name="empCode" data-bind="value: empCode,attr: { placeholder: $root.language.employeeCode[$root.currentLanguage()] }" required>
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-6">
+                                                <label class="toggle">
+                                                    <input type="checkbox" class="form-control" name="designTeam" data-bind="checked: designTeam">
+                                                    <i data-swchon-text="yes" data-swchoff-text="no"></i>
+                                                    <!-- ko text: $root.language.designTeam[$root.currentLanguage()] --><!-- /ko -->
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label class="toggle">
+                                                    <input type="checkbox" class="form-control" name="isTaskAdmin" data-bind="checked: isTaskAdmin">
+                                                    <i data-swchon-text="yes" data-swchoff-text="no"></i>
+                                                    <!-- ko text: $root.language.isTaskAdmin[$root.currentLanguage()] --><!-- /ko -->
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-6">
+                                                <label class="toggle">
+                                                    <input type="checkbox" class="form-control" name="active" data-bind="checked: active">
+                                                    <i data-swchon-text="yes" data-swchoff-text="no"></i>
+                                                    <!-- ko text: $root.language.active[$root.currentLanguage()] --><!-- /ko -->
+                                                </label>
+                                            </section>
+                                            <section class="col col-6">
+                                                <label class="toggle">
+                                                    <input type="checkbox" class="form-control" name="isHrManager" data-bind="checked: isHrManager">
+                                                    <i data-swchon-text="yes" data-swchoff-text="no"></i>
+                                                    <!-- ko text: $root.language.isHrManager[$root.currentLanguage()] --><!-- /ko -->
+                                                </label>
+                                            </section>
+                                        </div>
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" data-bind="click: editAccount,text:language.edit[currentLanguage()]" class="btn btn-primary"></button>
+                                    </footer>
+                                </form>
+                            </section>
+
+                        </div><!-- end widget content -->
+                    </div><!-- end widget div -->
+                </div><!-- end widget -->
+            </article><!-- GRID END -->
+        </div><!-- end row -->
+    </section>
+</div>
+<!-- END MAIN CONTENT -->

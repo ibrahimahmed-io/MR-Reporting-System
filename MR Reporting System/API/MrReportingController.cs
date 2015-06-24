@@ -64,7 +64,7 @@ namespace MR_Reporting_System.API
             _agentsDrugs = agentDrug;
             _agentsHospital = agentHospital;
             _agentsPharmacies = agentPharmacies;
-            _agents = agents; 
+            _agents = agents;
             _companies = companies;
             _defaultList = defaultList;
             _distributers = distributers;
@@ -256,7 +256,8 @@ namespace MR_Reporting_System.API
 
             var primeData = new
             {
-                Permissions = permissions, isCompany
+                Permissions = permissions,
+                isCompany
             };
 
             return Ok(primeData);
@@ -268,7 +269,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetGroupsPermissions(int groupId, [FromUri] List<int> documentPermissions)
         {
             List<DtoGroupPermissions> result = _permissionGroup.SelectAll(groupId, _language);//.Where(x => documentPermissions.Contains(x.PermissionCode.Value));
-            
+
             return Ok(result);
         }
 
@@ -278,7 +279,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetGroup()
         {
             List<DtoGroups> result = _groups.SelectAll(_language);//.Where(x => documentPermissions.Contains(x.PermissionCode.Value));
-            
+
             return Ok(result);
         }
 
@@ -556,9 +557,9 @@ namespace MR_Reporting_System.API
                 AreaId = dtoDocument.AreaId
 
             };
-            
+
             _agentsArea.Add(documentNew);
-            _agentsArea.Save(); 
+            _agentsArea.Save();
             _agentsArea.Reload(documentNew);
 
             return Ok(documentNew);
@@ -593,7 +594,7 @@ namespace MR_Reporting_System.API
 
             _agentsDistributer.Edit(result);
             _agentsDistributer.Save();
-            
+
             return Ok();
         }
 
@@ -608,7 +609,7 @@ namespace MR_Reporting_System.API
                 DistributerId = dtoDocument.DistributerId,
 
             };
-            
+
             _agentsDistributer.Add(documentNew);
             _agentsDistributer.Save(); _agentsDistributer.Reload(documentNew);
 
@@ -644,7 +645,7 @@ namespace MR_Reporting_System.API
 
             _agentsDrugs.Edit(result);
             _agentsDrugs.Save();
-            
+
             return Ok();
         }
 
@@ -661,8 +662,8 @@ namespace MR_Reporting_System.API
             };
 
             _agentsDrugs.Add(documentNew);
-            _agentsDrugs.Save(); 
-            
+            _agentsDrugs.Save();
+
             _agentsDrugs.Reload(documentNew);
 
             return Ok(documentNew);
@@ -713,7 +714,7 @@ namespace MR_Reporting_System.API
             };
 
             _agentsHospital.Add(documentNew);
-            _agentsHospital.Save(); 
+            _agentsHospital.Save();
             _agentsHospital.Reload(documentNew);
 
             return Ok(documentNew);
@@ -795,7 +796,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult DeleteAgentsById(int id)
         {
             var result = _agents.FindBy(x => x.id == id).SingleOrDefault();
-            
+
             _agents.Edit(result);
             _agents.Save();
 
@@ -804,7 +805,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddAgentss")]
+        [Route("AddAgents")]
         public IHttpActionResult AddAgents(DtoAgents dtoDocument)
         {
             var documentNew = new Agent
@@ -828,8 +829,7 @@ namespace MR_Reporting_System.API
 
             _agents.Add(documentNew);
             _agents.Save(); 
-            _agents.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -879,9 +879,9 @@ namespace MR_Reporting_System.API
             };
 
             _area.Add(documentNew);
-            _area.Save(); 
-            _area.Reload(documentNew); 
-            
+            _area.Save();
+            _area.Reload(documentNew);
+
             return Ok(documentNew);
         }
 
@@ -935,7 +935,7 @@ namespace MR_Reporting_System.API
             _companies.Add(documentNew);
             _companies.Save();
             _companies.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -948,6 +948,17 @@ namespace MR_Reporting_System.API
 
             return Ok(result);
         }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetDefaultListByListType")]
+        public IHttpActionResult GetDefaultListByListType(string listType)
+        {
+            var result = _defaultList.SelectByListType(listType, 2, _language).ToList();
+
+            return Ok(result);
+        }
+
 
         [AuthorizeUser]
         [HttpGet]
@@ -968,7 +979,7 @@ namespace MR_Reporting_System.API
 
             _defaultList.Edit(result);
             _defaultList.Save();
-            
+
             return Ok();
         }
 
@@ -985,9 +996,9 @@ namespace MR_Reporting_System.API
             };
 
             _defaultList.Add(documentNew);
-            _defaultList.Save(); 
+            _defaultList.Save();
             _defaultList.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1020,7 +1031,7 @@ namespace MR_Reporting_System.API
 
             _distributers.Edit(result);
             _distributers.Save();
-            
+
             return Ok();
         }
 
@@ -1041,9 +1052,9 @@ namespace MR_Reporting_System.API
             };
 
             _distributers.Add(documentNew);
-            _distributers.Save(); 
+            _distributers.Save();
             _distributers.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1076,7 +1087,7 @@ namespace MR_Reporting_System.API
 
             _docotors.Edit(result);
             _docotors.Save();
-            
+
             return Ok();
         }
 
@@ -1101,9 +1112,9 @@ namespace MR_Reporting_System.API
             };
 
             _docotors.Add(documentNew);
-            _docotors.Save(); 
+            _docotors.Save();
             _docotors.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1158,9 +1169,9 @@ namespace MR_Reporting_System.API
             };
 
             _drugs.Add(documentNew);
-            _drugs.Save(); 
+            _drugs.Save();
             _drugs.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1193,7 +1204,7 @@ namespace MR_Reporting_System.API
 
             _permissionGroup.Edit(result);
             _permissionGroup.Save();
-            
+
             return Ok();
         }
 
@@ -1211,9 +1222,9 @@ namespace MR_Reporting_System.API
             };
 
             _permissionGroup.Add(documentNew);
-            _permissionGroup.Save(); 
+            _permissionGroup.Save();
             _permissionGroup.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1262,9 +1273,9 @@ namespace MR_Reporting_System.API
             };
 
             _groups.Add(documentNew);
-            _groups.Save(); 
+            _groups.Save();
             _groups.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1318,9 +1329,9 @@ namespace MR_Reporting_System.API
             };
 
             _hospitals.Add(documentNew);
-            _hospitals.Save(); 
+            _hospitals.Save();
             _hospitals.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1374,9 +1385,9 @@ namespace MR_Reporting_System.API
             };
 
             _locations.Add(documentNew);
-            _locations.Save(); 
+            _locations.Save();
             _locations.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1431,9 +1442,9 @@ namespace MR_Reporting_System.API
             };
 
             _pharmacies.Add(documentNew);
-            _pharmacies.Save(); 
+            _pharmacies.Save();
             _pharmacies.Reload(documentNew);
-            
+
             return Ok(documentNew);
         }
 
@@ -1466,7 +1477,7 @@ namespace MR_Reporting_System.API
 
             _visits.Edit(result);
             _visits.Save();
-            
+
             return Ok();
         }
 

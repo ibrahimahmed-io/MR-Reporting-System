@@ -1,0 +1,59 @@
+﻿<div id="content">
+    <div class="jarviswidget well" data-widget-sortable="false" data-widget-editbutton="false">
+        <div>
+            <!-- widget content -->
+            <div class="widget-body" style="overflow-x: hidden">
+                <div class="row page-header-row">
+                    <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <span class="page-header-text" style="font-family: Lato; color: rgb(37, 128, 247);" data-bind="text: language.accounts[currentLanguage()] + ' - ' + title"></span>
+                        <button id="fullscreen" class="btn btn-trans btn-trans-full btn-xs pull-right" data-action="launchFullscreen">
+                            <i class="fa fa-arrows-alt fa-2x"></i>
+                        </button>
+                    </section>
+                </div>
+                <hr />
+                <ul class="nav nav-tabs bordered" id="permissionsGroupsPermissionsPillNav">
+                    <li class="active">
+                        <a href="#userPermissions" data-toggle="tab"> User Permissions </a>
+                    </li>
+                    <li class="">
+                        <a href="#modulePermissions" data-toggle="tab"> Module Permissions </a>
+                    </li>
+                </ul>
+                <div class="tab-content padding-10">
+                    <div class="tab-pane active" id="userPermissions">
+                        <select style="width: 100%" id="userPermissionsDocumentsDropDown" data-bind="event:{ change: permissionModulesSelectChanged }" data-placeholder="Please Select a Document Type" tabindex="-1">
+                            <option></option>
+                            <!-- ko foreach: permissions -->
+                            <optgroup data-bind="attr: { 'label': title[$root.currentLanguage()] }, foreach: modules" label="-">
+                                <option data-bind="text: title[$root.currentLanguage()], value: id"></option>
+                            </optgroup>
+                            <!-- /ko -->
+                        </select>
+                        <hr />
+                        <div class="icon-addon addon-md" data-bind="style: { 'padding-left': selectedDocumentPermissions().length < 1 ? '40px' : '0' }">
+                            <select name="userPermissionsPermissionsDropDown" multiple style="width: 100%" id="userPermissionsPermissionsDropDown" data-placeholder="Click inside and choose your permissions" tabindex="-1">
+                                <option></option>
+                                <!-- ko foreach: selectedDocumentPermissions -->
+                                <option data-bind="text: title[$root.currentLanguage()], value: code"></option>
+                                <!-- /ko -->
+                            </select>
+                            <div data-bind="visible: selectedDocumentPermissions().length < 1" style="position: absolute; top: 0; left: 0; border: 1px solid #ccc; border-right: 0; height: 32px; width: 40px;">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <button type="button" class="btn btn-primary" data-bind="click: saveUserPermissions, visible: selectedDocumentPermissions().length > 0">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                    </div>
+
+                    <div class="tab-pane active" id="modulePermissions">
+
+                    </div>
+                </div>
+            </div><!-- end widget content -->
+        </div><!-- end widget div -->
+    </div>
+</div>

@@ -1,0 +1,186 @@
+﻿<!-- RIBBON -->
+<div id="ribbon">
+
+    <span class="ribbon-button-alignment">
+        <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-bind="attr: { 'data-original-title': resetWarning }" data-html="true">
+            <i class="fa fa-refresh"></i>
+        </span>
+    </span>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li data-bind="text: language.titleAccounts[currentLanguage()]"></li>
+        <li data-bind="text: language.add[currentLanguage()]"></li>
+    </ol>
+    <!-- end breadcrumb -->
+
+</div>
+<!-- END RIBBON -->
+<!-- MAIN CONTENT -->
+<section id="content">
+    <div class="row" data-bind="visible: !account()">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-cog fa-spin"></i> Loading...
+            </h1>
+        </div>
+    </div>
+    <section id="widget-grid">
+        <!-- row -->
+        <section class="row">
+            <!-- SINGLE GRID -->
+            <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" data-widget-sortable="false" id="wid-id-0">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2 data-bind=" text:language.titleAccounts[currentLanguage()] + ' - '"></h2>
+                        <h2 data-bind=" text:language.goAdd[currentLanguage()]"></h2>
+                    </header><!-- widget div-->
+
+                    <div>
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <form class="smart-form" id="AccountEditForm" data-bind="attr: { dir: $root.language.dir[$root.currentLanguage()]}" novalidate="novalidate">
+
+                                    <fieldset data-bind="with: account">
+
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text: $root.language.UserName[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="userName" name="userName" data-bind="value: UserName,attr:{ placeholder: $root.language.UserName[$root.currentLanguage()]}" required>
+
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.password[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="userPassword" name="userPassword" data-bind="value: PassWord" placeholder="User Password..." required>
+
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.Address[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="Address" name="Address" data-bind="value: Address" placeholder="Address..." required>
+
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.ContactName[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="ContactName" name="ContactName" data-bind="value: ContactName" placeholder="Contact Name..." required>
+
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.Telephone[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="Phone" name="Phone" data-bind="value: Phone" placeholder="Phone..." required>
+
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.email[$root.currentLanguage()]"></label>
+                                                <label class="input">
+
+                                                    <input type="text" class="form-control" id="Email" name="Email" data-bind="value: Email" placeholder="Contact Name..." required>
+
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.salaryValue[$root.currentLanguage()]"></label>
+                                                <label class="input">
+                                                    <input type="text" class="form-control" name="salary" id="salary" data-bind="value: salary" placeholder="Salary / Month..." required>
+
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text: 'No Of Visits'"></label>
+                                                <label class="input">
+                                                    <input type="text" class="form-control" name="NoOfVisits" id="NoOfVisits" data-bind="value: NoOfVisits" placeholder="NoOfVisits / Month..." required>
+
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.GroupName[$root.currentLanguage()]"></label>
+                                                <label class="select">
+                                                    <select id="GroupId" name="GroupId" class="form-control" data-bind="value: GroupId, options: $root.groups, optionsText: 'GroupName', optionsValue: 'Id', optionsCaption: '-- Please Select a group --' "></select><i></i>
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text: $root.language.Supervisor[$root.currentLanguage()]"></label>
+                                                <label class="select">
+                                                    <select id="SupervisorId" name="SupervisorId" class="form-control" data-bind="value: SupervisorId, options: $root.supervisorContacts, optionsText: 'contactName', optionsValue: 'id', optionsCaption: '-- Please Select a Contact --'"></select><i></i>
+                                                </label>
+                                            </section>
+                                        </div>
+
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.userType[$root.currentLanguage()]"></label>
+                                                <label class="select">
+                                                    <select id="UserType" name="UserType" class="form-control" data-bind="value: UserType, attr: { placeholder: $root.language.selectStatus[$root.currentLanguage()] }, attr: { dir: $root.language.dir[$root.currentLanguage()]}" required>
+                                                        <option data-bind="text: $root.language.selectStatus[$root.currentLanguage()]"></option>
+                                                        <option value="User" data-bind="text: 'User'"></option>
+                                                        <option value="Agent" data-bind="text: 'Sales'"></option>
+                                                        <option value="Another" data-bind="text: 'Another'"></option>
+                                                    </select>
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.employeeCode[$root.currentLanguage()]"></label>
+                                                <label class="input">
+                                                    <label class="select">
+                                                        <select id="PositionId" name="PositionId" class="form-control" data-bind="value: PositionId, options: $root.postions, optionsText: 'title', optionsValue: 'Id', optionsCaption: '-- Please Select a Contact --'"></select><i></i>
+                                                    </label>
+                                                </label>
+                                            </section>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6">
+                                                <label class="label" data-bind="text:$root.language.referenceCode[$root.currentLanguage()]"></label>
+                                                <label class="input">
+                                                    <input type="text" class="form-control" name="Code" id="Code" data-bind="value: Code" placeholder="Code..." required>
+
+                                                </label>
+                                            </section>
+                                            <section class="col col-6 col-sm-6 col-md-6 col-xs-6 col-lg-6"></section>
+                                        </div>
+                                    </fieldset>
+
+                                    <footer>
+                                        <button type="submit" data-bind="click: addAccount" class="btn btn-primary">
+                                            Save
+                                        </button>
+                                    </footer>
+                                </form>
+                            </section>
+
+                        </div>
+                    </div><!-- end widget content -->
+                </div><!-- end widget div -->
+            </section><!-- end widget -->
+
+
+        </section>
+    </section>
+</section>
