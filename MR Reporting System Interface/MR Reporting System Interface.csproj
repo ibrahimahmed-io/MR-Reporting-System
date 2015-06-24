@@ -47,7 +47,9 @@
     <Compile Include="IDataService\IAgentsRepository.cs" />
     <Compile Include="IDataService\IAreaRepository.cs" />
     <Compile Include="IDataService\ICompaniesRepository.cs" />
-    <Compile Include="IDataService\IDefaultListRepository.cs" />
+    <Compile Include="IDataService\IDefaultListRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IDataService\IDistributersRepository.cs" />
     <Compile Include="IDataService\IDocotorsRepository.cs" />
     <Compile Include="IDataService\IDrugsRepository.cs" />
