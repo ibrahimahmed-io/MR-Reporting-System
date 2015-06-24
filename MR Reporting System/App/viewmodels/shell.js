@@ -221,6 +221,14 @@
         });
     }
 
+    var constructNavigation = function (dom, obj) {
+        //var objIndex = projectsMenue.indexOf(obj);
+        //if (objIndex === projectsMenue().length - 1) {
+        //    $("nav ul").jarvismenu({}, true);
+            initApp.leftNav();
+        //}
+    };
+
     var shell = {
         activate: activate,
         router: router,

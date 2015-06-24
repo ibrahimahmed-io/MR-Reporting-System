@@ -97,12 +97,10 @@ namespace MR_Reporting_System.API
                     {
 
                         _groupId = TokenManager.GetGroupId(userToken);
-                        TokenManager.GetOwnerIdentity(userToken);
 
                     }
                     else if (_userType.Equals("Company"))
                     {
-                        TokenManager.GetOwnerIdentity(userToken);
 
                     }
                 }
