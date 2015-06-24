@@ -16,33 +16,67 @@ namespace MR_Reporting_System.API
 {
 
     [RoutePrefix("api/MrReporting")]
-    public class ProcoorController : ApiController
+    public class MrReportingController : ApiController
     {
 
-        private readonly IGroupsRepository _group;
-        private readonly IAgentsRepository _agent;
-        private readonly IGroupPermissionsRepository _permissionGroup;
-        private readonly IAreaRepository _Area;
-        private readonly IDefaultListRepository _defaultList;
+        private readonly IGrouppermissionsRepository _permissionGroup;
+        private readonly IAreaRepository _area;
+        private readonly IDefaultlistRepository _Defaultlist;
+        private readonly IAgantareaRepository _Agantsarea;
+        private readonly IAgantdistributerRepository _Agantsdistributer;
+        private readonly IAgantdrugsRepository _Agantsdrugs;
+        private readonly IAganthospitalRepository _Agantshospital;
+        private readonly IAgantpharmaciesRepository _Agantspharmacies;
+        private readonly IAgantsRepository _Agants;
+        private readonly ICompaniesRepository _Companies;
+        private readonly IDistributersRepository _Distributers;
+        private readonly IDocotorsRepository _Docotors;
+        private readonly IDrugsRepository _Drugs;
+        private readonly IGroupsRepository _Groups;
+        private readonly IHospitalsRepository _Hospitals;
+        private readonly ILocationsRepository _Locations;
+        private readonly IPharmaciesRepository _Pharmacies;
+        private readonly IVisitsRepository _Visits;
 
-        private readonly string _language;
-        private readonly int _accountId;
+
+        private string _language;
+        private int _accountId;
         private int _accountOwnerId;
-        private readonly string _userType;
-        private readonly int _groupId;
+        private string _userType;
+        private int _groupId;
 
-        public ProcoorController(
-            IGroupsRepository groups,
-            IGroupPermissionsRepository permissionGroup,
-            IAreaRepository Area,
-            IAgentsRepository agent,
-            IDefaultListRepository defaultList)
+
+
+        public MrReportingController(
+                  IAreaRepository Area, IDistributersRepository Distributers, IDrugsRepository Drugs,
+                  IDocotorsRepository Docotors,
+                  IHospitalsRepository Hospitals, ILocationsRepository Locations,
+                  IPharmaciesRepository Pharmacies, IVisitsRepository Visits,
+                  IAgantdrugsRepository agantDrug, IAganthospitalRepository Aganthospital,
+                  IAgantpharmaciesRepository Agantpharmacies, IAgantsRepository Agants,
+                  ICompaniesRepository Companies,
+                  IDefaultlistRepository Defaultlist,
+                  IAgantareaRepository Agantarea, IAgantdistributerRepository Agantdistributer,
+                  IGrouppermissionsRepository Grouppermissions, IGroupsRepository groups)
         {
-            _group = groups;
-            _agent = agent;
-            _permissionGroup = permissionGroup;
-            _Area = Area;
-            _defaultList = defaultList;
+            _Groups = groups;
+            _Agants = Agants;
+            _permissionGroup = Grouppermissions;
+            _area = Area;
+            _Agantsarea = Agantarea;
+            _Agantsdistributer = Agantdistributer;
+            _Agantsdrugs = agantDrug;
+            _Agantshospital = Aganthospital;
+            _Agantspharmacies = Agantpharmacies;
+            _Agants = Agants; _Companies = Companies;
+            _Defaultlist = Defaultlist;
+            _Distributers = Distributers;
+            _Docotors = Docotors;
+            _Drugs = Drugs;
+            _Hospitals = Hospitals;
+            _Locations = Locations;
+            _Pharmacies = Pharmacies;
+            _Visits = Visits;
 
             var langHeader = HttpContext.Current.Request.Headers.GetValues("Lang");
 
