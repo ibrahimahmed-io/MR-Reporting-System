@@ -42,8 +42,9 @@
 
     var accountsDefaultListDto = function () {
         var self = this;
-        self.title = ko.observable();
-        self.listType = ko.observable();//$("#selectAccountsDefaultListTypes").val();
+        self.Id = ko.observable();
+        self.Title = ko.observable();
+        self.Type = ko.observable();//$("#selectAccountsDefaultListTypes").val();
     };
 
     listType.subscribe(function () {
@@ -67,13 +68,15 @@
 
         accountsDefalutListPopUp(new accountsDefaultListDto());
 
+        accountsDefalutListPopUp().Type(listType());
+
         $('#accountsDefaultListModal').modal('show');
     }
 
     function editAccountsDefaultList() {
         var isValid = $('#accountsDefaultListForm').valid();
         if (isValid) {
-            dataservice.editAccountsDefaultList(accountsDefalutListPopUp())
+            dataservice.editDefaultlist(accountsDefalutListPopUp())
                 .done(function (result) {
                     $('#accountsDefaultListModal').modal('hide');
                     $.smallBox({
@@ -94,6 +97,9 @@
                         iconSmall: "fa fa-times fa-2x fadeInRight animated",
                         timeout: 2000
                     });
+                    knockoutGrid.setInitialData(data);
+
+                    $(".loading-data").addClass("hidden");
                 });
         } else {
             $('#accountsDefaultListForm').validate();
@@ -103,7 +109,7 @@
     function addAccountsDefaultList() {
         var isValid = $('#accountsDefaultListForm').valid();
         if (isValid) {
-            dataservice.addAccountsDefaultList(accountsDefalutListPopUp()).done(function (data) {
+            dataservice.addDefaultlist(accountsDefalutListPopUp()).done(function (data) {
                 $('#accountsDefaultListModal').modal('hide');
                 $.smallBox({
                     title: config.language.smartAddMessage[config.currentLanguage()].successTitle,
@@ -113,6 +119,9 @@
                     timeout: 4000
                 });
 
+                knockoutGrid.setInitialData(data);
+
+                $(".loading-data").addClass("hidden");
             });
         } else {
             $('#accountsDefaultListForm').validate();
@@ -201,7 +210,7 @@
             buttons: '[No][Yes]'
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
-                dataservice.accountsDefaultListDelete(selectedRowId()).complete(function () {
+                dataservice.deleteDefaultlist(selectedRowId()).complete(function () {
                     knockoutGrid.deleteRow(selectedRowId());
                     selectedRowId(undefined);
                 });

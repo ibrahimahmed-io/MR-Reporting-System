@@ -549,20 +549,25 @@ namespace MR_Reporting_System.API
         [AuthorizeUser]
         [HttpPost]
         [Route("AddAgentAreas")]
-        public IHttpActionResult AddAgentArea(DtoAgentArea dtoDocument)
-        {
-            var documentNew = new AgentArea
+        public IHttpActionResult AddAgentAreas(DtoAgentArea dtoDocument)
+        { 
+            foreach (int item in dtoDocument.agentAreas)
             {
-                AgentId = dtoDocument.AgentId,
-                AreaId = dtoDocument.AreaId
+                var obj = new AgentArea
+                {
+                    AgentId = dtoDocument.AgentId,
+                    AreaId = item
+                };
+                var counter = _agentsArea.FindBy(x => x.AgentId == dtoDocument.AgentId && x.AreaId == item).ToList();
+                if (counter.Count < 0)
+                {
+                    _agentsArea.Add(obj);
+                }
+            }
 
-            };
-
-            _agentsArea.Add(documentNew);
             _agentsArea.Save();
-            _agentsArea.Reload(documentNew);
 
-            return Ok(documentNew);
+            return Ok();
         }
 
         [AuthorizeUser]
@@ -652,21 +657,26 @@ namespace MR_Reporting_System.API
         [AuthorizeUser]
         [HttpPost]
         [Route("AddAgentDrugs")]
-        public IHttpActionResult AddAgentDrug(DtoAgentDrugs dtoDocument)
+        public IHttpActionResult AddAgentDrugs(DtoAgentDrugs dtoDocument)
         {
-            var documentNew = new AgentDrug
+            foreach (int item in dtoDocument.agentDrugs)
             {
-                AgentId = dtoDocument.AgentId,
-                DrugsId = dtoDocument.DrugsId,
-
-            };
-
-            _agentsDrugs.Add(documentNew);
+                var obj = new AgentDrug
+                {
+                    AgentId = dtoDocument.AgentId,
+                    DrugsId = item
+                };
+                var counter = _agentsDrugs.FindBy(x => x.AgentId == dtoDocument.AgentId && x.DrugsId == item).ToList();
+                if (counter.Count < 0)
+                {
+                    _agentsDrugs.Add(obj);
+                }
+            }
+              
             _agentsDrugs.Save();
+             
 
-            _agentsDrugs.Reload(documentNew);
-
-            return Ok(documentNew);
+            return Ok();
         }
 
         [AuthorizeUser]
@@ -828,7 +838,7 @@ namespace MR_Reporting_System.API
             };
 
             _agents.Add(documentNew);
-            _agents.Save(); 
+            _agents.Save();
 
             return Ok(documentNew);
         }
@@ -985,22 +995,41 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddDefaultLists")]
+        [Route("AddDefaultList")]
         public IHttpActionResult AddDefaultList(DtoDefaultList dtoDocument)
         {
             var documentNew = new DefaultList
             {
                 Title = dtoDocument.Title,
-                Type = dtoDocument.Type,
-                Action = dtoDocument.Action
+                Type = dtoDocument.Type
             };
 
             _defaultList.Add(documentNew);
             _defaultList.Save();
-            _defaultList.Reload(documentNew);
 
-            return Ok(documentNew);
+            var result = _defaultList.SelectByListType(dtoDocument.Type, 2, _language).ToList();
+
+            return Ok(result);
         }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditDefaultlist")]
+        public IHttpActionResult EditDefaultlist(DtoDefaultList dtoDocument)
+        {
+            var documentNew = _defaultList.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+
+            documentNew.Title = dtoDocument.Title;
+
+            _defaultList.Edit(documentNew);
+            _defaultList.Save();
+
+            var result = _defaultList.SelectByListType(dtoDocument.Type, 2, _language).ToList();
+
+            return Ok(result);
+        }
+
+
 
         [AuthorizeUser]
         [HttpGet]

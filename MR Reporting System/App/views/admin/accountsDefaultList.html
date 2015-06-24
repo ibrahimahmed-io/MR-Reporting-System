@@ -12,7 +12,7 @@
     <!-- END RIBBON -->
 
 
-    <div class="fixed-action-btn" data-toggle="tooltip" data-placement="left" data-bind="attr: { title: language.addNew[currentLanguage()] }, click: add, visible: changeStatus()">
+    <div class="fixed-action-btn" data-toggle="tooltip" data-placement="left" data-bind="attr: { title: language.addNew[currentLanguage()] }, click: add,visible: showNew()">
         <a class="btn-floating btn-large waves-effect red">
             <i class="mdi-content-add"></i>
         </a>
@@ -58,8 +58,8 @@
                                         <div class="row">
                                             <section class="col col-6" style="padding-left: 1px;">
                                                 <label class="select">
-                                                    <select id="status" name="status" class="form-control" data-bind="value: listType, attr: { placeholder: $root.language.selectStatus[$root.currentLanguage()] }, attr: { dir: $root.language.dir[$root.currentLanguage()]}" required>
-                                                        <option data-bind="text: $root.language.selectStatus[$root.currentLanguage()]"></option>
+                                                    <select id="status" name="status" class="form-control" data-bind="value: listType, attr: { placeholder: $root.language.typeSelect[$root.currentLanguage()] }, attr: { dir: $root.language.dir[$root.currentLanguage()]}" required>
+                                                        <option data-bind="text: $root.language.typeSelect[$root.currentLanguage()]"></option>
                                                         <option value="classType" data-bind="text: 'classType'"></option>
                                                         <option value="position" data-bind="text: 'position'"></option>
                                                         <option value="medicenType" data-bind="text: 'medicenType'"></option>
@@ -95,7 +95,7 @@
                                                             <label class="label">Title</label>
                                                             <label class="input">
                                                                 <i class="icon-append fa fa-question-circle"></i>
-                                                                <input type="text" class="form-control" name="title" data-bind="value: title, attr: { placeholder: $root.language.titleEn[$root.currentLanguage()] }" required>
+                                                                <input type="text" class="form-control" name="title" data-bind="value: Title, attr: { placeholder: $root.language.titleEn[$root.currentLanguage()] }" required>
                                                                 <b class="tooltip tooltip-top-right">
                                                                     <i class="fa fa-warning txt-color-teal"></i>
                                                                     <span data-bind="text: $root.language.titleEnValid[$root.currentLanguage()]"></span>

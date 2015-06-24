@@ -43,6 +43,74 @@
         });
     };
 
+    var getDefaultlistById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetDefaultlistById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editDefaultlist = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditDefaultlist", documnetObservable);
+    };
+
+    var addDefaultlist = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddDefaultlist", documnetObservable);
+    };
+
+    var deleteDefaultlist = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteDefaultlistById", { id: id });
+    };
+
+
+    var getAgantarea = function (documnetObservable, agentId) {
+        return $.getJSON(config.remoteServerName + "/GetAgantarea", { agentId: agentId }).done(function (data) {
+            documnetObservable.data(data);
+        });
+    };
+
+    var getAgantareaById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetAgantareaById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editAgantarea = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditAgantarea", documnetObservable);
+    };
+
+    var addAgantarea = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddAgentAreas", documnetObservable);
+    };
+
+    var deleteAgantarea = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteAgantareaById", { id: id });
+    };
+
+
+    var getAgantdrugs = function (documnetObservable, agentId) {
+        $.getJSON(config.remoteServerName + "/GetAgantdrugs", { agentId: agentId }).done(function (data) {
+            documnetObservable.data(data);
+        });
+    };
+
+    var getAgantdrugsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetAgantdrugsById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editAgantdrugs = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditAgantdrugs", documnetObservable);
+    };
+
+    var addAgantdrugs = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddAgentDrugs", documnetObservable);
+    };
+
+    var deleteAgantdrugs = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteAgantdrugsById", { id: id });
+    };
+
     var login = function (userName, userPassword) {
         var user = {
             userName: userName,
@@ -67,8 +135,17 @@
         getAccountForedit: getAccountForedit,
         getGroup: getGroup,
         getAccountsDefaultListType: getAccountsDefaultListType,
-        getAccountsDefaultList: getAccountsDefaultList
-
+        getAccountsDefaultList: getAccountsDefaultList,
+        editDefaultlist: editDefaultlist,
+        addDefaultlist: addDefaultlist,
+        deleteDefaultlist: deleteDefaultlist,
+        getAgantarea: getAgantarea,
+        getAgantareaById: getAgantareaById,
+        editAgantarea: editAgantarea,
+        addAgantarea: addAgantarea,
+        deleteAgantarea: deleteAgantarea,
+        getAgantdrugs: getAgantdrugs,
+        addAgantdrugs: addAgantdrugs
     };
 
     return dataservice;

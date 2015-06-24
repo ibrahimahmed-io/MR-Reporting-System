@@ -1023,11 +1023,11 @@
 		"ar": "إضافة بند لأقسام العطاء"
 	},
 	"addAccountsDefaultList": {
-		"en": "Add Accounts Default List",
+		"en": "Add Default List",
 		"ar": "اضافة قائمة افتراضية"
 	},
 	"AccountsDefaultList": {
-		"en": "Accounts Default List",
+		"en": "Default List",
 		"ar": "بنود القائمة الافتراضيه"
 	},
 	"selectAccountsDefaultList": {

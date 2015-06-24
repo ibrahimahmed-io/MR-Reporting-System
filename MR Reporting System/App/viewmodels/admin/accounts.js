@@ -3,9 +3,53 @@
     var knockoutGrid = {};
 
     var gridOptions = ko.observable();
-
-    var pageNumber = ko.observable(0);
      
+    var accountId = ko.observable();
+
+    var dataSetArea = ko.observable({
+        AgentId: ko.observable(),
+        agentAreas: ko.observableArray()
+    });
+
+    var dataSetDrugs = ko.observable({
+        AgentId: ko.observable(),
+        agentDrugs: ko.observableArray()
+    });
+
+    var drugs = ko.observableArray([]);
+
+    var areas = ko.observableArray([]);
+
+    var addArea = function (obj, e) {
+        var id = ko.contextFor(e.target).$parent.entity.id;
+        accountId(id);
+        dataSetArea().AgentId(id);
+        $('#addArea').modal('show');
+    };
+
+    var addDrugs = function (obj, e) {
+        var id = ko.contextFor(e.target).$parent.entity.id;
+        accountId(id); 
+        dataSetDrugs().AgentId(id);
+        $('#addDrugs').modal('show');
+    };
+
+    function saveArea(obj, event) {
+        if (agentArea().lenth > 0) {
+            dataservice.AddAgentAreas(agentArea).success(function () {
+                $("#addArea").modal('hide');
+            });
+        }
+    };
+
+    function saveDrugs(obj, event) {
+        if (agentDrugs().lenth > 0) {
+            dataservice.addAgantdrugs(agentDrugs).success(function () {
+                $("#addDrugs").modal('hide');
+            });
+        }
+    };
+
     var account = ko.observable();
 
     var selectedRowId = ko.observable();
@@ -13,29 +57,29 @@
     var exportColumns = [];
 
     var exportToExcel = function () {
-        var exportData = $('#accounts').jqxGrid('getrows');
+        var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(ko.toJS(exportData), exportColumns, 'excel', 'Accounts');
+        config.exportJson(exportData, exportColumns, 'excel', 'Agents');
     };
 
     var exportToWord = function () {
-        var exportData = $('#accounts').jqxGrid('getrows');
+        var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(ko.toJS(exportData), exportColumns, 'word', 'Accounts');
+        config.exportJson(exportData, exportColumns, 'word', 'Agents');
     };
 
     var exportToPdf = function () {
-        var exportData = $('#accounts').jqxGrid('getrows');
+        var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(ko.toJS(exportData), exportColumns, 'pdf', 'Accounts');
+        config.exportJson(exportData, exportColumns, 'pdf', 'Agents');
     };
- 
+
     var changeStatus = ko.observable();
 
     var add = function (obj, e) {
         router.navigate("accountsAdd");
     };
- 
+
     var deleteAccount = function () {
         $.SmartMessageBox({
             title: "Caution hazardous operation!",
@@ -74,7 +118,7 @@
         $(".fixed-action-btn").tooltip({ container: 'body' });
 
     };
-     
+
     function activate() {
 
         knockoutGrid = new config.KoGridInstanceCreator();
@@ -90,28 +134,19 @@
 
 
         knockoutGrid.columnDefs([
-            knockoutGrid.createColumnDefinition('id', '', 85, '10%', undefined, undefined,
-                      '<div class="btn-group" role="group" style="margin-top: 15px;"><button type="button" data-bind="click: $parent.$userViewModel.goTaskAdmin" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Task Admin"><i class="fa fa-tasks"></i></button><button type="button" data-bind="click: $parent.$userViewModel.goEPS" class="btn btn-xs btn-default Eps actiontooltip" rel="tooltip" data-placement="top" title="EPS"><i class="ibrahimicon ibrahimicon-eps"></i></button><button type="button" data-bind="click: $parent.$userViewModel.goProjects" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Projects"><i class="fa fa-file-o"></i></button><button type="button" data-bind="click: $parent.$userViewModel.goUserCompany" class="btn btn-xs btn-default userCompany actiontooltip" rel="tooltip" data-placement="top" title="Companies"><i class="fa fa-building"></i></button></div>'),
-                  knockoutGrid.createColumnDefinition('userName', config.language.UserName[config.currentLanguage()], 65, '10%', 'string'),
+            knockoutGrid.createColumnDefinition('Id', '', 85, '10%', undefined, undefined,
+                      '<div class="btn-group" role="group" style="margin-top: 15px;"><button type="button" data-bind="click: $parent.$userViewModel.addArea" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Add Area"><i class="fa fa-tasks"></i><button type="button" data-bind="click: $parent.$userViewModel.addDrugs" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Add Drugs"><i class="fa fa-file-o"></i></button></div>'),
+                  knockoutGrid.createColumnDefinition('UserName', config.language.UserName[config.currentLanguage()], 65, '10%', 'string'),
                   knockoutGrid.createColumnDefinition('ContactName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('postionName', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('supervisorName', config.language.Supervisor[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('address', config.language.CompanyName[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('groupName', config.language.GroupName[config.currentLanguage()], 150, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('userType', config.language.userType[config.currentLanguage()], 150, '5%', 'string')
+                  knockoutGrid.createColumnDefinition('PositionName', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('SupervisorName', config.language.Supervisor[config.currentLanguage()], 150, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('Salary', config.language.salaryValue[config.currentLanguage()], 50, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('NoOfVisits', 'No Of Visits', 150, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('Address', config.language.Address[config.currentLanguage()], 150, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('GroupName', config.language.GroupName[config.currentLanguage()], 150, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('UserType', config.language.userType[config.currentLanguage()], 150, '5%', 'string')
         ]);
-
-        knockoutGrid.loadMoreData(function (obj, e) {
-            obj.isLoadingMoreData(true);
-             
-            dataservice.getAccounts().success(function (data) {
-                knockoutGrid.loadMoreRecords(data);
-                obj.isLoadingMoreData(false);
-            }).fail(function () {
-                obj.isLoadingMoreData(false);
-            });
-        });
-
+         
         knockoutGrid.gridSelectionChange(function (rowItem, event) {
             if (event.target.type && (event.target.type.toLowerCase() === 'checkbox')) {
                 if (rowItem.selected()) {
@@ -125,19 +160,21 @@
 
                 if (event.target.type) {
                     if (event.target.type !== 'button') {
-                        router.navigate("accountsEdit/" + rowItem.entity.id);
+                        router.navigate("accountsAdd/" + rowItem.entity.id);
                     }
                 } else if (event.target.parentElement.type) {
                     if (event.target.parentElement.type !== 'button') {
-                        router.navigate("accountsEdit/" + rowItem.entity.id);
+                        router.navigate("accountsAdd/" + rowItem.entity.id);
                     }
                 } else {
-                    router.navigate("accountsEdit/" + rowItem.entity.id);
+                    router.navigate("accountsAdd/" + rowItem.entity.id);
                 }
             }
         });
 
+
         gridOptions(knockoutGrid.getGridOptions()());
+
 
         dataservice.getAccounts().done(function (data) {
 
@@ -146,21 +183,27 @@
             $(".loading-data").addClass("hidden");
         });
     };
-     
+
     var vm = {
-        title: 'Accounts',
+        title: 'Agents',
+        saveDrugs: saveDrugs,
+        saveArea: saveArea,
         activate: activate,
-        gridOptions: gridOptions, 
+        gridOptions: gridOptions,
         compositionComplete: compositionComplete,
         language: config.language,
-        currentLanguage: config.currentLanguage,  
-        changeStatus: changeStatus, 
-        add: add,  
+        currentLanguage: config.currentLanguage,
+        changeStatus: changeStatus,
+        add: add,
         deleteAccount: deleteAccount,
         selectedRowId: selectedRowId,
         exportToExcel: exportToExcel,
         exportToWord: exportToWord,
-        exportToPdf: exportToPdf 
+        exportToPdf: exportToPdf,
+        dataSetDrugs: dataSetDrugs,
+        dataSetArea: dataSetArea,
+        drugs: drugs,
+        areas: areas
     };
 
     return vm;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace MR_Reporting_System_Model.DataTransferObjectModel
 {
 
@@ -32,6 +33,7 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             get;
             set;
         }
+        public List<int> agentDrugs { get; set; }
     }
 
 }
