@@ -16,33 +16,64 @@ namespace MR_Reporting_System.API
 {
 
     [RoutePrefix("api/MrReporting")]
-    public class ProcoorController : ApiController
+    public class MrReportingController : ApiController
     {
-
-        private readonly IGroupsRepository _group;
-        private readonly IAgentsRepository _agent;
         private readonly IGroupPermissionsRepository _permissionGroup;
-        private readonly IAreaRepository _Area;
+        private readonly IAreaRepository _area;
         private readonly IDefaultListRepository _defaultList;
+        private readonly IAgentAreaRepository _agentsArea;
+        private readonly IAgentDistributerRepository _agentsDistributer;
+        private readonly IAgentDrugsRepository _agentsDrugs;
+        private readonly IAgentHospitalRepository _agentsHospital;
+        private readonly IAgentPharmaciesRepository _agentsPharmacies;
+        private readonly IAgentsRepository _agents;
+        private readonly ICompaniesRepository _companies;
+        private readonly IDistributersRepository _distributers;
+        private readonly IDocotorsRepository _docotors;
+        private readonly IDrugsRepository _drugs;
+        private readonly IGroupsRepository _groups;
+        private readonly IHospitalsRepository _hospitals;
+        private readonly ILocationsRepository _locations;
+        private readonly IPharmaciesRepository _pharmacies;
+        private readonly IVisitsRepository _visits;
+
 
         private readonly string _language;
         private readonly int _accountId;
-        private int _accountOwnerId;
         private readonly string _userType;
         private readonly int _groupId;
 
-        public ProcoorController(
-            IGroupsRepository groups,
-            IGroupPermissionsRepository permissionGroup,
-            IAreaRepository Area,
-            IAgentsRepository agent,
-            IDefaultListRepository defaultList)
+        public MrReportingController(
+                  IAreaRepository area, IDistributersRepository distributers, IDrugsRepository drugs,
+                  IDocotorsRepository docotors,
+                  IHospitalsRepository hospitals, ILocationsRepository locations,
+                  IPharmaciesRepository pharmacies, IVisitsRepository visits,
+                  IAgentDrugsRepository agentDrug, IAgentHospitalRepository agentHospital,
+                  IAgentPharmaciesRepository agentPharmacies, IAgentsRepository agents,
+                  ICompaniesRepository companies,
+                  IDefaultListRepository defaultList,
+                  IAgentAreaRepository agentArea, IAgentDistributerRepository agentDistributer,
+                  IGroupPermissionsRepository groupPermissions, IGroupsRepository groups)
         {
-            _group = groups;
-            _agent = agent;
-            _permissionGroup = permissionGroup;
-            _Area = Area;
+            _groups = groups;
+            _agents = agents;
+            _permissionGroup = groupPermissions;
+            _area = area;
+            _agentsArea = agentArea;
+            _agentsDistributer = agentDistributer;
+            _agentsDrugs = agentDrug;
+            _agentsHospital = agentHospital;
+            _agentsPharmacies = agentPharmacies;
+            _agents = agents; 
+            _companies = companies;
             _defaultList = defaultList;
+            _distributers = distributers;
+            _docotors = docotors;
+            _drugs = drugs;
+            _hospitals = hospitals;
+            _locations = locations;
+            _pharmacies = pharmacies;
+            _visits = visits;
 
             var langHeader = HttpContext.Current.Request.Headers.GetValues("Lang");
 
@@ -62,16 +93,16 @@ namespace MR_Reporting_System.API
                     _accountId = TokenManager.GetUserIdentity(userToken);
                     _userType = TokenManager.GetUserType(userToken);
 
-                    if (_userType.Equals("user"))
+                    if (_userType.Equals("User"))
                     {
 
                         _groupId = TokenManager.GetGroupId(userToken);
-                        _accountOwnerId = TokenManager.GetOwnerIdentity(userToken);
+                        TokenManager.GetOwnerIdentity(userToken);
 
                     }
-                    else if (_userType.Equals("company"))
+                    else if (_userType.Equals("Company"))
                     {
-                        _accountOwnerId = TokenManager.GetOwnerIdentity(userToken);
+                        TokenManager.GetOwnerIdentity(userToken);
 
                     }
                 }
@@ -80,25 +111,20 @@ namespace MR_Reporting_System.API
 
         [HttpPost]
         [Route("Login")]
-        public IHttpActionResult Login([FromBody] Login _user)
+        public IHttpActionResult Login([FromBody] Login user)
         {
-            if (_user == null);
-
             const string errorMessage = "Invalid User Name / PassWord";
 
             var response = new HttpResponseMessage();
 
-            Agent user = _agent.FindBy(x => x.UserName.Equals(_user.UserName)).SingleOrDefault();
+            Agent agent = _agents.FindBy(x => x.UserName.Equals(user.UserName)).SingleOrDefault();
 
-            if (user != null)
+            if (agent != null)
             {
-                if (PasswordHash.ValidatePassword(_user.UserPassword, user.PassWord))
+                if (user != null && PasswordHash.ValidatePassword(user.UserPassword, agent.PassWord))
                 {
-                    if (user.UserType.Equals("company"))
+                    if (agent.UserType.Equals("Company"))
                     {
-
-                        //get info for logged user
-
                         string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
 
                         var currentTime =
@@ -107,17 +133,18 @@ namespace MR_Reporting_System.API
                         var payload = new JwtPayload
                         {
                             iss = SecurityConstants.TokenIssuer,
-                            sub = user.id.ToString(),
+                            sub = agent.id.ToString(),
 
                             iat = currentTime,
                             exp = currentTime + 604800,
-                            uty = user.UserType,
-                            gri = user.GroupId.ToString(),
-                            acn = user.UserName
+                            uty = agent.UserType,
+                            gri = agent.GroupId.ToString(),
+                            acn = agent.UserName
 
                         };
 
-                        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + user.id));
+                        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + agent.id));
+
                         if (!dir.Exists)
                         {
                             dir.Create();
@@ -130,7 +157,7 @@ namespace MR_Reporting_System.API
                         return ResponseMessage(response);
 
                     }
-                    if (user.UserType.Equals("user"))
+                    if (agent.UserType.Equals("User"))
                     {
 
                         string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
@@ -141,20 +168,19 @@ namespace MR_Reporting_System.API
                         var payload = new JwtPayload
                         {
                             iss = SecurityConstants.TokenIssuer,
-                            sub = user.id.ToString(),
+                            sub = agent.id.ToString(),
                             iat = currentTime,
                             exp = currentTime + 604800,
-                            uty = user.UserType,
-                            gri = user.GroupId.ToString()
+                            uty = agent.UserType,
+                            gri = agent.GroupId.ToString()
 
                         };
 
-                        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + user.id));
+                        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + agent.id));
                         if (!dir.Exists)
                         {
                             dir.Create();
                         }
-
 
                         string jwt = TokenManager.EncodeToken(payload, secret);
 
@@ -164,10 +190,8 @@ namespace MR_Reporting_System.API
                         return ResponseMessage(response);
                     }
                 }
-                else if (user.UserType.Equals("admin"))
+                else if (agent.UserType.Equals("admin"))
                 {
-
-
                     string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
 
                     var currentTime =
@@ -176,28 +200,24 @@ namespace MR_Reporting_System.API
                     var payload = new JwtPayload
                     {
                         iss = SecurityConstants.TokenIssuer,
-                        sub = user.id.ToString(),
+                        sub = agent.id.ToString(),
                         iat = currentTime,
                         exp = currentTime + 604800,
-                        uty = user.UserType,
-                        gri = user.GroupId.ToString()
+                        uty = agent.UserType,
+                        gri = agent.GroupId.ToString()
 
                     };
 
-                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + user.id));
+                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + agent.id));
                     if (!dir.Exists)
                     {
                         dir.Create();
                     }
 
-                    //send requests from time sheet to pproval requests if logged user is Supervisor
-                    // _projectExpenses.AutoSendRequestsBySupervisorId(_accountId, _accountOwnerId);
-
                     string jwt = TokenManager.EncodeToken(payload, secret);
 
                     response.StatusCode = HttpStatusCode.OK;
                     response.Headers.Add("Authorization", jwt);
-                    //create folder auto for user if not have folder
 
                     return ResponseMessage(response);
                 }
@@ -220,12 +240,12 @@ namespace MR_Reporting_System.API
 
             var isCompany = false;
 
-            if (_userType.Equals("user"))
+            if (_userType.Equals("User"))
             {
                 permissions = _permissionGroup.PermissionWithNumbersByGroupIdArray(_groupId);
 
             }
-            else if (_userType.Equals("company"))
+            else if (_userType.Equals("Company"))
             {
 
                 isCompany = true;
@@ -239,11 +259,9 @@ namespace MR_Reporting_System.API
             var primeData = new
             {
                 Permissions = permissions, isCompany
-
             };
+
             return Ok(primeData);
-
-
         }
 
         [AuthorizeUser]
@@ -252,6 +270,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetGroupsPermissions(int groupId, [FromUri] List<int> documentPermissions)
         {
             List<DtoGroupPermissions> result = _permissionGroup.SelectAll(groupId, _language);//.Where(x => documentPermissions.Contains(x.PermissionCode.Value));
+            
             return Ok(result);
         }
 
@@ -260,7 +279,8 @@ namespace MR_Reporting_System.API
         [Route("GetGroup")]
         public IHttpActionResult GetGroup()
         {
-            List<DtoGroups> result = _group.SelectAll(_language);//.Where(x => documentPermissions.Contains(x.PermissionCode.Value));
+            List<DtoGroups> result = _groups.SelectAll(_language);//.Where(x => documentPermissions.Contains(x.PermissionCode.Value));
+            
             return Ok(result);
         }
 
@@ -284,8 +304,6 @@ namespace MR_Reporting_System.API
 
             _permissionGroup.Save();
 
-
-
             return Ok();
         }
 
@@ -297,12 +315,14 @@ namespace MR_Reporting_System.API
             foreach (var permission in documentPermissions)
             {
                 var permission1 = permission;
+
                 var permissionEntity =
                     _permissionGroup.FindBy(x => x.GroupId == permission1.GroupId.Value && x.PermissionCode == permission1.PermissionCode.Value).SingleOrDefault();
 
                 if (permissionEntity == null) continue;
 
                 permissionEntity.Value = permission.Value;
+
                 _permissionGroup.Edit(permissionEntity);
             }
 
@@ -325,15 +345,12 @@ namespace MR_Reporting_System.API
                 GroupId = newaccount.GroupId,
                 Salary = newaccount.Salary,
                 NoOfVisits = newaccount.NoOfVisits,
-                UserType = "user"
+                UserType = "User"
             };
 
-            _agent.Add(accounts);
-            _agent.Save();
-
-            _agent.Reload(accounts);
-
-
+            _agents.Add(accounts);
+            _agents.Save();
+            _agents.Reload(accounts);
 
             return Ok(accounts);
         }
@@ -343,7 +360,7 @@ namespace MR_Reporting_System.API
         [Route("Editaccount")]
         public IHttpActionResult Editaccount(DtoAgents editaccount)
         {
-            var accounts = _agent.FindBy(x => x.id == editaccount.Id).SingleOrDefault();
+            var accounts = _agents.FindBy(x => x.id == editaccount.Id).SingleOrDefault();
 
             if (accounts != null)
             {
@@ -353,10 +370,10 @@ namespace MR_Reporting_System.API
                 accounts.Salary = editaccount.Salary;
                 accounts.NoOfVisits = editaccount.NoOfVisits;
 
-                _agent.Edit(accounts);
+                _agents.Edit(accounts);
             }
 
-            _agent.Save();
+            _agents.Save();
 
 
             return Ok(editaccount);
@@ -367,7 +384,8 @@ namespace MR_Reporting_System.API
         [Route("GetAccounts")]
         public IHttpActionResult GetAccounts()
         {
-            List<DtoAgents> result = _agent.SelectAll(_language).ToList();
+            List<DtoAgents> result = _agents.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -376,7 +394,8 @@ namespace MR_Reporting_System.API
         [Route("GetAccountById")]
         public IHttpActionResult GetAccountById(int id)
         {
-            DtoAgents result = _agent.SelectById(id, "en");
+            DtoAgents result = _agents.SelectById(id, "en");
+
             return Ok(result);
         }
 
@@ -385,7 +404,7 @@ namespace MR_Reporting_System.API
         [Route("GetAccountInfo")]
         public IHttpActionResult GetAccountInfo()
         {
-            DtoAgents result = _agent.SelectById(_accountId, _language);
+            DtoAgents result = _agents.SelectById(_accountId, _language);
 
             return Ok(result);
         }
@@ -396,6 +415,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetAccountsDefaultListTypes(int pageNumber, int pageSize)
         {
             IEnumerable<DtoDefaultList> result = _defaultList.SelectTypes(_language);
+
             return Ok(result);
         }
 
@@ -406,6 +426,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetAccountsDefaultListTypes(string listType, int action)
         {
             IEnumerable<DtoDefaultList> result = _defaultList.SelectTypesNotEqualAction(listType, action, _language);
+
             return Ok(result);
         }
 
@@ -438,6 +459,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetAccountsDefaultList(string listType, int pageNumber, int pageSize)
         {
             List<DtoDefaultList> result = _defaultList.SelectByListType(listType, 2, _language);
+
             return Ok(result);
         }
 
@@ -447,6 +469,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetAccountsDefaultListWithAction(string listType)
         {
             List<DtoDefaultList> result = _defaultList.SelectByListTypeWithAction(listType, _language).ToList();
+
             return Ok(result);
         }
 
@@ -457,8 +480,10 @@ namespace MR_Reporting_System.API
         public IHttpActionResult AccountsDefaultListDelete(int id)
         {
             DefaultList accountsDefaultList = _defaultList.SelectById(id);
+
             _defaultList.Delete(accountsDefaultList);
             _defaultList.Save();
+
             return Ok();
         }
 
@@ -473,6 +498,7 @@ namespace MR_Reporting_System.API
                 Title = accountDefaultList.Title,
                 Type = accountDefaultList.Type
             };
+
             _defaultList.Edit(accountDefaultListEntity);
             _defaultList.Save();
 
@@ -485,6 +511,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetAccountsDefaultListForEdit(int id)
         {
             DtoDefaultList result = _defaultList.SelectForEdit(id);
+
             return Ok(result);
         }
 
@@ -493,8 +520,8 @@ namespace MR_Reporting_System.API
         [Route("GetAgentArea")]
         public IHttpActionResult GetAgentArea()
         {
-            var result = new List<DtoAgentArea>();
-            result = _AgentsArea.selectAll(_language).ToList();
+            var result = _agentsArea.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -503,7 +530,7 @@ namespace MR_Reporting_System.API
         [Route("GetAgentAreaById")]
         public IHttpActionResult GetAgentAreaById(int id)
         {
-            var result = _AgentsArea.selectById(id, _language);
+            var result = _agentsArea.SelectById(id, _language);
             return Ok(result);
         }
 
@@ -512,11 +539,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteAgentAreaById")]
         public IHttpActionResult DeleteAgentAreaById(int id)
         {
-            var result = _AgentsArea.FindBy(x => x.id == id).SingleOrDefault();
+            var result = _agentsArea.FindBy(x => x.Id == id).SingleOrDefault();
             // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _AgentsArea.Edit(result);
-            _AgentsArea.Save();
+            // result.DeletedBy = _accountId;
+            _agentsArea.Edit(result);
+            _agentsArea.Save();
             return Ok();
         }
 
@@ -525,63 +552,69 @@ namespace MR_Reporting_System.API
         [Route("AddAgentAreas")]
         public IHttpActionResult AddAgentArea(DtoAgentArea dtoDocument)
         {
-            var DocumentNew = new AgentArea
+            var documentNew = new AgentArea
             {
                 AgentId = dtoDocument.AgentId,
                 AreaId = dtoDocument.AreaId
 
             };
-            _AgentsArea.Add(DocumentNew);
-            _AgentsArea.Save(); _AgentsArea.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+            
+            _agentsArea.Add(documentNew);
+            _agentsArea.Save(); 
+            _agentsArea.Reload(documentNew);
+
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetAgentdistributer")]
-        public IHttpActionResult GetAgentdistributer()
+        [Route("GetAgentDistributer")]
+        public IHttpActionResult GetAgentDistributer()
         {
-            var result = new List<DtoAgentdistributer>();
-            result = _Agentsdistributer.selectAll(_language).ToList();
+            var result = _agentsDistributer.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetAgentdistributerById")]
-        public IHttpActionResult GetAgentdistributerById(int id)
+        [Route("GetAgentDistributerById")]
+        public IHttpActionResult GetAgentDistributerById(int id)
         {
-            var result = _Agentsdistributer.selectById(id, _language);
+            var result = _agentsDistributer.SelectById(id, _language);
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("DeleteAgentdistributerById")]
-        public IHttpActionResult DeleteAgentdistributerById(int id)
+        [Route("DeleteAgentDistributerById")]
+        public IHttpActionResult DeleteAgentDistributerById(int id)
         {
-            var result = _Agentsdistributer.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Agentsdistributer.Edit(result);
-            _Agentsdistributer.Save();
+            var result = _agentsDistributer.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _agentsDistributer.Edit(result);
+            _agentsDistributer.Save();
+            
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddAgentdistributers")]
-        public IHttpActionResult AddAgentdistributer(DtoAgentdistributer dtoDocument)
+        [Route("AddAgentDistributers")]
+        public IHttpActionResult AddAgentDistributer(DtoAgentDistributer dtoDocument)
         {
-            var DocumentNew = new Agentdistributer
+            var documentNew = new AgentDistributer
             {
                 AgentId = dtoDocument.AgentId,
-                distributerId = dtoDocument.distributerId,
+                DistributerId = dtoDocument.DistributerId,
 
             };
-            _Agentsdistributer.Add(DocumentNew);
-            _Agentsdistributer.Save(); _Agentsdistributer.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+            
+            _agentsDistributer.Add(documentNew);
+            _agentsDistributer.Save(); _agentsDistributer.Reload(documentNew);
+
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -589,8 +622,8 @@ namespace MR_Reporting_System.API
         [Route("GetAgentDrug")]
         public IHttpActionResult GetAgentDrug()
         {
-            var result = new List<DtoAgentdrugs>();
-            result = _Agentsdrugs.selectAll(_language).ToList();
+            var result = _agentsDrugs.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -599,7 +632,8 @@ namespace MR_Reporting_System.API
         [Route("GetAgentDrugById")]
         public IHttpActionResult GetAgentDrugById(int id)
         {
-            var result = _Agentsdrugs.selectById(id, _language);
+            var result = _agentsDrugs.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -608,126 +642,133 @@ namespace MR_Reporting_System.API
         [Route("DeleteAgentDrugById")]
         public IHttpActionResult DeleteAgentDrugById(int id)
         {
-            var result = _Agentsdrugs.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Agentsdrugs.Edit(result);
-            _Agentsdrugs.Save();
+            var result = _agentsDrugs.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _agentsDrugs.Edit(result);
+            _agentsDrugs.Save();
+            
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
         [Route("AddAgentDrugs")]
-        public IHttpActionResult AddAgentDrug(DtoAgentdrugs dtoDocument)
+        public IHttpActionResult AddAgentDrug(DtoAgentDrugs dtoDocument)
         {
-            var DocumentNew = new AgentDrug
+            var documentNew = new AgentDrug
             {
                 AgentId = dtoDocument.AgentId,
-                drugsId = dtoDocument.drugsId,
+                DrugsId = dtoDocument.DrugsId,
 
             };
-            _Agentsdrugs.Add(DocumentNew);
-            _Agentsdrugs.Save(); _Agentsdrugs.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _agentsDrugs.Add(documentNew);
+            _agentsDrugs.Save(); 
+            
+            _agentsDrugs.Reload(documentNew);
+
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetAgenthospital")]
-        public IHttpActionResult GetAgenthospital()
+        [Route("GetAgentHospital")]
+        public IHttpActionResult GetAgentHospital()
         {
-            var result = new List<DtoAgenthospital>();
-            result = _Agentshospital.selectAll(_language).ToList();
+            var result = _agentsHospital.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetAgenthospitalById")]
-        public IHttpActionResult GetAgenthospitalById(int id)
+        [Route("GetAgentHospitalById")]
+        public IHttpActionResult GetAgentHospitalById(int id)
         {
-            var result = _Agentshospital.selectById(id, _language);
+            var result = _agentsHospital.SelectById(id, _language);
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("DeleteAgenthospitalById")]
-        public IHttpActionResult DeleteAgenthospitalById(int id)
+        [Route("DeleteAgentHospitalById")]
+        public IHttpActionResult DeleteAgentHospitalById(int id)
         {
-            var result = _Agentshospital.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            //result.deletedBy = _accountId;
-            _Agentshospital.Edit(result);
-            _Agentshospital.Save();
+            var result = _agentsHospital.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _agentsHospital.Edit(result);
+            _agentsHospital.Save();
+
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddAgenthospitals")]
-        public IHttpActionResult AddAgenthospital(DtoAgenthospital dtoDocument)
+        [Route("AddAgentHospitals")]
+        public IHttpActionResult AddAgentHospital(DtoAgentHospital dtoDocument)
         {
-            var DocumentNew = new AgentHospital
+            var documentNew = new AgentHospital
             {
                 AgentId = dtoDocument.AgentId,
-                hospitalId = dtoDocument.hospitalId
-
+                HospitalId = dtoDocument.HospitalId
             };
-            _Agentshospital.Add(DocumentNew);
-            _Agentshospital.Save(); _Agentshospital.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _agentsHospital.Add(documentNew);
+            _agentsHospital.Save(); 
+            _agentsHospital.Reload(documentNew);
+
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetAgentpharmacies")]
-        public IHttpActionResult GetAgentpharmacies()
+        [Route("GetAgentPharmacies")]
+        public IHttpActionResult GetAgentPharmacies()
         {
-            var result = new List<DtoAgentpharmacies>();
-            result = _Agentspharmacies.selectAll(_language).ToList();
+            var result = _agentsPharmacies.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetAgentpharmaciesById")]
-        public IHttpActionResult GetAgentpharmaciesById(int id)
+        [Route("GetAgentPharmaciesById")]
+        public IHttpActionResult GetAgentPharmaciesById(int id)
         {
-            var result = _Agentspharmacies.selectById(id, _language);
+            var result = _agentsPharmacies.SelectById(id, _language);
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("DeleteAgentpharmaciesById")]
-        public IHttpActionResult DeleteAgentpharmaciesById(int id)
+        [Route("DeleteAgentPharmaciesById")]
+        public IHttpActionResult DeleteAgentPharmaciesById(int id)
         {
-            var result = _Agentspharmacies.FindBy(x => x.id == id).SingleOrDefault();
+            var result = _agentsPharmacies.FindBy(x => x.Id == id).SingleOrDefault();
             // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Agentspharmacies.Edit(result);
-            _Agentspharmacies.Save();
+            // result.DeletedBy = _accountId;
+            _agentsPharmacies.Edit(result);
+            _agentsPharmacies.Save();
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddAgentpharmaciess")]
-        public IHttpActionResult AddAgentpharmacies(DtoAgentpharmacies dtoDocument)
+        [Route("AddAgentPharmaciess")]
+        public IHttpActionResult AddAgentPharmacies(DtoAgentPharmacies dtoDocument)
         {
-            var DocumentNew = new AgentPharmacy
+            var documentNew = new AgentPharmacy
             {
                 AgentId = dtoDocument.AgentId,
-                pharmacyId = dtoDocument.pharmacyId
-
+                PharmacyId = dtoDocument.PharmacyId
             };
-            _Agentspharmacies.Add(DocumentNew);
-            _Agentspharmacies.Save();
-            _Agentspharmacies.Reload(DocumentNew);
-            int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _agentsPharmacies.Add(documentNew);
+            _agentsPharmacies.Save();
+            _agentsPharmacies.Reload(documentNew);
+
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -735,8 +776,8 @@ namespace MR_Reporting_System.API
         [Route("GetAgents")]
         public IHttpActionResult GetAgents()
         {
-            var result = new List<DtoAgents>();
-            result = _Agents.selectAll(_language).ToList();
+            var result = _agents.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -745,7 +786,8 @@ namespace MR_Reporting_System.API
         [Route("GetAgentsById")]
         public IHttpActionResult GetAgentsById(int id)
         {
-            var result = _Agents.selectById(id, _language);
+            var result = _agents.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -754,11 +796,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteAgentsById")]
         public IHttpActionResult DeleteAgentsById(int id)
         {
-            var result = _Agents.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            //result.deletedBy = _accountId;
-            _Agents.Edit(result);
-            _Agents.Save();
+            var result = _agents.FindBy(x => x.id == id).SingleOrDefault();
+            
+            _agents.Edit(result);
+            _agents.Save();
+
             return Ok();
         }
 
@@ -767,27 +809,30 @@ namespace MR_Reporting_System.API
         [Route("AddAgentss")]
         public IHttpActionResult AddAgents(DtoAgents dtoDocument)
         {
-            var DocumentNew = new Agent
+            var documentNew = new Agent
             {
-                userName = dtoDocument.userName,
-                passWord = PasswordHash.CreateHash(dtoDocument.passWord),
+                UserName = dtoDocument.UserName,
+                PassWord = PasswordHash.CreateHash(dtoDocument.PassWord),
                 ContactName = dtoDocument.ContactName,
-                postionId = dtoDocument.postionId,
+                PostionId = dtoDocument.PositionId,
                 AreaId = dtoDocument.AreaId,
-                address = dtoDocument.address,
-                phone = dtoDocument.phone,
-                email = dtoDocument.email,
-                groupId = dtoDocument.groupId,
-                salary = dtoDocument.salary,
-                noOfVisits = dtoDocument.noOfVisits,
-                supervisorId = dtoDocument.supervisorId,
+                Address = dtoDocument.Address,
+                Phone = dtoDocument.Phone,
+                Email = dtoDocument.Email,
+                GroupId = dtoDocument.GroupId,
+                Salary = dtoDocument.Salary,
+                NoOfVisits = dtoDocument.NoOfVisits,
+                SupervisorId = dtoDocument.SupervisorId,
                 Code = dtoDocument.Code,
-                userType = dtoDocument.userType
+                UserType = dtoDocument.UserType
 
             };
-            _Agents.Add(DocumentNew);
-            _Agents.Save(); _Agents.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _agents.Add(documentNew);
+            _agents.Save(); 
+            _agents.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -795,8 +840,8 @@ namespace MR_Reporting_System.API
         [Route("GetArea")]
         public IHttpActionResult GetArea()
         {
-            var result = new List<DtoArea>();
-            result = _Area.selectAll(_language).ToList();
+            var result = _area.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -805,7 +850,8 @@ namespace MR_Reporting_System.API
         [Route("GetAreaById")]
         public IHttpActionResult GetAreaById(int id)
         {
-            var result = _Area.selectById(id, _language);
+            var result = _area.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -814,11 +860,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteAreaById")]
         public IHttpActionResult DeleteAreaById(int id)
         {
-            var result = _Area.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Area.Edit(result);
-            _Area.Save();
+            var result = _area.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _area.Edit(result);
+            _area.Save();
+
             return Ok();
         }
 
@@ -827,15 +873,18 @@ namespace MR_Reporting_System.API
         [Route("AddAreas")]
         public IHttpActionResult AddArea(DtoArea dtoDocument)
         {
-            var DocumentNew = new Area
+            var documentNew = new Area
             {
-                locationId = dtoDocument.locationId,
-                title = dtoDocument.title
+                LocationId = dtoDocument.LocationId,
+                Title = dtoDocument.Title
 
             };
-            _Area.Add(DocumentNew);
-            _Area.Save(); _Area.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _area.Add(documentNew);
+            _area.Save(); 
+            _area.Reload(documentNew); 
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -843,8 +892,8 @@ namespace MR_Reporting_System.API
         [Route("GetCompanies")]
         public IHttpActionResult GetCompanies()
         {
-            var result = new List<DtoCompanies>();
-            result = _Companies.selectAll(_language).ToList();
+            var result = _companies.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -853,7 +902,8 @@ namespace MR_Reporting_System.API
         [Route("GetCompaniesById")]
         public IHttpActionResult GetCompaniesById(int id)
         {
-            var result = _Companies.selectById(id, _language);
+            var result = _companies.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -862,11 +912,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteCompaniesById")]
         public IHttpActionResult DeleteCompaniesById(int id)
         {
-            var result = _Companies.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Companies.Edit(result);
-            _Companies.Save();
+            var result = _companies.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _companies.Edit(result);
+            _companies.Save();
+
             return Ok();
         }
 
@@ -875,67 +925,72 @@ namespace MR_Reporting_System.API
         [Route("AddCompaniess")]
         public IHttpActionResult AddCompanies(DtoCompanies dtoDocument)
         {
-            var DocumentNew = new company
+            var documentNew = new Company
             {
-                name = dtoDocument.name,
-                description = dtoDocument.description,
-                phone = dtoDocument.phone,
-                email = dtoDocument.email,
-                notes = dtoDocument.notes
-
+                Name = dtoDocument.Name,
+                Description = dtoDocument.Description,
+                Phone = dtoDocument.Phone,
+                Email = dtoDocument.Email,
+                Notes = dtoDocument.Notes
             };
-            _Companies.Add(DocumentNew);
-            _Companies.Save(); _Companies.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _companies.Add(documentNew);
+            _companies.Save();
+            _companies.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetDefaultlist")]
-        public IHttpActionResult GetDefaultlist()
+        [Route("GetDefaultList")]
+        public IHttpActionResult GetDefaultList()
         {
-            var result = new List<DtoDefaultlist>();
-            result = _Defaultlist.selectAll(_language).ToList();
+            var result = _defaultList.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetDefaultlistById")]
-        public IHttpActionResult GetDefaultlistById(int id)
+        [Route("GetDefaultListById")]
+        public IHttpActionResult GetDefaultListById(int id)
         {
-            var result = _Defaultlist.selectById(id, _language);
+            var result = _defaultList.SelectById(id, _language);
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("DeleteDefaultlistById")]
-        public IHttpActionResult DeleteDefaultlistById(int id)
+        [Route("DeleteDefaultListById")]
+        public IHttpActionResult DeleteDefaultListById(int id)
         {
-            var result = _Defaultlist.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Defaultlist.Edit(result);
-            _Defaultlist.Save();
+            var result = _defaultList.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _defaultList.Edit(result);
+            _defaultList.Save();
+            
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddDefaultlists")]
-        public IHttpActionResult AddDefaultlist(DtoDefaultlist dtoDocument)
+        [Route("AddDefaultLists")]
+        public IHttpActionResult AddDefaultList(DtoDefaultList dtoDocument)
         {
-            var DocumentNew = new defaultList
+            var documentNew = new DefaultList
             {
-                title = dtoDocument.title,
-                type = dtoDocument.type,
-                action = dtoDocument.action,
-
+                Title = dtoDocument.Title,
+                Type = dtoDocument.Type,
+                Action = dtoDocument.Action
             };
-            _Defaultlist.Add(DocumentNew);
-            _Defaultlist.Save(); _Defaultlist.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _defaultList.Add(documentNew);
+            _defaultList.Save(); 
+            _defaultList.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -943,8 +998,8 @@ namespace MR_Reporting_System.API
         [Route("GetDistributers")]
         public IHttpActionResult GetDistributers()
         {
-            var result = new List<DtoDistributers>();
-            result = _Distributers.selectAll(_language).ToList();
+            var result = _distributers.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -953,7 +1008,8 @@ namespace MR_Reporting_System.API
         [Route("GetDistributersById")]
         public IHttpActionResult GetDistributersById(int id)
         {
-            var result = _Distributers.selectById(id, _language);
+            var result = _distributers.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -962,11 +1018,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteDistributersById")]
         public IHttpActionResult DeleteDistributersById(int id)
         {
-            var result = _Distributers.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Distributers.Edit(result);
-            _Distributers.Save();
+            var result = _distributers.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _distributers.Edit(result);
+            _distributers.Save();
+            
             return Ok();
         }
 
@@ -975,19 +1031,22 @@ namespace MR_Reporting_System.API
         [Route("AddDistributerss")]
         public IHttpActionResult AddDistributers(DtoDistributers dtoDocument)
         {
-            var DocumentNew = new distributer
+            var documentNew = new Distributer
             {
-                name = dtoDocument.name,
+                Name = dtoDocument.Name,
                 AreaId = dtoDocument.AreaId,
-                address = dtoDocument.address,
-                phone = dtoDocument.phone,
-                code = dtoDocument.code,
-                noOfVisits = dtoDocument.noOfVisits
+                Address = dtoDocument.Address,
+                Phone = dtoDocument.Phone,
+                Code = dtoDocument.Code,
+                NoOfVisits = dtoDocument.NoOfVisits
 
             };
-            _Distributers.Add(DocumentNew);
-            _Distributers.Save(); _Distributers.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _distributers.Add(documentNew);
+            _distributers.Save(); 
+            _distributers.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -995,8 +1054,8 @@ namespace MR_Reporting_System.API
         [Route("GetDocotors")]
         public IHttpActionResult GetDocotors()
         {
-            var result = new List<DtoDocotors>();
-            result = _Docotors.selectAll(_language).ToList();
+            var result = _docotors.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1005,7 +1064,8 @@ namespace MR_Reporting_System.API
         [Route("GetDocotorsById")]
         public IHttpActionResult GetDocotorsById(int id)
         {
-            var result = _Docotors.selectById(id, _language);
+            var result = _docotors.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1014,11 +1074,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteDocotorsById")]
         public IHttpActionResult DeleteDocotorsById(int id)
         {
-            var result = _Docotors.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Docotors.Edit(result);
-            _Docotors.Save();
+            var result = _docotors.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _docotors.Edit(result);
+            _docotors.Save();
+            
             return Ok();
         }
 
@@ -1027,24 +1087,26 @@ namespace MR_Reporting_System.API
         [Route("AddDocotorss")]
         public IHttpActionResult AddDocotors(DtoDocotors dtoDocument)
         {
-            var DocumentNew = new docotor
+            var documentNew = new Docotor
             {
-                name = dtoDocument.name,
-                specializeId = dtoDocument.specializeId,
-                isMorning = dtoDocument.isMorning,
-                address = dtoDocument.address,
+                Name = dtoDocument.Name,
+                SpecializeId = dtoDocument.SpecializeId,
+                IsMorning = dtoDocument.IsMorning,
+                Address = dtoDocument.Address,
                 AreaId = dtoDocument.AreaId,
-                classTypeId = dtoDocument.classTypeId,
-                noOfVisits = dtoDocument.noOfVisits,
-                phone = dtoDocument.phone,
-                telephone = dtoDocument.telephone,
-                email = dtoDocument.email,
-                code = dtoDocument.code
-
+                ClassTypeId = dtoDocument.ClassTypeId,
+                NoOfVisits = dtoDocument.NoOfVisits,
+                Phone = dtoDocument.Phone,
+                Telephone = dtoDocument.Telephone,
+                Email = dtoDocument.Email,
+                Code = dtoDocument.Code
             };
-            _Docotors.Add(DocumentNew);
-            _Docotors.Save(); _Docotors.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _docotors.Add(documentNew);
+            _docotors.Save(); 
+            _docotors.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -1052,8 +1114,8 @@ namespace MR_Reporting_System.API
         [Route("GetDrugs")]
         public IHttpActionResult GetDrugs()
         {
-            var result = new List<DtoDrugs>();
-            result = _Drugs.selectAll(_language).ToList();
+            var result = _drugs.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1062,7 +1124,8 @@ namespace MR_Reporting_System.API
         [Route("GetDrugsById")]
         public IHttpActionResult GetDrugsById(int id)
         {
-            var result = _Drugs.selectById(id, _language);
+            var result = _drugs.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1071,82 +1134,89 @@ namespace MR_Reporting_System.API
         [Route("DeleteDrugsById")]
         public IHttpActionResult DeleteDrugsById(int id)
         {
-            var result = _Drugs.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Drugs.Edit(result);
-            _Drugs.Save();
+            var result = _drugs.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _drugs.Edit(result);
+            _drugs.Save();
+
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddDrugss")]
+        [Route("AddDrugs")]
         public IHttpActionResult AddDrugs(DtoDrugs dtoDocument)
         {
-            var DocumentNew = new drug
+            var documentNew = new Drug
             {
-                name = dtoDocument.name,
-                description = dtoDocument.description,
-                code = dtoDocument.code,
-                price = dtoDocument.price,
-                sectionId = dtoDocument.sectionId,
-                notes = dtoDocument.notes,
-                companyId = dtoDocument.companyId
+                Name = dtoDocument.Name,
+                Description = dtoDocument.Description,
+                Code = dtoDocument.Code,
+                Price = dtoDocument.Price,
+                SectionId = dtoDocument.SectionId,
+                Notes = dtoDocument.Notes,
+                CompanyId = dtoDocument.CompanyId
 
             };
-            _Drugs.Add(DocumentNew);
-            _Drugs.Save(); _Drugs.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _drugs.Add(documentNew);
+            _drugs.Save(); 
+            _drugs.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetGrouppermissions")]
-        public IHttpActionResult GetGrouppermissions(int groupId)
+        [Route("GetGroupPermissions")]
+        public IHttpActionResult GetGroupPermissions(int groupId)
         {
-            var result = new List<DtoGrouppermissions>();
-            result = _permissionGroup.selectAll(groupId, _language).ToList();
+            var result = _permissionGroup.SelectAll(groupId, _language).ToList();
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("GetGrouppermissionsById")]
-        public IHttpActionResult GetGrouppermissionsById(int id)
+        [Route("GetGroupPermissionsById")]
+        public IHttpActionResult GetGroupPermissionsById(int id)
         {
-            var result = _permissionGroup.selectById(id, _language);
+            var result = _permissionGroup.SelectById(id, _language);
+
             return Ok(result);
         }
 
         [AuthorizeUser]
         [HttpGet]
-        [Route("DeleteGrouppermissionsById")]
-        public IHttpActionResult DeleteGrouppermissionsById(int id)
+        [Route("DeleteGroupPermissionsById")]
+        public IHttpActionResult DeleteGroupPermissionsById(int id)
         {
-            var result = _permissionGroup.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
+            var result = _permissionGroup.FindBy(x => x.Id == id).SingleOrDefault();
+
             _permissionGroup.Edit(result);
             _permissionGroup.Save();
+            
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddGrouppermissionss")]
-        public IHttpActionResult AddGrouppermissions(DtoGrouppermissions dtoDocument)
+        [Route("AddGroupPermissionss")]
+        public IHttpActionResult AddGroupPermissions(DtoGroupPermissions dtoDocument)
         {
-            var DocumentNew = new groupPermission
+            var documentNew = new GroupPermission
             {
-                groupId = dtoDocument.groupId,
-                permissionCode = dtoDocument.permissionCode,
-                value = dtoDocument.value
+                GroupId = dtoDocument.GroupId,
+                PermissionCode = dtoDocument.PermissionCode,
+                Value = dtoDocument.Value
 
             };
-            _permissionGroup.Add(DocumentNew);
-            _permissionGroup.Save(); _permissionGroup.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _permissionGroup.Add(documentNew);
+            _permissionGroup.Save(); 
+            _permissionGroup.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -1154,8 +1224,8 @@ namespace MR_Reporting_System.API
         [Route("GetGroups")]
         public IHttpActionResult GetGroups()
         {
-            var result = new List<DtoGroups>();
-            result = _Groups.selectAll(_language).ToList();
+            var result = _groups.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1164,7 +1234,8 @@ namespace MR_Reporting_System.API
         [Route("GetGroupsById")]
         public IHttpActionResult GetGroupsById(int id)
         {
-            var result = _Groups.selectById(id, _language);
+            var result = _groups.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1173,27 +1244,30 @@ namespace MR_Reporting_System.API
         [Route("DeleteGroupsById")]
         public IHttpActionResult DeleteGroupsById(int id)
         {
-            var result = _Groups.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Groups.Edit(result);
-            _Groups.Save();
+            var result = _groups.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _groups.Edit(result);
+            _groups.Save();
+
             return Ok();
         }
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddGroupss")]
+        [Route("AddGroups")]
         public IHttpActionResult AddGroups(DtoGroups dtoDocument)
         {
-            var DocumentNew = new Group
+            var documentNew = new Group
             {
-                groupName = dtoDocument.groupName,
+                GroupName = dtoDocument.GroupName,
 
             };
-            _Groups.Add(DocumentNew);
-            _Groups.Save(); _Groups.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _groups.Add(documentNew);
+            _groups.Save(); 
+            _groups.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -1201,8 +1275,8 @@ namespace MR_Reporting_System.API
         [Route("GetHospitals")]
         public IHttpActionResult GetHospitals()
         {
-            var result = new List<DtoHospitals>();
-            result = _Hospitals.selectAll(_language).ToList();
+            var result = _hospitals.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1211,7 +1285,8 @@ namespace MR_Reporting_System.API
         [Route("GetHospitalsById")]
         public IHttpActionResult GetHospitalsById(int id)
         {
-            var result = _Hospitals.selectById(id, _language);
+            var result = _hospitals.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1220,11 +1295,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteHospitalsById")]
         public IHttpActionResult DeleteHospitalsById(int id)
         {
-            var result = _Hospitals.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Hospitals.Edit(result);
-            _Hospitals.Save();
+            var result = _hospitals.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _hospitals.Edit(result);
+            _hospitals.Save();
+
             return Ok();
         }
 
@@ -1233,19 +1308,22 @@ namespace MR_Reporting_System.API
         [Route("AddHospitalss")]
         public IHttpActionResult AddHospitals(DtoHospitals dtoDocument)
         {
-            var DocumentNew = new hospital
+            var documentNew = new Hospital
             {
-                name = dtoDocument.name,
+                Name = dtoDocument.Name,
                 AreaId = dtoDocument.AreaId,
-                address = dtoDocument.address,
-                phone = dtoDocument.phone,
-                email = dtoDocument.email,
-                type = dtoDocument.type,
-                code = dtoDocument.code
+                Address = dtoDocument.Address,
+                Phone = dtoDocument.Phone,
+                Email = dtoDocument.Email,
+                Type = dtoDocument.Type,
+                Code = dtoDocument.Code
             };
-            _Hospitals.Add(DocumentNew);
-            _Hospitals.Save(); _Hospitals.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _hospitals.Add(documentNew);
+            _hospitals.Save(); 
+            _hospitals.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -1253,8 +1331,8 @@ namespace MR_Reporting_System.API
         [Route("GetLocations")]
         public IHttpActionResult GetLocations()
         {
-            var result = new List<DtoLocations>();
-            result = _Locations.selectAll(_language).ToList();
+            var result = _locations.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1263,7 +1341,8 @@ namespace MR_Reporting_System.API
         [Route("GetLocationsById")]
         public IHttpActionResult GetLocationsById(int id)
         {
-            var result = _Locations.selectById(id, _language);
+            var result = _locations.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1272,11 +1351,16 @@ namespace MR_Reporting_System.API
         [Route("DeleteLocationsById")]
         public IHttpActionResult DeleteLocationsById(int id)
         {
-            var result = _Locations.FindBy(x => x.id == id).SingleOrDefault();
+            var result = _locations.FindBy(x => x.Id == id).SingleOrDefault();
 
-            result.deletedBy = _accountId;
-            _Locations.Edit(result);
-            _Locations.Save();
+            if (result != null)
+            {
+                result.DeletedBy = _accountId;
+                _locations.Edit(result);
+            }
+
+            _locations.Save();
+
             return Ok();
         }
 
@@ -1285,14 +1369,17 @@ namespace MR_Reporting_System.API
         [Route("AddLocationss")]
         public IHttpActionResult AddLocations(DtoLocations dtoDocument)
         {
-            var DocumentNew = new Location
+            var documentNew = new Location
             {
-                title = dtoDocument.title
+                Title = dtoDocument.Title
 
             };
-            _Locations.Add(DocumentNew);
-            _Locations.Save(); _Locations.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _locations.Add(documentNew);
+            _locations.Save(); 
+            _locations.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -1300,8 +1387,8 @@ namespace MR_Reporting_System.API
         [Route("GetPharmacies")]
         public IHttpActionResult GetPharmacies()
         {
-            var result = new List<DtoPharmacies>();
-            result = _Pharmacies.selectAll(_language).ToList();
+            var result = _pharmacies.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1310,7 +1397,8 @@ namespace MR_Reporting_System.API
         [Route("GetPharmaciesById")]
         public IHttpActionResult GetPharmaciesById(int id)
         {
-            var result = _Pharmacies.selectById(id, _language);
+            var result = _pharmacies.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1319,11 +1407,11 @@ namespace MR_Reporting_System.API
         [Route("DeletePharmaciesById")]
         public IHttpActionResult DeletePharmaciesById(int id)
         {
-            var result = _Pharmacies.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Pharmacies.Edit(result);
-            _Pharmacies.Save();
+            var result = _pharmacies.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _pharmacies.Edit(result);
+            _pharmacies.Save();
+
             return Ok();
         }
 
@@ -1332,20 +1420,23 @@ namespace MR_Reporting_System.API
         [Route("AddPharmaciess")]
         public IHttpActionResult AddPharmacies(DtoPharmacies dtoDocument)
         {
-            var DocumentNew = new pharmacy
+            var documentNew = new Pharmacy
             {
-                name = dtoDocument.name,
+                Name = dtoDocument.Name,
                 AreaId = dtoDocument.AreaId,
-                address = dtoDocument.address,
-                phone = dtoDocument.phone,
-                email = dtoDocument.email,
-                ownerName = dtoDocument.ownerName,
-                ownerPhone = dtoDocument.ownerPhone
+                Address = dtoDocument.Address,
+                Phone = dtoDocument.Phone,
+                Email = dtoDocument.Email,
+                OwnerName = dtoDocument.OwnerName,
+                OwnerPhone = dtoDocument.OwnerPhone
 
             };
-            _Pharmacies.Add(DocumentNew);
-            _Pharmacies.Save(); _Pharmacies.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
+
+            _pharmacies.Add(documentNew);
+            _pharmacies.Save(); 
+            _pharmacies.Reload(documentNew);
+            
+            return Ok(documentNew);
         }
 
         [AuthorizeUser]
@@ -1353,8 +1444,8 @@ namespace MR_Reporting_System.API
         [Route("GetVisits")]
         public IHttpActionResult GetVisits()
         {
-            var result = new List<DtoVisits>();
-            result = _Visits.selectAll(_language).ToList();
+            var result = _visits.SelectAll(_language).ToList();
+
             return Ok(result);
         }
 
@@ -1363,7 +1454,8 @@ namespace MR_Reporting_System.API
         [Route("GetVisitsById")]
         public IHttpActionResult GetVisitsById(int id)
         {
-            var result = _Visits.selectById(id, _language);
+            var result = _visits.SelectById(id, _language);
+
             return Ok(result);
         }
 
@@ -1372,11 +1464,11 @@ namespace MR_Reporting_System.API
         [Route("DeleteVisitsById")]
         public IHttpActionResult DeleteVisitsById(int id)
         {
-            var result = _Visits.FindBy(x => x.id == id).SingleOrDefault();
-            // result.isDeleted = True;
-            // result.deletedBy = _accountId;
-            _Visits.Edit(result);
-            _Visits.Save();
+            var result = _visits.FindBy(x => x.Id == id).SingleOrDefault();
+
+            _visits.Edit(result);
+            _visits.Save();
+            
             return Ok();
         }
 
@@ -1385,25 +1477,27 @@ namespace MR_Reporting_System.API
         [Route("AddVisitss")]
         public IHttpActionResult AddVisits(DtoVisits dtoDocument)
         {
-            var DocumentNew = new visit
+            var documentNew = new Visit
             {
                 AgentId = dtoDocument.AgentId,
-                drugsId = dtoDocument.drugsId,
-                typeId = dtoDocument.typeId,
-                visitTo = dtoDocument.visitTo,
-                visitDate = dtoDocument.visitDate,
-                duration = dtoDocument.duration,
-                description = dtoDocument.description,
-                isMorning = dtoDocument.isMorning,
-                notes = dtoDocument.notes,
-                creationDate = dtoDocument.creationDate,
+                DrugsId = dtoDocument.DrugsId,
+                TypeId = dtoDocument.TypeId,
+                VisitTo = dtoDocument.VisitTo,
+                VisitDate = dtoDocument.VisitDate,
+                Duration = dtoDocument.Duration,
+                Description = dtoDocument.Description,
+                IsMorning = dtoDocument.IsMorning,
+                Notes = dtoDocument.Notes,
+                CreationDate = dtoDocument.CreationDate,
 
             };
-            _Visits.Add(DocumentNew);
-            _Visits.Save(); _Visits.Reload(DocumentNew); int ObjId = DocumentNew.id;
-            return Ok(DocumentNew);
-        }
 
+            _visits.Add(documentNew);
+            _visits.Save();
+            _visits.Reload(documentNew);
+
+            return Ok(documentNew);
+        }
     }
 }
 

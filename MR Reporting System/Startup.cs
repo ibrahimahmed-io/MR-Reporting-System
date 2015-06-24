@@ -52,19 +52,19 @@ namespace MR_Reporting_System
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetExecutingAssembly());
-            kernel.Bind<IAgantareaRepository>().To<AgentAreaRepository>().InRequestScope();
-            kernel.Bind<IAgantdistributerRepository>().To<AgantdistributerRepository>().InRequestScope();
-            kernel.Bind<IAgantdrugsRepository>().To<AgantdrugsRepository>().InRequestScope();
-            kernel.Bind<IAganthospitalRepository>().To<AganthospitalRepository>().InRequestScope();
-            kernel.Bind<IAgantpharmaciesRepository>().To<AgantpharmaciesRepository>().InRequestScope();
-            kernel.Bind<IAgantsRepository>().To<AgantsRepository>().InRequestScope();
+            kernel.Bind<IAgentAreaRepository>().To<AgentAreaRepository>().InRequestScope();
+            kernel.Bind<IAgentDistributerRepository>().To<AgentDistributerRepository>().InRequestScope();
+            kernel.Bind<IAgentDrugsRepository>().To<AgentDrugsRepository>().InRequestScope();
+            kernel.Bind<IAgentHospitalRepository>().To<AgentHospitalRepository>().InRequestScope();
+            kernel.Bind<IAgentPharmaciesRepository>().To<AgentpharmaciesRepository>().InRequestScope();
+            kernel.Bind<IAgentsRepository>().To<AgentsRepository>().InRequestScope();
             kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
             kernel.Bind<ICompaniesRepository>().To<CompaniesRepository>().InRequestScope();
-            kernel.Bind<IDefaultlistRepository>().To<DefaultlistRepository>().InRequestScope();
+            kernel.Bind<IDefaultListRepository>().To<DefaultListRepository>().InRequestScope();
             kernel.Bind<IDistributersRepository>().To<DistributersRepository>().InRequestScope();
             kernel.Bind<IDocotorsRepository>().To<DocotorsRepository>().InRequestScope();
             kernel.Bind<IDrugsRepository>().To<DrugsRepository>().InRequestScope();
-            kernel.Bind<IGrouppermissionsRepository>().To<GrouppermissionsRepository>().InRequestScope();
+            kernel.Bind<IGroupPermissionsRepository>().To<GroupPermissionsRepository>().InRequestScope();
             kernel.Bind<IGroupsRepository>().To<GroupsRepository>().InRequestScope();
             kernel.Bind<IHospitalsRepository>().To<HospitalsRepository>().InRequestScope();
             kernel.Bind<ILocationsRepository>().To<LocationsRepository>().InRequestScope();
