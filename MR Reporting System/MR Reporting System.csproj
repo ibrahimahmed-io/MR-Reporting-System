@@ -129,6 +129,7 @@
     <Content Include="App\viewmodels\admin\accountsEdit.js" />
     <Content Include="App\viewmodels\admin\permissionsGroups.js" />
     <Content Include="App\viewmodels\admin\permissionsGroupsPermissions.js" />
+    <Content Include="App\viewmodels\daily\docotors.js" />
     <Content Include="App\viewmodels\dashboard.js" />
     <Content Include="App\viewmodels\login.js" />
     <Content Include="App\viewmodels\shell.js" />
@@ -138,6 +139,7 @@
     <Content Include="App\views\admin\accountsEdit.html" />
     <Content Include="App\views\admin\permissionsGroups.html" />
     <Content Include="App\views\admin\permissionsGroupsPermissions.html" />
+    <Content Include="App\views\daily\docotors.html" />
     <Content Include="App\views\dashboard.html" />
     <Content Include="App\views\login.html" />
     <Content Include="App\views\shell.html" />
@@ -1464,8 +1466,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\viewmodels\daily\" />
-    <Folder Include="App\views\daily\" />
+    <Folder Include="App\viewmodels\reports\" />
+    <Folder Include="App\views\reports\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
