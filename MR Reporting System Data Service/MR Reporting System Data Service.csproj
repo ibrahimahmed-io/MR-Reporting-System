@@ -49,25 +49,61 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\AgantAreaRepository.cs" />
-    <Compile Include="Repository\AgantdistributerRepository.cs" />
-    <Compile Include="Repository\AgantDrugsRepository.cs" />
-    <Compile Include="Repository\AgantHospitalRepository.cs" />
-    <Compile Include="Repository\AgantPharmaciesRepository.cs" />
-    <Compile Include="Repository\AgantsRepository.cs" />
-    <Compile Include="Repository\AreaRepository.cs" />
-    <Compile Include="Repository\CompaniesRepository.cs" />
-    <Compile Include="Repository\DefaultListRepository.cs" />
-    <Compile Include="Repository\DistributersRepository.cs" />
-    <Compile Include="Repository\DocotorsRepository.cs" />
-    <Compile Include="Repository\DrugsRepository.cs" />
-    <Compile Include="Repository\GenericRepository.cs" />
-    <Compile Include="Repository\GroupPermissionsRepository.cs" />
-    <Compile Include="Repository\GroupsRepository.cs" />
-    <Compile Include="Repository\HospitalsRepository.cs" />
-    <Compile Include="Repository\PharmaciesRepository.cs" />
+    <Compile Include="Repository\AgantAreaRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\AgantdistributerRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\AgantDrugsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\AgantHospitalRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\AgantPharmaciesRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\AgantsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\AreaRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\CompaniesRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\DefaultListRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\DistributersRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\DocotorsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\DrugsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\GenericRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\GroupPermissionsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\GroupsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\HospitalsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\PharmaciesRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Repository\SysdiagramsRepository.cs" />
-    <Compile Include="Repository\VisitsRepository.cs" />
+    <Compile Include="Repository\VisitsRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
