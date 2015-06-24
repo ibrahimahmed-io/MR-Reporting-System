@@ -52,11 +52,24 @@ namespace MR_Reporting_System
         {
             var kernel = new StandardKernel();
             kernel.Load(Assembly.GetExecutingAssembly());
-
-            kernel.Bind<IGroupsRepository>().To<GroupsRepository>().InRequestScope();
-            kernel.Bind<IAgentsRepository>().To<AgentsRepository>().InRequestScope();
-            kernel.Bind<IGroupPermissionsRepository>().To<GroupPermissionsRepository>().InRequestScope();
+            kernel.Bind<IAgantareaRepository>().To<AgentAreaRepository>().InRequestScope();
+            kernel.Bind<IAgantdistributerRepository>().To<AgantdistributerRepository>().InRequestScope();
+            kernel.Bind<IAgantdrugsRepository>().To<AgantdrugsRepository>().InRequestScope();
+            kernel.Bind<IAganthospitalRepository>().To<AganthospitalRepository>().InRequestScope();
+            kernel.Bind<IAgantpharmaciesRepository>().To<AgantpharmaciesRepository>().InRequestScope();
+            kernel.Bind<IAgantsRepository>().To<AgantsRepository>().InRequestScope();
             kernel.Bind<IAreaRepository>().To<AreaRepository>().InRequestScope();
+            kernel.Bind<ICompaniesRepository>().To<CompaniesRepository>().InRequestScope();
+            kernel.Bind<IDefaultlistRepository>().To<DefaultlistRepository>().InRequestScope();
+            kernel.Bind<IDistributersRepository>().To<DistributersRepository>().InRequestScope();
+            kernel.Bind<IDocotorsRepository>().To<DocotorsRepository>().InRequestScope();
+            kernel.Bind<IDrugsRepository>().To<DrugsRepository>().InRequestScope();
+            kernel.Bind<IGrouppermissionsRepository>().To<GrouppermissionsRepository>().InRequestScope();
+            kernel.Bind<IGroupsRepository>().To<GroupsRepository>().InRequestScope();
+            kernel.Bind<IHospitalsRepository>().To<HospitalsRepository>().InRequestScope();
+            kernel.Bind<ILocationsRepository>().To<LocationsRepository>().InRequestScope();
+            kernel.Bind<IPharmaciesRepository>().To<PharmaciesRepository>().InRequestScope();
+            kernel.Bind<IVisitsRepository>().To<VisitsRepository>().InRequestScope();
 
             return kernel;
         }
