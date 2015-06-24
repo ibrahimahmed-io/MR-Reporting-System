@@ -111,6 +111,58 @@
         return $.getJSON(config.remoteServerName + "/DeleteAgantdrugsById", { id: id });
     };
 
+
+    var getDocotors = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetDocotors").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable.data(data);
+            }
+        });
+    };
+
+    var getDocotorsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetDocotorsById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editDocotors = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditDocotors", documnetObservable);
+    };
+
+    var addDocotors = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddDocotors", documnetObservable);
+    };
+
+    var deleteDocotors = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteDocotorsById", { id: id });
+    };
+
+
+    var getArea = function (documnetObservable) {
+       return $.getJSON(config.remoteServerName + "/GetArea").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable.data(data);
+            }
+        });
+    };
+
+    var getAreaById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetAreaById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+    var editArea = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditArea", documnetObservable);
+    };
+    var addArea = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddArea", documnetObservable);
+    };
+    var deleteArea = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteAreaById", { id: id });
+    };
+
+
     var login = function (userName, userPassword) {
         var user = {
             userName: userName,
@@ -126,6 +178,11 @@
     };
 
     var dataservice = {
+        getArea: getArea,
+        getAreaById: getAreaById,
+        editArea: editArea,
+        addArea: addArea,
+        deleteArea: deleteArea,
         getAccounts: getAccounts,
         checkTokenValidity: checkTokenValidity,
         login: login,
@@ -145,7 +202,12 @@
         addAgantarea: addAgantarea,
         deleteAgantarea: deleteAgantarea,
         getAgantdrugs: getAgantdrugs,
-        addAgantdrugs: addAgantdrugs
+        addAgantdrugs: addAgantdrugs,
+        getDocotors: getDocotors,
+        getDocotorsById: getDocotorsById,
+        editDocotors: editDocotors,
+        addDocotors: addDocotors,
+        deleteDocotors: deleteDocotors
     };
 
     return dataservice;

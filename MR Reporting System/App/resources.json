@@ -352,7 +352,7 @@
 	},
 	"ContactName": {
 		"en": "Contact Name",
-		"ar": "الموظف"
+		"ar": "الاســـم"
 	},
 	"isHrManager": {
 		"en": "Hr Manager",
@@ -922,9 +922,9 @@
 		"en": "Telephone",
 		"ar": "رقم الهاتف"
 	},
-	"logo": {
-		"en": "Company logo",
-		"ar": "شعار الشركة"
+	"doctors": {
+		"en": "Doctor",
+		"ar": "دكاترة"
 	},
 	"Fax": {
 		"en": "Fax",
@@ -1739,8 +1739,8 @@
 		"ar": "مشاهدة تقرير"
 	},
 	"reportType": {
-		"en": "Report Type",
-		"ar": "نوع التقرير"
+		"en": "class Type",
+		"ar": "تصتيف الطبيب"
 	},
 	"reportTypeRequired": {
 		"en": "Please insert Report Type",
@@ -2435,9 +2435,9 @@
 		"en": "Specs Section",
 		"ar": "Specs Section"
 	},
-	"specification": {
-		"en": "Specification",
-		"ar": "المواصفات"
+	"specialize": {
+		"en": "specialize",
+		"ar": "التخصص"
 	},
 	"subSpecification": {
 		"en": "Sub Specification",

@@ -129,7 +129,8 @@
     <Content Include="App\viewmodels\admin\accountsEdit.js" />
     <Content Include="App\viewmodels\admin\permissionsGroups.js" />
     <Content Include="App\viewmodels\admin\permissionsGroupsPermissions.js" />
-    <Content Include="App\viewmodels\daily\docotors.js" />
+    <Content Include="App\viewmodels\daily\doctorsAdd.js" />
+    <Content Include="App\viewmodels\daily\doctors.js" />
     <Content Include="App\viewmodels\dashboard.js" />
     <Content Include="App\viewmodels\login.js" />
     <Content Include="App\viewmodels\shell.js" />
@@ -139,7 +140,8 @@
     <Content Include="App\views\admin\accountsEdit.html" />
     <Content Include="App\views\admin\permissionsGroups.html" />
     <Content Include="App\views\admin\permissionsGroupsPermissions.html" />
-    <Content Include="App\views\daily\docotors.html" />
+    <Content Include="App\views\daily\doctorsAdd.html" />
+    <Content Include="App\views\daily\doctors.html" />
     <Content Include="App\views\dashboard.html" />
     <Content Include="App\views\login.html" />
     <Content Include="App\views\shell.html" />

@@ -550,7 +550,7 @@ namespace MR_Reporting_System.API
         [HttpPost]
         [Route("AddAgentAreas")]
         public IHttpActionResult AddAgentAreas(DtoAgentArea dtoDocument)
-        { 
+        {
             foreach (int item in dtoDocument.agentAreas)
             {
                 var obj = new AgentArea
@@ -672,9 +672,9 @@ namespace MR_Reporting_System.API
                     _agentsDrugs.Add(obj);
                 }
             }
-              
+
             _agentsDrugs.Save();
-             
+
 
             return Ok();
         }
@@ -1092,7 +1092,20 @@ namespace MR_Reporting_System.API
         [Route("GetDocotors")]
         public IHttpActionResult GetDocotors()
         {
-            var result = _docotors.SelectAll(_language).ToList();
+            var result = new List<DtoDocotors>();
+
+            if (_userType.Equals("user"))
+            {
+                var areas = _agentsArea.FindBy(x => x.AgentId == _accountId).Select(x => x.AreaId).ToList();
+
+                result = _docotors.SelectAll(_language).ToList().Where(x => areas.Contains(x.AreaId)).ToList();
+
+            }
+            else if (_userType.Equals("company") || _userType.Equals("admin"))
+            {
+                result = _docotors.SelectAll(_language).ToList();
+
+            }
 
             return Ok(result);
         }
@@ -1113,7 +1126,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult DeleteDocotorsById(int id)
         {
             var result = _docotors.FindBy(x => x.Id == id).SingleOrDefault();
-
+            result.DeletedBy = _accountId;
             _docotors.Edit(result);
             _docotors.Save();
 
@@ -1122,7 +1135,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddDocotorss")]
+        [Route("AddDocotors")]
         public IHttpActionResult AddDocotors(DtoDocotors dtoDocument)
         {
             var documentNew = new Docotor
@@ -1141,8 +1154,7 @@ namespace MR_Reporting_System.API
             };
 
             _docotors.Add(documentNew);
-            _docotors.Save();
-            _docotors.Reload(documentNew);
+            _docotors.Save(); 
 
             return Ok(documentNew);
         }

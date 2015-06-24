@@ -12,7 +12,7 @@
         nav: true,
         settings: { admin: true }
     }, {
-        route: 'accountsAdd',
+        route: 'accountsAdd/0',
         moduleId: 'admin/accountsAdd',
         title: 'agents',
         nav: true,
@@ -23,6 +23,18 @@
         title: 'agents',
         nav: true,
         settings: { admin: true }
+    }, {
+        route: 'doctors',
+        moduleId: 'daily/doctors',
+        title: 'doctors',
+        nav: true,
+        settings: { daily: true }
+    }, {
+        route: 'doctorsAdd/0',
+        moduleId: 'daily/doctorsAdd',
+        title: 'doctors',
+        nav: true,
+        settings: { daily: false }
     }];
 
     var isPageSetup = ko.observable(false);
@@ -34,7 +46,7 @@
 
         return !!token ? token : "";
     }
- 
+
     function postJson(url, data) {
         return new window.Promise(function (resolve, reject) {
 
@@ -79,7 +91,7 @@
             return parseFloat(value) >= param;
         }, "P");
     })(jQuery);
-      
+
     var language = JSON.parse(resources);
 
     var currentLanguage = ko.observable();
@@ -760,7 +772,7 @@
         postJson: postJson,
         isPageSetup: isPageSetup,
         getAuthenticationHeader: getAuthenticationHeader,
-        isAllow: isAllow, 
+        isAllow: isAllow,
         ExportColumn: exportColumn,
         exportJson: exportJson,
         pageSize: pageSize,

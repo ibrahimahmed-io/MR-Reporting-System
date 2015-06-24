@@ -3,52 +3,6 @@
     var knockoutGrid = {};
 
     var gridOptions = ko.observable();
-     
-    var accountId = ko.observable();
-
-    var dataSetArea = ko.observable({
-        AgentId: ko.observable(),
-        agentAreas: ko.observableArray()
-    });
-
-    var dataSetDrugs = ko.observable({
-        AgentId: ko.observable(),
-        agentDrugs: ko.observableArray()
-    });
-
-    var drugs = ko.observableArray([]);
-
-    var areas = ko.observableArray([]);
-
-    var addArea = function (obj, e) {
-        var id = ko.contextFor(e.target).$parent.entity.id;
-        accountId(id);
-        dataSetArea().AgentId(id);
-        $('#addArea').modal('show');
-    };
-
-    var addDrugs = function (obj, e) {
-        var id = ko.contextFor(e.target).$parent.entity.id;
-        accountId(id); 
-        dataSetDrugs().AgentId(id);
-        $('#addDrugs').modal('show');
-    };
-
-    function saveArea(obj, event) {
-        if (agentArea().lenth > 0) {
-            dataservice.AddAgentAreas(agentArea).success(function () {
-                $("#addArea").modal('hide');
-            });
-        }
-    };
-
-    function saveDrugs(obj, event) {
-        if (agentDrugs().lenth > 0) {
-            dataservice.addAgantdrugs(agentDrugs).success(function () {
-                $("#addDrugs").modal('hide');
-            });
-        }
-    };
 
     var account = ko.observable();
 
@@ -59,25 +13,23 @@
     var exportToExcel = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'excel', 'Agents');
+        config.exportJson(exportData, exportColumns, 'excel', 'doctors');
     };
 
     var exportToWord = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'word', 'Agents');
+        config.exportJson(exportData, exportColumns, 'word', 'doctors');
     };
 
     var exportToPdf = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'pdf', 'Agents');
+        config.exportJson(exportData, exportColumns, 'pdf', 'doctors');
     };
 
-    var changeStatus = ko.observable();
-
     var add = function (obj, e) {
-        router.navigate("accountsAdd");
+        router.navigate("doctorsAdd/0");
     };
 
     var deleteAccount = function () {
@@ -125,7 +77,7 @@
 
         exportColumns = [
             new config.ExportColumn(config.language.UserName[config.currentLanguage()], 'userName', 's'),
-            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'contactName', 's'),
+            new config.ExportColumn(config.language.specialize[config.currentLanguage()], 'contactName', 's'),
             new config.ExportColumn(config.language.employeeCode[config.currentLanguage()], 'empCode', 'n'),
             new config.ExportColumn(config.language.Supervisor[config.currentLanguage()], 'supervisorName', 's'),
             new config.ExportColumn(config.language.CompanyName[config.currentLanguage()], 'companyName', 's'),
@@ -134,19 +86,17 @@
 
 
         knockoutGrid.columnDefs([
-            knockoutGrid.createColumnDefinition('Id', '', 85, '10%', undefined, undefined,
-                      '<div class="btn-group" role="group" style="margin-top: 15px;"><button type="button" data-bind="click: $parent.$userViewModel.addArea" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Add Area"><i class="fa fa-tasks"></i><button type="button" data-bind="click: $parent.$userViewModel.addDrugs" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Add Drugs"><i class="fa fa-file-o"></i></button></div>'),
-                  knockoutGrid.createColumnDefinition('UserName', config.language.UserName[config.currentLanguage()], 65, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('ContactName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('PositionName', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('SupervisorName', config.language.Supervisor[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('Salary', config.language.salaryValue[config.currentLanguage()], 50, '5%', 'int'),
-                  knockoutGrid.createColumnDefinition('NoOfVisits', 'No Of Visits', 150, '5%', 'int'),
+               knockoutGrid.createColumnDefinition('Name', config.language.ContactName[config.currentLanguage()], 65, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('SpecializeName', config.language.specialize[config.currentLanguage()], 155, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('IsMorning', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
                   knockoutGrid.createColumnDefinition('Address', config.language.Address[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('GroupName', config.language.GroupName[config.currentLanguage()], 150, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('UserType', config.language.userType[config.currentLanguage()], 150, '5%', 'string')
+                  knockoutGrid.createColumnDefinition('AreaName', config.language.area[config.currentLanguage()], 50, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('NoOfVisits', 'No Of Visits', 150, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('Phone', config.language.Telephone[config.currentLanguage()], 150, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('Email', config.language.email[config.currentLanguage()], 150, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('Code', config.language.code[config.currentLanguage()], 150, '5%', 'string')
         ]);
-         
+
         knockoutGrid.gridSelectionChange(function (rowItem, event) {
             if (event.target.type && (event.target.type.toLowerCase() === 'checkbox')) {
                 if (rowItem.selected()) {
@@ -160,14 +110,14 @@
 
                 if (event.target.type) {
                     if (event.target.type !== 'button') {
-                        router.navigate("accountsAdd/" + rowItem.entity.id);
+                        router.navigate("doctorsAdd/" + rowItem.entity.id);
                     }
                 } else if (event.target.parentElement.type) {
                     if (event.target.parentElement.type !== 'button') {
-                        router.navigate("accountsAdd/" + rowItem.entity.id);
+                        router.navigate("doctorsAdd/" + rowItem.entity.id);
                     }
                 } else {
-                    router.navigate("accountsAdd/" + rowItem.entity.id);
+                    router.navigate("doctorsAdd/" + rowItem.entity.id);
                 }
             }
         });
@@ -176,7 +126,7 @@
         gridOptions(knockoutGrid.getGridOptions()());
 
 
-        dataservice.getAccounts().done(function (data) {
+        dataservice.getDocotors().done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
@@ -185,25 +135,18 @@
     };
 
     var vm = {
-        title: 'Agents',
-        saveDrugs: saveDrugs,
-        saveArea: saveArea,
+        title: 'Doctors',
         activate: activate,
         gridOptions: gridOptions,
         compositionComplete: compositionComplete,
         language: config.language,
         currentLanguage: config.currentLanguage,
-        changeStatus: changeStatus,
         add: add,
         deleteAccount: deleteAccount,
         selectedRowId: selectedRowId,
         exportToExcel: exportToExcel,
         exportToWord: exportToWord,
-        exportToPdf: exportToPdf,
-        dataSetDrugs: dataSetDrugs,
-        dataSetArea: dataSetArea,
-        drugs: drugs,
-        areas: areas
+        exportToPdf: exportToPdf
     };
 
     return vm;
