@@ -1,29 +1,23 @@
-﻿
-using DatabaseContext.MedicalContext;
-using DataService.Repository;
-using Interface.IDataService;
-using Model.DTOModel;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MR_Reporting_System_Data_Context.Context;
+using MR_Reporting_System_Interface.IDataService;
+using MR_Reporting_System_Model.DataTransferObjectModel;
 
-
-
-namespace DataServices.Repository
+namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class LocationsRepository : GenericRepository<MedicalContext, Location>, ILocationsRepository
+    public class LocationsRepository : GenericRepository<MedicalTechnoEntities, Location>, ILocationsRepository
     {
-        public List<DtoLocations> selectAll(string lang)
+        public List<DtoLocations> SelectAll(string lang)
         {
-            var list = new List<DtoLocations>();
+            List<DtoLocations> list;
+
             if (lang == "en")
             {
                 list = (from q in Context.Locations
                         select new DtoLocations
                         {
-                            title = q.title
+                            Title = q.Title
                         }).ToList();
             }
             else
@@ -31,32 +25,31 @@ namespace DataServices.Repository
                 list = (from q in Context.Locations
                         select new DtoLocations
                         {
-                            title = q.title
+                            Title = q.Title
                         }).ToList();
             } return list;
         }
 
-        //WriteMethode4
-
-        public DtoLocations selectById(int id, string lang)
+        public DtoLocations SelectById(int id, string lang)
         {
-            var list = new DtoLocations();
+            DtoLocations list;
+
             if (lang == "en")
             {
                 list = (from q in Context.Locations
-                        where q.id == id
+                        where q.Id == id
                         select new DtoLocations
                         {
-                            title = q.title
+                            Title = q.Title
                         }).FirstOrDefault();
             }
             else
             {
                 list = (from q in Context.Locations
-                        where q.id == id
+                        where q.Id == id
                         select new DtoLocations
                         {
-                            title = q.title
+                            Title = q.Title
                         }).FirstOrDefault();
             } return list;
         }
