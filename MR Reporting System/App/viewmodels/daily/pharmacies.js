@@ -13,23 +13,23 @@
     var exportToExcel = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'excel', 'doctors');
+        config.exportJson(exportData, exportColumns, 'excel', 'Pharmacies');
     };
 
     var exportToWord = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'word', 'doctors');
+        config.exportJson(exportData, exportColumns, 'word', 'Pharmacies');
     };
 
     var exportToPdf = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'pdf', 'doctors');
+        config.exportJson(exportData, exportColumns, 'pdf', 'Pharmacies');
     };
 
     var add = function (obj, e) {
-        router.navigate("doctorsAdd/0");
+        router.navigate("pharmacyAdd/" + 0);
     };
 
     var deleteAccount = function () {
@@ -40,15 +40,16 @@
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
 
-                dataservice.accountDeleteById(selectedRowId()).success(function () {
-                    $("#accounts").jqxGrid('deleterow', selectedRowId());
-                });
-                $.smallBox({
-                    title: "Operation completed successfuly",
-                    content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
-                    color: "#659265",
-                    iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                    timeout: 2000
+                dataservice.deletePharmacies(selectedRowId()).success(function () {
+                    //$("#accounts").jqxGrid('deleterow', selectedRowId());
+                    $.smallBox({
+                        title: "Operation completed successfuly",
+                        content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
+                        color: "#659265",
+                        iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
+
                 });
 
                 selectedRowId(null);
@@ -76,25 +77,24 @@
         knockoutGrid = new config.KoGridInstanceCreator();
 
         exportColumns = [
-            new config.ExportColumn(config.language.UserName[config.currentLanguage()], 'userName', 's'),
-            new config.ExportColumn(config.language.specialize[config.currentLanguage()], 'contactName', 's'),
-            new config.ExportColumn(config.language.employeeCode[config.currentLanguage()], 'empCode', 'n'),
-            new config.ExportColumn(config.language.Supervisor[config.currentLanguage()], 'supervisorName', 's'),
-            new config.ExportColumn(config.language.CompanyName[config.currentLanguage()], 'companyName', 's'),
-            new config.ExportColumn(config.language.GroupName[config.currentLanguage()], 'groupName', 's'),
-            new config.ExportColumn(config.language.userType[config.currentLanguage()], 'userType', 's')];
+            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'name', 's'),
+            new config.ExportColumn(config.language.ownerName[config.currentLanguage()], 'ownerName', 's'),
+            new config.ExportColumn(config.language.Address[config.currentLanguage()], 'address', 'n'),
+            new config.ExportColumn(config.language.ownerPhone[config.currentLanguage()], 'ownerPhone', 's'),
+            new config.ExportColumn(config.language.Telephone[config.currentLanguage()], 'phone', 's'),
+            new config.ExportColumn(config.language.email[config.currentLanguage()], 'email', 's')];
 
 
         knockoutGrid.columnDefs([
-               knockoutGrid.createColumnDefinition('name', config.language.ContactName[config.currentLanguage()], 65, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('specializeName', config.language.specialize[config.currentLanguage()], 155, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('isMorning', config.language.isMornning[config.currentLanguage()], 200, '10%', 'string'),
+               knockoutGrid.createColumnDefinition('name', config.language.ContactName[config.currentLanguage()], 65, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('ownerName', config.language.ownerName[config.currentLanguage()], 155, '15%', 'string'),
+                 // knockoutGrid.createColumnDefinition('isMorning', config.language.isMornning[config.currentLanguage()], 200, '10%', 'string'),
                   knockoutGrid.createColumnDefinition('address', config.language.Address[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('areaName', config.language.area[config.currentLanguage()], 50, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('noOfVisits', 'No Of Visits', 150, '5%', 'int'),
-                  knockoutGrid.createColumnDefinition('phone', config.language.Telephone[config.currentLanguage()], 150, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('email', config.language.email[config.currentLanguage()], 150, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('code', config.language.code[config.currentLanguage()], 150, '5%', 'string')
+                  knockoutGrid.createColumnDefinition('ownerPhone', config.language.ownerPhone[config.currentLanguage()], 50, '15%', 'string'),
+                  //knockoutGrid.createColumnDefinition('noOfVisits', 'No Of Visits', 150, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('phone', config.language.Telephone[config.currentLanguage()], 150, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('email', config.language.email[config.currentLanguage()], 150, '15%', 'string'),
+                  //knockoutGrid.createColumnDefinition('code', config.language.code[config.currentLanguage()], 150, '5%', 'string')
         ]);
 
         knockoutGrid.gridSelectionChange(function (rowItem, event) {
@@ -110,14 +110,14 @@
 
                 if (event.target.type) {
                     if (event.target.type !== 'button') {
-                        router.navigate("doctorsAdd/" + rowItem.entity.id);
+                        router.navigate("pharmacyAdd/" + rowItem.entity.id);
                     }
                 } else if (event.target.parentElement.type) {
                     if (event.target.parentElement.type !== 'button') {
-                        router.navigate("doctorsAdd/" + rowItem.entity.id);
+                        router.navigate("pharmacyAdd/" + rowItem.entity.id);
                     }
                 } else {
-                    router.navigate("doctorsAdd/" + rowItem.entity.id);
+                    router.navigate("pharmacyAdd/" + rowItem.entity.id);
                 }
             }
         });
@@ -126,7 +126,7 @@
         gridOptions(knockoutGrid.getGridOptions()());
 
 
-        dataservice.getDocotors().done(function (data) {
+        dataservice.getPharmacies().done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
@@ -135,7 +135,7 @@
     };
 
     var vm = {
-        title: 'Doctors',
+        title: 'Pharmacies',
         activate: activate,
         gridOptions: gridOptions,
         compositionComplete: compositionComplete,

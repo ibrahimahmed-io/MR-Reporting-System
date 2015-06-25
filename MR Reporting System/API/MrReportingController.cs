@@ -1094,7 +1094,7 @@ namespace MR_Reporting_System.API
         {
             var result = new List<DtoDocotors>();
 
-            if (_userType.Equals("user"))
+            if (_userType.Equals("User"))
             {
                 var areas = _agentsArea.FindBy(x => x.AgentId == _accountId).Select(x => x.AreaId).ToList();
 
@@ -1154,7 +1154,7 @@ namespace MR_Reporting_System.API
             };
 
             _docotors.Add(documentNew);
-            _docotors.Save(); 
+            _docotors.Save();
 
             return Ok(documentNew);
         }
@@ -1437,7 +1437,21 @@ namespace MR_Reporting_System.API
         [Route("GetPharmacies")]
         public IHttpActionResult GetPharmacies()
         {
-            var result = _pharmacies.SelectAll(_language).ToList();
+
+            var result = new List<DtoPharmacies>();
+
+            if (_userType.Equals("User"))
+            {
+                var areas = _agentsArea.FindBy(x => x.AgentId == _accountId).Select(x => x.AreaId).ToList();
+
+                result = _pharmacies.SelectAll(_language).ToList().Where(x => areas.Contains(x.AreaId)).ToList();
+
+            }
+            else if (_userType.Equals("Company") || _userType.Equals("admin"))
+            {
+                result = _pharmacies.SelectAll(_language).ToList();
+
+            }
 
             return Ok(result);
         }
@@ -1467,7 +1481,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddPharmaciess")]
+        [Route("AddPharmacies")]
         public IHttpActionResult AddPharmacies(DtoPharmacies dtoDocument)
         {
             var documentNew = new Pharmacy
@@ -1487,6 +1501,30 @@ namespace MR_Reporting_System.API
             _pharmacies.Reload(documentNew);
 
             return Ok(documentNew);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditPharmacies")]
+        public IHttpActionResult EditPharmacies(DtoPharmacies dtoDocument)
+        {
+            var obj = _pharmacies.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+            if (obj != null)
+            { 
+                obj.Name = dtoDocument.Name;
+                obj.AreaId = dtoDocument.AreaId;
+                obj.Address = dtoDocument.Address;
+                obj.Phone = dtoDocument.Phone;
+                obj.Email = dtoDocument.Email;
+                obj.OwnerName = dtoDocument.OwnerName;
+                obj.OwnerPhone = dtoDocument.OwnerPhone;
+            }
+
+
+            _pharmacies.Edit(obj);
+            _pharmacies.Save();
+
+            return Ok();
         }
 
         [AuthorizeUser]

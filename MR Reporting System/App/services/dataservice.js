@@ -153,14 +153,44 @@
             documnetObservable(data);
         });
     };
+
     var editArea = function (documnetObservable) {
         return $.post(config.remoteServerName + "/EditArea", documnetObservable);
     };
+
     var addArea = function (documnetObservable) {
         return $.post(config.remoteServerName + "/AddArea", documnetObservable);
     };
+
     var deleteArea = function (id) {
         return $.getJSON(config.remoteServerName + "/DeleteAreaById", { id: id });
+    };
+
+
+    var getPharmacies = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetPharmacies").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable.data(data);
+            }
+        });
+    };
+
+    var getPharmaciesById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetPharmaciesById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editPharmacies = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditPharmacies", documnetObservable);
+    };
+
+    var addPharmacies = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddPharmacies", documnetObservable);
+    };
+
+    var deletePharmacies = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeletePharmaciesById", { id: id });
     };
 
 
@@ -179,6 +209,12 @@
     };
 
     var dataservice = {
+        getPharmacies: getPharmacies,
+        getPharmaciesById: getPharmaciesById,
+        editPharmacies: editPharmacies,
+        addPharmacies: addPharmacies,
+        deletePharmacies: deletePharmacies,
+
         getArea: getArea,
         getAreaById: getAreaById,
         editArea: editArea,

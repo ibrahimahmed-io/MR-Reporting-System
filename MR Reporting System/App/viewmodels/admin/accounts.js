@@ -24,14 +24,14 @@
         var id = ko.contextFor(e.target).$parent.entity.id;
         accountId(id);
         dataSetArea().AgentId(id);
-        $('#addArea').modal('show');
+        $('#addArea').modal("show");
     };
 
     var addDrugs = function (obj, e) {
         var id = ko.contextFor(e.target).$parent.entity.id;
         accountId(id);
         dataSetDrugs().AgentId(id);
-        $('#addDrugs').modal('show');
+        $('#addDrugs').modal("show");
     };
 
     function saveArea(obj, event) {

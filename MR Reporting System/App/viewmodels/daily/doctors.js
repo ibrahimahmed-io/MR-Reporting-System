@@ -40,17 +40,18 @@
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
 
-                dataservice.accountDeleteById(selectedRowId()).success(function () {
-                    $("#accounts").jqxGrid('deleterow', selectedRowId());
-                });
-                $.smallBox({
-                    title: "Operation completed successfuly",
-                    content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
-                    color: "#659265",
-                    iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                    timeout: 2000
-                });
+                dataservice.deleteDocotors(selectedRowId()).success(function () {
+                    //$("#accounts").jqxGrid('deleterow', selectedRowId());
+                    $.smallBox({
+                        title: "Operation completed successfuly",
+                        content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
+                        color: "#659265",
+                        iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
 
+                });
+               
                 selectedRowId(null);
             }
             if (buttonPressed === "No") {

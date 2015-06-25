@@ -679,16 +679,16 @@
 		"ar": "صبــاحى "
 	},
 	"ownerPhone": {
-		"en": "ownerPhone",
+		"en": "owner Phone",
 		"ar": "رقم تليفون المالك "
 	},
 	"ownerName": {
-		"en": "ownerName",
+		"en": "owner Name",
 		"ar": "اسم المالك "
 	},
-	"useCost": {
-		"en": " use Cost",
-		"ar": "سياسه سجل الحضور "
+	"pharmcy": {
+		"en": " phamcy",
+		"ar": "صيدلية "
 	},
 	"useAVG": {
 		"en": "use AVG",
