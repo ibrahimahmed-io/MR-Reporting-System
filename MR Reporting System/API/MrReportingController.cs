@@ -1101,7 +1101,7 @@ namespace MR_Reporting_System.API
                 result = _docotors.SelectAll(_language).ToList().Where(x => areas.Contains(x.AreaId)).ToList();
 
             }
-            else if (_userType.Equals("company") || _userType.Equals("admin"))
+            else if (_userType.Equals("Company") || _userType.Equals("admin"))
             {
                 result = _docotors.SelectAll(_language).ToList();
 

@@ -12,8 +12,9 @@
     };
 
     var getAccountForedit = function (editAccountObservable, id) {
-        return $.post(config.remoteServerName + "/GetAgentsById", { id: id }).done(function (data) {
-            editAccountObservable(data);
+        return $.getJSON(config.remoteServerName + "/GetAgentsById", { id: id }).done(function (data) {
+            editAccountObservable(ko.mapping.fromJS(data));
+
         });
     };
 
@@ -122,7 +123,7 @@
 
     var getDocotorsById = function (documnetObservable, id) {
         return $.getJSON(config.remoteServerName + "/GetDocotorsById", { id: id }).done(function (data) {
-            documnetObservable(data);
+            documnetObservable(ko.mapping.fromJS(data));
         });
     };
 
@@ -140,7 +141,7 @@
 
 
     var getArea = function (documnetObservable) {
-       return $.getJSON(config.remoteServerName + "/GetArea").done(function (data) {
+        return $.getJSON(config.remoteServerName + "/GetArea").done(function (data) {
             if (documnetObservable) {
                 documnetObservable.data(data);
             }

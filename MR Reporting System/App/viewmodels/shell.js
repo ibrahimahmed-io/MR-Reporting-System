@@ -196,10 +196,12 @@
 
     function attached() {
 
+
         initApp.addDeviceType();
-        initApp.menuPos();
+        initApp.leftNav();
         initApp.SmartActions();
         initApp.domReadyMisc();
+
 
         determineTransitionEvent();
 
@@ -212,7 +214,7 @@
         $('.user-menu .dropdown-menu').click(function(e) {
             e.stopPropagation();
         });
-
+      
         $("[rel='tooltip']").tooltip({ 'container': 'body' });
 
         $("body").on("click", '[data-action="toggleShortcut"]', function(e) {
@@ -225,7 +227,8 @@
         //var objIndex = projectsMenue.indexOf(obj);
         //if (objIndex === projectsMenue().length - 1) {
         //    $("nav ul").jarvismenu({}, true);
-            initApp.leftNav();
+        //initApp.leftNav();
+        //$("nav ul").jarvismenu({}, true);
         //}
     };
 

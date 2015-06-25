@@ -16,6 +16,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Docotors
                         select new DtoDocotors
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             SpecializeId = q.SpecializeId,
                             IsMorning = q.IsMorning,
@@ -35,6 +36,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Docotors
                         select new DtoDocotors
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             SpecializeId = q.SpecializeId,
                             IsMorning = q.IsMorning,
@@ -62,6 +64,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoDocotors
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             SpecializeId = q.SpecializeId,
                             IsMorning = q.IsMorning,
@@ -72,8 +75,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
-                            Code = q.Code,
-                            DeletedBy = q.DeletedBy,
+                            Code = q.Code 
                         }).FirstOrDefault();
             }
             else
@@ -82,6 +84,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoDocotors
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             SpecializeId = q.SpecializeId,
                             IsMorning = q.IsMorning,
@@ -92,8 +95,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
-                            Code = q.Code,
-                            DeletedBy = q.DeletedBy,
+                            Code = q.Code 
                         }).FirstOrDefault();
             } return list;
         }

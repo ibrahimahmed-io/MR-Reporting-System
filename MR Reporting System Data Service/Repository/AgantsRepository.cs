@@ -17,6 +17,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Agents
                         select new DtoAgents
                         {
+                            Id=q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
                             ContactName = q.ContactName,
@@ -38,6 +39,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Agents
                         select new DtoAgents
                         {
+                            Id = q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
                             ContactName = q.ContactName,
@@ -67,6 +69,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.id == id
                         select new DtoAgents
                         {
+                            Id = q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
                             ContactName = q.ContactName,
@@ -89,6 +92,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.id == id
                         select new DtoAgents
                         {
+                            Id = q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
                             ContactName = q.ContactName,

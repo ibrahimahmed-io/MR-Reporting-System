@@ -3,7 +3,7 @@
     var knockoutGrid = {};
 
     var gridOptions = ko.observable();
-     
+
     var accountId = ko.observable();
 
     var dataSetArea = ko.observable({
@@ -29,7 +29,7 @@
 
     var addDrugs = function (obj, e) {
         var id = ko.contextFor(e.target).$parent.entity.id;
-        accountId(id); 
+        accountId(id);
         dataSetDrugs().AgentId(id);
         $('#addDrugs').modal('show');
     };
@@ -77,7 +77,7 @@
     var changeStatus = ko.observable();
 
     var add = function (obj, e) {
-        router.navigate("accountsAdd");
+        router.navigate("accountsAdd/" + 0);
     };
 
     var deleteAccount = function () {
@@ -136,17 +136,17 @@
         knockoutGrid.columnDefs([
             knockoutGrid.createColumnDefinition('Id', '', 85, '10%', undefined, undefined,
                       '<div class="btn-group" role="group" style="margin-top: 15px;"><button type="button" data-bind="click: $parent.$userViewModel.addArea" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Add Area"><i class="fa fa-tasks"></i><button type="button" data-bind="click: $parent.$userViewModel.addDrugs" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Add Drugs"><i class="fa fa-file-o"></i></button></div>'),
-                  knockoutGrid.createColumnDefinition('UserName', config.language.UserName[config.currentLanguage()], 65, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('ContactName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('PositionName', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('SupervisorName', config.language.Supervisor[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('Salary', config.language.salaryValue[config.currentLanguage()], 50, '5%', 'int'),
-                  knockoutGrid.createColumnDefinition('NoOfVisits', 'No Of Visits', 150, '5%', 'int'),
-                  knockoutGrid.createColumnDefinition('Address', config.language.Address[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('GroupName', config.language.GroupName[config.currentLanguage()], 150, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('UserType', config.language.userType[config.currentLanguage()], 150, '5%', 'string')
+                  knockoutGrid.createColumnDefinition('userName', config.language.UserName[config.currentLanguage()], 65, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('contactName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('positionName', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('supervisorName', config.language.Supervisor[config.currentLanguage()], 150, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('salary', config.language.salaryValue[config.currentLanguage()], 50, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('noOfVisits', 'No Of Visits', 150, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('address', config.language.Address[config.currentLanguage()], 150, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('groupName', config.language.GroupName[config.currentLanguage()], 150, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('userType', config.language.userType[config.currentLanguage()], 150, '5%', 'string')
         ]);
-         
+
         knockoutGrid.gridSelectionChange(function (rowItem, event) {
             if (event.target.type && (event.target.type.toLowerCase() === 'checkbox')) {
                 if (rowItem.selected()) {
@@ -162,13 +162,14 @@
                     if (event.target.type !== 'button') {
                         router.navigate("accountsAdd/" + rowItem.entity.id);
                     }
-                } else if (event.target.parentElement.type) {
-                    if (event.target.parentElement.type !== 'button') {
-                        router.navigate("accountsAdd/" + rowItem.entity.id);
-                    }
-                } else {
-                    router.navigate("accountsAdd/" + rowItem.entity.id);
                 }
+                //else if (event.target.parentElement.type) {
+                //    if (event.target.parentElement.type !== 'button') {
+                //        router.navigate("accountsAdd/" + rowItem.entity.id);
+                //    }
+                //} else {
+                //    router.navigate("accountsAdd/" + rowItem.entity.id);
+                //}
             }
         });
 

@@ -12,7 +12,7 @@
         nav: true,
         settings: { admin: true }
     }, {
-        route: 'accountsAdd/0',
+        route: 'accountsAdd/:param1*detail',
         moduleId: 'admin/accountsAdd',
         title: 'agents',
         nav: true,
@@ -30,9 +30,33 @@
         nav: true,
         settings: { daily: true }
     }, {
-        route: 'doctorsAdd/0',
+        route: 'doctorsAdd/:param1*detail',
         moduleId: 'daily/doctorsAdd',
         title: 'doctors',
+        nav: true,
+        settings: { daily: false }
+    }, {
+        route: 'hospitals',
+        moduleId: 'daily/hospitals',
+        title: 'Hospitals',
+        nav: true,
+        settings: { daily: true }
+    }, {
+        route: 'hospitalAdd/:param1*detail',
+        moduleId: 'daily/hospitalAdd',
+        title: 'Hospitals Add',
+        nav: true,
+        settings: { daily: false }
+    }, {
+        route: 'pharmacies',
+        moduleId: 'daily/pharmacies',
+        title: 'pharmacies',
+        nav: true,
+        settings: { daily: true }
+    }, {
+        route: 'pharmacyAdd/:param1*detail',
+        moduleId: 'daily/pharmacyAdd',
+        title: 'pharmacy Add',
         nav: true,
         settings: { daily: false }
     }];

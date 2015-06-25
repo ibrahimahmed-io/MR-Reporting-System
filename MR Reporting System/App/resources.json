@@ -674,17 +674,17 @@
 		"en": "PM Incentive Fraction",
 		"ar": "سياسه سجل الحضور "
 	},
-	"deputyPmIncentiveFraction": {
-		"en": "quality Incentive Fraction",
-		"ar": "سياسه سجل الحضور "
+	"isMornning": {
+		"en": "Is Morning?",
+		"ar": "صبــاحى "
 	},
-	"qualityIncentiveFraction": {
-		"en": "pm Incentive Fraction",
-		"ar": "سياسه سجل الحضور "
+	"ownerPhone": {
+		"en": "ownerPhone",
+		"ar": "رقم تليفون المالك "
 	},
-	"averageHourCost": {
-		"en": "average Hour Cost",
-		"ar": "سياسه سجل الحضور "
+	"ownerName": {
+		"en": "ownerName",
+		"ar": "اسم المالك "
 	},
 	"useCost": {
 		"en": " use Cost",

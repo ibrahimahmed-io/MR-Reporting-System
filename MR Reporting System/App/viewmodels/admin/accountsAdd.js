@@ -3,23 +3,23 @@
     var accountDto = function () {
         var self = this;
         self.id = ko.observable();
-        self.UserName = ko.observable();
-        self.PassWord = ko.observable();
-        self.ContactName = ko.observable();
-        self.PositionId = ko.observable();
+        self.userName = ko.observable();
+        self.passWord = ko.observable();
+        self.contactName = ko.observable();
+        self.positionId = ko.observable();
         self.areaId = ko.observable();
-        self.Address = ko.observable();
-        self.Phone = ko.observable();
-        self.Email = ko.observable();
-        self.GroupId = ko.observable();
-        self.NoOfVisits = ko.observable();
+        self.address = ko.observable('');
+        self.phone = ko.observable();
+        self.email = ko.observable();
+        self.groupId = ko.observable();
+        self.noOfVisits = ko.observable();
         self.salary = ko.observable();
-        self.Code = ko.observable();
-        self.SupervisorId = ko.observable();
-        self.UserType = ko.observable();
+        self.code = ko.observable();
+        self.supervisorId = ko.observable();
+        self.userType = ko.observable();
     };
 
-    var account = ko.observable();
+    var account = ko.observable(new accountDto());
 
     var resetWarning = ko.computed(function () {
         return "<i class='text-warning fa fa-warning'></i> " + config.language.resetWarning[config.currentLanguage()];
@@ -39,6 +39,28 @@
     var postions = ko.observable([]);
 
     var SupervisorId = ko.observable();
+
+    var groupId = ko.observable();
+
+    var positionId = ko.observable();
+
+    SupervisorId.subscribe(function () {
+        if (SupervisorId()) {
+            account().supervisorId(SupervisorId());
+        }
+    });
+
+    groupId.subscribe(function () {
+        if (groupId()) {
+            account().groupId(groupId());
+        }
+    });
+
+    positionId.subscribe(function () {
+        if (positionId()) {
+            account().positionId(positionId());
+        }
+    });
 
     function attached() {
         $('#widget-grid').jarvisWidgets({
@@ -76,7 +98,7 @@
 
             // Rules for form validation
             rules: {
-                empCode: {
+                code: {
                     required: true,
                     digits: true
                 },
@@ -88,15 +110,7 @@
                     required: true,
                     minlength: 6
                 },
-                defaultHours: {
-                    required: true,
-                    digits: true
-                },
-                company: {
-                    required: true,
-                    digits: true
-                },
-                contactId: {
+                salary: {
                     required: true,
                     digits: true
                 }
@@ -105,7 +119,7 @@
 
             // Messages for form validation
             messages: {
-                empCode: {
+                code: {
                     required: 'Please enter a Employee Code',
                     digits: 'Only digits accepted'
                 },
@@ -116,24 +130,8 @@
                 userPassword: {
                     required: 'Please Enter a valid User Name'
                 },
-                defaultHours: {
+                salary: {
                     required: 'Please enter a Hour  Per Day',
-                    digits: 'Only digits accepted'
-                },
-                company: {
-                    required: 'Please choose a company',
-                    digits: 'Only digits accepted'
-                },
-                contactId: {
-                    required: 'Please choose a contact',
-                    digits: 'Only digits accepted'
-                },
-                supervisorCompanyId: {
-                    required: 'Please choose a supervisor Company',
-                    digits: 'Only digits accepted'
-                },
-                contactSupervisorId: {
-                    required: 'Please choose a contact Supervisor',
                     digits: 'Only digits accepted'
                 }
             },
@@ -148,6 +146,7 @@
     var changeStatus = ko.observable(false);
 
     function activate(id) {
+
         account(new accountDto());
 
         dataservice.getAccounts().done(function (data) {
@@ -159,9 +158,26 @@
         dataservice.getAccountsDefaultListType(postions, 'position');
 
         if (id > 0) {
+            positionId(undefined);
+
+            groupId(undefined);
+
+            SupervisorId(undefined);
+
             changeStatus(true);
-            dataservice.getAccountForedit(account, id);
+
+            dataservice.getAccountForedit(account, id).done(function (data) {
+                account().passWord("");
+            });
+
         } else {
+
+            positionId(-1);
+
+            groupId(-1);
+
+            SupervisorId(-1);
+
             changeStatus(false);
         }
     };
@@ -169,11 +185,52 @@
     function addAccount(obj, event) {
         var isValid = $('#AccountEditForm').valid();
         if (isValid) {
-            dataservice.addAccount(account()).done(function (data) {
-                router.navigate("accounts");
-            });
+            if (changeStatus()) {
+                dataservice.editAccount(account()).done(function (data) {
+                    $.smallBox({
+                        title: "Operation completed successfuly",
+                        content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
+                        color: "#659265",
+                        iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
+                    router.navigate("accounts");
+                }).fail(function () {
+                    $('#accountsDefaultListModal').modal('hide');
+                    $.smallBox({
+                        title: "Operation was canceled",
+                        content: "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
+                        color: "#C46A69",
+                        iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
+                });
 
-            router.navigate("accounts");
+            }
+            else {
+
+                dataservice.addAccount(account()).done(function (data) {
+                    $.smallBox({
+                        title: "Operation completed successfuly",
+                        content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
+                        color: "#659265",
+                        iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
+                    router.navigate("accounts");
+                }).fail(function () {
+                    $('#accountsDefaultListModal').modal('hide');
+                    $.smallBox({
+                        title: "Operation was canceled",
+                        content: "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
+                        color: "#C46A69",
+                        iconSmall: "fa fa-times fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
+                });
+
+                router.navigate("accounts");
+            }
         } else {
 
             $('#AccountEditForm').validate();
@@ -192,7 +249,10 @@
         currentLanguage: config.currentLanguage,
         resetWarning: resetWarning,
         addAccount: addAccount,
-        postions: postions
+        postions: postions,
+        SupervisorId: SupervisorId,
+        groupId: groupId,
+        positionId: positionId
 
     };
     return vm;
