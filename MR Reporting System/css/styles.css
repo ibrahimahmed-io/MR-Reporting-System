@@ -50255,6 +50255,11 @@ h1, h2, h3, h4, h5, h6, span, label, div, article, header, nav, aside, section, 
     .smart-form .toggle.material i:after {
         top: !important;
     }
+
+.kgCellText .btn-group {
+    margin-top: -2px !important;
+}
+
 [class*="cal-cell"] {
   float: left;
   margin-left: 0;
