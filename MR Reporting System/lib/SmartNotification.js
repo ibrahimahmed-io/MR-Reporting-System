@@ -1,17 +1,13 @@
 /*
- Copyright 2013 - SmartAdmin Template
+ Copyright 2015 - SmartAdmin Template
+ 
+ This script is a modified version of : MetroNotification
+ Plugin name was adjusted with the permission of its author to blend in with the theme
+ Original URL: http://codecanyon.net/item/metro-notifications/3903495
 
- * This script is part of an item on wrapbootstrap.com
- * https://wrapbootstrap.com/user/myorange
- *
  * ************************************************************* *
  * For more information please contact info@myorange.ca
  * ************************************************************* */
-
-// Sound path
-$.sound_path = "sound/";
-// Sound on = true / false
-$.sound_on = true; 
 
 jQuery(document).ready(function () {
 
@@ -58,18 +54,16 @@ var ExistMsg = 0,
         //Messagebox Sound
 
         // SmallBox Sound
-        if (isIE8orlower() == 0) {
+        if (isIE8orlower() == 0 && $.sound_on) {
             var audioElement = document.createElement('audio');
             audioElement.setAttribute('src', $.sound_path + 'messagebox.mp3');
-            $.get();
+            //$.get();
             audioElement.addEventListener("load", function () {
                 audioElement.play();
             }, true);
 			
-			if ($.sound_on) {
-				audioElement.pause();
-            	audioElement.play();
-			}
+			audioElement.pause();
+        	audioElement.play();
 
         }
 
@@ -255,7 +249,7 @@ var BigBoxes = 0;
         }, settings);
 
         // bigbox Sound
-        if (settings.sound == true) {
+        if (settings.sound) {
             if (isIE8orlower() == 0) {
                 var audioElement = document.createElement('audio');
 
@@ -264,15 +258,14 @@ var BigBoxes = 0;
                 else
                     audioElement.setAttribute('src', $.sound_path + settings.sound_file + ".mp3");
 
-                $.get();
+                //$.get();
                 audioElement.addEventListener("load", function () {
                     audioElement.play();
                 }, true);
 
-				if ($.sound_on) {
-					audioElement.pause();
-	            	audioElement.play();
-				}
+				audioElement.pause();
+            	audioElement.play();
+
             }
         }
 
@@ -441,7 +434,7 @@ var SmallBoxes = 0,
         }, settings);
 
         // SmallBox Sound
-        if (settings.sound == true) {
+        if (settings.sound) {
             if (isIE8orlower() == 0) {
                 var audioElement = document.createElement('audio');
 
@@ -450,15 +443,14 @@ var SmallBoxes = 0,
                 else
                     audioElement.setAttribute('src', $.sound_path + settings.sound_file + ".mp3");
 
-                $.get();
+                //$.get();
                 audioElement.addEventListener("load", function () {
                     audioElement.play();
                 }, true);
-                
-				if ($.sound_on) {
-					audioElement.pause();
-	            	audioElement.play();
-				}
+
+				audioElement.pause();
+            	audioElement.play();
+
             }
         }
 

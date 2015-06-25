@@ -36729,10 +36729,10 @@ Editableform based on Twitter Bootstrap 3
     //buttons
     $.fn.editableform.buttons = 
       '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
-        '<i class="glyphicon glyphicon-ok"></i>'+
+        '<i class="fa fa-check"></i>'+
       '</button>'+
       '<button type="button" class="btn btn-default btn-sm editable-cancel">'+
-        '<i class="glyphicon glyphicon-remove"></i>'+
+        '<i class="fa fa-remove"></i>'+
       '</button>';         
     
     //error classes
@@ -44928,10 +44928,10 @@ var calc_navbar_height = function() {
 		 */
 		app.menuPos = function() {
 			
-		 	if ($.root_.hasClass("menu-on-top") || localStorage.getItem('sm-setmenu')=='top' ) { 
-		 		topmenu = true;
-		 		$.root_.addClass("menu-on-top");
-		 	}
+			if ($.root_.hasClass("menu-on-top") || localStorage.getItem('sm-setmenu')=='top' ) { 
+				topmenu = true;
+				$.root_.addClass("menu-on-top");
+			}
 		};
 		/* ~ END: CHECK MOBILE DEVICE */
 
@@ -44941,9 +44941,9 @@ var calc_navbar_height = function() {
 		app.SmartActions = function(){
 				
 			var smartActions = {
-			    
-			    // LOGOUT MSG 
-			    userLogout: function($this){
+				
+				// LOGOUT MSG 
+				userLogout: function($this){
 			
 					// ask verification
 					$.SmartMessageBox({
@@ -44964,7 +44964,7 @@ var calc_navbar_height = function() {
 				},
 		
 				// RESET WIDGETS
-			    resetWidgets: function($this){
+				resetWidgets: function($this){
 					$.widresetMSG = $this.data('reset-msg');
 					
 					$.SmartMessageBox({
@@ -44978,10 +44978,10 @@ var calc_navbar_height = function() {
 						}
 			
 					});
-			    },
-			    
-			    // LAUNCH FULLSCREEN 
-			    launchFullscreen: function(element){
+				},
+				
+				// LAUNCH FULLSCREEN 
+				launchFullscreen: function(element){
 			
 					if (!$.root_.hasClass("full-screen")) {
 				
@@ -45014,31 +45014,31 @@ var calc_navbar_height = function() {
 			   },
 			
 			   // MINIFY MENU
-			    minifyMenu: function($this){
-			    	if (!$.root_.hasClass("menu-on-top")){
+				minifyMenu: function($this){
+					if (!$.root_.hasClass("menu-on-top")){
 						$.root_.toggleClass("minified");
 						$.root_.removeClass("hidden-menu");
 						$('html').removeClass("hidden-menu-mobile-lock");
 						$this.effect("highlight", {}, 500);
 					}
-			    },
-			    
-			    // TOGGLE MENU 
-			    toggleMenu: function(){
-			    	if (!$.root_.hasClass("menu-on-top")){
+				},
+				
+				// TOGGLE MENU 
+				toggleMenu: function(){
+					if (!$.root_.hasClass("menu-on-top")){
 						$('html').toggleClass("hidden-menu-mobile-lock");
 						$.root_.toggleClass("hidden-menu");
 						$.root_.removeClass("minified");
-			    	} else if ( $.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated") ) {
-			    		$('html').toggleClass("hidden-menu-mobile-lock");
+					} else if ( $.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated") ) {
+						$('html').toggleClass("hidden-menu-mobile-lock");
 						$.root_.toggleClass("hidden-menu");
 						$.root_.removeClass("minified");
-			    	}
-			    },     
+					}
+				},     
 			
-			    // TOGGLE SHORTCUT 
-			    toggleShortcut: function(){
-			    	
+				// TOGGLE SHORTCUT 
+				toggleShortcut: function(){
+					
 					if (shortcut_dropdown.is(":visible")) {
 						shortcut_buttons_hide();
 					} else {
@@ -45077,7 +45077,7 @@ var calc_navbar_height = function() {
 						$.root_.addClass('shortcut-on');
 					}
 			
-			    }  
+				}  
 			   
 			};
 				
@@ -45262,114 +45262,114 @@ var calc_navbar_height = function() {
  */
 	(function ($, window, undefined) {
 	
-	    var elems = $([]),
-	        jq_resize = $.resize = $.extend($.resize, {}),
-	        timeout_id, str_setTimeout = 'setTimeout',
-	        str_resize = 'resize',
-	        str_data = str_resize + '-special-event',
-	        str_delay = 'delay',
-	        str_throttle = 'throttleWindow';
+		var elems = $([]),
+			jq_resize = $.resize = $.extend($.resize, {}),
+			timeout_id, str_setTimeout = 'setTimeout',
+			str_resize = 'resize',
+			str_data = str_resize + '-special-event',
+			str_delay = 'delay',
+			str_throttle = 'throttleWindow';
 	
-	    jq_resize[str_delay] = throttle_delay;
+		jq_resize[str_delay] = throttle_delay;
 	
-	    jq_resize[str_throttle] = true;
+		jq_resize[str_throttle] = true;
 	
-	    $.event.special[str_resize] = {
+		$.event.special[str_resize] = {
 	
-	        setup: function () {
-	            if (!jq_resize[str_throttle] && this[str_setTimeout]) {
-	                return false;
-	            }
+			setup: function () {
+				if (!jq_resize[str_throttle] && this[str_setTimeout]) {
+					return false;
+				}
 	
-	            var elem = $(this);
-	            elems = elems.add(elem);
-	            try {
-	                $.data(this, str_data, {
-	                    w: elem.width(),
-	                    h: elem.height()
-	                });
-	            } catch (e) {
-	                $.data(this, str_data, {
-	                    w: elem.width, // elem.width();
-	                    h: elem.height // elem.height();
-	                });
-	            }
+				var elem = $(this);
+				elems = elems.add(elem);
+				try {
+					$.data(this, str_data, {
+						w: elem.width(),
+						h: elem.height()
+					});
+				} catch (e) {
+					$.data(this, str_data, {
+						w: elem.width, // elem.width();
+						h: elem.height // elem.height();
+					});
+				}
 	
-	            if (elems.length === 1) {
-	                loopy();
-	            }
-	        },
-	        teardown: function () {
-	            if (!jq_resize[str_throttle] && this[str_setTimeout]) {
-	                return false;
-	            }
+				if (elems.length === 1) {
+					loopy();
+				}
+			},
+			teardown: function () {
+				if (!jq_resize[str_throttle] && this[str_setTimeout]) {
+					return false;
+				}
 	
-	            var elem = $(this);
-	            elems = elems.not(elem);
-	            elem.removeData(str_data);
-	            if (!elems.length) {
-	                clearTimeout(timeout_id);
-	            }
-	        },
+				var elem = $(this);
+				elems = elems.not(elem);
+				elem.removeData(str_data);
+				if (!elems.length) {
+					clearTimeout(timeout_id);
+				}
+			},
 	
-	        add: function (handleObj) {
-	            if (!jq_resize[str_throttle] && this[str_setTimeout]) {
-	                return false;
-	            }
-	            var old_handler;
+			add: function (handleObj) {
+				if (!jq_resize[str_throttle] && this[str_setTimeout]) {
+					return false;
+				}
+				var old_handler;
 	
-	            function new_handler(e, w, h) {
-	                var elem = $(this),
-	                    data = $.data(this, str_data);
-	                data.w = w !== undefined ? w : elem.width();
-	                data.h = h !== undefined ? h : elem.height();
+				function new_handler(e, w, h) {
+					var elem = $(this),
+						data = $.data(this, str_data);
+					data.w = w !== undefined ? w : elem.width();
+					data.h = h !== undefined ? h : elem.height();
 	
-	                old_handler.apply(this, arguments);
-	            }
-	            if ($.isFunction(handleObj)) {
-	                old_handler = handleObj;
-	                return new_handler;
-	            } else {
-	                old_handler = handleObj.handler;
-	                handleObj.handler = new_handler;
-	            }
-	        }
-	    };
+					old_handler.apply(this, arguments);
+				}
+				if ($.isFunction(handleObj)) {
+					old_handler = handleObj;
+					return new_handler;
+				} else {
+					old_handler = handleObj.handler;
+					handleObj.handler = new_handler;
+				}
+			}
+		};
 	
-	    function loopy() {
-	        timeout_id = window[str_setTimeout](function () {
-	            elems.each(function () {
-	                var width;
-	                var height;
+		function loopy() {
+			timeout_id = window[str_setTimeout](function () {
+				elems.each(function () {
+					var width;
+					var height;
 	
-	                var elem = $(this),
-	                    data = $.data(this, str_data); //width = elem.width(), height = elem.height();
+					var elem = $(this),
+						data = $.data(this, str_data); //width = elem.width(), height = elem.height();
 	
-	                // Highcharts fix
-	                try {
-	                    width = elem.width();
-	                } catch (e) {
-	                    width = elem.width;
-	                }
+					// Highcharts fix
+					try {
+						width = elem.width();
+					} catch (e) {
+						width = elem.width;
+					}
 	
-	                try {
-	                    height = elem.height();
-	                } catch (e) {
-	                    height = elem.height;
-	                }
-	                //fixed bug
+					try {
+						height = elem.height();
+					} catch (e) {
+						height = elem.height;
+					}
+					//fixed bug
 	
 	
-	                if (width !== data.w || height !== data.h) {
-	                    elem.trigger(str_resize, [data.w = width, data.h = height]);
-	                }
+					if (width !== data.w || height !== data.h) {
+						elem.trigger(str_resize, [data.w = width, data.h = height]);
+					}
 	
-	            });
-	            loopy();
+				});
+				loopy();
 	
-	        }, jq_resize[str_delay]);
+			}, jq_resize[str_delay]);
 	
-	    }
+		}
 	
 	})(jQuery, this);
 /*
@@ -45507,6 +45507,107 @@ var calc_navbar_height = function() {
 					} // end else
 				} // end if
 			});
+			
+			jarvismenu: function (options, destroy) {
+
+				var defaults = {
+					accordion: 'true',
+					speed: 200,
+					closedSign: '[+]',
+					openedSign: '[-]'
+				},
+
+							// Extend our default options with those provided.
+							opts = $.extend(defaults, options),
+							//Assign current element to variable, in this case is UL element
+							$this = $(this);
+
+				if (!destroy) {
+
+					//add a mark [+] to a multilevel menu
+					$this.find("li").each(function () {
+						if ($(this).find("ul").size() !== 0) {
+							//add the multilevel sign next to the link
+							$(this).find("a:first").append("<b class='collapse-sign'>" + opts.closedSign + "</b>");
+
+							//avoid jumping to the top of the page when the href is an #
+							if ($(this).find("a:first").attr('href') == "#") {
+								$(this).find("a:first").click(function () {
+									return false;
+								});
+							}
+						}
+					});
+
+					//open active level
+					$this.find("li.active").each(function () {
+						$(this).parents("ul").slideDown(opts.speed);
+						$(this).parents("ul").parent("li").find("b:first").html(opts.openedSign);
+						$(this).parents("ul").parent("li").addClass("open");
+					});
+
+					$this.find("li a").click(function () {
+
+						if ($(this).parent().find("ul").size() !== 0) {
+
+							if (opts.accordion) {
+								//Do nothing when the list is open
+								if (!$(this).parent().find("ul").is(':visible')) {
+									parents = $(this).parent().parents("ul");
+									visible = $this.find("ul:visible");
+									visible.each(function (visibleIndex) {
+										var close = true;
+										parents.each(function (parentIndex) {
+											if (parents[parentIndex] == visible[visibleIndex]) {
+												close = false;
+												return false;
+											}
+										});
+										if (close) {
+											if ($(this).parent().find("ul") != visible[visibleIndex]) {
+												$(visible[visibleIndex]).slideUp(opts.speed, function () {
+													$(this).parent("li").find("b:first").html(opts.closedSign);
+													$(this).parent("li").removeClass("open");
+												});
+
+											}
+										}
+									});
+								}
+							} // end if
+							if ($(this).parent().find("ul:first").is(":visible") && !$(this).parent().find("ul:first").hasClass("active")) {
+								$(this).parent().find("ul:first").slideUp(opts.speed, function () {
+									$(this).parent("li").removeClass("open");
+									$(this).parent("li").find("b:first").delay(opts.speed).html(opts.closedSign);
+								});
+
+							} else {
+								$(this).parent().find("ul:first").slideDown(opts.speed, function () {
+									/*$(this).effect("highlight", {color : '#616161'}, 500); - disabled due to CPU clocking on phones*/
+									$(this).parent("li").addClass("open");
+									$(this).parent("li").find("b:first").delay(opts.speed).html(opts.openedSign);
+								});
+							} // end else
+						} // end if
+					});
+				} else {
+					$this.find("li").each(function () {
+						if ($(this).find("ul").size() !== 0) {
+							//add the multilevel sign next to the link
+							$(this).find("a:first").unbind("click");
+
+							$(this).find("a:first b.collapse-sign").remove();
+
+							//avoid jumping to the top of the page when the href is an #
+							if ($(this).find("a:first").attr('href') == "#") {
+								$(this).find("a:first").unbind("click");
+							}
+						}
+					});
+
+
+				}
+			} // end function
 		} // end function
 	});
 /* ~ END: CUSTOM MENU PLUGIN */
@@ -45657,79 +45758,79 @@ var calc_navbar_height = function() {
 			// variable declearations:
 	
 			var barColor,
-			    sparklineHeight,
-			    sparklineBarWidth,
-			    sparklineBarSpacing,
-			    sparklineNegBarColor,
-			    sparklineStackedColor,
-			    thisLineColor,
-			    thisLineWidth,
-			    thisFill,
-			    thisSpotColor,
-			    thisMinSpotColor,
-			    thisMaxSpotColor,
-			    thishighlightSpotColor,
-			    thisHighlightLineColor,
-			    thisSpotRadius,			        
+				sparklineHeight,
+				sparklineBarWidth,
+				sparklineBarSpacing,
+				sparklineNegBarColor,
+				sparklineStackedColor,
+				thisLineColor,
+				thisLineWidth,
+				thisFill,
+				thisSpotColor,
+				thisMinSpotColor,
+				thisMaxSpotColor,
+				thishighlightSpotColor,
+				thisHighlightLineColor,
+				thisSpotRadius,			        
 				pieColors,
-			    pieWidthHeight,
-			    pieBorderColor,
-			    pieOffset,
-			 	thisBoxWidth,
-			    thisBoxHeight,
-			    thisBoxRaw,
-			    thisBoxTarget,
-			    thisBoxMin,
-			    thisBoxMax,
-			    thisShowOutlier,
-			    thisIQR,
-			    thisBoxSpotRadius,
-			    thisBoxLineColor,
-			    thisBoxFillColor,
-			    thisBoxWhisColor,
-			    thisBoxOutlineColor,
-			    thisBoxOutlineFill,
-			    thisBoxMedianColor,
-			    thisBoxTargetColor,
+				pieWidthHeight,
+				pieBorderColor,
+				pieOffset,
+				thisBoxWidth,
+				thisBoxHeight,
+				thisBoxRaw,
+				thisBoxTarget,
+				thisBoxMin,
+				thisBoxMax,
+				thisShowOutlier,
+				thisIQR,
+				thisBoxSpotRadius,
+				thisBoxLineColor,
+				thisBoxFillColor,
+				thisBoxWhisColor,
+				thisBoxOutlineColor,
+				thisBoxOutlineFill,
+				thisBoxMedianColor,
+				thisBoxTargetColor,
 				thisBulletHeight,
-			    thisBulletWidth,
-			    thisBulletColor,
-			    thisBulletPerformanceColor,
-			    thisBulletRangeColors,
+				thisBulletWidth,
+				thisBulletColor,
+				thisBulletPerformanceColor,
+				thisBulletRangeColors,
 				thisDiscreteHeight,
-			    thisDiscreteWidth,
-			    thisDiscreteLineColor,
-			    thisDiscreteLineHeight,
-			    thisDiscreteThrushold,
-			    thisDiscreteThrusholdColor,
+				thisDiscreteWidth,
+				thisDiscreteLineColor,
+				thisDiscreteLineHeight,
+				thisDiscreteThrushold,
+				thisDiscreteThrusholdColor,
 				thisTristateHeight,
-			    thisTristatePosBarColor,
-			    thisTristateNegBarColor,
-			    thisTristateZeroBarColor,
-			    thisTristateBarWidth,
-			    thisTristateBarSpacing,
-			    thisZeroAxis,
-			    thisBarColor,
-			    sparklineWidth,
-			    sparklineValue,
-			    sparklineValueSpots1,
-			    sparklineValueSpots2,
-			    thisLineWidth1,
-			    thisLineWidth2,
-			    thisLineColor1,
-			    thisLineColor2,
-			    thisSpotRadius1,
-			    thisSpotRadius2,
-			    thisMinSpotColor1,
-			    thisMaxSpotColor1,
-			    thisMinSpotColor2,
-			    thisMaxSpotColor2,
-			    thishighlightSpotColor1,
-			    thisHighlightLineColor1,
-			    thishighlightSpotColor2,
-			    thisFillColor1,
-			    thisFillColor2;
-					    				    
+				thisTristatePosBarColor,
+				thisTristateNegBarColor,
+				thisTristateZeroBarColor,
+				thisTristateBarWidth,
+				thisTristateBarSpacing,
+				thisZeroAxis,
+				thisBarColor,
+				sparklineWidth,
+				sparklineValue,
+				sparklineValueSpots1,
+				sparklineValueSpots2,
+				thisLineWidth1,
+				thisLineWidth2,
+				thisLineColor1,
+				thisLineColor2,
+				thisSpotRadius1,
+				thisSpotRadius2,
+				thisMinSpotColor1,
+				thisMaxSpotColor1,
+				thisMinSpotColor2,
+				thisMaxSpotColor2,
+				thishighlightSpotColor1,
+				thisHighlightLineColor1,
+				thishighlightSpotColor2,
+				thisFillColor1,
+				thisFillColor2;
+											
 	
 			$('.sparkline').each(function() {
 				var $this = $(this),
@@ -45739,12 +45840,12 @@ var calc_navbar_height = function() {
 				if (sparklineType == 'bar') {
 	
 						barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
-					    sparklineHeight = $this.data('sparkline-height') || '26px';
-					    sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
-					    sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
-					    sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
-					    sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
-					        
+						sparklineHeight = $this.data('sparkline-height') || '26px';
+						sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
+						sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
+						sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
+						sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
+							
 					$this.sparkline('html', {
 						barColor : barColor,
 						type : sparklineType,
@@ -45764,16 +45865,16 @@ var calc_navbar_height = function() {
 				if (sparklineType == 'line') {
 	
 						sparklineHeight = $this.data('sparkline-height') || '20px';
-					    sparklineWidth = $this.data('sparkline-width') || '90px';
-					    thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
-					    thisLineWidth = $this.data('sparkline-line-width') || 1;
-					    thisFill = $this.data('fill-color') || '#c0d0f0';
-					    thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-					    thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
-					    thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
-					    thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
-					    thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
-					    thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+						sparklineWidth = $this.data('sparkline-width') || '90px';
+						thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
+						thisLineWidth = $this.data('sparkline-line-width') || 1;
+						thisFill = $this.data('fill-color') || '#c0d0f0';
+						thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+						thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
+						thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
+						thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
+						thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
+						thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
 						thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined'; 
 						thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined'; 
 						thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined'; 
@@ -45782,7 +45883,7 @@ var calc_navbar_height = function() {
 						thisMaxNormValue = $this.data('max-val') || 'undefined'; 
 						thisNormColor =  $this.data('norm-color') || '#c0c0c0';
 						thisDrawNormalOnTop = $this.data('draw-normal') || false;
-					    
+						
 					$this.sparkline('html', {
 						type : 'line',
 						width : sparklineWidth,
@@ -45815,10 +45916,10 @@ var calc_navbar_height = function() {
 				if (sparklineType == 'pie') {
 	
 						pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c","#6E9461", "#0099c6", "#990099", "#717D8A"];
-					    pieWidthHeight = $this.data('sparkline-piesize') || 90;
-					    pieBorderColor = $this.data('border-color') || '#45494C';
-					    pieOffset = $this.data('sparkline-offset') || 0;
-					    
+						pieWidthHeight = $this.data('sparkline-piesize') || 90;
+						pieBorderColor = $this.data('border-color') || '#45494C';
+						pieOffset = $this.data('sparkline-offset') || 0;
+						
 					$this.sparkline('html', {
 						type : 'pie',
 						width : pieWidthHeight,
@@ -45838,22 +45939,22 @@ var calc_navbar_height = function() {
 				if (sparklineType == 'box') {
 	
 						thisBoxWidth = $this.data('sparkline-width') || 'auto';
-					    thisBoxHeight = $this.data('sparkline-height') || 'auto';
-					    thisBoxRaw = $this.data('sparkline-boxraw') || false;
-					    thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
-					    thisBoxMin = $this.data('sparkline-min') || 'undefined';
-					    thisBoxMax = $this.data('sparkline-max') || 'undefined';
-					    thisShowOutlier = $this.data('sparkline-showoutlier') || true;
-					    thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
-					    thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-					    thisBoxLineColor = $this.css('color') || '#000000';
-					    thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
-					    thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
-					    thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
-					    thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
-					    thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
-					    thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
-					    
+						thisBoxHeight = $this.data('sparkline-height') || 'auto';
+						thisBoxRaw = $this.data('sparkline-boxraw') || false;
+						thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
+						thisBoxMin = $this.data('sparkline-min') || 'undefined';
+						thisBoxMax = $this.data('sparkline-max') || 'undefined';
+						thisShowOutlier = $this.data('sparkline-showoutlier') || true;
+						thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
+						thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+						thisBoxLineColor = $this.css('color') || '#000000';
+						thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
+						thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
+						thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
+						thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
+						thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
+						thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
+						
 					$this.sparkline('html', {
 						type : 'box',
 						width : thisBoxWidth,
@@ -45883,11 +45984,11 @@ var calc_navbar_height = function() {
 				if (sparklineType == 'bullet') {
 	
 					var thisBulletHeight = $this.data('sparkline-height') || 'auto';
-					    thisBulletWidth = $this.data('sparkline-width') || 2;
-					    thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
-					    thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
-					    thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
-					    
+						thisBulletWidth = $this.data('sparkline-width') || 2;
+						thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
+						thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
+						thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
+						
 					$this.sparkline('html', {
 	
 						type : 'bullet',
@@ -45906,13 +46007,13 @@ var calc_navbar_height = function() {
 				// DISCRETE
 				if (sparklineType == 'discrete') {
 	
-					 	thisDiscreteHeight = $this.data('sparkline-height') || 26;
-					    thisDiscreteWidth = $this.data('sparkline-width') || 50;
-					    thisDiscreteLineColor = $this.css('color');
-					    thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
-					    thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
-					    thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
-					    
+						thisDiscreteHeight = $this.data('sparkline-height') || 26;
+						thisDiscreteWidth = $this.data('sparkline-width') || 50;
+						thisDiscreteLineColor = $this.css('color');
+						thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
+						thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
+						thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
+						
 					$this.sparkline('html', {
 	
 						type : 'discrete',
@@ -45932,14 +46033,14 @@ var calc_navbar_height = function() {
 				// TRISTATE
 				if (sparklineType == 'tristate') {
 	
-					 	thisTristateHeight = $this.data('sparkline-height') || 26;
-					    thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
-					    thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
-					    thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
-					    thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
-					    thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
-					    thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
-					    
+						thisTristateHeight = $this.data('sparkline-height') || 26;
+						thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
+						thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
+						thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
+						thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
+						thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
+						thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
+						
 					$this.sparkline('html', {
 	
 						type : 'tristate',
@@ -45960,13 +46061,13 @@ var calc_navbar_height = function() {
 				//COMPOSITE: BAR
 				if (sparklineType == 'compositebar') {
 	
-				 	sparklineHeight = $this.data('sparkline-height') || '20px';
-				    sparklineWidth = $this.data('sparkline-width') || '100%';
-				    sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
-				    thisLineWidth = $this.data('sparkline-line-width') || 1;
-				    thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
-				    thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
-					    
+					sparklineHeight = $this.data('sparkline-height') || '20px';
+					sparklineWidth = $this.data('sparkline-width') || '100%';
+					sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
+					thisLineWidth = $this.data('sparkline-line-width') || 1;
+					thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
+					thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
+						
 					$this.sparkline($this.data('sparkline-bar-val'), {
 	
 						type : 'bar',
@@ -45997,30 +46098,30 @@ var calc_navbar_height = function() {
 				if (sparklineType == 'compositeline') {
 	
 						sparklineHeight = $this.data('sparkline-height') || '20px';
-					    sparklineWidth = $this.data('sparkline-width') || '90px';
-					    sparklineValue = $this.data('sparkline-bar-val');
-					    sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
-					    sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
-					    thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
-					    thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
-					    thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
-					    thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
-					    thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
-					    thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
-					    thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-					    thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
-					    thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
-					    thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
-					    thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
-					    thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
-					    thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
-					    thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
-					        thishighlightSpotColor1;
-					    thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
-					        thisHighlightLineColor1;
-					    thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
-					    thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
-					    
+						sparklineWidth = $this.data('sparkline-width') || '90px';
+						sparklineValue = $this.data('sparkline-bar-val');
+						sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
+						sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
+						thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
+						thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
+						thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
+						thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
+						thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
+						thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
+						thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+						thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
+						thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
+						thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
+						thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
+						thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
+						thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
+						thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
+							thishighlightSpotColor1;
+						thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
+							thisHighlightLineColor1;
+						thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
+						thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
+						
 					$this.sparkline(sparklineValue, {
 	
 						type : 'line',
@@ -46085,9 +46186,9 @@ var calc_navbar_height = function() {
 			$('.easy-pie-chart').each(function() {
 				var $this = $(this),
 					barColor = $this.css('color') || $this.data('pie-color'),
-				    trackColor = $this.data('pie-track-color') || '#eeeeee',
-				    size = parseInt($this.data('pie-size')) || 25;
-				    
+					trackColor = $this.data('pie-track-color') || '#eeeeee',
+					size = parseInt($this.data('pie-size')) || 25;
+					
 				$this.easyPieChart({
 					
 					barColor : barColor,
@@ -46277,25 +46378,25 @@ var calc_navbar_height = function() {
 * updates naivgation elements to active
 */
 	if($.navAsAjax) {
-	    // fire this on page load if nav exists
-	    if ($('nav').length) {
-		    checkURL();
-	    }
+		// fire this on page load if nav exists
+		if ($('nav').length) {
+			checkURL();
+		}
 	
-	    $(document).on('click', 'nav a[href!="#"]', function(e) {
-		    e.preventDefault();
-		    var $this = $(e.currentTarget);
+		$(document).on('click', 'nav a[href!="#"]', function(e) {
+			e.preventDefault();
+			var $this = $(e.currentTarget);
 	
-		    // if parent is not active then get hash, or else page is assumed to be loaded
+			// if parent is not active then get hash, or else page is assumed to be loaded
 			if (!$this.parent().hasClass("active") && !$this.attr('target')) {
 	
-			    // update window with hash
-			    // you could also do here:  thisDevice === "mobile" - and save a little more memory
+				// update window with hash
+				// you could also do here:  thisDevice === "mobile" - and save a little more memory
 	
-			    if ($.root_.hasClass('mobile-view-activated')) {
-				    $.root_.removeClass('hidden-menu');
-				    $('html').removeClass("hidden-menu-mobile-lock");
-				    window.setTimeout(function() {
+				if ($.root_.hasClass('mobile-view-activated')) {
+					$.root_.removeClass('hidden-menu');
+					$('html').removeClass("hidden-menu-mobile-lock");
+					window.setTimeout(function() {
 						if (window.location.search) {
 							window.location.href =
 								window.location.href.replace(window.location.search, '')
@@ -46303,9 +46404,9 @@ var calc_navbar_height = function() {
 						} else {
 							window.location.hash = $this.attr('href');
 						}
-				    }, 150);
-				    // it may not need this delay...
-			    } else {
+					}, 150);
+					// it may not need this delay...
+				} else {
 					if (window.location.search) {
 						window.location.href =
 							window.location.href.replace(window.location.search, '')
@@ -46313,39 +46414,39 @@ var calc_navbar_height = function() {
 					} else {
 						window.location.hash = $this.attr('href');
 					}
-			    }
-			    
-			    // clear DOM reference
-			    // $this = null;
-		    }
+				}
+				
+				// clear DOM reference
+				// $this = null;
+			}
 	
-	    });
+		});
 	
-	    // fire links with targets on different window
-	    $(document).on('click', 'nav a[target="_blank"]', function(e) {
-		    e.preventDefault();
-		    var $this = $(e.currentTarget);
+		// fire links with targets on different window
+		$(document).on('click', 'nav a[target="_blank"]', function(e) {
+			e.preventDefault();
+			var $this = $(e.currentTarget);
 	
-		    window.open($this.attr('href'));
-	    });
+			window.open($this.attr('href'));
+		});
 	
-	    // fire links with targets on same window
-	    $(document).on('click', 'nav a[target="_top"]', function(e) {
-		    e.preventDefault();
-		    var $this = $(e.currentTarget);
+		// fire links with targets on same window
+		$(document).on('click', 'nav a[target="_top"]', function(e) {
+			e.preventDefault();
+			var $this = $(e.currentTarget);
 	
-		    window.location = ($this.attr('href'));
-	    });
+			window.location = ($this.attr('href'));
+		});
 	
-	    // all links with hash tags are ignored
-	    $(document).on('click', 'nav a[href="#"]', function(e) {
-		    e.preventDefault();
-	    });
+		// all links with hash tags are ignored
+		$(document).on('click', 'nav a[href="#"]', function(e) {
+			e.preventDefault();
+		});
 	
-	    // DO on hash change
-	    $(window).on('hashchange', function() {
-		    checkURL();
-	    });
+		// DO on hash change
+		$(window).on('hashchange', function() {
+			checkURL();
+		});
 	}
 /*
  * CHECK TO SEE IF URL EXISTS
@@ -46424,13 +46525,13 @@ var calc_navbar_height = function() {
 						i = 0;
 					// run for each	map
 					collection.each(function() {
-					    i ++;
-					    // get map id from class elements
-					    var divDealerMap = document.getElementById(this.id);
-					    
-					    if(i == collection.length + 1) {
-						    // "callback"
-						    //console.log("all maps destroyed");
+						i ++;
+						// get map id from class elements
+						var divDealerMap = document.getElementById(this.id);
+						
+						if(i == collection.length + 1) {
+							// "callback"
+							//console.log("all maps destroyed");
 						} else {
 							// destroy every map found
 							if (divDealerMap) divDealerMap.parentNode.removeChild(divDealerMap);
@@ -46447,7 +46548,7 @@ var calc_navbar_height = function() {
 					
 					var tables = $.fn.dataTable.fnTables(true);				
 					$(tables).each(function () {
-					    $(this).dataTable().fnDestroy();
+						$(this).dataTable().fnDestroy();
 					});
 					//console.log("datatable nuked!!!");
 				}
@@ -46457,9 +46558,9 @@ var calc_navbar_height = function() {
 				if ( $.navAsAjax && $.intervalArr.length > 0 && (container[0] == $("#content")[0]) && enableJarvisWidgets ) {
 					
 					while($.intervalArr.length > 0)
-	        			clearInterval($.intervalArr.pop());
-	        			//console.log("all intervals cleared..")
-	        			
+						clearInterval($.intervalArr.pop());
+						//console.log("all intervals cleared..")
+						
 				}
 				// end pop intervals
 				

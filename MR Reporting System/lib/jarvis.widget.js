@@ -9,7 +9,7 @@
  * included in all copies or substantial portions of the Software.
  * =======================================================================
  * JarvisWidget is FULLY owned and LICENSED by MYORANGE INC.
- * This script may NOT be RESOLD or REDISTRUBUTED under any
+ * This script may NOT be RESOLD or REDISTRUBUTED on its own under any
  * circumstances, and is only to be used with this purchased
  * copy of SmartAdmin Template.
  * =======================================================================
@@ -32,6 +32,12 @@
 
     var pluginName = 'jarvisWidgets';
 
+	/**
+	 * Check for touch support and set right click events.
+	 **/
+	var clickEvent = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch ? 
+		'touchstart' : 'click') + '.' + pluginName;
+
     function Plugin(element, options) {
         /**
          * Variables.
@@ -45,86 +51,13 @@
         this.editClass = this.o.editClass.split('|');
         this.fullscreenClass = this.o.fullscreenClass.split('|');
         this.customClass = this.o.customClass.split('|');
+		this.storage = {enabled: this.o.localStorage};
+		this.initialized = false;
 
         this.init();
     }
 
     Plugin.prototype = {
-
-        /**
-         * Important settings like storage and touch support.
-         *
-         * @param:
-         **/
-        _settings: function () {
-
-            var self = this;
-
-            //*****************************************************************//
-            //////////////////////// LOCALSTORAGE CHECK /////////////////////////
-            //*****************************************************************//
-
-            storage = !! function () {
-                var result, uid = +new Date();
-                try {
-                    localStorage.setItem(uid, uid);
-                    result = localStorage.getItem(uid) == uid;
-                    localStorage.removeItem(uid);
-                    return result;
-                } catch (e) {}
-            }() && localStorage;
-
-            //*****************************************************************//
-            /////////////////////////// SET/GET KEYS ////////////////////////////
-            //*****************************************************************//
-
-            // TODO : Push state does not work on IE9, try to find a way to detect IE and use a seperate filter
-
-
-            if (storage && self.o.localStorage) {
-
-                if (self.o.ajaxnav === true) {
-                    widget_url = location.hash.replace(/^#/, '');
-
-                    keySettings = 'Plugin_settings_' + widget_url + '_' + self.objId;
-                    getKeySettings = localStorage.getItem(keySettings);
-
-                    keyPosition = 'Plugin_position_' + widget_url + '_' + self.objId;
-                    getKeyPosition = localStorage.getItem(keyPosition);
-
-                    //console.log("from jarvis widget " + widget_url);
-                    //console.log(self.o.ajaxnav + " if")
-
-                } else {
-
-                    keySettings = 'jarvisWidgets_settings_' + location.pathname + '_' + self.objId;
-                    getKeySettings = localStorage.getItem(keySettings);
-
-                    keyPosition = 'jarvisWidgets_position_' + location.pathname + '_' + self.objId;
-                    getKeyPosition = localStorage.getItem(keyPosition);
-                    //console.log(self.o.ajaxnav + " else")
-
-                } // end else
-
-            } // end if
-
-
-
-            //*****************************************************************//
-            ////////////////////////// TOUCH SUPPORT ////////////////////////////
-            //*****************************************************************//
-
-            /**
-             * Check for touch support and set right click events.
-             **/
-            if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-                clickEvent = 'touchstart';
-                //click tap
-            } else {
-                clickEvent = 'click';
-            }
-
-        },
 
         /**
          * Function for the indicator image.
@@ -135,7 +68,7 @@
             var self = this;
             if (self.o.indicator === true) {
                 elm.parents(self.o.widgets)
-                    .find('.jarviswidget-loader')
+                    .find('.jarviswidget-loader:first')
                     .stop(true, true)
                     .fadeIn(100)
                     .delay(self.o.indicatorTime)
@@ -244,15 +177,39 @@
                             self.o.afterLoad.call(this, awidget);
                         }
                     }
+
+					self = null;
                 });
 
             /**
              * Run function for the indicator image.
              **/
-            self._runLoaderWidget(loader);
+            this._runLoaderWidget(loader);
 
         },
 
+		_loadKeys : function () {
+			
+			var self = this;
+
+			//*****************************************************************//
+            /////////////////////////// SET/GET KEYS ////////////////////////////
+            //*****************************************************************//
+
+            // TODO : Push state does not work on IE9, try to find a way to detect IE and use a seperate filter
+
+			if (self.o.ajaxnav === true) {
+				var widget_url = location.hash.replace(/^#/, '');
+				self.storage.keySettings = 'Plugin_settings_' + widget_url + '_' + self.objId;
+				self.storage.keyPosition = 'Plugin_position_' + widget_url + '_' + self.objId;
+			} else if (self.initialized === false) {
+				var widget_url = self.o.pageKey || location.pathname;
+				self.storage.keySettings = 'jarvisWidgets_settings_' + widget_url + '_' + self.objId;
+				self.storage.keyPosition = 'jarvisWidgets_position_' + widget_url + '_' + self.objId;
+			}
+
+		},
+ 
         /**
          * Save all settings to the localStorage.
          *
@@ -261,46 +218,44 @@
         _saveSettingsWidget: function () {
 
             var self = this;
+			var storage = self.storage;
 
-            self._settings();
+			self._loadKeys();
 
-            if (storage && self.o.localStorage) {
-                var storeSettings = [];
+			var storeSettings = self.obj.find(self.o.widgets)
+				.map(function () {
+					var storeSettingsStr = {};
+					storeSettingsStr.id = $(this)
+						.attr('id');
+					storeSettingsStr.style = $(this)
+						.attr('data-widget-attstyle');
+					storeSettingsStr.title = $(this)
+						.children('header')
+						.children('h2')
+						.text();
+					storeSettingsStr.hidden = ($(this)
+						.css('display') == 'none' ? 1 : 0);
+					storeSettingsStr.collapsed = ($(this)
+						.hasClass('jarviswidget-collapsed') ? 1 : 0);
+					return storeSettingsStr;
+				}).get();
 
-                self.obj.find(self.o.widgets)
-                    .each(function () {
-                        var storeSettingsStr = {};
-                        storeSettingsStr.id = $(this)
-                            .attr('id');
-                        storeSettingsStr.style = $(this)
-                            .attr('data-widget-attstyle');
-                        storeSettingsStr.title = $(this)
-                            .children('header')
-                            .children('h2')
-                            .text();
-                        storeSettingsStr.hidden = ($(this)
-                            .is(':hidden') ? 1 : 0);
-                        storeSettingsStr.collapsed = ($(this)
-                            .hasClass('jarviswidget-collapsed') ? 1 : 0);
-                        storeSettings.push(storeSettingsStr);
-                    });
+			var storeSettingsObj = JSON.stringify({
+				'widget': storeSettings
+			});
 
-                storeSettingsObj = JSON.stringify({
-                    'widget': storeSettings
-                });
-
-                /* Place it in the storage(only if needed) */
-                if (getKeySettings != storeSettingsObj) {
-                    localStorage.setItem(keySettings, storeSettingsObj);
-                }
-            }
+			/* Place it in the storage(only if needed) */
+			if (storage.enabled && storage.getKeySettings != storeSettingsObj) {
+				localStorage.setItem(storage.keySettings, storeSettingsObj);
+				storage.getKeySettings = storeSettingsObj;
+			}
 
             /**
              * Run the callback function.
              **/
             
             if (typeof self.o.onSave == 'function') {
-                self.o.onSave.call(this, null, storeSettingsObj);
+                self.o.onSave.call(this, null, storeSettingsObj, storage.keySettings);
             }
         },
 
@@ -312,44 +267,39 @@
         _savePositionWidget: function () {
 
             var self = this;
+			var storage = self.storage;
 
-            self._settings();
+			self._loadKeys();
 
-            if (storage && self.o.localStorage) {
-                var mainArr = [];
+			var mainArr = self.obj.find(self.o.grid + '.sortable-grid')
+				.map(function () {
+					var subArr = $(this)
+						.children(self.o.widgets)
+						.map(function () {
+							return {
+								'id': $(this).attr('id')
+							};
+						}).get();
+					return {
+						'section': subArr
+					};
+				}).get();
 
-                self.obj.find(self.o.grid + '.sortable-grid')
-                    .each(function () {
-                        var subArr = [];
-                        $(this)
-                            .children(self.o.widgets)
-                            .each(function () {
-                                var subObj = {};
-                                subObj.id = $(this)
-                                    .attr('id');
-                                subArr.push(subObj);
-                            });
-                        var out = {
-                            'section': subArr
-                        };
-                        mainArr.push(out);
-                    });
+			var storePositionObj = JSON.stringify({
+				'grid': mainArr
+			});
 
-                var storePositionObj = JSON.stringify({
-                    'grid': mainArr
-                });
-
-                /* Place it in the storage(only if needed) */
-                if (getKeyPosition != storePositionObj) {
-                    localStorage.setItem(keyPosition, storePositionObj, null);
-                }
-            }
+			/* Place it in the storage(only if needed) */
+			if (storage.enabled && storage.getKeyPosition != storePositionObj) {
+				localStorage.setItem(storage.keyPosition, storePositionObj);
+				storage.getKeyPosition = storePositionObj
+			}
 
             /**
              * Run the callback function.
              **/
             if (typeof self.o.onSave == 'function') {
-                self.o.onSave.call(this, storePositionObj);
+                self.o.onSave.call(this, storePositionObj, storage.keyPosition);
             }
         },
 
@@ -361,8 +311,10 @@
         init: function () {
 
             var self = this;
+			
+			if (self.initialized) return;
 
-            self._settings();
+            self._initStorage(self.storage);
 
             /**
              * Force users to use an id(it's needed for the local storage).
@@ -402,9 +354,9 @@
             /**
              * Run if data is present.
              **/
-            if (storage && self.o.localStorage && getKeyPosition) {
+            if (self.storage.enabled && self.storage.getKeyPosition) {
 
-                var jsonPosition = JSON.parse(getKeyPosition);
+                var jsonPosition = JSON.parse(self.storage.getKeyPosition);
 
                 /**
                  * Loop the data, and put every widget on the right place.
@@ -426,9 +378,9 @@
             /**
              * Run if data is present.
              **/
-            if (storage && self.o.localStorage && getKeySettings) {
+            if (self.storage.enabled && self.storage.getKeySettings) {
 
-                var jsonSettings = JSON.parse(getKeySettings);
+                var jsonSettings = JSON.parse(self.storage.getKeySettings);
 
                 /**
                  * Loop the data and hide/show the widgets and set the inputs in
@@ -563,7 +515,7 @@
                      **/
                     if (self.o.editButton === true && tWidget.data('widget-editbutton') === undefined) {
                         editBtn =
-                            '<a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="Edit Title" data-placement="bottom"><i class="' +
+                            '<a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="Edit" data-placement="bottom"><i class="' +
                             self.editClass[0] + '"></i></a>';
                     } else {
                         editBtn = '';
@@ -762,10 +714,10 @@
              * Notice that this part needs the jquery-ui core to work.
              **/
             if (self.o.sortable === true && jQuery.ui) {
-                var sortItem = self.obj.find('.sortable-grid')
+                var sortItem = self.obj.find(self.o.grid + '.sortable-grid')
                     .not('[data-widget-excludegrid]');
                 sortItem.sortable({
-                    items: sortItem.find('.jarviswidget-sortable'),
+                    items: sortItem.find(self.o.widgets + '.jarviswidget-sortable'),
                     connectWith: sortItem,
                     placeholder: self.o.placeholderClass,
                     cursor: 'move',
@@ -807,12 +759,13 @@
                  * Show and hide the buttons.
                  **/
                 self.widget.children('header')
-                    .hover(function () {
+                    .on('mouseenter.' + pluginName, function () {
                         $(this)
                             .children(self.o.pwCtrls)
                             .stop(true, true)
                             .fadeTo(100, 1.0);
-                    }, function () {
+                    })
+					.on('mouseleave.' + pluginName, function () {
                         $(this)
                             .children(self.o.pwCtrls)
                             .stop(true, true)
@@ -830,59 +783,63 @@
             ///////////////////// DELETE LOCAL STORAGE KEYS /////////////////////
             //*****************************************************************//
 
-            /**
-             * Delete the settings key.
-             **/
-            $(self.o.deleteSettingsKey)
-                .on(clickEvent, this, function (e) {
-                    if (storage && self.o.localStorage) {
+			if (self.storage.enabled) {
+				/**
+				 * Delete the settings key.
+				 **/
+				$(self.o.deleteSettingsKey)
+					.on(clickEvent, this, function (e) {
                         var cleared = confirm(self.o.settingsKeyLabel);
                         if (cleared) {
                             localStorage.removeItem(keySettings);
                         }
-                    }
-                    e.preventDefault();
-                });
-
-            /**
-             * Delete the position key.
-             **/
-            $(self.o.deletePositionKey)
-                .on(clickEvent, this, function (e) {
-                    if (storage && self.o.localStorage) {
+						e.preventDefault();
+					});
+				/**
+				 * Delete the position key.
+				 **/
+				$(self.o.deletePositionKey)
+					.on(clickEvent, this, function (e) {
                         var cleared = confirm(self.o.positionKeyLabel);
                         if (cleared) {
                             localStorage.removeItem(keyPosition);
                         }
-                    }
-                    e.preventDefault();
-                });
+						e.preventDefault();
+					});
+			}
+
+			initialized = true;
+        },
+
+        /**
+         * Initialize storage.
+         *
+         * @param:
+         **/
+        _initStorage: function (storage) {
 
             //*****************************************************************//
-            ///////////////////////// CREATE NEW KEYS  //////////////////////////
+            //////////////////////// LOCALSTORAGE CHECK /////////////////////////
             //*****************************************************************//
 
-            /**
-             * Create new keys if non are present.
-             **/
-            if (storage && self.o.localStorage) {
+            storage.enabled = storage.enabled && !! function () {
+                var result, uid = +new Date();
+                try {
+                    localStorage.setItem(uid, uid);
+                    result = localStorage.getItem(uid) == uid;
+                    localStorage.removeItem(uid);
+                    return result;
+                } catch (e) {}
+            }();
 
-                /**
-                 * If the local storage key (keySettings) is empty or
-                 * does not excite, create one and fill it.
-                 **/
-                if (getKeySettings === null || getKeySettings.length < 1) {
-                    self._saveSettingsWidget();
-                }
+			this._loadKeys();
 
-                /**
-                 * If the local storage key (keyPosition) is empty or
-                 * does not excite, create one and fill it.
-                 **/
-                if (getKeyPosition === null || getKeyPosition.length < 1) {
-                    self._savePositionWidget();
-                }
-            }
+            if (storage.enabled) {
+
+				storage.getKeySettings = localStorage.getItem(storage.keySettings);
+				storage.getKeyPosition = localStorage.getItem(storage.keyPosition);
+				
+            } // end if
 
         },
 
@@ -895,7 +852,7 @@
 
             var self = this;
 
-            self._settings();
+            var headers = self.widget.children('header');
 
             //*****************************************************************//
             /////////////////////////// TOGGLE WIDGETS //////////////////////////
@@ -904,7 +861,7 @@
             /**
              * Allow users to toggle the content of the widgets.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-toggle-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-toggle-btn', function (e) {
 
                 var tWidget = $(this);
                 var pWidget = tWidget.parents(self.o.widgets);
@@ -966,7 +923,7 @@
                     var heightWindow = $(window)
                         .height();
                     var heightHeader = $('#jarviswidget-fullscreen-mode')
-                        .find(self.o.widgets)
+                        .children(self.o.widgets)
                         .children('header')
                         .height();
 
@@ -974,7 +931,7 @@
                      * Setting the height to the right widget.
                      **/
                     $('#jarviswidget-fullscreen-mode')
-                        .find(self.o.widgets)
+                        .children(self.o.widgets)
                         .children('div')
                         .height(heightWindow - heightHeader - 15);
                 }
@@ -983,7 +940,7 @@
             /**
              * On click go to fullscreen mode.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-fullscreen-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-fullscreen-btn', function (e) {
 
                 var thisWidget = $(this)
                     .parents(self.o.widgets);
@@ -1014,7 +971,7 @@
                         .children('div')
                         .removeAttr('style')
                         .end()
-                        .find('.jarviswidget-fullscreen-btn')
+                        .find('.jarviswidget-fullscreen-btn:first')
                         .children()
                         .removeClass(self.fullscreenClass[1])
                         .addClass(self.fullscreenClass[0])
@@ -1045,7 +1002,7 @@
 					 **/
                     thisWidget.wrap('<div id="jarviswidget-fullscreen-mode"/>')
                         .parent()
-                        .find('.jarviswidget-fullscreen-btn')
+                        .find('.jarviswidget-fullscreen-btn:first')
                         .children()
                         .removeClass(self.fullscreenClass[0])
                         .addClass(self.fullscreenClass[1])
@@ -1081,7 +1038,7 @@
              * Run the set fullscreen height function when the screen resizes.
              **/
             $(window)
-                .resize(function () {
+                .on('resize.' + pluginName, function () {
 
                     /**
                      * Run the set height function.
@@ -1096,7 +1053,7 @@
             /**
              * Allow users to show/hide a edit box.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-edit-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-edit-btn', function (e) {
 
                 var tWidget = $(this)
                     .parents(self.o.widgets);
@@ -1157,7 +1114,7 @@
             /**
              * Set a custom style.
              **/
-            self.widget.on(clickEvent, '[data-widget-setstyle]', function (e) {
+            headers.on(clickEvent, '[data-widget-setstyle]', function (e) {
 
                 var val = $(this)
                     .data('widget-setstyle');
@@ -1203,7 +1160,7 @@
             /**
              * Allow users to show/hide a edit box.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-custom-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-custom-btn', function (e) {
 
                 var w = $(this)
                     .parents(self.o.widgets);
@@ -1259,7 +1216,7 @@
             /**
              * Allow users to delete the widgets.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-delete-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-delete-btn', function (e) {
 
                 var tWidget = $(this)
                     .parents(self.o.widgets);
@@ -1277,7 +1234,7 @@
                    $.SmartMessageBox({
 	                    title: "<i class='fa fa-times' style='color:#ed1c24'></i> " + self.o.labelDelete +
 	                        ' "' + widTitle + '"',
-	                    content: "Warning: This action cannot be undone",
+	                    content: self.o.deleteMsg,
 	                    buttons: '[No][Yes]'
 	                }, function (ButtonPressed) {
 	                    //console.log(ButtonPressed);
@@ -1338,7 +1295,7 @@
             /**
              * Refresh ajax upon clicking refresh link.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-refresh-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-refresh-btn', function (e) {
 
                 /**
                  * Variables.
@@ -1363,6 +1320,8 @@
 
                 e.preventDefault();
             });
+			
+			headers = null;
         },
 
         /**
@@ -1371,8 +1330,15 @@
          * @param:
          **/
         destroy: function () {
-            var self = this;
-            self.widget.off('click', self._clickEvents());
+            var self = this, 
+            namespace = '.' + pluginName, 
+            sortItem = self.obj.find(self.o.grid + '.sortable-grid').not('[data-widget-excludegrid]');
+            
+            sortItem.sortable('destroy');
+            self.widget.children('header').off(namespace);
+			$(self.o.deleteSettingsKey).off(namespace);
+			$(self.o.deletePositionKey).off(namespace);
+			$(window).off(namespace);
             self.obj.removeData(pluginName);
         }
     };
@@ -1381,8 +1347,8 @@
         return this.each(function () {
             var $this = $(this);
             var data = $this.data(pluginName);
-            var options = typeof option == 'object' && option;
             if (!data) {
+				var options = typeof option == 'object' && option;
                 $this.data(pluginName, (data = new Plugin(this, options)));
             }
             if (typeof option == 'string') {
@@ -1412,6 +1378,7 @@
         toggleSpeed: 200,
         onToggle: function () {},
         deleteButton: true,
+        deleteMsg:'Warning: This action cannot be undone',
         deleteClass: 'trashcan-10',
         deleteSpeed: 200,
         onDelete: function () {},

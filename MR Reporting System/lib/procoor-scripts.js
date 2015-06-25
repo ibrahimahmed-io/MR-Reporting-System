@@ -36335,7 +36335,7 @@ if (typeof jQuery === 'undefined') {
   Modal.prototype.adjustBackdrop = function () {
     this.$backdrop
       .css('height', 0)
-      .css('height', this.$element[0].scrollHeight - 50)
+      .css('height', this.$element[0].scrollHeight)
   }
 
   Modal.prototype.adjustDialog = function () {
@@ -41991,166 +41991,6 @@ $(function(){
 </script>
 **/
 
-/*global moment*/
-
-(function ($) {
-    "use strict";
-    
-    var Constructor = function (options) {
-        this.init('combodate', options, Constructor.defaults);
-        
-        //by default viewformat equals to format
-        if(!this.options.viewformat) {
-            this.options.viewformat = this.options.format;
-        }        
-        
-        //try parse combodate config defined as json string in data-combodate
-        options.combodate = $.fn.editableutils.tryParseJson(options.combodate, true);
-
-        //overriding combodate config (as by default jQuery extend() is not recursive)
-        this.options.combodate = $.extend({}, Constructor.defaults.combodate, options.combodate, {
-            format: this.options.format,
-            template: this.options.template
-        });
-    };
-
-    $.fn.editableutils.inherit(Constructor, $.fn.editabletypes.abstractinput);    
-    
-    $.extend(Constructor.prototype, {
-        render: function () {
-            this.$input.combodate(this.options.combodate);
-                    
-            if($.fn.editableform.engine === 'bs3') {
-                this.$input.siblings().find('select').addClass('form-control');
-            }
-            
-            if(this.options.inputclass) {
-                this.$input.siblings().find('select').addClass(this.options.inputclass);
-            }            
-            //"clear" link
-            /*
-            if(this.options.clear) {
-                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.clear();
-                }, this));
-                
-                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-            } 
-            */               
-        },
-        
-        value2html: function(value, element) {
-            var text = value ? value.format(this.options.viewformat) : '';
-            //$(element).text(text);
-            Constructor.superclass.value2html.call(this, text, element);  
-        },
-
-        html2value: function(html) {
-            return html ? moment(html, this.options.viewformat) : null;
-        },   
-        
-        value2str: function(value) {
-            return value ? value.format(this.options.format) : '';
-       }, 
-       
-       str2value: function(str) {
-           return str ? moment(str, this.options.format) : null;
-       }, 
-       
-       value2submit: function(value) {
-           return this.value2str(value);
-       },                    
-
-       value2input: function(value) {
-           this.$input.combodate('setValue', value);
-       },
-        
-       input2value: function() { 
-           return this.$input.combodate('getValue', null);
-       },       
-       
-       activate: function() {
-           this.$input.siblings('.combodate').find('select').eq(0).focus();
-       },
-       
-       /*
-       clear:  function() {
-          this.$input.data('datepicker').date = null;
-          this.$input.find('.active').removeClass('active');
-       },
-       */
-       
-       autosubmit: function() {
-           
-       }
-
-    });
-    
-    Constructor.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        /**
-        @property tpl 
-        @default <input type="text">
-        **/         
-        tpl:'<input type="text">',
-        /**
-        @property inputclass 
-        @default null
-        **/         
-        inputclass: null,
-        /**
-        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-        See list of tokens in [momentjs docs](http://momentjs.com/docs/#/parsing/string-format)  
-        
-        @property format 
-        @type string
-        @default YYYY-MM-DD
-        **/         
-        format:'YYYY-MM-DD',
-        /**
-        Format used for displaying date. Also applied when converting date from element's text on init.   
-        If not specified equals to `format`.
-        
-        @property viewformat 
-        @type string
-        @default null
-        **/          
-        viewformat: null,        
-        /**
-        Template used for displaying dropdowns.
-        
-        @property template 
-        @type string
-        @default D / MMM / YYYY
-        **/          
-        template: 'D / MMM / YYYY',  
-        /**
-        Configuration of combodate.
-        Full list of options: http://vitalets.github.com/combodate/#docs
-        
-        @property combodate 
-        @type object
-        @default null
-        **/
-        combodate: null
-        
-        /*
-        (not implemented yet)
-        Text shown as clear date button. 
-        If <code>false</code> clear button will not be rendered.
-        
-        @property clear 
-        @type boolean|string
-        @default 'x clear'         
-        */
-        //clear: '&times; clear'
-    });   
-
-    $.fn.editabletypes.combodate = Constructor;
-
-}(window.jQuery));
-
 /*
 Editableform based on Twitter Bootstrap 3
 */
@@ -42203,10 +42043,10 @@ Editableform based on Twitter Bootstrap 3
     //buttons
     $.fn.editableform.buttons = 
       '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
-        '<i class="glyphicon glyphicon-ok"></i>'+
+        '<i class="fa fa-check"></i>'+
       '</button>'+
       '<button type="button" class="btn btn-default btn-sm editable-cancel">'+
-        '<i class="glyphicon glyphicon-remove"></i>'+
+        '<i class="fa fa-remove"></i>'+
       '</button>';         
     
     //error classes
@@ -42441,1894 +42281,1820 @@ Editableform based on Twitter Bootstrap 3
     });
 
 }(window.jQuery));
-
-/* =========================================================
- * bootstrap-datepicker.js
- * http://www.eyecon.ro/bootstrap-datepicker
- * =========================================================
+/*!
+ * Datepicker for Bootstrap v1.5.0-dev (https://github.com/eternicode/bootstrap-datepicker)
+ *
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * ========================================================= */
-
-(function( $ ) {
-
-	function UTCDate(){
-		return new Date(Date.UTC.apply(Date, arguments));
-	}
-	function UTCToday(){
-		var today = new Date();
-		return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
-	}
-
-	// Picker object
-
-	var Datepicker = function(element, options) {
-		var that = this;
-
-		this._process_options(options);
-
-		this.element = $(element);
-		this.isInline = false;
-		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.add-on, .btn') : false;
-		this.hasInput = this.component && this.element.find('input').length;
-		if(this.component && this.component.length === 0)
-			this.component = false;
-
-		this.picker = $(DPGlobal.template);
-		this._buildEvents();
-		this._attachEvents();
-
-		if(this.isInline) {
-			this.picker.addClass('datepicker-inline').appendTo(this.element);
-		} else {
-			this.picker.addClass('datepicker-dropdown dropdown-menu');
-		}
-
-		if (this.o.rtl){
-			this.picker.addClass('datepicker-rtl');
-			this.picker.find('.prev i, .next i')
-						.toggleClass('icon-arrow-left icon-arrow-right');
-		}
-
-
-		this.viewMode = this.o.startView;
-
-		if (this.o.calendarWeeks)
-			this.picker.find('tfoot th.today')
-						.attr('colspan', function(i, val){
-							return parseInt(val) + 1;
-						});
-
-		this._allow_update = false;
-
-		this.setStartDate(this.o.startDate);
-		this.setEndDate(this.o.endDate);
-		this.setDaysOfWeekDisabled(this.o.daysOfWeekDisabled);
-
-		this.fillDow();
-		this.fillMonths();
-
-		this._allow_update = true;
-
-		this.update();
-		this.showMode();
-
-		if(this.isInline) {
-			this.show();
-		}
-	};
-
-	Datepicker.prototype = {
-		constructor: Datepicker,
-
-		_process_options: function(opts){
-			// Store raw options for reference
-			this._o = $.extend({}, this._o, opts);
-			// Processed options
-			var o = this.o = $.extend({}, this._o);
-
-			// Check if "de-DE" style date is available, if not language should
-			// fallback to 2 letter code eg "de"
-			var lang = o.language;
-			if (!dates[lang]) {
-				lang = lang.split('-')[0];
-				if (!dates[lang])
-					lang = defaults.language;
-			}
-			o.language = lang;
-
-			switch(o.startView){
-				case 2:
-				case 'decade':
-					o.startView = 2;
-					break;
-				case 1:
-				case 'year':
-					o.startView = 1;
-					break;
-				default:
-					o.startView = 0;
-			}
-
-			switch (o.minViewMode) {
-				case 1:
-				case 'months':
-					o.minViewMode = 1;
-					break;
-				case 2:
-				case 'years':
-					o.minViewMode = 2;
-					break;
-				default:
-					o.minViewMode = 0;
-			}
-
-			o.startView = Math.max(o.startView, o.minViewMode);
-
-			o.weekStart %= 7;
-			o.weekEnd = ((o.weekStart + 6) % 7);
-
-			var format = DPGlobal.parseFormat(o.format)
-			if (o.startDate !== -Infinity) {
-				o.startDate = DPGlobal.parseDate(o.startDate, format, o.language);
-			}
-			if (o.endDate !== Infinity) {
-				o.endDate = DPGlobal.parseDate(o.endDate, format, o.language);
-			}
-
-			o.daysOfWeekDisabled = o.daysOfWeekDisabled||[];
-			if (!$.isArray(o.daysOfWeekDisabled))
-				o.daysOfWeekDisabled = o.daysOfWeekDisabled.split(/[,\s]*/);
-			o.daysOfWeekDisabled = $.map(o.daysOfWeekDisabled, function (d) {
-				return parseInt(d, 10);
-			});
-		},
-		_events: [],
-		_secondaryEvents: [],
-		_applyEvents: function(evs){
-			for (var i=0, el, ev; i<evs.length; i++){
-				el = evs[i][0];
-				ev = evs[i][1];
-				el.on(ev);
-			}
-		},
-		_unapplyEvents: function(evs){
-			for (var i=0, el, ev; i<evs.length; i++){
-				el = evs[i][0];
-				ev = evs[i][1];
-				el.off(ev);
-			}
-		},
-		_buildEvents: function(){
-			if (this.isInput) { // single input
-				this._events = [
-					[this.element, {
-						focus: $.proxy(this.show, this),
-						keyup: $.proxy(this.update, this),
-						keydown: $.proxy(this.keydown, this)
-					}]
-				];
-			}
-			else if (this.component && this.hasInput){ // component: input + button
-				this._events = [
-					// For components that are not readonly, allow keyboard nav
-					[this.element.find('input'), {
-						focus: $.proxy(this.show, this),
-						keyup: $.proxy(this.update, this),
-						keydown: $.proxy(this.keydown, this)
-					}],
-					[this.component, {
-						click: $.proxy(this.show, this)
-					}]
-				];
-			}
-			else if (this.element.is('div')) {  // inline datepicker
-				this.isInline = true;
-			}
-			else {
-				this._events = [
-					[this.element, {
-						click: $.proxy(this.show, this)
-					}]
-				];
-			}
-
-			this._secondaryEvents = [
-				[this.picker, {
-					click: $.proxy(this.click, this)
-				}],
-				[$(window), {
-					resize: $.proxy(this.place, this)
-				}],
-				[$(document), {
-					mousedown: $.proxy(function (e) {
-						// Clicked outside the datepicker, hide it
-						if (!(
-							this.element.is(e.target) ||
-							this.element.find(e.target).size() ||
-							this.picker.is(e.target) ||
-							this.picker.find(e.target).size()
-						)) {
-							this.hide();
-						}
-					}, this)
-				}]
-			];
-		},
-		_attachEvents: function(){
-			this._detachEvents();
-			this._applyEvents(this._events);
-		},
-		_detachEvents: function(){
-			this._unapplyEvents(this._events);
-		},
-		_attachSecondaryEvents: function(){
-			this._detachSecondaryEvents();
-			this._applyEvents(this._secondaryEvents);
-		},
-		_detachSecondaryEvents: function(){
-			this._unapplyEvents(this._secondaryEvents);
-		},
-		_trigger: function(event, altdate){
-			var date = altdate || this.date,
-				local_date = new Date(date.getTime() + (date.getTimezoneOffset()*60000));
-
-			this.element.trigger({
-				type: event,
-				date: local_date,
-				format: $.proxy(function(altformat){
-					var format = altformat || this.o.format;
-					return DPGlobal.formatDate(date, format, this.o.language);
-				}, this)
-			});
-		},
-
-		show: function(e) {
-			if (!this.isInline)
-				this.picker.appendTo('body');
-			this.picker.show();
-			this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
-			this.place();
-			this._attachSecondaryEvents();
-			if (e) {
-				e.preventDefault();
-			}
-			this._trigger('show');
-		},
-
-		hide: function(e){
-			if(this.isInline) return;
-			if (!this.picker.is(':visible')) return;
-			this.picker.hide().detach();
-			this._detachSecondaryEvents();
-			this.viewMode = this.o.startView;
-			this.showMode();
-
-			if (
-				this.o.forceParse &&
-				(
-					this.isInput && this.element.val() ||
-					this.hasInput && this.element.find('input').val()
-				)
-			)
-				this.setValue();
-			this._trigger('hide');
-		},
-
-		remove: function() {
-			this.hide();
-			this._detachEvents();
-			this._detachSecondaryEvents();
-			this.picker.remove();
-			delete this.element.data().datepicker;
-			if (!this.isInput) {
-				delete this.element.data().date;
-			}
-		},
-
-		getDate: function() {
-			var d = this.getUTCDate();
-			return new Date(d.getTime() + (d.getTimezoneOffset()*60000));
-		},
-
-		getUTCDate: function() {
-			return this.date;
-		},
-
-		setDate: function(d) {
-			this.setUTCDate(new Date(d.getTime() - (d.getTimezoneOffset()*60000)));
-		},
-
-		setUTCDate: function(d) {
-			this.date = d;
-			this.setValue();
-		},
-
-		setValue: function() {
-			var formatted = this.getFormattedDate();
-			if (!this.isInput) {
-				if (this.component){
-					this.element.find('input').val(formatted);
-				}
-			} else {
-				this.element.val(formatted);
-			}
-		},
-
-		getFormattedDate: function(format) {
-			if (format === undefined)
-				format = this.o.format;
-			return DPGlobal.formatDate(this.date, format, this.o.language);
-		},
-
-		setStartDate: function(startDate){
-			this._process_options({startDate: startDate});
-			this.update();
-			this.updateNavArrows();
-		},
-
-		setEndDate: function(endDate){
-			this._process_options({endDate: endDate});
-			this.update();
-			this.updateNavArrows();
-		},
-
-		setDaysOfWeekDisabled: function(daysOfWeekDisabled){
-			this._process_options({daysOfWeekDisabled: daysOfWeekDisabled});
-			this.update();
-			this.updateNavArrows();
-		},
-
-		place: function(){
-						if(this.isInline) return;
-			var zIndex = parseInt(this.element.parents().filter(function() {
-							return $(this).css('z-index') != 'auto';
-						}).first().css('z-index'))+10;
-			var offset = this.component ? this.component.parent().offset() : this.element.offset();
-			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(true);
-			this.picker.css({
-				top: offset.top + height,
-				left: offset.left,
-				zIndex: zIndex
-			});
-		},
-
-		_allow_update: true,
-		update: function(){
-			if (!this._allow_update) return;
-
-			var date, fromArgs = false;
-			if(arguments && arguments.length && (typeof arguments[0] === 'string' || arguments[0] instanceof Date)) {
-				date = arguments[0];
-				fromArgs = true;
-			} else {
-				date = this.isInput ? this.element.val() : this.element.data('date') || this.element.find('input').val();
-				delete this.element.data().date;
-			}
-
-			this.date = DPGlobal.parseDate(date, this.o.format, this.o.language);
-
-			if(fromArgs) this.setValue();
-
-			if (this.date < this.o.startDate) {
-				this.viewDate = new Date(this.o.startDate);
-			} else if (this.date > this.o.endDate) {
-				this.viewDate = new Date(this.o.endDate);
-			} else {
-				this.viewDate = new Date(this.date);
-			}
-			this.fill();
-		},
-
-		fillDow: function(){
-			var dowCnt = this.o.weekStart,
-			html = '<tr>';
-			if(this.o.calendarWeeks){
-				var cell = '<th class="cw">&nbsp;</th>';
-				html += cell;
-				this.picker.find('.datepicker-days thead tr:first-child').prepend(cell);
-			}
-			while (dowCnt < this.o.weekStart + 7) {
-				html += '<th class="dow">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</th>';
-			}
-			html += '</tr>';
-			this.picker.find('.datepicker-days thead').append(html);
-		},
-
-		fillMonths: function(){
-			var html = '',
-			i = 0;
-			while (i < 12) {
-				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
-			}
-			this.picker.find('.datepicker-months td').html(html);
-		},
-
-		setRange: function(range){
-			if (!range || !range.length)
-				delete this.range;
-			else
-				this.range = $.map(range, function(d){ return d.valueOf(); });
-			this.fill();
-		},
-
-		getClassNames: function(date){
-			var cls = [],
-				year = this.viewDate.getUTCFullYear(),
-				month = this.viewDate.getUTCMonth(),
-				currentDate = this.date.valueOf(),
-				today = new Date();
-			if (date.getUTCFullYear() < year || (date.getUTCFullYear() == year && date.getUTCMonth() < month)) {
-				cls.push('old');
-			} else if (date.getUTCFullYear() > year || (date.getUTCFullYear() == year && date.getUTCMonth() > month)) {
-				cls.push('new');
-			}
-			// Compare internal UTC date with local today, not UTC today
-			if (this.o.todayHighlight &&
-				date.getUTCFullYear() == today.getFullYear() &&
-				date.getUTCMonth() == today.getMonth() &&
-				date.getUTCDate() == today.getDate()) {
-				cls.push('today');
-			}
-			if (currentDate && date.valueOf() == currentDate) {
-				cls.push('active');
-			}
-			if (date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
-				$.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1) {
-				cls.push('disabled');
-			}
-			if (this.range){
-				if (date > this.range[0] && date < this.range[this.range.length-1]){
-					cls.push('range');
-				}
-				if ($.inArray(date.valueOf(), this.range) != -1){
-					cls.push('selected');
-				}
-			}
-			return cls;
-		},
-
-		fill: function() {
-			var d = new Date(this.viewDate),
-				year = d.getUTCFullYear(),
-				month = d.getUTCMonth(),
-				startYear = this.o.startDate !== -Infinity ? this.o.startDate.getUTCFullYear() : -Infinity,
-				startMonth = this.o.startDate !== -Infinity ? this.o.startDate.getUTCMonth() : -Infinity,
-				endYear = this.o.endDate !== Infinity ? this.o.endDate.getUTCFullYear() : Infinity,
-				endMonth = this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
-				currentDate = this.date && this.date.valueOf(),
-				tooltip;
-			this.picker.find('.datepicker-days thead th.datepicker-switch')
-						.text(dates[this.o.language].months[month]+' '+year);
-			this.picker.find('tfoot th.today')
-						.text(dates[this.o.language].today)
-						.toggle(this.o.todayBtn !== false);
-			this.picker.find('tfoot th.clear')
-						.text(dates[this.o.language].clear)
-						.toggle(this.o.clearBtn !== false);
-			this.updateNavArrows();
-			this.fillMonths();
-			var prevMonth = UTCDate(year, month-1, 28,0,0,0,0),
-				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
-			prevMonth.setUTCDate(day);
-			prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7)%7);
-			var nextMonth = new Date(prevMonth);
-			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
-			nextMonth = nextMonth.valueOf();
-			var html = [];
-			var clsName;
-			while(prevMonth.valueOf() < nextMonth) {
-				if (prevMonth.getUTCDay() == this.o.weekStart) {
-					html.push('<tr>');
-					if(this.o.calendarWeeks){
-						// ISO 8601: First week contains first thursday.
-						// ISO also states week starts on Monday, but we can be more abstract here.
-						var
-							// Start of current week: based on weekstart/current date
-							ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
-							// Thursday of this week
-							th = new Date(+ws + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
-							// First Thursday of year, year from thursday
-							yth = new Date(+(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
-							// Calendar week: ms between thursdays, div ms per day, div 7 days
-							calWeek =  (th - yth) / 864e5 / 7 + 1;
-						html.push('<td class="cw">'+ calWeek +'</td>');
-
-					}
-				}
-				clsName = this.getClassNames(prevMonth);
-				clsName.push('day');
-
-				var before = this.o.beforeShowDay(prevMonth);
-				if (before === undefined)
-					before = {};
-				else if (typeof(before) === 'boolean')
-					before = {enabled: before};
-				else if (typeof(before) === 'string')
-					before = {classes: before};
-				if (before.enabled === false)
-					clsName.push('disabled');
-				if (before.classes)
-					clsName = clsName.concat(before.classes.split(/\s+/));
-				if (before.tooltip)
-					tooltip = before.tooltip;
-
-				clsName = $.unique(clsName);
-				html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>'+prevMonth.getUTCDate() + '</td>');
-				if (prevMonth.getUTCDay() == this.o.weekEnd) {
-					html.push('</tr>');
-				}
-				prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
-			}
-			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
-			var currentYear = this.date && this.date.getUTCFullYear();
-
-			var months = this.picker.find('.datepicker-months')
-						.find('th:eq(1)')
-							.text(year)
-							.end()
-						.find('span').removeClass('active');
-			if (currentYear && currentYear == year) {
-				months.eq(this.date.getUTCMonth()).addClass('active');
-			}
-			if (year < startYear || year > endYear) {
-				months.addClass('disabled');
-			}
-			if (year == startYear) {
-				months.slice(0, startMonth).addClass('disabled');
-			}
-			if (year == endYear) {
-				months.slice(endMonth+1).addClass('disabled');
-			}
-
-			html = '';
-			year = parseInt(year/10, 10) * 10;
-			var yearCont = this.picker.find('.datepicker-years')
-								.find('th:eq(1)')
-									.text(year + '-' + (year + 9))
-									.end()
-								.find('td');
-			year -= 1;
-			for (var i = -1; i < 11; i++) {
-				html += '<span class="year'+(i == -1 ? ' old' : i == 10 ? ' new' : '')+(currentYear == year ? ' active' : '')+(year < startYear || year > endYear ? ' disabled' : '')+'">'+year+'</span>';
-				year += 1;
-			}
-			yearCont.html(html);
-		},
-
-		updateNavArrows: function() {
-			if (!this._allow_update) return;
-
-			var d = new Date(this.viewDate),
-				year = d.getUTCFullYear(),
-				month = d.getUTCMonth();
-			switch (this.viewMode) {
-				case 0:
-					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth()) {
-						this.picker.find('.prev').css({visibility: 'hidden'});
-					} else {
-						this.picker.find('.prev').css({visibility: 'visible'});
-					}
-					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()) {
-						this.picker.find('.next').css({visibility: 'hidden'});
-					} else {
-						this.picker.find('.next').css({visibility: 'visible'});
-					}
-					break;
-				case 1:
-				case 2:
-					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear()) {
-						this.picker.find('.prev').css({visibility: 'hidden'});
-					} else {
-						this.picker.find('.prev').css({visibility: 'visible'});
-					}
-					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear()) {
-						this.picker.find('.next').css({visibility: 'hidden'});
-					} else {
-						this.picker.find('.next').css({visibility: 'visible'});
-					}
-					break;
-			}
-		},
-
-		click: function(e) {
-			e.preventDefault();
-			var target = $(e.target).closest('span, td, th');
-			if (target.length == 1) {
-				switch(target[0].nodeName.toLowerCase()) {
-					case 'th':
-						switch(target[0].className) {
-							case 'datepicker-switch':
-								this.showMode(1);
-								break;
-							case 'prev':
-							case 'next':
-								var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className == 'prev' ? -1 : 1);
-								switch(this.viewMode){
-									case 0:
-										this.viewDate = this.moveMonth(this.viewDate, dir);
-										break;
-									case 1:
-									case 2:
-										this.viewDate = this.moveYear(this.viewDate, dir);
-										break;
-								}
-								this.fill();
-								break;
-							case 'today':
-								var date = new Date();
-								date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
-
-								this.showMode(-2);
-								var which = this.o.todayBtn == 'linked' ? null : 'view';
-								this._setDate(date, which);
-								break;
-							case 'clear':
-								var element;
-								if (this.isInput)
-									element = this.element;
-								else if (this.component)
-									element = this.element.find('input');
-								if (element)
-									element.val("").change();
-								this._trigger('changeDate');
-								this.update();
-								if (this.o.autoclose)
-									this.hide();
-								break;
-						}
-						break;
-					case 'span':
-						if (!target.is('.disabled')) {
-							this.viewDate.setUTCDate(1);
-							if (target.is('.month')) {
-								var day = 1;
-								var month = target.parent().find('span').index(target);
-								var year = this.viewDate.getUTCFullYear();
-								this.viewDate.setUTCMonth(month);
-								this._trigger('changeMonth', this.viewDate);
-								if (this.o.minViewMode === 1) {
-									this._setDate(UTCDate(year, month, day,0,0,0,0));
-								}
-							} else {
-								var year = parseInt(target.text(), 10)||0;
-								var day = 1;
-								var month = 0;
-								this.viewDate.setUTCFullYear(year);
-								this._trigger('changeYear', this.viewDate);
-								if (this.o.minViewMode === 2) {
-									this._setDate(UTCDate(year, month, day,0,0,0,0));
-								}
-							}
-							this.showMode(-1);
-							this.fill();
-						}
-						break;
-					case 'td':
-						if (target.is('.day') && !target.is('.disabled')){
-							var day = parseInt(target.text(), 10)||1;
-							var year = this.viewDate.getUTCFullYear(),
-								month = this.viewDate.getUTCMonth();
-							if (target.is('.old')) {
-								if (month === 0) {
-									month = 11;
-									year -= 1;
-								} else {
-									month -= 1;
-								}
-							} else if (target.is('.new')) {
-								if (month == 11) {
-									month = 0;
-									year += 1;
-								} else {
-									month += 1;
-								}
-							}
-							this._setDate(UTCDate(year, month, day,0,0,0,0));
-						}
-						break;
-				}
-			}
-		},
-
-		_setDate: function(date, which){
-			if (!which || which == 'date')
-				this.date = new Date(date);
-			if (!which || which  == 'view')
-				this.viewDate = new Date(date);
-			this.fill();
-			this.setValue();
-			this._trigger('changeDate');
-			var element;
-			if (this.isInput) {
-				element = this.element;
-			} else if (this.component){
-				element = this.element.find('input');
-			}
-			if (element) {
-				element.change();
-				if (this.o.autoclose && (!which || which == 'date')) {
-					this.hide();
-				}
-			}
-		},
-
-		moveMonth: function(date, dir){
-			if (!dir) return date;
-			var new_date = new Date(date.valueOf()),
-				day = new_date.getUTCDate(),
-				month = new_date.getUTCMonth(),
-				mag = Math.abs(dir),
-				new_month, test;
-			dir = dir > 0 ? 1 : -1;
-			if (mag == 1){
-				test = dir == -1
-					// If going back one month, make sure month is not current month
-					// (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
-					? function(){ return new_date.getUTCMonth() == month; }
-					// If going forward one month, make sure month is as expected
-					// (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
-					: function(){ return new_date.getUTCMonth() != new_month; };
-				new_month = month + dir;
-				new_date.setUTCMonth(new_month);
-				// Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
-				if (new_month < 0 || new_month > 11)
-					new_month = (new_month + 12) % 12;
-			} else {
-				// For magnitudes >1, move one month at a time...
-				for (var i=0; i<mag; i++)
-					// ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
-					new_date = this.moveMonth(new_date, dir);
-				// ...then reset the day, keeping it in the new month
-				new_month = new_date.getUTCMonth();
-				new_date.setUTCDate(day);
-				test = function(){ return new_month != new_date.getUTCMonth(); };
-			}
-			// Common date-resetting loop -- if date is beyond end of month, make it
-			// end of month
-			while (test()){
-				new_date.setUTCDate(--day);
-				new_date.setUTCMonth(new_month);
-			}
-			return new_date;
-		},
-
-		moveYear: function(date, dir){
-			return this.moveMonth(date, dir*12);
-		},
-
-		dateWithinRange: function(date){
-			return date >= this.o.startDate && date <= this.o.endDate;
-		},
-
-		keydown: function(e){
-			if (this.picker.is(':not(:visible)')){
-				if (e.keyCode == 27) // allow escape to hide and re-show picker
-					this.show();
-				return;
-			}
-			var dateChanged = false,
-				dir, day, month,
-				newDate, newViewDate;
-			switch(e.keyCode){
-				case 27: // escape
-					this.hide();
-					e.preventDefault();
-					break;
-				case 37: // left
-				case 39: // right
-					if (!this.o.keyboardNavigation) break;
-					dir = e.keyCode == 37 ? -1 : 1;
-					if (e.ctrlKey){
-						newDate = this.moveYear(this.date, dir);
-						newViewDate = this.moveYear(this.viewDate, dir);
-					} else if (e.shiftKey){
-						newDate = this.moveMonth(this.date, dir);
-						newViewDate = this.moveMonth(this.viewDate, dir);
-					} else {
-						newDate = new Date(this.date);
-						newDate.setUTCDate(this.date.getUTCDate() + dir);
-						newViewDate = new Date(this.viewDate);
-						newViewDate.setUTCDate(this.viewDate.getUTCDate() + dir);
-					}
-					if (this.dateWithinRange(newDate)){
-						this.date = newDate;
-						this.viewDate = newViewDate;
-						this.setValue();
-						this.update();
-						e.preventDefault();
-						dateChanged = true;
-					}
-					break;
-				case 38: // up
-				case 40: // down
-					if (!this.o.keyboardNavigation) break;
-					dir = e.keyCode == 38 ? -1 : 1;
-					if (e.ctrlKey){
-						newDate = this.moveYear(this.date, dir);
-						newViewDate = this.moveYear(this.viewDate, dir);
-					} else if (e.shiftKey){
-						newDate = this.moveMonth(this.date, dir);
-						newViewDate = this.moveMonth(this.viewDate, dir);
-					} else {
-						newDate = new Date(this.date);
-						newDate.setUTCDate(this.date.getUTCDate() + dir * 7);
-						newViewDate = new Date(this.viewDate);
-						newViewDate.setUTCDate(this.viewDate.getUTCDate() + dir * 7);
-					}
-					if (this.dateWithinRange(newDate)){
-						this.date = newDate;
-						this.viewDate = newViewDate;
-						this.setValue();
-						this.update();
-						e.preventDefault();
-						dateChanged = true;
-					}
-					break;
-				case 13: // enter
-					this.hide();
-					e.preventDefault();
-					break;
-				case 9: // tab
-					this.hide();
-					break;
-			}
-			if (dateChanged){
-				this._trigger('changeDate');
-				var element;
-				if (this.isInput) {
-					element = this.element;
-				} else if (this.component){
-					element = this.element.find('input');
-				}
-				if (element) {
-					element.change();
-				}
-			}
-		},
-
-		showMode: function(dir) {
-			if (dir) {
-				this.viewMode = Math.max(this.o.minViewMode, Math.min(2, this.viewMode + dir));
-			}
-			/*
-				vitalets: fixing bug of very special conditions:
-				jquery 1.7.1 + webkit + show inline datepicker in bootstrap popover.
-				Method show() does not set display css correctly and datepicker is not shown.
-				Changed to .css('display', 'block') solve the problem.
-				See https://github.com/vitalets/x-editable/issues/37
-
-				In jquery 1.7.2+ everything works fine.
-			*/
-			//this.picker.find('>div').hide().filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
-			this.picker.find('>div').hide().filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
-			this.updateNavArrows();
-		}
-	};
-
-	var DateRangePicker = function(element, options){
-		this.element = $(element);
-		this.inputs = $.map(options.inputs, function(i){ return i.jquery ? i[0] : i; });
-		delete options.inputs;
-
-		$(this.inputs)
-			.datepicker(options)
-			.bind('changeDate', $.proxy(this.dateUpdated, this));
-
-		this.pickers = $.map(this.inputs, function(i){ return $(i).data('datepicker'); });
-		this.updateDates();
-	};
-	DateRangePicker.prototype = {
-		updateDates: function(){
-			this.dates = $.map(this.pickers, function(i){ return i.date; });
-			this.updateRanges();
-		},
-		updateRanges: function(){
-			var range = $.map(this.dates, function(d){ return d.valueOf(); });
-			$.each(this.pickers, function(i, p){
-				p.setRange(range);
-			});
-		},
-		dateUpdated: function(e){
-			var dp = $(e.target).data('datepicker'),
-				new_date = dp.getUTCDate(),
-				i = $.inArray(e.target, this.inputs),
-				l = this.inputs.length;
-			if (i == -1) return;
-
-			if (new_date < this.dates[i]){
-				// Date being moved earlier/left
-				while (i>=0 && new_date < this.dates[i]){
-					this.pickers[i--].setUTCDate(new_date);
-				}
-			}
-			else if (new_date > this.dates[i]){
-				// Date being moved later/right
-				while (i<l && new_date > this.dates[i]){
-					this.pickers[i++].setUTCDate(new_date);
-				}
-			}
-			this.updateDates();
-		},
-		remove: function(){
-			$.map(this.pickers, function(p){ p.remove(); });
-			delete this.element.data().datepicker;
-		}
-	};
-
-	function opts_from_el(el, prefix){
-		// Derive options from element data-attrs
-		var data = $(el).data(),
-			out = {}, inkey,
-			replace = new RegExp('^' + prefix.toLowerCase() + '([A-Z])'),
-			prefix = new RegExp('^' + prefix.toLowerCase());
-		for (var key in data)
-			if (prefix.test(key)){
-				inkey = key.replace(replace, function(_,a){ return a.toLowerCase(); });
-				out[inkey] = data[key];
-			}
-		return out;
-	}
-
-	function opts_from_locale(lang){
-		// Derive options from locale plugins
-		var out = {};
-		// Check if "de-DE" style date is available, if not language should
-		// fallback to 2 letter code eg "de"
-		if (!dates[lang]) {
-			lang = lang.split('-')[0]
-			if (!dates[lang])
-				return;
-		}
-		var d = dates[lang];
-		$.each(locale_opts, function(i,k){
-			if (k in d)
-				out[k] = d[k];
-		});
-		return out;
-	}
-
-	var old = $.fn.datepicker;
-	var datepicker = $.fn.datepicker = function ( option ) {
-		var args = Array.apply(null, arguments);
-		args.shift();
-		var internal_return,
-			this_return;
-		this.each(function () {
-			var $this = $(this),
-				data = $this.data('datepicker'),
-				options = typeof option == 'object' && option;
-			if (!data) {
-				var elopts = opts_from_el(this, 'date'),
-					// Preliminary otions
-					xopts = $.extend({}, defaults, elopts, options),
-					locopts = opts_from_locale(xopts.language),
-					// Options priority: js args, data-attrs, locales, defaults
-					opts = $.extend({}, defaults, locopts, elopts, options);
-				if ($this.is('.input-daterange') || opts.inputs){
-					var ropts = {
-						inputs: opts.inputs || $this.find('input').toArray()
-					};
-					$this.data('datepicker', (data = new DateRangePicker(this, $.extend(opts, ropts))));
-				}
-				else{
-					$this.data('datepicker', (data = new Datepicker(this, opts)));
-				}
-			}
-			if (typeof option == 'string' && typeof data[option] == 'function') {
-				internal_return = data[option].apply(data, args);
-				if (internal_return !== undefined)
-					return false;
-			}
-		});
-		if (internal_return !== undefined)
-			return internal_return;
-		else
-			return this;
-	};
-
-	var defaults = $.fn.datepicker.defaults = {
-		autoclose: false,
-		beforeShowDay: $.noop,
-		calendarWeeks: false,
-		clearBtn: false,
-		daysOfWeekDisabled: [],
-		endDate: Infinity,
-		forceParse: true,
-		format: 'mm/dd/yyyy',
-		keyboardNavigation: true,
-		language: 'en',
-		minViewMode: 0,
-		rtl: false,
-		startDate: -Infinity,
-		startView: 0,
-		todayBtn: false,
-		todayHighlight: false,
-		weekStart: 0
-	};
-	var locale_opts = $.fn.datepicker.locale_opts = [
-		'format',
-		'rtl',
-		'weekStart'
-	];
-	$.fn.datepicker.Constructor = Datepicker;
-	var dates = $.fn.datepicker.dates = {
-		en: {
-			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-			daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-			today: "Today",
-			clear: "Clear"
-		}
-	};
-
-	var DPGlobal = {
-		modes: [
-			{
-				clsName: 'days',
-				navFnc: 'Month',
-				navStep: 1
-			},
-			{
-				clsName: 'months',
-				navFnc: 'FullYear',
-				navStep: 1
-			},
-			{
-				clsName: 'years',
-				navFnc: 'FullYear',
-				navStep: 10
-		}],
-		isLeapYear: function (year) {
-			return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
-		},
-		getDaysInMonth: function (year, month) {
-			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-		},
-		validParts: /dd?|DD?|mm?|MM?|yy(?:yy)?/g,
-		nonpunctuation: /[^ -\/:-@\[\u3400-\u9fff-`{-~\t\n\r]+/g,
-		parseFormat: function(format){
-			// IE treats \0 as a string end in inputs (truncating the value),
-			// so it's a bad format delimiter, anyway
-			var separators = format.replace(this.validParts, '\0').split('\0'),
-				parts = format.match(this.validParts);
-			if (!separators || !separators.length || !parts || parts.length === 0){
-				throw new Error("Invalid date format.");
-			}
-			return {separators: separators, parts: parts};
-		},
-		parseDate: function(date, format, language) {
-			if (date instanceof Date) return date;
-			if (typeof format === 'string')
-				format = DPGlobal.parseFormat(format);
-			if (/^[\-+]\d+[dmwy]([\s,]+[\-+]\d+[dmwy])*$/.test(date)) {
-				var part_re = /([\-+]\d+)([dmwy])/,
-					parts = date.match(/([\-+]\d+)([dmwy])/g),
-					part, dir;
-				date = new Date();
-				for (var i=0; i<parts.length; i++) {
-					part = part_re.exec(parts[i]);
-					dir = parseInt(part[1]);
-					switch(part[2]){
-						case 'd':
-							date.setUTCDate(date.getUTCDate() + dir);
-							break;
-						case 'm':
-							date = Datepicker.prototype.moveMonth.call(Datepicker.prototype, date, dir);
-							break;
-						case 'w':
-							date.setUTCDate(date.getUTCDate() + dir * 7);
-							break;
-						case 'y':
-							date = Datepicker.prototype.moveYear.call(Datepicker.prototype, date, dir);
-							break;
-					}
-				}
-				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0);
-			}
-			var parts = date && date.match(this.nonpunctuation) || [],
-				date = new Date(),
-				parsed = {},
-				setters_order = ['yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd'],
-				setters_map = {
-					yyyy: function(d,v){ return d.setUTCFullYear(v); },
-					yy: function(d,v){ return d.setUTCFullYear(2000+v); },
-					m: function(d,v){
-						v -= 1;
-						while (v<0) v += 12;
-						v %= 12;
-						d.setUTCMonth(v);
-						while (d.getUTCMonth() != v)
-							d.setUTCDate(d.getUTCDate()-1);
-						return d;
-					},
-					d: function(d,v){ return d.setUTCDate(v); }
-				},
-				val, filtered, part;
-			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
-			setters_map['dd'] = setters_map['d'];
-			date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
-			var fparts = format.parts.slice();
-			// Remove noop parts
-			if (parts.length != fparts.length) {
-				fparts = $(fparts).filter(function(i,p){
-					return $.inArray(p, setters_order) !== -1;
-				}).toArray();
-			}
-			// Process remainder
-			if (parts.length == fparts.length) {
-				for (var i=0, cnt = fparts.length; i < cnt; i++) {
-					val = parseInt(parts[i], 10);
-					part = fparts[i];
-					if (isNaN(val)) {
-						switch(part) {
-							case 'MM':
-								filtered = $(dates[language].months).filter(function(){
-									var m = this.slice(0, parts[i].length),
-										p = parts[i].slice(0, m.length);
-									return m == p;
-								});
-								val = $.inArray(filtered[0], dates[language].months) + 1;
-								break;
-							case 'M':
-								filtered = $(dates[language].monthsShort).filter(function(){
-									var m = this.slice(0, parts[i].length),
-										p = parts[i].slice(0, m.length);
-									return m == p;
-								});
-								val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
-								break;
-						}
-					}
-					parsed[part] = val;
-				}
-				for (var i=0, s; i<setters_order.length; i++){
-					s = setters_order[i];
-					if (s in parsed && !isNaN(parsed[s]))
-						setters_map[s](date, parsed[s]);
-				}
-			}
-			return date;
-		},
-		formatDate: function(date, format, language){
-			if (typeof format === 'string')
-				format = DPGlobal.parseFormat(format);
-			var val = {
-				d: date.getUTCDate(),
-				D: dates[language].daysShort[date.getUTCDay()],
-				DD: dates[language].days[date.getUTCDay()],
-				m: date.getUTCMonth() + 1,
-				M: dates[language].monthsShort[date.getUTCMonth()],
-				MM: dates[language].months[date.getUTCMonth()],
-				yy: date.getUTCFullYear().toString().substring(2),
-				yyyy: date.getUTCFullYear()
-			};
-			val.dd = (val.d < 10 ? '0' : '') + val.d;
-			val.mm = (val.m < 10 ? '0' : '') + val.m;
-			var date = [],
-				seps = $.extend([], format.separators);
-			for (var i=0, cnt = format.parts.length; i <= cnt; i++) {
-				if (seps.length)
-					date.push(seps.shift());
-				date.push(val[format.parts[i]]);
-			}
-			return date.join('');
-		},
-		headTemplate: '<thead>'+
-							'<tr>'+
-								'<th class="prev"><i class="icon-arrow-left"/></th>'+
-								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next"><i class="icon-arrow-right"/></th>'+
-							'</tr>'+
-						'</thead>',
-		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
-		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr><tr><th colspan="7" class="clear"></th></tr></tfoot>'
-	};
-	DPGlobal.template = '<div class="datepicker">'+
-							'<div class="datepicker-days">'+
-								'<table class=" table-condensed">'+
-									DPGlobal.headTemplate+
-									'<tbody></tbody>'+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datepicker-months">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datepicker-years">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-						'</div>';
-
-	$.fn.datepicker.DPGlobal = DPGlobal;
-
-
-	/* DATEPICKER NO CONFLICT
-	* =================== */
-
-	$.fn.datepicker.noConflict = function(){
-		$.fn.datepicker = old;
-		return this;
-	};
-
-
-	/* DATEPICKER DATA-API
-	* ================== */
-
-	$(document).on(
-		'focus.datepicker.data-api click.datepicker.data-api',
-		'[data-provide="datepicker"]',
-		function(e){
-			var $this = $(this);
-			if ($this.data('datepicker')) return;
-			e.preventDefault();
-			// component click requires us to explicitly show it
-			datepicker.call($this, 'show');
-		}
-	);
-	$(function(){
-		//$('[data-provide="datepicker-inline"]').datepicker();
-        //vit: changed to support noConflict()
-        datepicker.call($('[data-provide="datepicker-inline"]'));
-	});
-
-}( window.jQuery ));
-
-/**
-Bootstrap-datepicker.  
-Description and examples: https://github.com/eternicode/bootstrap-datepicker.  
-For **i18n** you should include js file from here: https://github.com/eternicode/bootstrap-datepicker/tree/master/js/locales
-and set `language` option.  
-Since 1.4.0 date has different appearance in **popup** and **inline** modes. 
-
-@class date
-@extends abstractinput
-@final
-@example
-<a href="#" id="dob" data-type="date" data-pk="1" data-url="/post" data-title="Select date">15/05/1984</a>
-<script>
-$(function(){
-    $('#dob').editable({
-        format: 'yyyy-mm-dd',    
-        viewformat: 'dd/mm/yyyy',    
-        datepicker: {
-                weekStart: 1
-           }
-        }
-    });
-});
-</script>
-**/
-(function ($) {
-    "use strict";
-    
-    //store bootstrap-datepicker as bdateicker to exclude conflict with jQuery UI one
-    $.fn.bdatepicker = $.fn.datepicker.noConflict();
-    if(!$.fn.datepicker) { //if there were no other datepickers, keep also original name
-        $.fn.datepicker = $.fn.bdatepicker;    
-    }    
-    
-    var Date = function (options) {
-        this.init('date', options, Date.defaults);
-        this.initPicker(options, Date.defaults);
-    };
-
-    $.fn.editableutils.inherit(Date, $.fn.editabletypes.abstractinput);    
-    
-    $.extend(Date.prototype, {
-        initPicker: function(options, defaults) {
-            //'format' is set directly from settings or data-* attributes
-
-            //by default viewformat equals to format
-            if(!this.options.viewformat) {
-                this.options.viewformat = this.options.format;
-            }
-            
-            //try parse datepicker config defined as json string in data-datepicker
-            options.datepicker = $.fn.editableutils.tryParseJson(options.datepicker, true);
-            
-            //overriding datepicker config (as by default jQuery extend() is not recursive)
-            //since 1.4 datepicker internally uses viewformat instead of format. Format is for submit only
-            this.options.datepicker = $.extend({}, defaults.datepicker, options.datepicker, {
-                format: this.options.viewformat
-            });
-            
-            //language
-            this.options.datepicker.language = this.options.datepicker.language || 'en'; 
-
-            //store DPglobal
-            this.dpg = $.fn.bdatepicker.DPGlobal; 
-
-            //store parsed formats
-            this.parsedFormat = this.dpg.parseFormat(this.options.format);
-            this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat);            
-        },
-        
-        render: function () {
-            this.$input.bdatepicker(this.options.datepicker);
-            
-            //"clear" link
-            if(this.options.clear) {
-                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.clear();
-                }, this));
-                
-                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-            }                
-        },
-        
-        value2html: function(value, element) {
-           var text = value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '';
-           Date.superclass.value2html.call(this, text, element); 
-        },
-
-        html2value: function(html) {
-            return this.parseDate(html, this.parsedViewFormat);
-        },   
-
-        value2str: function(value) {
-            return value ? this.dpg.formatDate(value, this.parsedFormat, this.options.datepicker.language) : '';
-        }, 
-
-        str2value: function(str) {
-            return this.parseDate(str, this.parsedFormat);
-        }, 
-
-        value2submit: function(value) {
-            return this.value2str(value);
-        },                    
-
-        value2input: function(value) {
-            this.$input.bdatepicker('update', value);
-        },
-
-        input2value: function() { 
-            return this.$input.data('datepicker').date;
-        },       
-
-        activate: function() {
-        },
-
-        clear:  function() {
-            this.$input.data('datepicker').date = null;
-            this.$input.find('.active').removeClass('active');
-            if(!this.options.showbuttons) {
-                this.$input.closest('form').submit(); 
-            }
-        },
-
-        autosubmit: function() {
-            this.$input.on('mouseup', '.day', function(e){
-                if($(e.currentTarget).is('.old') || $(e.currentTarget).is('.new')) {
-                    return;
-                }
-                var $form = $(this).closest('form');
-                setTimeout(function() {
-                    $form.submit();
-                }, 200);
-            });
-           //changedate is not suitable as it triggered when showing datepicker. see #149
-           /*
-           this.$input.on('changeDate', function(e){
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
-           */
-       },
-       
-       /*
-        For incorrect date bootstrap-datepicker returns current date that is not suitable
-        for datefield.
-        This function returns null for incorrect date.  
-       */
-       parseDate: function(str, format) {
-           var date = null, formattedBack;
-           if(str) {
-               date = this.dpg.parseDate(str, format, this.options.datepicker.language);
-               if(typeof str === 'string') {
-                   formattedBack = this.dpg.formatDate(date, format, this.options.datepicker.language);
-                   if(str !== formattedBack) {
-                       date = null;
-                   }
-               }
-           }
-           return date;
-       }
-
-    });
-
-    Date.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        /**
-        @property tpl 
-        @default <div></div>
-        **/         
-        tpl:'<div class="editable-date well"></div>',
-        /**
-        @property inputclass 
-        @default null
-        **/
-        inputclass: null,
-        /**
-        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-        Possible tokens are: <code>d, dd, m, mm, yy, yyyy</code>  
-
-        @property format 
-        @type string
-        @default yyyy-mm-dd
-        **/
-        format:'yyyy-mm-dd',
-        /**
-        Format used for displaying date. Also applied when converting date from element's text on init.   
-        If not specified equals to <code>format</code>
-
-        @property viewformat 
-        @type string
-        @default null
-        **/
-        viewformat: null,
-        /**
-        Configuration of datepicker.
-        Full list of options: http://bootstrap-datepicker.readthedocs.org/en/latest/options.html
-
-        @property datepicker 
-        @type object
-        @default {
-            weekStart: 0,
-            startView: 0,
-            minViewMode: 0,
-            autoclose: false
-        }
-        **/
-        datepicker:{
-            weekStart: 0,
-            startView: 0,
-            minViewMode: 0,
-            autoclose: false
-        },
-        /**
-        Text shown as clear date button. 
-        If <code>false</code> clear button will not be rendered.
-
-        @property clear 
-        @type boolean|string
-        @default 'x clear'
-        **/
-        clear: '&times; clear'
-    });
-
-    $.fn.editabletypes.date = Date;
-
-}(window.jQuery));
-
-/**
-Bootstrap datefield input - modification for inline mode.
-Shows normal <input type="text"> and binds popup datepicker.  
-Automatically shown in inline mode.
-
-@class datefield
-@extends date
-
-@since 1.4.0
-**/
-(function ($) {
-    "use strict";
-    
-    var DateField = function (options) {
-        this.init('datefield', options, DateField.defaults);
-        this.initPicker(options, DateField.defaults);
-    };
-
-    $.fn.editableutils.inherit(DateField, $.fn.editabletypes.date);    
-    
-    $.extend(DateField.prototype, {
-        render: function () {
-            this.$input = this.$tpl.find('input');
-            this.setClass();
-            this.setAttr('placeholder');
-    
-            //bootstrap-datepicker is set `bdateicker` to exclude conflict with jQuery UI one. (in date.js)        
-            this.$tpl.bdatepicker(this.options.datepicker);
-            
-            //need to disable original event handlers
-            this.$input.off('focus keydown');
-            
-            //update value of datepicker
-            this.$input.keyup($.proxy(function(){
-               this.$tpl.removeData('date');
-               this.$tpl.bdatepicker('update');
-            }, this));
-            
-        },   
-        
-       value2input: function(value) {
-           this.$input.val(value ? this.dpg.formatDate(value, this.parsedViewFormat, this.options.datepicker.language) : '');
-           this.$tpl.bdatepicker('update');
-       },
-        
-       input2value: function() { 
-           return this.html2value(this.$input.val());
-       },              
-        
-       activate: function() {
-           $.fn.editabletypes.text.prototype.activate.call(this);
-       },
-       
-       autosubmit: function() {
-         //reset autosubmit to empty  
-       }
-    });
-    
-    DateField.defaults = $.extend({}, $.fn.editabletypes.date.defaults, {
-        /**
-        @property tpl 
-        **/         
-        tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
-        /**
-        @property inputclass 
-        @default 'input-small'
-        **/         
-        inputclass: 'input-small',
-        
-        /* datepicker config */
-        datepicker: {
-            weekStart: 0,
-            startView: 0,
-            minViewMode: 0,
-            autoclose: true
-        }
-    });
-    
-    $.fn.editabletypes.datefield = DateField;
-
-}(window.jQuery));
-/**
-Bootstrap-datetimepicker.  
-Based on [smalot bootstrap-datetimepicker plugin](https://github.com/smalot/bootstrap-datetimepicker). 
-Before usage you should manually include dependent js and css:
-
-    <link href="css/datetimepicker.css" rel="stylesheet" type="text/css"></link> 
-    <script src="js/bootstrap-datetimepicker.js"></script>
-
-For **i18n** you should include js file from here: https://github.com/smalot/bootstrap-datetimepicker/tree/master/js/locales
-and set `language` option.  
-
-@class datetime
-@extends abstractinput
-@final
-@since 1.4.4
-@example
-<a href="#" id="last_seen" data-type="datetime" data-pk="1" data-url="/post" title="Select date & time">15/03/2013 12:45</a>
-<script>
-$(function(){
-    $('#last_seen').editable({
-        format: 'yyyy-mm-dd hh:ii',    
-        viewformat: 'dd/mm/yyyy hh:ii',    
-        datetimepicker: {
-                weekStart: 1
-           }
-        }
-    });
-});
-</script>
-**/
-(function ($) {
-    "use strict";
-
-    var DateTime = function (options) {
-        this.init('datetime', options, DateTime.defaults);
-        this.initPicker(options, DateTime.defaults);
-    };
-
-    $.fn.editableutils.inherit(DateTime, $.fn.editabletypes.abstractinput);
-
-    $.extend(DateTime.prototype, {
-        initPicker: function(options, defaults) {
-            //'format' is set directly from settings or data-* attributes
-
-            //by default viewformat equals to format
-            if(!this.options.viewformat) {
-                this.options.viewformat = this.options.format;
-            }
-            
-            //try parse datetimepicker config defined as json string in data-datetimepicker
-            options.datetimepicker = $.fn.editableutils.tryParseJson(options.datetimepicker, true);
-
-            //overriding datetimepicker config (as by default jQuery extend() is not recursive)
-            //since 1.4 datetimepicker internally uses viewformat instead of format. Format is for submit only
-            this.options.datetimepicker = $.extend({}, defaults.datetimepicker, options.datetimepicker, {
-                format: this.options.viewformat
-            });
-
-            //language
-            this.options.datetimepicker.language = this.options.datetimepicker.language || 'en'; 
-
-            //store DPglobal
-            this.dpg = $.fn.datetimepicker.DPGlobal; 
-
-            //store parsed formats
-            this.parsedFormat = this.dpg.parseFormat(this.options.format, this.options.formatType);
-            this.parsedViewFormat = this.dpg.parseFormat(this.options.viewformat, this.options.formatType);
-        },
-
-        render: function () {
-            this.$input.datetimepicker(this.options.datetimepicker);
-
-            //adjust container position when viewMode changes
-            //see https://github.com/smalot/bootstrap-datetimepicker/pull/80
-            this.$input.on('changeMode', function(e) {
-                var f = $(this).closest('form').parent();
-                //timeout here, otherwise container changes position before form has new size
-                setTimeout(function(){
-                    f.triggerHandler('resize');
-                }, 0);
-            });
-
-            //"clear" link
-            if(this.options.clear) {
-                this.$clear = $('<a href="#"></a>').html(this.options.clear).click($.proxy(function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.clear();
-                }, this));
-
-                this.$tpl.parent().append($('<div class="editable-clear">').append(this.$clear));  
-            }
-        },
-
-        value2html: function(value, element) {
-            //formatDate works with UTCDate!
-            var text = value ? this.dpg.formatDate(this.toUTC(value), this.parsedViewFormat, this.options.datetimepicker.language, this.options.formatType) : '';
-            if(element) {
-                DateTime.superclass.value2html.call(this, text, element);
-            } else {
-                return text;
-            }
-        },
-
-        html2value: function(html) {
-            //parseDate return utc date!
-            var value = this.parseDate(html, this.parsedViewFormat); 
-            return value ? this.fromUTC(value) : null;
-        },
-
-        value2str: function(value) {
-            //formatDate works with UTCDate!
-            return value ? this.dpg.formatDate(this.toUTC(value), this.parsedFormat, this.options.datetimepicker.language, this.options.formatType) : '';
-       },
-
-       str2value: function(str) {
-           //parseDate return utc date!
-           var value = this.parseDate(str, this.parsedFormat);
-           return value ? this.fromUTC(value) : null;
-       },
-
-       value2submit: function(value) {
-           return this.value2str(value);
-       },
-
-       value2input: function(value) {
-           if(value) {
-             this.$input.data('datetimepicker').setDate(value);
-           }
-       },
-
-       input2value: function() { 
-           //date may be cleared, in that case getDate() triggers error
-           var dt = this.$input.data('datetimepicker');
-           return dt.date ? dt.getDate() : null;
-       },
-
-       activate: function() {
-       },
-
-       clear: function() {
-          this.$input.data('datetimepicker').date = null;
-          this.$input.find('.active').removeClass('active');
-          if(!this.options.showbuttons) {
-             this.$input.closest('form').submit(); 
-          }          
-       },
-
-       autosubmit: function() {
-           this.$input.on('mouseup', '.minute', function(e){
-               var $form = $(this).closest('form');
-               setTimeout(function() {
-                   $form.submit();
-               }, 200);
-           });
-       },
-
-       //convert date from local to utc
-       toUTC: function(value) {
-         return value ? new Date(value.valueOf() - value.getTimezoneOffset() * 60000) : value;  
-       },
-
-       //convert date from utc to local
-       fromUTC: function(value) {
-         return value ? new Date(value.valueOf() + value.getTimezoneOffset() * 60000) : value;  
-       },
-
-       /*
-        For incorrect date bootstrap-datetimepicker returns current date that is not suitable
-        for datetimefield.
-        This function returns null for incorrect date.  
-       */
-       parseDate: function(str, format) {
-           var date = null, formattedBack;
-           if(str) {
-               date = this.dpg.parseDate(str, format, this.options.datetimepicker.language, this.options.formatType);
-               if(typeof str === 'string') {
-                   formattedBack = this.dpg.formatDate(date, format, this.options.datetimepicker.language, this.options.formatType);
-                   if(str !== formattedBack) {
-                       date = null;
-                   } 
-               }
-           }
-           return date;
-       }
-
-    });
-
-    DateTime.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        /**
-        @property tpl 
-        @default <div></div>
-        **/         
-        tpl:'<div class="editable-date well"></div>',
-        /**
-        @property inputclass 
-        @default null
-        **/
-        inputclass: null,
-        /**
-        Format used for sending value to server. Also applied when converting date from <code>data-value</code> attribute.<br>
-        Possible tokens are: <code>d, dd, m, mm, yy, yyyy, h, i</code>  
-        
-        @property format 
-        @type string
-        @default yyyy-mm-dd hh:ii
-        **/         
-        format:'yyyy-mm-dd hh:ii',
-        formatType:'standard',
-        /**
-        Format used for displaying date. Also applied when converting date from element's text on init.   
-        If not specified equals to <code>format</code>
-        
-        @property viewformat 
-        @type string
-        @default null
-        **/
-        viewformat: null,
-        /**
-        Configuration of datetimepicker.
-        Full list of options: https://github.com/smalot/bootstrap-datetimepicker
-
-        @property datetimepicker 
-        @type object
-        @default { }
-        **/
-        datetimepicker:{
-            todayHighlight: false,
-            autoclose: false
-        },
-        /**
-        Text shown as clear date button. 
-        If <code>false</code> clear button will not be rendered.
-
-        @property clear 
-        @type boolean|string
-        @default 'x clear'
-        **/
-        clear: '&times; clear'
-    });
-
-    $.fn.editabletypes.datetime = DateTime;
-
-}(window.jQuery));
-/**
-Bootstrap datetimefield input - datetime input for inline mode.
-Shows normal <input type="text"> and binds popup datetimepicker.  
-Automatically shown in inline mode.
-
-@class datetimefield
-@extends datetime
-
-**/
-(function ($) {
-    "use strict";
-    
-    var DateTimeField = function (options) {
-        this.init('datetimefield', options, DateTimeField.defaults);
-        this.initPicker(options, DateTimeField.defaults);
-    };
-
-    $.fn.editableutils.inherit(DateTimeField, $.fn.editabletypes.datetime);
-    
-    $.extend(DateTimeField.prototype, {
-        render: function () {
-            this.$input = this.$tpl.find('input');
-            this.setClass();
-            this.setAttr('placeholder');
-            
-            this.$tpl.datetimepicker(this.options.datetimepicker);
-            
-            //need to disable original event handlers
-            this.$input.off('focus keydown');
-            
-            //update value of datepicker
-            this.$input.keyup($.proxy(function(){
-               this.$tpl.removeData('date');
-               this.$tpl.datetimepicker('update');
-            }, this));
-            
-        },   
-      
-       value2input: function(value) {
-           this.$input.val(this.value2html(value));
-           this.$tpl.datetimepicker('update');
-       },
-        
-       input2value: function() { 
-           return this.html2value(this.$input.val());
-       },              
-        
-       activate: function() {
-           $.fn.editabletypes.text.prototype.activate.call(this);
-       },
-       
-       autosubmit: function() {
-         //reset autosubmit to empty  
-       }
-    });
-    
-    DateTimeField.defaults = $.extend({}, $.fn.editabletypes.datetime.defaults, {
-        /**
-        @property tpl 
-        **/         
-        tpl:'<div class="input-append date"><input type="text"/><span class="add-on"><i class="icon-th"></i></span></div>',
-        /**
-        @property inputclass 
-        @default 'input-medium'
-        **/         
-        inputclass: 'input-medium',
-        
-        /* datetimepicker config */
-        datetimepicker:{
-            todayHighlight: false,
-            autoclose: true
-        }
-    });
-    
-    $.fn.editabletypes.datetimefield = DateTimeField;
-
-}(window.jQuery));
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ */(function ($, undefined) {
+
+     function UTCDate() {
+         return new Date(Date.UTC.apply(Date, arguments));
+     }
+     function UTCToday() {
+         var today = new Date();
+         return UTCDate(today.getFullYear(), today.getMonth(), today.getDate());
+     }
+     function isUTCEquals(date1, date2) {
+         return (
+             date1.getUTCFullYear() === date2.getUTCFullYear() &&
+             date1.getUTCMonth() === date2.getUTCMonth() &&
+             date1.getUTCDate() === date2.getUTCDate()
+         );
+     }
+     function alias(method) {
+         return function () {
+             return this[method].apply(this, arguments);
+         };
+     }
+
+     var DateArray = (function () {
+         var extras = {
+             get: function (i) {
+                 return this.slice(i)[0];
+             },
+             contains: function (d) {
+                 // Array.indexOf is not cross-browser;
+                 // $.inArray doesn't work with Dates
+                 var val = d && d.valueOf();
+                 for (var i = 0, l = this.length; i < l; i++)
+                     if (this[i].valueOf() === val)
+                         return i;
+                 return -1;
+             },
+             remove: function (i) {
+                 this.splice(i, 1);
+             },
+             replace: function (new_array) {
+                 if (!new_array)
+                     return;
+                 if (!$.isArray(new_array))
+                     new_array = [new_array];
+                 this.clear();
+                 this.push.apply(this, new_array);
+             },
+             clear: function () {
+                 this.length = 0;
+             },
+             copy: function () {
+                 var a = new DateArray();
+                 a.replace(this);
+                 return a;
+             }
+         };
+
+         return function () {
+             var a = [];
+             a.push.apply(a, arguments);
+             $.extend(a, extras);
+             return a;
+         };
+     })();
+
+
+     // Picker object
+
+     var Datepicker = function (element, options) {
+         this._process_options(options);
+
+         this.dates = new DateArray();
+         this.viewDate = this.o.defaultViewDate;
+         this.focusDate = null;
+
+         this.element = $(element);
+         this.isInline = false;
+         this.isInput = this.element.is('input');
+         this.component = this.element.hasClass('date') ? this.element.find('.add-on, .input-group-addon, .btn') : false;
+         this.hasInput = this.component && this.element.find('input').length;
+         if (this.component && this.component.length === 0)
+             this.component = false;
+
+         this.picker = $(DPGlobal.template);
+         this._buildEvents();
+         this._attachEvents();
+
+         if (this.isInline) {
+             this.picker.addClass('datepicker-inline').appendTo(this.element);
+         }
+         else {
+             this.picker.addClass('datepicker-dropdown dropdown-menu');
+         }
+
+         if (this.o.rtl) {
+             this.picker.addClass('datepicker-rtl');
+         }
+
+         this.viewMode = this.o.startView;
+
+         if (this.o.calendarWeeks)
+             this.picker.find('tfoot .today, tfoot .clear')
+                         .attr('colspan', function (i, val) {
+                             return parseInt(val) + 1;
+                         });
+
+         this._allow_update = false;
+
+         this.setStartDate(this._o.startDate);
+         this.setEndDate(this._o.endDate);
+         this.setDaysOfWeekDisabled(this.o.daysOfWeekDisabled);
+         this.setDatesDisabled(this.o.datesDisabled);
+
+         this.fillDow();
+         this.fillMonths();
+
+         this._allow_update = true;
+
+         this.update();
+         this.showMode();
+
+         if (this.isInline) {
+             this.show();
+         }
+     };
+
+     Datepicker.prototype = {
+         constructor: Datepicker,
+
+         _process_options: function (opts) {
+             // Store raw options for reference
+             this._o = $.extend({}, this._o, opts);
+             // Processed options
+             var o = this.o = $.extend({}, this._o);
+
+             // Check if "de-DE" style date is available, if not language should
+             // fallback to 2 letter code eg "de"
+             var lang = o.language;
+             if (!dates[lang]) {
+                 lang = lang.split('-')[0];
+                 if (!dates[lang])
+                     lang = defaults.language;
+             }
+             o.language = lang;
+
+             switch (o.startView) {
+                 case 2:
+                 case 'decade':
+                     o.startView = 2;
+                     break;
+                 case 1:
+                 case 'year':
+                     o.startView = 1;
+                     break;
+                 default:
+                     o.startView = 0;
+             }
+
+             switch (o.minViewMode) {
+                 case 1:
+                 case 'months':
+                     o.minViewMode = 1;
+                     break;
+                 case 2:
+                 case 'years':
+                     o.minViewMode = 2;
+                     break;
+                 default:
+                     o.minViewMode = 0;
+             }
+
+             o.startView = Math.max(o.startView, o.minViewMode);
+
+             // true, false, or Number > 0
+             if (o.multidate !== true) {
+                 o.multidate = Number(o.multidate) || false;
+                 if (o.multidate !== false)
+                     o.multidate = Math.max(0, o.multidate);
+             }
+             o.multidateSeparator = String(o.multidateSeparator);
+
+             o.weekStart %= 7;
+             o.weekEnd = ((o.weekStart + 6) % 7);
+
+             var format = DPGlobal.parseFormat(o.format);
+             if (o.startDate !== -Infinity) {
+                 if (!!o.startDate) {
+                     if (o.startDate instanceof Date)
+                         o.startDate = this._local_to_utc(this._zero_time(o.startDate));
+                     else
+                         o.startDate = DPGlobal.parseDate(o.startDate, format, o.language);
+                 }
+                 else {
+                     o.startDate = -Infinity;
+                 }
+             }
+             if (o.endDate !== Infinity) {
+                 if (!!o.endDate) {
+                     if (o.endDate instanceof Date)
+                         o.endDate = this._local_to_utc(this._zero_time(o.endDate));
+                     else
+                         o.endDate = DPGlobal.parseDate(o.endDate, format, o.language);
+                 }
+                 else {
+                     o.endDate = Infinity;
+                 }
+             }
+
+             o.daysOfWeekDisabled = o.daysOfWeekDisabled || [];
+             if (!$.isArray(o.daysOfWeekDisabled))
+                 o.daysOfWeekDisabled = o.daysOfWeekDisabled.split(/[,\s]*/);
+             o.daysOfWeekDisabled = $.map(o.daysOfWeekDisabled, function (d) {
+                 return parseInt(d, 10);
+             });
+
+             o.datesDisabled = o.datesDisabled || [];
+             if (!$.isArray(o.datesDisabled)) {
+                 var datesDisabled = [];
+                 datesDisabled.push(DPGlobal.parseDate(o.datesDisabled, format, o.language));
+                 o.datesDisabled = datesDisabled;
+             }
+             o.datesDisabled = $.map(o.datesDisabled, function (d) {
+                 return DPGlobal.parseDate(d, format, o.language);
+             });
+
+             var plc = String(o.orientation).toLowerCase().split(/\s+/g),
+                 _plc = o.orientation.toLowerCase();
+             plc = $.grep(plc, function (word) {
+                 return /^auto|left|right|top|bottom$/.test(word);
+             });
+             o.orientation = { x: 'auto', y: 'auto' };
+             if (!_plc || _plc === 'auto')
+                 ; // no action
+             else if (plc.length === 1) {
+                 switch (plc[0]) {
+                     case 'top':
+                     case 'bottom':
+                         o.orientation.y = plc[0];
+                         break;
+                     case 'left':
+                     case 'right':
+                         o.orientation.x = plc[0];
+                         break;
+                 }
+             }
+             else {
+                 _plc = $.grep(plc, function (word) {
+                     return /^left|right$/.test(word);
+                 });
+                 o.orientation.x = _plc[0] || 'auto';
+
+                 _plc = $.grep(plc, function (word) {
+                     return /^top|bottom$/.test(word);
+                 });
+                 o.orientation.y = _plc[0] || 'auto';
+             }
+             if (o.defaultViewDate) {
+                 var year = o.defaultViewDate.year || new Date().getFullYear();
+                 var month = o.defaultViewDate.month || 0;
+                 var day = o.defaultViewDate.day || 1;
+                 o.defaultViewDate = UTCDate(year, month, day);
+             } else {
+                 o.defaultViewDate = UTCToday();
+             }
+             o.showOnFocus = o.showOnFocus !== undefined ? o.showOnFocus : true;
+         },
+         _events: [],
+         _secondaryEvents: [],
+         _applyEvents: function (evs) {
+             for (var i = 0, el, ch, ev; i < evs.length; i++) {
+                 el = evs[i][0];
+                 if (evs[i].length === 2) {
+                     ch = undefined;
+                     ev = evs[i][1];
+                 }
+                 else if (evs[i].length === 3) {
+                     ch = evs[i][1];
+                     ev = evs[i][2];
+                 }
+                 el.on(ev, ch);
+             }
+         },
+         _unapplyEvents: function (evs) {
+             for (var i = 0, el, ev, ch; i < evs.length; i++) {
+                 el = evs[i][0];
+                 if (evs[i].length === 2) {
+                     ch = undefined;
+                     ev = evs[i][1];
+                 }
+                 else if (evs[i].length === 3) {
+                     ch = evs[i][1];
+                     ev = evs[i][2];
+                 }
+                 el.off(ev, ch);
+             }
+         },
+         _buildEvents: function () {
+             var events = {
+                 keyup: $.proxy(function (e) {
+                     if ($.inArray(e.keyCode, [27, 37, 39, 38, 40, 32, 13, 9]) === -1)
+                         this.update();
+                 }, this),
+                 keydown: $.proxy(this.keydown, this),
+                 paste: $.proxy(this.paste, this)
+             };
+
+             if (this.o.showOnFocus === true) {
+                 events.focus = $.proxy(this.show, this);
+             }
+
+             if (this.isInput) { // single input
+                 this._events = [
+                     [this.element, events]
+                 ];
+             }
+             else if (this.component && this.hasInput) { // component: input + button
+                 this._events = [
+                     // For components that are not readonly, allow keyboard nav
+                     [this.element.find('input'), events],
+                     [this.component, {
+                         click: $.proxy(this.show, this)
+                     }]
+                 ];
+             }
+             else if (this.element.is('div')) {  // inline datepicker
+                 this.isInline = true;
+             }
+             else {
+                 this._events = [
+                     [this.element, {
+                         click: $.proxy(this.show, this)
+                     }]
+                 ];
+             }
+             this._events.push(
+                 // Component: listen for blur on element descendants
+                 [this.element, '*', {
+                     blur: $.proxy(function (e) {
+                         this._focused_from = e.target;
+                     }, this)
+                 }],
+                 // Input: listen for blur on element
+                 [this.element, {
+                     blur: $.proxy(function (e) {
+                         this._focused_from = e.target;
+                     }, this)
+                 }]
+             );
+
+             if (this.o.immediateUpdates) {
+                 // Trigger input updates immediately on changed year/month
+                 this._events.push([this.element, {
+                     'changeYear changeMonth': $.proxy(function (e) {
+                         this.update(e.date);
+                     }, this)
+                 }]);
+             }
+
+             this._secondaryEvents = [
+                 [this.picker, {
+                     click: $.proxy(this.click, this)
+                 }],
+                 [$(window), {
+                     resize: $.proxy(this.place, this)
+                 }],
+                 [$(document), {
+                     mousedown: $.proxy(function (e) {
+                         // Clicked outside the datepicker, hide it
+                         if (!(
+                             this.element.is(e.target) ||
+                             this.element.find(e.target).length ||
+                             this.picker.is(e.target) ||
+                             this.picker.find(e.target).length
+                         )) {
+                             $(this.picker).hide();
+                         }
+                     }, this)
+                 }]
+             ];
+         },
+         _attachEvents: function () {
+             this._detachEvents();
+             this._applyEvents(this._events);
+         },
+         _detachEvents: function () {
+             this._unapplyEvents(this._events);
+         },
+         _attachSecondaryEvents: function () {
+             this._detachSecondaryEvents();
+             this._applyEvents(this._secondaryEvents);
+         },
+         _detachSecondaryEvents: function () {
+             this._unapplyEvents(this._secondaryEvents);
+         },
+         _trigger: function (event, altdate) {
+             var date = altdate || this.dates.get(-1),
+                 local_date = this._utc_to_local(date);
+
+             this.element.trigger({
+                 type: event,
+                 date: local_date,
+                 dates: $.map(this.dates, this._utc_to_local),
+                 format: $.proxy(function (ix, format) {
+                     if (arguments.length === 0) {
+                         ix = this.dates.length - 1;
+                         format = this.o.format;
+                     }
+                     else if (typeof ix === 'string') {
+                         format = ix;
+                         ix = this.dates.length - 1;
+                     }
+                     format = format || this.o.format;
+                     var date = this.dates.get(ix);
+                     return DPGlobal.formatDate(date, format, this.o.language);
+                 }, this)
+             });
+         },
+
+         show: function () {
+             if (this.element.attr('readonly') && this.o.enableOnReadonly === false)
+                 return;
+             if (!this.isInline)
+                 this.picker.appendTo(this.o.container);
+             this.place();
+             this.picker.show();
+             this._attachSecondaryEvents();
+             this._trigger('show');
+             if ((window.navigator.msMaxTouchPoints || 'ontouchstart' in document) && this.o.disableTouchKeyboard) {
+                 $(this.element).blur();
+             }
+             return this;
+         },
+
+         hide: function () {
+             if (this.isInline)
+                 return this;
+             if (!this.picker.is(':visible'))
+                 return this;
+             this.focusDate = null;
+             this.picker.hide().detach();
+             this._detachSecondaryEvents();
+             this.viewMode = this.o.startView;
+             this.showMode();
+
+             if (
+                 this.o.forceParse &&
+                 (
+                     this.isInput && this.element.val() ||
+                     this.hasInput && this.element.find('input').val()
+                 )
+             )
+                 this.setValue();
+             this._trigger('hide');
+             return this;
+         },
+
+         remove: function () {
+             this.hide();
+             this._detachEvents();
+             this._detachSecondaryEvents();
+             this.picker.remove();
+             delete this.element.data().datepicker;
+             if (!this.isInput) {
+                 delete this.element.data().date;
+             }
+             return this;
+         },
+
+         paste: function (evt) {
+             var dateString;
+             if (evt.originalEvent.clipboardData && evt.originalEvent.clipboardData.types
+                 && $.inArray('text/plain', evt.originalEvent.clipboardData.types) !== -1) {
+                 dateString = evt.originalEvent.clipboardData.getData('text/plain');
+             }
+             else if (window.clipboardData) {
+                 dateString = window.clipboardData.getData('Text');
+             }
+             else {
+                 return;
+             }
+             this.setDate(dateString);
+             this.update();
+             evt.preventDefault();
+         },
+
+         _utc_to_local: function (utc) {
+             return utc && new Date(utc.getTime() + (utc.getTimezoneOffset() * 60000));
+         },
+         _local_to_utc: function (local) {
+             return local && new Date(local.getTime() - (local.getTimezoneOffset() * 60000));
+         },
+         _zero_time: function (local) {
+             return local && new Date(local.getFullYear(), local.getMonth(), local.getDate());
+         },
+         _zero_utc_time: function (utc) {
+             return utc && new Date(Date.UTC(utc.getUTCFullYear(), utc.getUTCMonth(), utc.getUTCDate()));
+         },
+
+         getDates: function () {
+             return $.map(this.dates, this._utc_to_local);
+         },
+
+         getUTCDates: function () {
+             return $.map(this.dates, function (d) {
+                 return new Date(d);
+             });
+         },
+
+         getDate: function () {
+             return this._utc_to_local(this.getUTCDate());
+         },
+
+         getUTCDate: function () {
+             var selected_date = this.dates.get(-1);
+             if (typeof selected_date !== 'undefined') {
+                 return new Date(selected_date);
+             } else {
+                 return null;
+             }
+         },
+
+         clearDates: function () {
+             var element;
+             if (this.isInput) {
+                 element = this.element;
+             } else if (this.component) {
+                 element = this.element.find('input');
+             }
+
+             if (element) {
+                 element.val('').change();
+             }
+
+             this.update();
+             this._trigger('changeDate');
+
+             if (this.o.autoclose) {
+                 this.hide();
+             }
+         },
+         setDates: function () {
+             var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
+             this.update.apply(this, args);
+             this._trigger('changeDate');
+             this.setValue();
+             return this;
+         },
+
+         setUTCDates: function () {
+             var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
+             this.update.apply(this, $.map(args, this._utc_to_local));
+             this._trigger('changeDate');
+             this.setValue();
+             return this;
+         },
+
+         setDate: alias('setDates'),
+         setUTCDate: alias('setUTCDates'),
+
+         setValue: function () {
+             var formatted = this.getFormattedDate();
+             if (!this.isInput) {
+                 if (this.component) {
+                     this.element.find('input').val(formatted).change();
+                 }
+             }
+             else {
+                 this.element.val(formatted).change();
+             }
+             return this;
+         },
+
+         getFormattedDate: function (format) {
+             if (format === undefined)
+                 format = this.o.format;
+
+             var lang = this.o.language;
+             return $.map(this.dates, function (d) {
+                 return DPGlobal.formatDate(d, format, lang);
+             }).join(this.o.multidateSeparator);
+         },
+
+         setStartDate: function (startDate) {
+             this._process_options({ startDate: startDate });
+             this.update();
+             this.updateNavArrows();
+             return this;
+         },
+
+         setEndDate: function (endDate) {
+             this._process_options({ endDate: endDate });
+             this.update();
+             this.updateNavArrows();
+             return this;
+         },
+
+         setDaysOfWeekDisabled: function (daysOfWeekDisabled) {
+             this._process_options({ daysOfWeekDisabled: daysOfWeekDisabled });
+             this.update();
+             this.updateNavArrows();
+             return this;
+         },
+
+         setDatesDisabled: function (datesDisabled) {
+             this._process_options({ datesDisabled: datesDisabled });
+             this.update();
+             this.updateNavArrows();
+         },
+
+         place: function () {
+             if (this.isInline)
+                 return this;
+             var calendarWidth = this.picker.outerWidth(),
+                 calendarHeight = this.picker.outerHeight(),
+                 visualPadding = 10,
+                 windowWidth = $(this.o.container).width(),
+                 windowHeight = $(this.o.container).height(),
+                 scrollTop = $(this.o.container).scrollTop(),
+                 appendOffset = $(this.o.container).offset();
+
+             var parentsZindex = [];
+             this.element.parents().each(function () {
+                 var itemZIndex = $(this).css('z-index');
+                 if (itemZIndex !== 'auto' && itemZIndex !== 0) parentsZindex.push(parseInt(itemZIndex));
+             });
+             var zIndex = Math.max.apply(Math, parentsZindex) + 10;
+             var offset = this.component ? this.component.parent().offset() : this.element.offset();
+             var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
+             var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
+             var left = offset.left - appendOffset.left,
+                 top = offset.top - appendOffset.top;
+
+             this.picker.removeClass(
+                 'datepicker-orient-top datepicker-orient-bottom ' +
+                 'datepicker-orient-right datepicker-orient-left'
+             );
+
+             if (this.o.orientation.x !== 'auto') {
+                 this.picker.addClass('datepicker-orient-' + this.o.orientation.x);
+                 if (this.o.orientation.x === 'right')
+                     left -= calendarWidth - width;
+             }
+                 // auto x orientation is best-placement: if it crosses a window
+                 // edge, fudge it sideways
+             else {
+                 if (offset.left < 0) {
+                     // component is outside the window on the left side. Move it into visible range
+                     this.picker.addClass('datepicker-orient-left');
+                     left -= offset.left - visualPadding;
+                 } else if (left + calendarWidth > windowWidth) {
+                     // the calendar passes the widow right edge. Align it to component right side
+                     this.picker.addClass('datepicker-orient-right');
+                     left = offset.left + width - calendarWidth;
+                 } else {
+                     // Default to left
+                     this.picker.addClass('datepicker-orient-left');
+                 }
+             }
+
+             // auto y orientation is best-situation: top or bottom, no fudging,
+             // decision based on which shows more of the calendar
+             var yorient = this.o.orientation.y,
+                 top_overflow, bottom_overflow;
+             if (yorient === 'auto') {
+                 top_overflow = -scrollTop + top - calendarHeight;
+                 bottom_overflow = scrollTop + windowHeight - (top + height + calendarHeight);
+                 if (Math.max(top_overflow, bottom_overflow) === bottom_overflow)
+                     yorient = 'top';
+                 else
+                     yorient = 'bottom';
+             }
+             this.picker.addClass('datepicker-orient-' + yorient);
+             if (yorient === 'top')
+                 top += height;
+             else
+                 top -= calendarHeight + parseInt(this.picker.css('padding-top'));
+
+             if (this.o.rtl) {
+                 var right = windowWidth - (left + width);
+                 this.picker.css({
+                     top: top,
+                     right: right,
+                     zIndex: zIndex
+                 });
+             } else {
+                 this.picker.css({
+                     top: top,
+                     left: left,
+                     zIndex: zIndex
+                 });
+             }
+             return this;
+         },
+
+         _allow_update: true,
+         update: function () {
+             if (!this._allow_update)
+                 return this;
+
+             var oldDates = this.dates.copy(),
+                 dates = [],
+                 fromArgs = false;
+             if (arguments.length) {
+                 $.each(arguments, $.proxy(function (i, date) {
+                     if (date instanceof Date)
+                         date = this._local_to_utc(date);
+                     dates.push(date);
+                 }, this));
+                 fromArgs = true;
+             }
+             else {
+                 dates = this.isInput
+                         ? this.element.val()
+                         : this.element.data('date') || this.element.find('input').val();
+                 if (dates && this.o.multidate)
+                     dates = dates.split(this.o.multidateSeparator);
+                 else
+                     dates = [dates];
+                 delete this.element.data().date;
+             }
+
+             dates = $.map(dates, $.proxy(function (date) {
+                 return DPGlobal.parseDate(date, this.o.format, this.o.language);
+             }, this));
+             dates = $.grep(dates, $.proxy(function (date) {
+                 return (
+                     date < this.o.startDate ||
+                     date > this.o.endDate ||
+                     !date
+                 );
+             }, this), true);
+             this.dates.replace(dates);
+
+             if (this.dates.length)
+                 this.viewDate = new Date(this.dates.get(-1));
+             else if (this.viewDate < this.o.startDate)
+                 this.viewDate = new Date(this.o.startDate);
+             else if (this.viewDate > this.o.endDate)
+                 this.viewDate = new Date(this.o.endDate);
+
+             if (fromArgs) {
+                 // setting date by clicking
+                 this.setValue();
+             }
+             else if (dates.length) {
+                 // setting date by typing
+                 if (String(oldDates) !== String(this.dates))
+                     this._trigger('changeDate');
+             }
+             if (!this.dates.length && oldDates.length)
+                 this._trigger('clearDate');
+
+             this.fill();
+             return this;
+         },
+
+         fillDow: function () {
+             var dowCnt = this.o.weekStart,
+                 html = '<tr>';
+             if (this.o.calendarWeeks) {
+                 this.picker.find('.datepicker-days thead tr:first-child .datepicker-switch')
+                     .attr('colspan', function (i, val) {
+                         return parseInt(val) + 1;
+                     });
+                 var cell = '<th class="cw">&#160;</th>';
+                 html += cell;
+             }
+             while (dowCnt < this.o.weekStart + 7) {
+                 html += '<th class="dow">' + dates[this.o.language].daysMin[(dowCnt++) % 7] + '</th>';
+             }
+             html += '</tr>';
+             this.picker.find('.datepicker-days thead').append(html);
+         },
+
+         fillMonths: function () {
+             var html = '',
+             i = 0;
+             while (i < 12) {
+                 html += '<span class="month">' + dates[this.o.language].monthsShort[i++] + '</span>';
+             }
+             this.picker.find('.datepicker-months td').html(html);
+         },
+
+         setRange: function (range) {
+             if (!range || !range.length)
+                 delete this.range;
+             else
+                 this.range = $.map(range, function (d) {
+                     return d.valueOf();
+                 });
+             this.fill();
+         },
+
+         getClassNames: function (date) {
+             var cls = [],
+                 year = this.viewDate.getUTCFullYear(),
+                 month = this.viewDate.getUTCMonth(),
+                 today = new Date();
+             if (date.getUTCFullYear() < year || (date.getUTCFullYear() === year && date.getUTCMonth() < month)) {
+                 cls.push('old');
+             }
+             else if (date.getUTCFullYear() > year || (date.getUTCFullYear() === year && date.getUTCMonth() > month)) {
+                 cls.push('new');
+             }
+             if (this.focusDate && date.valueOf() === this.focusDate.valueOf())
+                 cls.push('focused');
+             // Compare internal UTC date with local today, not UTC today
+             if (this.o.todayHighlight &&
+                 date.getUTCFullYear() === today.getFullYear() &&
+                 date.getUTCMonth() === today.getMonth() &&
+                 date.getUTCDate() === today.getDate()) {
+                 cls.push('today');
+             }
+             if (this.dates.contains(date) !== -1)
+                 cls.push('active');
+             if (date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
+                 $.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1) {
+                 cls.push('disabled');
+             }
+             if (this.o.datesDisabled.length > 0 &&
+                 $.grep(this.o.datesDisabled, function (d) {
+                     return isUTCEquals(date, d);
+             }).length > 0) {
+                 cls.push('disabled', 'disabled-date');
+             }
+
+             if (this.range) {
+                 if (date > this.range[0] && date < this.range[this.range.length - 1]) {
+                     cls.push('range');
+                 }
+                 if ($.inArray(date.valueOf(), this.range) !== -1) {
+                     cls.push('selected');
+                 }
+             }
+             return cls;
+         },
+
+         fill: function () {
+             var d = new Date(this.viewDate),
+                 year = d.getUTCFullYear(),
+                 month = d.getUTCMonth(),
+                 startYear = this.o.startDate !== -Infinity ? this.o.startDate.getUTCFullYear() : -Infinity,
+                 startMonth = this.o.startDate !== -Infinity ? this.o.startDate.getUTCMonth() : -Infinity,
+                 endYear = this.o.endDate !== Infinity ? this.o.endDate.getUTCFullYear() : Infinity,
+                 endMonth = this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
+                 todaytxt = dates[this.o.language].today || dates['en'].today || '',
+                 cleartxt = dates[this.o.language].clear || dates['en'].clear || '',
+                 tooltip;
+             if (isNaN(year) || isNaN(month))
+                 return;
+             this.picker.find('.datepicker-days thead .datepicker-switch')
+                         .text(dates[this.o.language].months[month] + ' ' + year);
+             this.picker.find('tfoot .today')
+                         .text(todaytxt)
+                         .toggle(this.o.todayBtn !== false);
+             this.picker.find('tfoot .clear')
+                         .text(cleartxt)
+                         .toggle(this.o.clearBtn !== false);
+             this.updateNavArrows();
+             this.fillMonths();
+             var prevMonth = UTCDate(year, month - 1, 28),
+                 day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+             prevMonth.setUTCDate(day);
+             prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7) % 7);
+             var nextMonth = new Date(prevMonth);
+             nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
+             nextMonth = nextMonth.valueOf();
+             var html = [];
+             var clsName;
+             while (prevMonth.valueOf() < nextMonth) {
+                 if (prevMonth.getUTCDay() === this.o.weekStart) {
+                     html.push('<tr>');
+                     if (this.o.calendarWeeks) {
+                         // ISO 8601: First week contains first thursday.
+                         // ISO also states week starts on Monday, but we can be more abstract here.
+                         var
+                             // Start of current week: based on weekstart/current date
+                             ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
+                             // Thursday of this week
+                             th = new Date(Number(ws) + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
+                             // First Thursday of year, year from thursday
+                             yth = new Date(Number(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay()) % 7 * 864e5),
+                             // Calendar week: ms between thursdays, div ms per day, div 7 days
+                             calWeek = (th - yth) / 864e5 / 7 + 1;
+                         html.push('<td class="cw">' + calWeek + '</td>');
+
+                     }
+                 }
+                 clsName = this.getClassNames(prevMonth);
+                 clsName.push('day');
+
+                 if (this.o.beforeShowDay !== $.noop) {
+                     var before = this.o.beforeShowDay(this._utc_to_local(prevMonth));
+                     if (before === undefined)
+                         before = {};
+                     else if (typeof (before) === 'boolean')
+                         before = { enabled: before };
+                     else if (typeof (before) === 'string')
+                         before = { classes: before };
+                     if (before.enabled === false)
+                         clsName.push('disabled');
+                     if (before.classes)
+                         clsName = clsName.concat(before.classes.split(/\s+/));
+                     if (before.tooltip)
+                         tooltip = before.tooltip;
+                 }
+
+                 clsName = $.unique(clsName);
+                 html.push('<td class="' + clsName.join(' ') + '"' + (tooltip ? ' title="' + tooltip + '"' : '') + '>' + prevMonth.getUTCDate() + '</td>');
+                 tooltip = null;
+                 if (prevMonth.getUTCDay() === this.o.weekEnd) {
+                     html.push('</tr>');
+                 }
+                 prevMonth.setUTCDate(prevMonth.getUTCDate() + 1);
+             }
+             this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
+
+             var months = this.picker.find('.datepicker-months')
+                         .find('th:eq(1)')
+                             .text(year)
+                             .end()
+                         .find('span').removeClass('active');
+
+             $.each(this.dates, function (i, d) {
+                 if (d.getUTCFullYear() === year)
+                     months.eq(d.getUTCMonth()).addClass('active');
+             });
+
+             if (year < startYear || year > endYear) {
+                 months.addClass('disabled');
+             }
+             if (year === startYear) {
+                 months.slice(0, startMonth).addClass('disabled');
+             }
+             if (year === endYear) {
+                 months.slice(endMonth + 1).addClass('disabled');
+             }
+
+             if (this.o.beforeShowMonth !== $.noop) {
+                 var that = this;
+                 $.each(months, function (i, month) {
+                     if (!$(month).hasClass('disabled')) {
+                         var moDate = new Date(year, i, 1);
+                         var before = that.o.beforeShowMonth(moDate);
+                         if (before === false)
+                             $(month).addClass('disabled');
+                     }
+                 });
+             }
+
+             html = '';
+             year = parseInt(year / 10, 10) * 10;
+             var yearCont = this.picker.find('.datepicker-years')
+                                 .find('th:eq(1)')
+                                     .text(year + '-' + (year + 9))
+                                     .end()
+                                 .find('td');
+             year -= 1;
+             var years = $.map(this.dates, function (d) {
+                 return d.getUTCFullYear();
+             }),
+                 classes;
+             for (var i = -1; i < 11; i++) {
+                 classes = ['year'];
+                 if (i === -1)
+                     classes.push('old');
+                 else if (i === 10)
+                     classes.push('new');
+                 if ($.inArray(year, years) !== -1)
+                     classes.push('active');
+                 if (year < startYear || year > endYear)
+                     classes.push('disabled');
+                 html += '<span class="' + classes.join(' ') + '">' + year + '</span>';
+                 year += 1;
+             }
+             yearCont.html(html);
+         },
+
+         updateNavArrows: function () {
+             if (!this._allow_update)
+                 return;
+
+             var d = new Date(this.viewDate),
+                 year = d.getUTCFullYear(),
+                 month = d.getUTCMonth();
+             switch (this.viewMode) {
+                 case 0:
+                     if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth()) {
+                         this.picker.find('.prev').css({ visibility: 'hidden' });
+                     }
+                     else {
+                         this.picker.find('.prev').css({ visibility: 'visible' });
+                     }
+                     if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()) {
+                         this.picker.find('.next').css({ visibility: 'hidden' });
+                     }
+                     else {
+                         this.picker.find('.next').css({ visibility: 'visible' });
+                     }
+                     break;
+                 case 1:
+                 case 2:
+                     if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear()) {
+                         this.picker.find('.prev').css({ visibility: 'hidden' });
+                     }
+                     else {
+                         this.picker.find('.prev').css({ visibility: 'visible' });
+                     }
+                     if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear()) {
+                         this.picker.find('.next').css({ visibility: 'hidden' });
+                     }
+                     else {
+                         this.picker.find('.next').css({ visibility: 'visible' });
+                     }
+                     break;
+             }
+         },
+
+         click: function (e) {
+             e.preventDefault();
+             var target = $(e.target).closest('span, td, th'),
+                 year, month, day;
+             if (target.length === 1) {
+                 switch (target[0].nodeName.toLowerCase()) {
+                     case 'th':
+                         switch (target[0].className) {
+                             case 'datepicker-switch':
+                                 this.showMode(1);
+                                 break;
+                             case 'prev':
+                             case 'next':
+                                 var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className === 'prev' ? -1 : 1);
+                                 switch (this.viewMode) {
+                                     case 0:
+                                         this.viewDate = this.moveMonth(this.viewDate, dir);
+                                         this._trigger('changeMonth', this.viewDate);
+                                         break;
+                                     case 1:
+                                     case 2:
+                                         this.viewDate = this.moveYear(this.viewDate, dir);
+                                         if (this.viewMode === 1)
+                                             this._trigger('changeYear', this.viewDate);
+                                         break;
+                                 }
+                                 this.fill();
+                                 break;
+                             case 'today':
+                                 var date = new Date();
+                                 date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+
+                                 this.showMode(-2);
+                                 var which = this.o.todayBtn === 'linked' ? null : 'view';
+                                 this._setDate(date, which);
+                                 break;
+                             case 'clear':
+                                 this.clearDates();
+                                 break;
+                         }
+                         break;
+                     case 'span':
+                         if (!target.hasClass('disabled')) {
+                             this.viewDate.setUTCDate(1);
+                             if (target.hasClass('month')) {
+                                 day = 1;
+                                 month = target.parent().find('span').index(target);
+                                 year = this.viewDate.getUTCFullYear();
+                                 this.viewDate.setUTCMonth(month);
+                                 this._trigger('changeMonth', this.viewDate);
+                                 if (this.o.minViewMode === 1) {
+                                     this._setDate(UTCDate(year, month, day));
+                                     this.showMode();
+                                 } else {
+                                     this.showMode(-1);
+                                 }
+                             }
+                             else {
+                                 day = 1;
+                                 month = 0;
+                                 year = parseInt(target.text(), 10) || 0;
+                                 this.viewDate.setUTCFullYear(year);
+                                 this._trigger('changeYear', this.viewDate);
+                                 if (this.o.minViewMode === 2) {
+                                     this._setDate(UTCDate(year, month, day));
+                                 }
+                                 this.showMode(-1);
+                             }
+                             this.fill();
+                         }
+                         break;
+                     case 'td':
+                         if (target.hasClass('day') && !target.hasClass('disabled')) {
+                             day = parseInt(target.text(), 10) || 1;
+                             year = this.viewDate.getUTCFullYear();
+                             month = this.viewDate.getUTCMonth();
+                             if (target.hasClass('old')) {
+                                 if (month === 0) {
+                                     month = 11;
+                                     year -= 1;
+                                 }
+                                 else {
+                                     month -= 1;
+                                 }
+                             }
+                             else if (target.hasClass('new')) {
+                                 if (month === 11) {
+                                     month = 0;
+                                     year += 1;
+                                 }
+                                 else {
+                                     month += 1;
+                                 }
+                             }
+                             this._setDate(UTCDate(year, month, day));
+                         }
+                         break;
+                 }
+             }
+             if (this.picker.is(':visible') && this._focused_from) {
+                 $(this._focused_from).focus();
+             }
+             delete this._focused_from;
+         },
+
+         _toggle_multidate: function (date) {
+             var ix = this.dates.contains(date);
+             if (!date) {
+                 this.dates.clear();
+             }
+
+             if (ix !== -1) {
+                 if (this.o.multidate === true || this.o.multidate > 1 || this.o.toggleActive) {
+                     this.dates.remove(ix);
+                 }
+             } else if (this.o.multidate === false) {
+                 this.dates.clear();
+                 this.dates.push(date);
+             }
+             else {
+                 this.dates.push(date);
+             }
+
+             if (typeof this.o.multidate === 'number')
+                 while (this.dates.length > this.o.multidate)
+                     this.dates.remove(0);
+         },
+
+         _setDate: function (date, which) {
+             if (!which || which === 'date')
+                 this._toggle_multidate(date && new Date(date));
+             if (!which || which === 'view')
+                 this.viewDate = date && new Date(date);
+
+             this.fill();
+             this.setValue();
+             if (!which || which !== 'view') {
+                 this._trigger('changeDate');
+             }
+             var element;
+             if (this.isInput) {
+                 element = this.element;
+             }
+             else if (this.component) {
+                 element = this.element.find('input');
+             }
+             if (element) {
+                 element.change();
+             }
+             if (this.o.autoclose && (!which || which === 'date')) {
+                 this.hide();
+             }
+         },
+
+         moveMonth: function (date, dir) {
+             if (!date)
+                 return undefined;
+             if (!dir)
+                 return date;
+             var new_date = new Date(date.valueOf()),
+                 day = new_date.getUTCDate(),
+                 month = new_date.getUTCMonth(),
+                 mag = Math.abs(dir),
+                 new_month, test;
+             dir = dir > 0 ? 1 : -1;
+             if (mag === 1) {
+                 test = dir === -1
+                     // If going back one month, make sure month is not current month
+                     // (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
+                     ? function () {
+                         return new_date.getUTCMonth() === month;
+                     }
+                     // If going forward one month, make sure month is as expected
+                     // (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
+                     : function () {
+                         return new_date.getUTCMonth() !== new_month;
+                     };
+                 new_month = month + dir;
+                 new_date.setUTCMonth(new_month);
+                 // Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
+                 if (new_month < 0 || new_month > 11)
+                     new_month = (new_month + 12) % 12;
+             }
+             else {
+                 // For magnitudes >1, move one month at a time...
+                 for (var i = 0; i < mag; i++)
+                     // ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
+                     new_date = this.moveMonth(new_date, dir);
+                 // ...then reset the day, keeping it in the new month
+                 new_month = new_date.getUTCMonth();
+                 new_date.setUTCDate(day);
+                 test = function () {
+                     return new_month !== new_date.getUTCMonth();
+                 };
+             }
+             // Common date-resetting loop -- if date is beyond end of month, make it
+             // end of month
+             while (test()) {
+                 new_date.setUTCDate(--day);
+                 new_date.setUTCMonth(new_month);
+             }
+             return new_date;
+         },
+
+         moveYear: function (date, dir) {
+             return this.moveMonth(date, dir * 12);
+         },
+
+         dateWithinRange: function (date) {
+             return date >= this.o.startDate && date <= this.o.endDate;
+         },
+
+         keydown: function (e) {
+             if (!this.picker.is(':visible')) {
+                 if (e.keyCode === 40 || e.keyCode === 27) // allow down to re-show picker
+                     this.show();
+                 return;
+             }
+             var dateChanged = false,
+                 dir, newDate, newViewDate,
+                 focusDate = this.focusDate || this.viewDate;
+             switch (e.keyCode) {
+                 case 27: // escape
+                     if (this.focusDate) {
+                         this.focusDate = null;
+                         this.viewDate = this.dates.get(-1) || this.viewDate;
+                         this.fill();
+                     }
+                     else
+                         this.hide();
+                     e.preventDefault();
+                     break;
+                 case 37: // left
+                 case 39: // right
+                     if (!this.o.keyboardNavigation)
+                         break;
+                     dir = e.keyCode === 37 ? -1 : 1;
+                     if (e.ctrlKey) {
+                         newDate = this.moveYear(this.dates.get(-1) || UTCToday(), dir);
+                         newViewDate = this.moveYear(focusDate, dir);
+                         this._trigger('changeYear', this.viewDate);
+                     }
+                     else if (e.shiftKey) {
+                         newDate = this.moveMonth(this.dates.get(-1) || UTCToday(), dir);
+                         newViewDate = this.moveMonth(focusDate, dir);
+                         this._trigger('changeMonth', this.viewDate);
+                     }
+                     else {
+                         newDate = new Date(this.dates.get(-1) || UTCToday());
+                         newDate.setUTCDate(newDate.getUTCDate() + dir);
+                         newViewDate = new Date(focusDate);
+                         newViewDate.setUTCDate(focusDate.getUTCDate() + dir);
+                     }
+                     if (this.dateWithinRange(newViewDate)) {
+                         this.focusDate = this.viewDate = newViewDate;
+                         this.setValue();
+                         this.fill();
+                         e.preventDefault();
+                     }
+                     break;
+                 case 38: // up
+                 case 40: // down
+                     if (!this.o.keyboardNavigation)
+                         break;
+                     dir = e.keyCode === 38 ? -1 : 1;
+                     if (e.ctrlKey) {
+                         newDate = this.moveYear(this.dates.get(-1) || UTCToday(), dir);
+                         newViewDate = this.moveYear(focusDate, dir);
+                         this._trigger('changeYear', this.viewDate);
+                     }
+                     else if (e.shiftKey) {
+                         newDate = this.moveMonth(this.dates.get(-1) || UTCToday(), dir);
+                         newViewDate = this.moveMonth(focusDate, dir);
+                         this._trigger('changeMonth', this.viewDate);
+                     }
+                     else {
+                         newDate = new Date(this.dates.get(-1) || UTCToday());
+                         newDate.setUTCDate(newDate.getUTCDate() + dir * 7);
+                         newViewDate = new Date(focusDate);
+                         newViewDate.setUTCDate(focusDate.getUTCDate() + dir * 7);
+                     }
+                     if (this.dateWithinRange(newViewDate)) {
+                         this.focusDate = this.viewDate = newViewDate;
+                         this.setValue();
+                         this.fill();
+                         e.preventDefault();
+                     }
+                     break;
+                 case 32: // spacebar
+                     // Spacebar is used in manually typing dates in some formats.
+                     // As such, its behavior should not be hijacked.
+                     break;
+                 case 13: // enter
+                     focusDate = this.focusDate || this.dates.get(-1) || this.viewDate;
+                     if (this.o.keyboardNavigation) {
+                         this._toggle_multidate(focusDate);
+                         dateChanged = true;
+                     }
+                     this.focusDate = null;
+                     this.viewDate = this.dates.get(-1) || this.viewDate;
+                     this.setValue();
+                     this.fill();
+                     if (this.picker.is(':visible')) {
+                         e.preventDefault();
+                         if (typeof e.stopPropagation === 'function') {
+                             e.stopPropagation(); // All modern browsers, IE9+
+                         } else {
+                             e.cancelBubble = true; // IE6,7,8 ignore "stopPropagation"
+                         }
+                         if (this.o.autoclose)
+                             this.hide();
+                     }
+                     break;
+                 case 9: // tab
+                     this.focusDate = null;
+                     this.viewDate = this.dates.get(-1) || this.viewDate;
+                     this.fill();
+                     this.hide();
+                     break;
+             }
+             if (dateChanged) {
+                 if (this.dates.length)
+                     this._trigger('changeDate');
+                 else
+                     this._trigger('clearDate');
+                 var element;
+                 if (this.isInput) {
+                     element = this.element;
+                 }
+                 else if (this.component) {
+                     element = this.element.find('input');
+                 }
+                 if (element) {
+                     element.change();
+                 }
+             }
+         },
+
+         showMode: function (dir) {
+             if (dir) {
+                 this.viewMode = Math.max(this.o.minViewMode, Math.min(2, this.viewMode + dir));
+             }
+             this.picker
+                 .children('div')
+                 .hide()
+                 .filter('.datepicker-' + DPGlobal.modes[this.viewMode].clsName)
+                     .css('display', 'block');
+             this.updateNavArrows();
+         }
+     };
+
+     var DateRangePicker = function (element, options) {
+         this.element = $(element);
+         this.inputs = $.map(options.inputs, function (i) {
+             return i.jquery ? i[0] : i;
+         });
+         delete options.inputs;
+
+         datepickerPlugin.call($(this.inputs), options)
+             .on('changeDate', $.proxy(this.dateUpdated, this));
+
+         this.pickers = $.map(this.inputs, function (i) {
+             return $(i).data('datepicker');
+         });
+         this.updateDates();
+     };
+     DateRangePicker.prototype = {
+         updateDates: function () {
+             this.dates = $.map(this.pickers, function (i) {
+                 return i.getUTCDate();
+             });
+             this.updateRanges();
+         },
+         updateRanges: function () {
+             var range = $.map(this.dates, function (d) {
+                 return d.valueOf();
+             });
+             $.each(this.pickers, function (i, p) {
+                 p.setRange(range);
+             });
+         },
+         dateUpdated: function (e) {
+             // `this.updating` is a workaround for preventing infinite recursion
+             // between `changeDate` triggering and `setUTCDate` calling.  Until
+             // there is a better mechanism.
+             if (this.updating)
+                 return;
+             this.updating = true;
+
+             var dp = $(e.target).data('datepicker'),
+                 new_date = dp.getUTCDate(),
+                 i = $.inArray(e.target, this.inputs),
+                 j = i - 1,
+                 k = i + 1,
+                 l = this.inputs.length;
+             if (i === -1)
+                 return;
+
+             $.each(this.pickers, function (i, p) {
+                 if (!p.getUTCDate())
+                     p.setUTCDate(new_date);
+             });
+
+             if (new_date < this.dates[j]) {
+                 // Date being moved earlier/left
+                 while (j >= 0 && new_date < this.dates[j]) {
+                     this.pickers[j--].setUTCDate(new_date);
+                 }
+             }
+             else if (new_date > this.dates[k]) {
+                 // Date being moved later/right
+                 while (k < l && new_date > this.dates[k]) {
+                     this.pickers[k++].setUTCDate(new_date);
+                 }
+             }
+             this.updateDates();
+
+             delete this.updating;
+         },
+         remove: function () {
+             $.map(this.pickers, function (p) { p.remove(); });
+             delete this.element.data().datepicker;
+         }
+     };
+
+     function opts_from_el(el, prefix) {
+         // Derive options from element data-attrs
+         var data = $(el).data(),
+             out = {}, inkey,
+             replace = new RegExp('^' + prefix.toLowerCase() + '([A-Z])');
+         prefix = new RegExp('^' + prefix.toLowerCase());
+         function re_lower(_, a) {
+             return a.toLowerCase();
+         }
+         for (var key in data)
+             if (prefix.test(key)) {
+                 inkey = key.replace(replace, re_lower);
+                 out[inkey] = data[key];
+             }
+         return out;
+     }
+
+     function opts_from_locale(lang) {
+         // Derive options from locale plugins
+         var out = {};
+         // Check if "de-DE" style date is available, if not language should
+         // fallback to 2 letter code eg "de"
+         if (!dates[lang]) {
+             lang = lang.split('-')[0];
+             if (!dates[lang])
+                 return;
+         }
+         var d = dates[lang];
+         $.each(locale_opts, function (i, k) {
+             if (k in d)
+                 out[k] = d[k];
+         });
+         return out;
+     }
+
+     var old = $.fn.datepicker;
+     var datepickerPlugin = function (option) {
+         var args = Array.apply(null, arguments);
+         args.shift();
+         var internal_return;
+         this.each(function () {
+             var $this = $(this),
+                 data = $this.data('datepicker'),
+                 options = typeof option === 'object' && option;
+             if (!data) {
+                 var elopts = opts_from_el(this, 'date'),
+                     // Preliminary otions
+                     xopts = $.extend({}, defaults, elopts, options),
+                     locopts = opts_from_locale(xopts.language),
+                     // Options priority: js args, data-attrs, locales, defaults
+                     opts = $.extend({}, defaults, locopts, elopts, options);
+                 if ($this.hasClass('input-daterange') || opts.inputs) {
+                     var ropts = {
+                         inputs: opts.inputs || $this.find('input').toArray()
+                     };
+                     $this.data('datepicker', (data = new DateRangePicker(this, $.extend(opts, ropts))));
+                 }
+                 else {
+                     $this.data('datepicker', (data = new Datepicker(this, opts)));
+                 }
+             }
+             if (typeof option === 'string' && typeof data[option] === 'function') {
+                 internal_return = data[option].apply(data, args);
+                 if (internal_return !== undefined)
+                     return false;
+             }
+         });
+         if (internal_return !== undefined)
+             return internal_return;
+         else
+             return this;
+     };
+     $.fn.datepicker = datepickerPlugin;
+
+     var defaults = $.fn.datepicker.defaults = {
+         autoclose: false,
+         beforeShowDay: $.noop,
+         beforeShowMonth: $.noop,
+         calendarWeeks: false,
+         clearBtn: false,
+         toggleActive: false,
+         daysOfWeekDisabled: [],
+         datesDisabled: [],
+         endDate: Infinity,
+         forceParse: true,
+         format: 'mm/dd/yyyy',
+         keyboardNavigation: true,
+         language: 'en',
+         minViewMode: 0,
+         multidate: false,
+         multidateSeparator: ',',
+         orientation: "auto",
+         rtl: false,
+         startDate: -Infinity,
+         startView: 0,
+         todayBtn: false,
+         todayHighlight: false,
+         weekStart: 0,
+         disableTouchKeyboard: false,
+         enableOnReadonly: true,
+         container: 'body',
+         immediateUpdates: false
+     };
+     var locale_opts = $.fn.datepicker.locale_opts = [
+         'format',
+         'rtl',
+         'weekStart'
+     ];
+     $.fn.datepicker.Constructor = Datepicker;
+     var dates = $.fn.datepicker.dates = {
+         en: {
+             days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+             daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+             daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+             months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+             monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+             today: "Today",
+             clear: "Clear"
+         }
+     };
+
+     var DPGlobal = {
+         modes: [
+             {
+                 clsName: 'days',
+                 navFnc: 'Month',
+                 navStep: 1
+             },
+             {
+                 clsName: 'months',
+                 navFnc: 'FullYear',
+                 navStep: 1
+             },
+             {
+                 clsName: 'years',
+                 navFnc: 'FullYear',
+                 navStep: 10
+             }],
+         isLeapYear: function (year) {
+             return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
+         },
+         getDaysInMonth: function (year, month) {
+             return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+         },
+         validParts: /dd?|DD?|mm?|MM?|yy(?:yy)?/g,
+         nonpunctuation: /[^ -\/:-@\[\u3400-\u9fff-`{-~\t\n\r]+/g,
+         parseFormat: function (format) {
+             // IE treats \0 as a string end in inputs (truncating the value),
+             // so it's a bad format delimiter, anyway
+             var separators = format.replace(this.validParts, '\0').split('\0'),
+                 parts = format.match(this.validParts);
+             if (!separators || !separators.length || !parts || parts.length === 0) {
+                 throw new Error("Invalid date format.");
+             }
+             return { separators: separators, parts: parts };
+         },
+         parseDate: function (date, format, language) {
+             if (!date)
+                 return undefined;
+             if (date instanceof Date)
+                 return date;
+             if (typeof format === 'string')
+                 format = DPGlobal.parseFormat(format);
+             var part_re = /([\-+]\d+)([dmwy])/,
+                 parts = date.match(/([\-+]\d+)([dmwy])/g),
+                 part, dir, i;
+             if (/^[\-+]\d+[dmwy]([\s,]+[\-+]\d+[dmwy])*$/.test(date)) {
+                 date = new Date();
+                 for (i = 0; i < parts.length; i++) {
+                     part = part_re.exec(parts[i]);
+                     dir = parseInt(part[1]);
+                     switch (part[2]) {
+                         case 'd':
+                             date.setUTCDate(date.getUTCDate() + dir);
+                             break;
+                         case 'm':
+                             date = Datepicker.prototype.moveMonth.call(Datepicker.prototype, date, dir);
+                             break;
+                         case 'w':
+                             date.setUTCDate(date.getUTCDate() + dir * 7);
+                             break;
+                         case 'y':
+                             date = Datepicker.prototype.moveYear.call(Datepicker.prototype, date, dir);
+                             break;
+                     }
+                 }
+                 return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0);
+             }
+             parts = date && date.match(this.nonpunctuation) || [];
+             date = new Date();
+             var parsed = {},
+                 setters_order = ['yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd'],
+                 setters_map = {
+                     yyyy: function (d, v) {
+                         return d.setUTCFullYear(v);
+                     },
+                     yy: function (d, v) {
+                         return d.setUTCFullYear(2000 + v);
+                     },
+                     m: function (d, v) {
+                         if (isNaN(d))
+                             return d;
+                         v -= 1;
+                         while (v < 0) v += 12;
+                         v %= 12;
+                         d.setUTCMonth(v);
+                         while (d.getUTCMonth() !== v)
+                             d.setUTCDate(d.getUTCDate() - 1);
+                         return d;
+                     },
+                     d: function (d, v) {
+                         return d.setUTCDate(v);
+                     }
+                 },
+                 val, filtered;
+             setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
+             setters_map['dd'] = setters_map['d'];
+             date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+             var fparts = format.parts.slice();
+             // Remove noop parts
+             if (parts.length !== fparts.length) {
+                 fparts = $(fparts).filter(function (i, p) {
+                     return $.inArray(p, setters_order) !== -1;
+                 }).toArray();
+             }
+             // Process remainder
+             function match_part() {
+                 var m = this.slice(0, parts[i].length),
+                     p = parts[i].slice(0, m.length);
+                 return m.toLowerCase() === p.toLowerCase();
+             }
+             if (parts.length === fparts.length) {
+                 var cnt;
+                 for (i = 0, cnt = fparts.length; i < cnt; i++) {
+                     val = parseInt(parts[i], 10);
+                     part = fparts[i];
+                     if (isNaN(val)) {
+                         switch (part) {
+                             case 'MM':
+                                 filtered = $(dates[language].months).filter(match_part);
+                                 val = $.inArray(filtered[0], dates[language].months) + 1;
+                                 break;
+                             case 'M':
+                                 filtered = $(dates[language].monthsShort).filter(match_part);
+                                 val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
+                                 break;
+                         }
+                     }
+                     parsed[part] = val;
+                 }
+                 var _date, s;
+                 for (i = 0; i < setters_order.length; i++) {
+                     s = setters_order[i];
+                     if (s in parsed && !isNaN(parsed[s])) {
+                         _date = new Date(date);
+                         setters_map[s](_date, parsed[s]);
+                         if (!isNaN(_date))
+                             date = _date;
+                     }
+                 }
+             }
+             return date;
+         },
+         formatDate: function (date, format, language) {
+             if (!date)
+                 return '';
+             if (typeof format === 'string')
+                 format = DPGlobal.parseFormat(format);
+             var val = {
+                 d: date.getUTCDate(),
+                 D: dates[language].daysShort[date.getUTCDay()],
+                 DD: dates[language].days[date.getUTCDay()],
+                 m: date.getUTCMonth() + 1,
+                 M: dates[language].monthsShort[date.getUTCMonth()],
+                 MM: dates[language].months[date.getUTCMonth()],
+                 yy: date.getUTCFullYear().toString().substring(2),
+                 yyyy: date.getUTCFullYear()
+             };
+             val.dd = (val.d < 10 ? '0' : '') + val.d;
+             val.mm = (val.m < 10 ? '0' : '') + val.m;
+             date = [];
+             var seps = $.extend([], format.separators);
+             for (var i = 0, cnt = format.parts.length; i <= cnt; i++) {
+                 if (seps.length)
+                     date.push(seps.shift());
+                 date.push(val[format.parts[i]]);
+             }
+             return date.join('');
+         },
+         headTemplate: '<thead>' +
+                             '<tr>' +
+                                 '<th class="prev">&#171;</th>' +
+                                 '<th colspan="5" class="datepicker-switch"></th>' +
+                                 '<th class="next">&#187;</th>' +
+                             '</tr>' +
+                         '</thead>',
+         contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
+         footTemplate: '<tfoot>' +
+                             '<tr>' +
+                                 '<th colspan="7" class="today"></th>' +
+                             '</tr>' +
+                             '<tr>' +
+                                 '<th colspan="7" class="clear"></th>' +
+                             '</tr>' +
+                         '</tfoot>'
+     };
+     DPGlobal.template = '<div class="datepicker">' +
+                             '<div class="datepicker-days">' +
+                                 '<table class=" table-condensed">' +
+                                     DPGlobal.headTemplate +
+                                     '<tbody></tbody>' +
+                                     DPGlobal.footTemplate +
+                                 '</table>' +
+                             '</div>' +
+                             '<div class="datepicker-months">' +
+                                 '<table class="table-condensed">' +
+                                     DPGlobal.headTemplate +
+                                     DPGlobal.contTemplate +
+                                     DPGlobal.footTemplate +
+                                 '</table>' +
+                             '</div>' +
+                             '<div class="datepicker-years">' +
+                                 '<table class="table-condensed">' +
+                                     DPGlobal.headTemplate +
+                                     DPGlobal.contTemplate +
+                                     DPGlobal.footTemplate +
+                                 '</table>' +
+                             '</div>' +
+                         '</div>';
+
+     $.fn.datepicker.DPGlobal = DPGlobal;
+
+
+     /* DATEPICKER NO CONFLICT
+     * =================== */
+
+     $.fn.datepicker.noConflict = function () {
+         $.fn.datepicker = old;
+         return this;
+     };
+
+     /* DATEPICKER VERSION
+      * =================== */
+     $.fn.datepicker.version = "1.4.1-dev";
+
+     /* DATEPICKER DATA-API
+     * ================== */
+
+     $(document).on(
+         'focus.datepicker.data-api click.datepicker.data-api',
+         '[data-provide="datepicker"]',
+         function (e) {
+             var $this = $(this);
+             if ($this.data('datepicker'))
+                 return;
+             e.preventDefault();
+             // component click requires us to explicitly show it
+             datepickerPlugin.call($this, 'show');
+         }
+     );
+     $(function () {
+         datepickerPlugin.call($('[data-provide="datepicker-inline"]'));
+     });
+
+ }(window.jQuery));
 /*!
  * jQuery twitter bootstrap wizard plugin
  * Examples and documentation at: http://github.com/VinceG/twitter-bootstrap-wizard
@@ -44613,62 +44379,121 @@ $.fn.bootstrapWizard.defaults = {
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * =======================================================================
  * original filename: app.config.js
- * filesize: ??
+ * filesize: 12kb
  * author: Sunny (@bootstraphunt)
  * email: info@myorange.ca
  * =======================================================================
- *
+ * 
+ * GLOBAL ROOT (DO NOT CHANGE)
+ */
+	$.root_ = $('body');	
+/*
  * APP CONFIGURATION (HTML/AJAX/PHP Versions ONLY)
  * Description: Enable / disable certain theme features here
  * GLOBAL: Your left nav in your app will no longer fire ajax calls, set 
  * it to false for HTML version
- */
-$.navAsAjax = false;
+ */	
+	$.navAsAjax = false; 
 /*
- * GLOBAL: Sound Config
+ * GLOBAL: Sound Config (define sound path, enable or disable all sounds)
  */
-$.sound_path = "sound/";
-$.sound_on = true;
+	$.sound_path = "sound/";
+	$.sound_on = true; 
+/*
+ * SAVE INSTANCE REFERENCE (DO NOT CHANGE)
+ * Save a reference to the global object (window in the browser)
+ */
+	var root = this,	
+/*
+ * DEBUGGING MODE
+ * debugState = true; will spit all debuging message inside browser console.
+ * The colors are best displayed in chrome browser.
+ */
+	debugState = false,	
+	debugStyle = 'font-weight: bold; color: #00f;',
+	debugStyle_green = 'font-weight: bold; font-style:italic; color: #46C246;',
+	debugStyle_red = 'font-weight: bold; color: #ed1c24;',
+	debugStyle_warning = 'background-color:yellow',
+	debugStyle_success = 'background-color:green; font-weight:bold; color:#fff;',
+	debugStyle_error = 'background-color:#ed1c24; font-weight:bold; color:#fff;',
 /*
  * Impacts the responce rate of some of the responsive elements (lower 
  * value affects CPU but improves speed)
  */
-var throttle_delay = 350,
+	throttle_delay = 350,
 /*
  * The rate at which the menu expands revealing child elements on click
  */
-menu_speed = 235,
+	menu_speed = 235,	
+/*
+ * Collapse current menu item as other menu items are expanded
+ * Careful when using this option, if you have a long menu it will
+ * keep expanding and may distrupt the user experience This is best 
+ * used with fixed-menu class
+ */
+	menu_accordion = true,	
 /*
  * Turn on JarvisWidget functionality
+ * Global JarvisWidget Settings
+ * For a greater control of the widgets, please check app.js file
+ * found within COMMON_ASSETS/UNMINIFIED_JS folder and see from line 1355
  * dependency: js/jarviswidget/jarvis.widget.min.js
  */
-enableJarvisWidgets = true,
+	enableJarvisWidgets = true,
+/*
+ * Use localstorage to save widget settings
+ * turn this off if you prefer to use the onSave hook to save
+ * these settings to your datatabse instead
+ */	
+	localStorageJarvisWidgets = true,
+/*
+ * Turn off sortable feature for JarvisWidgets 
+ */	
+	sortableJarvisWidgets = true,		
 /*
  * Warning: Enabling mobile widgets could potentially crash your webApp 
  * if you have too many widgets running at once 
  * (must have enableJarvisWidgets = true)
  */
-enableMobileWidgets = false,
+	enableMobileWidgets = false,	
 /*
- * Turn on fast click for mobile devices?
+ * Turn on fast click for mobile devices
  * Enable this to activate fastclick plugin
  * dependency: js/plugin/fastclick/fastclick.js 
  */
-fastClick = false,
+	fastClick = false,
+/*
+ * SMARTCHAT PLUGIN ARRAYS & CONFIG
+ * Dependency: js/plugin/moment/moment.min.js 
+ *             js/plugin/cssemotions/jquery.cssemoticons.min.js 
+ *             js/smart-chat-ui/smart.chat.ui.js
+ * (DO NOT CHANGE BELOW) 
+ */	
+	boxList = [],
+	showList = [],
+ 	nameList = [],
+	idList = [],
+/*
+ * Width of the chat boxes, and the gap inbetween in pixel (minus padding)
+ */	
+	chatbox_config = {
+	    width: 200,
+	    gap: 35
+	},
 /*
  * These elements are ignored during DOM object deletion for ajax version 
  * It will delete all objects during page load with these exceptions:
  */
-ignore_key_elms = ["#header, #left-panel, #main, div.page-footer, #shortcut, #divSmallBoxes, #divMiniIcons, #divbigBoxes, #voiceModal, script"],
+	ignore_key_elms = ["#header, #left-panel, #right-panel, #main, div.page-footer, #shortcut, #divSmallBoxes, #divMiniIcons, #divbigBoxes, #voiceModal, script, .ui-chatbox"],
 /*
  * VOICE COMMAND CONFIG
- * dependency: voicecommand.js
+ * dependency: js/speech/voicecommand.js
  */
-voice_command = true,
+	voice_command = true,
 /*
- * Turns on speech without asking
- */
-voice_command_auto = false,
+ * Turns on speech as soon as the page is loaded
+ */	
+	voice_command_auto = false,
 /*
  * 	Sets the language to the default 'en-US'. (supports over 50 languages 
  * 	by google)
@@ -44736,150 +44561,144 @@ voice_command_auto = false,
  *  日本語                         ['ja-JP']
  *  Lingua latīna     ['la']
  */
-voice_command_lang = 'en-US',
+	voice_command_lang = 'en-US',
 /*
- * 	Use localstorage to remember on/off (best used with HTML Version)
- */
-voice_localStorage = true;
+ * 	Use localstorage to remember on/off (best used with HTML Version
+ * 	when going from one page to the next)
+ */	
+	voice_localStorage = true;
 /*
  * Voice Commands
- * Defines all voice command variables and functions
- */
-if (voice_command) {
-
-    var commands = {
-
-        'show dashboard': function () { $('nav a[href="dashboard.html"]').trigger("click"); },
-        'show inbox': function () { $('nav a[href="inbox.html"]').trigger("click"); },
-        'show graphs': function () { $('nav a[href="flot.html"]').trigger("click"); },
-        'show flotchart': function () { $('nav a[href="flot.html"]').trigger("click"); },
-        'show morris chart': function () { $('nav a[href="morris.html"]').trigger("click"); },
-        'show inline chart': function () { $('nav a[href="inline-charts.html"]').trigger("click"); },
-        'show dygraphs': function () { $('nav a[href="dygraphs.html"]').trigger("click"); },
-        'show tables': function () { $('nav a[href="table.html"]').trigger("click"); },
-        'show data table': function () { $('nav a[href="datatables.html"]').trigger("click"); },
-        'show jquery grid': function () { $('nav a[href="jqgrid.html"]').trigger("click"); },
-        'show form': function () { $('nav a[href="form-elements.html"]').trigger("click"); },
-        'show form layouts': function () { $('nav a[href="form-templates.html"]').trigger("click"); },
-        'show form validation': function () { $('nav a[href="validation.html"]').trigger("click"); },
-        'show form elements': function () { $('nav a[href="bootstrap-forms.html"]').trigger("click"); },
-        'show form plugins': function () { $('nav a[href="plugins.html"]').trigger("click"); },
-        'show form wizards': function () { $('nav a[href="wizards.html"]').trigger("click"); },
-        'show bootstrap editor': function () { $('nav a[href="other-editors.html"]').trigger("click"); },
-        'show dropzone': function () { $('nav a[href="dropzone.html"]').trigger("click"); },
-        'show image cropping': function () { $('nav a[href="image-editor.html"]').trigger("click"); },
-        'show general elements': function () { $('nav a[href="general-elements.html"]').trigger("click"); },
-        'show buttons': function () { $('nav a[href="buttons.html"]').trigger("click"); },
-        'show fontawesome': function () { $('nav a[href="fa.html"]').trigger("click"); },
-        'show glyph icons': function () { $('nav a[href="glyph.html"]').trigger("click"); },
-        'show flags': function () { $('nav a[href="flags.html"]').trigger("click"); },
-        'show grid': function () { $('nav a[href="grid.html"]').trigger("click"); },
-        'show tree view': function () { $('nav a[href="treeview.html"]').trigger("click"); },
-        'show nestable lists': function () { $('nav a[href="nestable-list.html"]').trigger("click"); },
-        'show jquery U I': function () { $('nav a[href="jqui.html"]').trigger("click"); },
-        'show typography': function () { $('nav a[href="typography.html"]').trigger("click"); },
-        'show calendar': function () { $('nav a[href="calendar.html"]').trigger("click"); },
-        'show widgets': function () { $('nav a[href="widgets.html"]').trigger("click"); },
-        'show gallery': function () { $('nav a[href="gallery.html"]').trigger("click"); },
-        'show maps': function () { $('nav a[href="gmap-xml.html"]').trigger("click"); },
-        'show pricing tables': function () { $('nav a[href="pricing-table.html"]').trigger("click"); },
-        'show invoice': function () { $('nav a[href="invoice.html"]').trigger("click"); },
-        'show search page': function () { $('nav a[href="search.html"]').trigger("click"); },
-        'go back': function () { history.back(1); },
-        'scroll up': function () { $('html, body').animate({ scrollTop: 0 }, 100); },
-        'scroll down': function () { $('html, body').animate({ scrollTop: $(document).height() }, 100); },
-        'hide navigation': function () {
-            if ($.root_.hasClass("container") && !$.root_.hasClass("menu-on-top")) {
-                $('span.minifyme').trigger("click");
-            } else {
-                $('#hide-menu > span > a').trigger("click");
-            }
-        },
-        'show navigation': function () {
-            if ($.root_.hasClass("container") && !$.root_.hasClass("menu-on-top")) {
-                $('span.minifyme').trigger("click");
-            } else {
-                $('#hide-menu > span > a').trigger("click");
-            }
-        },
-        'mute': function () {
-            $.sound_on = false;
-            $.smallBox({
-                title: "MUTE",
-                content: "All sounds have been muted!",
-                color: "#a90329",
-                timeout: 4000,
-                icon: "fa fa-volume-off"
-            });
-        },
-        'sound on': function () {
-            $.sound_on = true;
-            $.speechApp.playConfirmation();
-            $.smallBox({
-                title: "UNMUTE",
-                content: "All sounds have been turned on!",
-                color: "#40ac2b",
-                sound_file: 'voice_alert',
-                timeout: 5000,
-                icon: "fa fa-volume-up"
-            });
-        },
-        'stop': function () {
-            smartSpeechRecognition.abort();
-            $.root_.removeClass("voice-command-active");
-            $.smallBox({
-                title: "VOICE COMMAND OFF",
-                content: "Your voice commands has been successfully turned off. Click on the <i class='fa fa-microphone fa-lg fa-fw'></i> icon to turn it back on.",
-                color: "#40ac2b",
-                sound_file: 'voice_off',
-                timeout: 8000,
-                icon: "fa fa-microphone-slash"
-            });
-            if ($('#speech-btn .popover').is(':visible')) {
-                $('#speech-btn .popover').fadeOut(250);
-            }
-        },
-        'help': function () {
-            $('#voiceModal').removeData('modal').modal({ remote: "ajax/modal-content/modal-voicecommand.html", show: true });
-            if ($('#speech-btn .popover').is(':visible')) {
-                $('#speech-btn .popover').fadeOut(250);
-            }
-        },
-        'got it': function () {
-            $('#voiceModal').modal('hide');
-        },
-        'logout': function () {
-            $.speechApp.stop();
-            window.location = $('#logout > span > a').attr("href");
-        }
-    };
-
-};
+ * Defines voice command variables and functions
+ */	
+ 	if (voice_command) {
+	 		
+		var commands = {
+					
+			'show dashboard' : function() { $('nav a[href="dashboard.html"]').trigger("click"); },
+			'show inbox' : function() { $('nav a[href="inbox.html"]').trigger("click"); },
+			'show graphs' : function() { $('nav a[href="flot.html"]').trigger("click"); },
+			'show flotchart' : function() { $('nav a[href="flot.html"]').trigger("click"); },
+			'show morris chart' : function() { $('nav a[href="morris.html"]').trigger("click"); },
+			'show inline chart' : function() { $('nav a[href="inline-charts.html"]').trigger("click"); },
+			'show dygraphs' : function() { $('nav a[href="dygraphs.html"]').trigger("click"); },
+			'show tables' : function() { $('nav a[href="table.html"]').trigger("click"); },
+			'show data table' : function() { $('nav a[href="datatables.html"]').trigger("click"); },
+			'show jquery grid' : function() { $('nav a[href="jqgrid.html"]').trigger("click"); },
+			'show form' : function() { $('nav a[href="form-elements.html"]').trigger("click"); },
+			'show form layouts' : function() { $('nav a[href="form-templates.html"]').trigger("click"); },
+			'show form validation' : function() { $('nav a[href="validation.html"]').trigger("click"); },
+			'show form elements' : function() { $('nav a[href="bootstrap-forms.html"]').trigger("click"); },
+			'show form plugins' : function() { $('nav a[href="plugins.html"]').trigger("click"); },
+			'show form wizards' : function() { $('nav a[href="wizards.html"]').trigger("click"); },
+			'show bootstrap editor' : function() { $('nav a[href="other-editors.html"]').trigger("click"); },
+			'show dropzone' : function() { $('nav a[href="dropzone.html"]').trigger("click"); },
+			'show image cropping' : function() { $('nav a[href="image-editor.html"]').trigger("click"); },
+			'show general elements' : function() { $('nav a[href="general-elements.html"]').trigger("click"); },
+			'show buttons' : function() { $('nav a[href="buttons.html"]').trigger("click"); },
+			'show fontawesome' : function() { $('nav a[href="fa.html"]').trigger("click"); },
+			'show glyph icons' : function() { $('nav a[href="glyph.html"]').trigger("click"); },
+			'show flags' : function() { $('nav a[href="flags.html"]').trigger("click"); },
+			'show grid' : function() { $('nav a[href="grid.html"]').trigger("click"); },
+			'show tree view' : function() { $('nav a[href="treeview.html"]').trigger("click"); },
+			'show nestable lists' : function() { $('nav a[href="nestable-list.html"]').trigger("click"); },
+			'show jquery U I' : function() { $('nav a[href="jqui.html"]').trigger("click"); },
+			'show typography' : function() { $('nav a[href="typography.html"]').trigger("click"); },
+			'show calendar' : function() { $('nav a[href="calendar.html"]').trigger("click"); },
+			'show widgets' : function() { $('nav a[href="widgets.html"]').trigger("click"); },
+			'show gallery' : function() { $('nav a[href="gallery.html"]').trigger("click"); },
+			'show maps' : function() { $('nav a[href="gmap-xml.html"]').trigger("click"); },
+			'show pricing tables' : function() { $('nav a[href="pricing-table.html"]').trigger("click"); },
+			'show invoice' : function() { $('nav a[href="invoice.html"]').trigger("click"); },
+			'show search' : function() { $('nav a[href="search.html"]').trigger("click"); },
+			'go back' :  function() { history.back(1); }, 
+			'scroll up' : function () { $('html, body').animate({ scrollTop: 0 }, 100); },
+			'scroll down' : function () { $('html, body').animate({ scrollTop: $(document).height() }, 100);},
+			'hide navigation' : function() { 
+				if ($.root_.hasClass("container") && !$.root_.hasClass("menu-on-top")){
+					$('span.minifyme').trigger("click");
+				} else {
+					$('#hide-menu > span > a').trigger("click"); 
+				}
+			},
+			'show navigation' : function() { 
+				if ($.root_.hasClass("container") && !$.root_.hasClass("menu-on-top")){
+					$('span.minifyme').trigger("click");
+				} else {
+					$('#hide-menu > span > a').trigger("click"); 
+				}
+			},
+			'mute' : function() {
+				$.sound_on = false;
+				$.smallBox({
+					title : "MUTE",
+					content : "All sounds have been muted!",
+					color : "#a90329",
+					timeout: 4000,
+					icon : "fa fa-volume-off"
+				});
+			},
+			'sound on' : function() {
+				$.sound_on = true;
+				$.speechApp.playConfirmation();
+				$.smallBox({
+					title : "UNMUTE",
+					content : "All sounds have been turned on!",
+					color : "#40ac2b",
+					sound_file: 'voice_alert',
+					timeout: 5000,
+					icon : "fa fa-volume-up"
+				});
+			},
+			'stop' : function() {
+				smartSpeechRecognition.abort();
+				$.root_.removeClass("voice-command-active");
+				$.smallBox({
+					title : "VOICE COMMAND OFF",
+					content : "Your voice commands has been successfully turned off. Click on the <i class='fa fa-microphone fa-lg fa-fw'></i> icon to turn it back on.",
+					color : "#40ac2b",
+					sound_file: 'voice_off',
+					timeout: 8000,
+					icon : "fa fa-microphone-slash"
+				});
+				if ($('#speech-btn .popover').is(':visible')) {
+					$('#speech-btn .popover').fadeOut(250);
+				}
+			},
+			'help' : function() {
+				$('#voiceModal').removeData('modal').modal( { remote: "ajax/modal-content/modal-voicecommand.html", show: true } );
+				if ($('#speech-btn .popover').is(':visible')) {
+					$('#speech-btn .popover').fadeOut(250);
+				}
+			},		
+			'got it' : function() {
+				$('#voiceModal').modal('hide');
+			},	
+			'logout' : function() {
+				$.speechApp.stop();
+				window.location = $('#logout > span > a').attr("href");
+			}
+		}; 
+		
+	};
 /*
  * END APP.CONFIG
- */
-
-
-
-
-
-
-
-
+ */ 
+ 
+ 
+ 
+ 
+ 	
 /*
- Copyright 2013 - SmartAdmin Template
+ Copyright 2015 - SmartAdmin Template
+ 
+ This script is a modified version of : MetroNotification
+ Plugin name was adjusted with the permission of its author to blend in with the theme
+ Original URL: http://codecanyon.net/item/metro-notifications/3903495
 
- * This script is part of an item on wrapbootstrap.com
- * https://wrapbootstrap.com/user/myorange
- *
  * ************************************************************* *
  * For more information please contact info@myorange.ca
  * ************************************************************* */
-
-// Sound path
-$.sound_path = "sound/";
-// Sound on = true / false
-$.sound_on = true; 
 
 jQuery(document).ready(function () {
 
@@ -44926,18 +44745,16 @@ var ExistMsg = 0,
         //Messagebox Sound
 
         // SmallBox Sound
-        if (isIE8orlower() == 0) {
+        if (isIE8orlower() == 0 && $.sound_on) {
             var audioElement = document.createElement('audio');
             audioElement.setAttribute('src', $.sound_path + 'messagebox.mp3');
-            $.get();
+            //$.get();
             audioElement.addEventListener("load", function () {
                 audioElement.play();
             }, true);
 			
-			if ($.sound_on) {
-				audioElement.pause();
-            	audioElement.play();
-			}
+			audioElement.pause();
+        	audioElement.play();
 
         }
 
@@ -45123,7 +44940,7 @@ var BigBoxes = 0;
         }, settings);
 
         // bigbox Sound
-        if (settings.sound == true) {
+        if (settings.sound) {
             if (isIE8orlower() == 0) {
                 var audioElement = document.createElement('audio');
 
@@ -45132,15 +44949,14 @@ var BigBoxes = 0;
                 else
                     audioElement.setAttribute('src', $.sound_path + settings.sound_file + ".mp3");
 
-                $.get();
+                //$.get();
                 audioElement.addEventListener("load", function () {
                     audioElement.play();
                 }, true);
 
-				if ($.sound_on) {
-					audioElement.pause();
-	            	audioElement.play();
-				}
+				audioElement.pause();
+            	audioElement.play();
+
             }
         }
 
@@ -45309,7 +45125,7 @@ var SmallBoxes = 0,
         }, settings);
 
         // SmallBox Sound
-        if (settings.sound == true) {
+        if (settings.sound) {
             if (isIE8orlower() == 0) {
                 var audioElement = document.createElement('audio');
 
@@ -45318,15 +45134,14 @@ var SmallBoxes = 0,
                 else
                     audioElement.setAttribute('src', $.sound_path + settings.sound_file + ".mp3");
 
-                $.get();
+                //$.get();
                 audioElement.addEventListener("load", function () {
                     audioElement.play();
                 }, true);
-                
-				if ($.sound_on) {
-					audioElement.pause();
-	            	audioElement.play();
-				}
+
+				audioElement.pause();
+            	audioElement.play();
+
             }
         }
 
@@ -45604,7 +45419,7 @@ function isIE8orlower() {
  * included in all copies or substantial portions of the Software.
  * =======================================================================
  * JarvisWidget is FULLY owned and LICENSED by MYORANGE INC.
- * This script may NOT be RESOLD or REDISTRUBUTED under any
+ * This script may NOT be RESOLD or REDISTRUBUTED on its own under any
  * circumstances, and is only to be used with this purchased
  * copy of SmartAdmin Template.
  * =======================================================================
@@ -45627,6 +45442,12 @@ function isIE8orlower() {
 
     var pluginName = 'jarvisWidgets';
 
+	/**
+	 * Check for touch support and set right click events.
+	 **/
+	var clickEvent = (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch ? 
+		'touchstart' : 'click') + '.' + pluginName;
+
     function Plugin(element, options) {
         /**
          * Variables.
@@ -45640,86 +45461,13 @@ function isIE8orlower() {
         this.editClass = this.o.editClass.split('|');
         this.fullscreenClass = this.o.fullscreenClass.split('|');
         this.customClass = this.o.customClass.split('|');
+		this.storage = {enabled: this.o.localStorage};
+		this.initialized = false;
 
         this.init();
     }
 
     Plugin.prototype = {
-
-        /**
-         * Important settings like storage and touch support.
-         *
-         * @param:
-         **/
-        _settings: function () {
-
-            var self = this;
-
-            //*****************************************************************//
-            //////////////////////// LOCALSTORAGE CHECK /////////////////////////
-            //*****************************************************************//
-
-            storage = !! function () {
-                var result, uid = +new Date();
-                try {
-                    localStorage.setItem(uid, uid);
-                    result = localStorage.getItem(uid) == uid;
-                    localStorage.removeItem(uid);
-                    return result;
-                } catch (e) {}
-            }() && localStorage;
-
-            //*****************************************************************//
-            /////////////////////////// SET/GET KEYS ////////////////////////////
-            //*****************************************************************//
-
-            // TODO : Push state does not work on IE9, try to find a way to detect IE and use a seperate filter
-
-
-            if (storage && self.o.localStorage) {
-
-                if (self.o.ajaxnav === true) {
-                    widget_url = location.hash.replace(/^#/, '');
-
-                    keySettings = 'Plugin_settings_' + widget_url + '_' + self.objId;
-                    getKeySettings = localStorage.getItem(keySettings);
-
-                    keyPosition = 'Plugin_position_' + widget_url + '_' + self.objId;
-                    getKeyPosition = localStorage.getItem(keyPosition);
-
-                    //console.log("from jarvis widget " + widget_url);
-                    //console.log(self.o.ajaxnav + " if")
-
-                } else {
-
-                    keySettings = 'jarvisWidgets_settings_' + location.pathname + '_' + self.objId;
-                    getKeySettings = localStorage.getItem(keySettings);
-
-                    keyPosition = 'jarvisWidgets_position_' + location.pathname + '_' + self.objId;
-                    getKeyPosition = localStorage.getItem(keyPosition);
-                    //console.log(self.o.ajaxnav + " else")
-
-                } // end else
-
-            } // end if
-
-
-
-            //*****************************************************************//
-            ////////////////////////// TOUCH SUPPORT ////////////////////////////
-            //*****************************************************************//
-
-            /**
-             * Check for touch support and set right click events.
-             **/
-            if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-                clickEvent = 'touchstart';
-                //click tap
-            } else {
-                clickEvent = 'click';
-            }
-
-        },
 
         /**
          * Function for the indicator image.
@@ -45730,7 +45478,7 @@ function isIE8orlower() {
             var self = this;
             if (self.o.indicator === true) {
                 elm.parents(self.o.widgets)
-                    .find('.jarviswidget-loader')
+                    .find('.jarviswidget-loader:first')
                     .stop(true, true)
                     .fadeIn(100)
                     .delay(self.o.indicatorTime)
@@ -45839,15 +45587,39 @@ function isIE8orlower() {
                             self.o.afterLoad.call(this, awidget);
                         }
                     }
+
+					self = null;
                 });
 
             /**
              * Run function for the indicator image.
              **/
-            self._runLoaderWidget(loader);
+            this._runLoaderWidget(loader);
 
         },
 
+		_loadKeys : function () {
+			
+			var self = this;
+
+			//*****************************************************************//
+            /////////////////////////// SET/GET KEYS ////////////////////////////
+            //*****************************************************************//
+
+            // TODO : Push state does not work on IE9, try to find a way to detect IE and use a seperate filter
+
+			if (self.o.ajaxnav === true) {
+				var widget_url = location.hash.replace(/^#/, '');
+				self.storage.keySettings = 'Plugin_settings_' + widget_url + '_' + self.objId;
+				self.storage.keyPosition = 'Plugin_position_' + widget_url + '_' + self.objId;
+			} else if (self.initialized === false) {
+				var widget_url = self.o.pageKey || location.pathname;
+				self.storage.keySettings = 'jarvisWidgets_settings_' + widget_url + '_' + self.objId;
+				self.storage.keyPosition = 'jarvisWidgets_position_' + widget_url + '_' + self.objId;
+			}
+
+		},
+ 
         /**
          * Save all settings to the localStorage.
          *
@@ -45856,46 +45628,44 @@ function isIE8orlower() {
         _saveSettingsWidget: function () {
 
             var self = this;
+			var storage = self.storage;
 
-            self._settings();
+			self._loadKeys();
 
-            if (storage && self.o.localStorage) {
-                var storeSettings = [];
+			var storeSettings = self.obj.find(self.o.widgets)
+				.map(function () {
+					var storeSettingsStr = {};
+					storeSettingsStr.id = $(this)
+						.attr('id');
+					storeSettingsStr.style = $(this)
+						.attr('data-widget-attstyle');
+					storeSettingsStr.title = $(this)
+						.children('header')
+						.children('h2')
+						.text();
+					storeSettingsStr.hidden = ($(this)
+						.css('display') == 'none' ? 1 : 0);
+					storeSettingsStr.collapsed = ($(this)
+						.hasClass('jarviswidget-collapsed') ? 1 : 0);
+					return storeSettingsStr;
+				}).get();
 
-                self.obj.find(self.o.widgets)
-                    .each(function () {
-                        var storeSettingsStr = {};
-                        storeSettingsStr.id = $(this)
-                            .attr('id');
-                        storeSettingsStr.style = $(this)
-                            .attr('data-widget-attstyle');
-                        storeSettingsStr.title = $(this)
-                            .children('header')
-                            .children('h2')
-                            .text();
-                        storeSettingsStr.hidden = ($(this)
-                            .is(':hidden') ? 1 : 0);
-                        storeSettingsStr.collapsed = ($(this)
-                            .hasClass('jarviswidget-collapsed') ? 1 : 0);
-                        storeSettings.push(storeSettingsStr);
-                    });
+			var storeSettingsObj = JSON.stringify({
+				'widget': storeSettings
+			});
 
-                storeSettingsObj = JSON.stringify({
-                    'widget': storeSettings
-                });
-
-                /* Place it in the storage(only if needed) */
-                if (getKeySettings != storeSettingsObj) {
-                    localStorage.setItem(keySettings, storeSettingsObj);
-                }
-            }
+			/* Place it in the storage(only if needed) */
+			if (storage.enabled && storage.getKeySettings != storeSettingsObj) {
+				localStorage.setItem(storage.keySettings, storeSettingsObj);
+				storage.getKeySettings = storeSettingsObj;
+			}
 
             /**
              * Run the callback function.
              **/
             
             if (typeof self.o.onSave == 'function') {
-                self.o.onSave.call(this, null, storeSettingsObj);
+                self.o.onSave.call(this, null, storeSettingsObj, storage.keySettings);
             }
         },
 
@@ -45907,44 +45677,39 @@ function isIE8orlower() {
         _savePositionWidget: function () {
 
             var self = this;
+			var storage = self.storage;
 
-            self._settings();
+			self._loadKeys();
 
-            if (storage && self.o.localStorage) {
-                var mainArr = [];
+			var mainArr = self.obj.find(self.o.grid + '.sortable-grid')
+				.map(function () {
+					var subArr = $(this)
+						.children(self.o.widgets)
+						.map(function () {
+							return {
+								'id': $(this).attr('id')
+							};
+						}).get();
+					return {
+						'section': subArr
+					};
+				}).get();
 
-                self.obj.find(self.o.grid + '.sortable-grid')
-                    .each(function () {
-                        var subArr = [];
-                        $(this)
-                            .children(self.o.widgets)
-                            .each(function () {
-                                var subObj = {};
-                                subObj.id = $(this)
-                                    .attr('id');
-                                subArr.push(subObj);
-                            });
-                        var out = {
-                            'section': subArr
-                        };
-                        mainArr.push(out);
-                    });
+			var storePositionObj = JSON.stringify({
+				'grid': mainArr
+			});
 
-                var storePositionObj = JSON.stringify({
-                    'grid': mainArr
-                });
-
-                /* Place it in the storage(only if needed) */
-                if (getKeyPosition != storePositionObj) {
-                    localStorage.setItem(keyPosition, storePositionObj, null);
-                }
-            }
+			/* Place it in the storage(only if needed) */
+			if (storage.enabled && storage.getKeyPosition != storePositionObj) {
+				localStorage.setItem(storage.keyPosition, storePositionObj);
+				storage.getKeyPosition = storePositionObj
+			}
 
             /**
              * Run the callback function.
              **/
             if (typeof self.o.onSave == 'function') {
-                self.o.onSave.call(this, storePositionObj);
+                self.o.onSave.call(this, storePositionObj, storage.keyPosition);
             }
         },
 
@@ -45956,8 +45721,10 @@ function isIE8orlower() {
         init: function () {
 
             var self = this;
+			
+			if (self.initialized) return;
 
-            self._settings();
+            self._initStorage(self.storage);
 
             /**
              * Force users to use an id(it's needed for the local storage).
@@ -45997,9 +45764,9 @@ function isIE8orlower() {
             /**
              * Run if data is present.
              **/
-            if (storage && self.o.localStorage && getKeyPosition) {
+            if (self.storage.enabled && self.storage.getKeyPosition) {
 
-                var jsonPosition = JSON.parse(getKeyPosition);
+                var jsonPosition = JSON.parse(self.storage.getKeyPosition);
 
                 /**
                  * Loop the data, and put every widget on the right place.
@@ -46021,9 +45788,9 @@ function isIE8orlower() {
             /**
              * Run if data is present.
              **/
-            if (storage && self.o.localStorage && getKeySettings) {
+            if (self.storage.enabled && self.storage.getKeySettings) {
 
-                var jsonSettings = JSON.parse(getKeySettings);
+                var jsonSettings = JSON.parse(self.storage.getKeySettings);
 
                 /**
                  * Loop the data and hide/show the widgets and set the inputs in
@@ -46158,7 +45925,7 @@ function isIE8orlower() {
                      **/
                     if (self.o.editButton === true && tWidget.data('widget-editbutton') === undefined) {
                         editBtn =
-                            '<a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="Edit Title" data-placement="bottom"><i class="' +
+                            '<a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="Edit" data-placement="bottom"><i class="' +
                             self.editClass[0] + '"></i></a>';
                     } else {
                         editBtn = '';
@@ -46357,10 +46124,10 @@ function isIE8orlower() {
              * Notice that this part needs the jquery-ui core to work.
              **/
             if (self.o.sortable === true && jQuery.ui) {
-                var sortItem = self.obj.find('.sortable-grid')
+                var sortItem = self.obj.find(self.o.grid + '.sortable-grid')
                     .not('[data-widget-excludegrid]');
                 sortItem.sortable({
-                    items: sortItem.find('.jarviswidget-sortable'),
+                    items: sortItem.find(self.o.widgets + '.jarviswidget-sortable'),
                     connectWith: sortItem,
                     placeholder: self.o.placeholderClass,
                     cursor: 'move',
@@ -46402,12 +46169,13 @@ function isIE8orlower() {
                  * Show and hide the buttons.
                  **/
                 self.widget.children('header')
-                    .hover(function () {
+                    .on('mouseenter.' + pluginName, function () {
                         $(this)
                             .children(self.o.pwCtrls)
                             .stop(true, true)
                             .fadeTo(100, 1.0);
-                    }, function () {
+                    })
+					.on('mouseleave.' + pluginName, function () {
                         $(this)
                             .children(self.o.pwCtrls)
                             .stop(true, true)
@@ -46425,59 +46193,63 @@ function isIE8orlower() {
             ///////////////////// DELETE LOCAL STORAGE KEYS /////////////////////
             //*****************************************************************//
 
-            /**
-             * Delete the settings key.
-             **/
-            $(self.o.deleteSettingsKey)
-                .on(clickEvent, this, function (e) {
-                    if (storage && self.o.localStorage) {
+			if (self.storage.enabled) {
+				/**
+				 * Delete the settings key.
+				 **/
+				$(self.o.deleteSettingsKey)
+					.on(clickEvent, this, function (e) {
                         var cleared = confirm(self.o.settingsKeyLabel);
                         if (cleared) {
                             localStorage.removeItem(keySettings);
                         }
-                    }
-                    e.preventDefault();
-                });
-
-            /**
-             * Delete the position key.
-             **/
-            $(self.o.deletePositionKey)
-                .on(clickEvent, this, function (e) {
-                    if (storage && self.o.localStorage) {
+						e.preventDefault();
+					});
+				/**
+				 * Delete the position key.
+				 **/
+				$(self.o.deletePositionKey)
+					.on(clickEvent, this, function (e) {
                         var cleared = confirm(self.o.positionKeyLabel);
                         if (cleared) {
                             localStorage.removeItem(keyPosition);
                         }
-                    }
-                    e.preventDefault();
-                });
+						e.preventDefault();
+					});
+			}
+
+			initialized = true;
+        },
+
+        /**
+         * Initialize storage.
+         *
+         * @param:
+         **/
+        _initStorage: function (storage) {
 
             //*****************************************************************//
-            ///////////////////////// CREATE NEW KEYS  //////////////////////////
+            //////////////////////// LOCALSTORAGE CHECK /////////////////////////
             //*****************************************************************//
 
-            /**
-             * Create new keys if non are present.
-             **/
-            if (storage && self.o.localStorage) {
+            storage.enabled = storage.enabled && !! function () {
+                var result, uid = +new Date();
+                try {
+                    localStorage.setItem(uid, uid);
+                    result = localStorage.getItem(uid) == uid;
+                    localStorage.removeItem(uid);
+                    return result;
+                } catch (e) {}
+            }();
 
-                /**
-                 * If the local storage key (keySettings) is empty or
-                 * does not excite, create one and fill it.
-                 **/
-                if (getKeySettings === null || getKeySettings.length < 1) {
-                    self._saveSettingsWidget();
-                }
+			this._loadKeys();
 
-                /**
-                 * If the local storage key (keyPosition) is empty or
-                 * does not excite, create one and fill it.
-                 **/
-                if (getKeyPosition === null || getKeyPosition.length < 1) {
-                    self._savePositionWidget();
-                }
-            }
+            if (storage.enabled) {
+
+				storage.getKeySettings = localStorage.getItem(storage.keySettings);
+				storage.getKeyPosition = localStorage.getItem(storage.keyPosition);
+				
+            } // end if
 
         },
 
@@ -46490,7 +46262,7 @@ function isIE8orlower() {
 
             var self = this;
 
-            self._settings();
+            var headers = self.widget.children('header');
 
             //*****************************************************************//
             /////////////////////////// TOGGLE WIDGETS //////////////////////////
@@ -46499,7 +46271,7 @@ function isIE8orlower() {
             /**
              * Allow users to toggle the content of the widgets.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-toggle-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-toggle-btn', function (e) {
 
                 var tWidget = $(this);
                 var pWidget = tWidget.parents(self.o.widgets);
@@ -46561,7 +46333,7 @@ function isIE8orlower() {
                     var heightWindow = $(window)
                         .height();
                     var heightHeader = $('#jarviswidget-fullscreen-mode')
-                        .find(self.o.widgets)
+                        .children(self.o.widgets)
                         .children('header')
                         .height();
 
@@ -46569,7 +46341,7 @@ function isIE8orlower() {
                      * Setting the height to the right widget.
                      **/
                     $('#jarviswidget-fullscreen-mode')
-                        .find(self.o.widgets)
+                        .children(self.o.widgets)
                         .children('div')
                         .height(heightWindow - heightHeader - 15);
                 }
@@ -46578,7 +46350,7 @@ function isIE8orlower() {
             /**
              * On click go to fullscreen mode.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-fullscreen-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-fullscreen-btn', function (e) {
 
                 var thisWidget = $(this)
                     .parents(self.o.widgets);
@@ -46609,7 +46381,7 @@ function isIE8orlower() {
                         .children('div')
                         .removeAttr('style')
                         .end()
-                        .find('.jarviswidget-fullscreen-btn')
+                        .find('.jarviswidget-fullscreen-btn:first')
                         .children()
                         .removeClass(self.fullscreenClass[1])
                         .addClass(self.fullscreenClass[0])
@@ -46640,7 +46412,7 @@ function isIE8orlower() {
 					 **/
                     thisWidget.wrap('<div id="jarviswidget-fullscreen-mode"/>')
                         .parent()
-                        .find('.jarviswidget-fullscreen-btn')
+                        .find('.jarviswidget-fullscreen-btn:first')
                         .children()
                         .removeClass(self.fullscreenClass[0])
                         .addClass(self.fullscreenClass[1])
@@ -46676,7 +46448,7 @@ function isIE8orlower() {
              * Run the set fullscreen height function when the screen resizes.
              **/
             $(window)
-                .resize(function () {
+                .on('resize.' + pluginName, function () {
 
                     /**
                      * Run the set height function.
@@ -46691,7 +46463,7 @@ function isIE8orlower() {
             /**
              * Allow users to show/hide a edit box.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-edit-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-edit-btn', function (e) {
 
                 var tWidget = $(this)
                     .parents(self.o.widgets);
@@ -46752,7 +46524,7 @@ function isIE8orlower() {
             /**
              * Set a custom style.
              **/
-            self.widget.on(clickEvent, '[data-widget-setstyle]', function (e) {
+            headers.on(clickEvent, '[data-widget-setstyle]', function (e) {
 
                 var val = $(this)
                     .data('widget-setstyle');
@@ -46798,7 +46570,7 @@ function isIE8orlower() {
             /**
              * Allow users to show/hide a edit box.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-custom-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-custom-btn', function (e) {
 
                 var w = $(this)
                     .parents(self.o.widgets);
@@ -46854,7 +46626,7 @@ function isIE8orlower() {
             /**
              * Allow users to delete the widgets.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-delete-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-delete-btn', function (e) {
 
                 var tWidget = $(this)
                     .parents(self.o.widgets);
@@ -46872,7 +46644,7 @@ function isIE8orlower() {
                    $.SmartMessageBox({
 	                    title: "<i class='fa fa-times' style='color:#ed1c24'></i> " + self.o.labelDelete +
 	                        ' "' + widTitle + '"',
-	                    content: "Warning: This action cannot be undone",
+	                    content: self.o.deleteMsg,
 	                    buttons: '[No][Yes]'
 	                }, function (ButtonPressed) {
 	                    //console.log(ButtonPressed);
@@ -46933,7 +46705,7 @@ function isIE8orlower() {
             /**
              * Refresh ajax upon clicking refresh link.
              **/
-            self.widget.on(clickEvent, '.jarviswidget-refresh-btn', function (e) {
+            headers.on(clickEvent, '.jarviswidget-refresh-btn', function (e) {
 
                 /**
                  * Variables.
@@ -46958,6 +46730,8 @@ function isIE8orlower() {
 
                 e.preventDefault();
             });
+			
+			headers = null;
         },
 
         /**
@@ -46966,8 +46740,15 @@ function isIE8orlower() {
          * @param:
          **/
         destroy: function () {
-            var self = this;
-            self.widget.off('click', self._clickEvents());
+            var self = this, 
+            namespace = '.' + pluginName, 
+            sortItem = self.obj.find(self.o.grid + '.sortable-grid').not('[data-widget-excludegrid]');
+            
+            sortItem.sortable('destroy');
+            self.widget.children('header').off(namespace);
+			$(self.o.deleteSettingsKey).off(namespace);
+			$(self.o.deletePositionKey).off(namespace);
+			$(window).off(namespace);
             self.obj.removeData(pluginName);
         }
     };
@@ -46976,8 +46757,8 @@ function isIE8orlower() {
         return this.each(function () {
             var $this = $(this);
             var data = $this.data(pluginName);
-            var options = typeof option == 'object' && option;
             if (!data) {
+				var options = typeof option == 'object' && option;
                 $this.data(pluginName, (data = new Plugin(this, options)));
             }
             if (typeof option == 'string') {
@@ -47007,6 +46788,7 @@ function isIE8orlower() {
         toggleSpeed: 200,
         onToggle: function () {},
         deleteButton: true,
+        deleteMsg:'Warning: This action cannot be undone',
         deleteClass: 'trashcan-10',
         deleteSpeed: 200,
         onDelete: function () {},
@@ -47069,20 +46851,15 @@ function isIE8orlower() {
         return this;
     };
 })(jQuery, window, document);
-/*         ______________________________________
-  ________|                                      |_______
-  \       |           SmartAdmin WebApp          |      /
-   \      |      Copyright © 2014 MyOrange       |     /
-   /      |______________________________________|     \
-  /__________)                                (_________\
+/*                  ______________________________________
+		   ________|                                      |_______
+		   \       |           SmartAdmin WebApp          |      /
+			\      |      Copyright © 2015 MyOrange       |     /
+			/      |______________________________________|     \
+		   /__________)                                (_________\
 
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * =======================================================================
- * SmartAdmin is FULLY owned and LICENSED by MYORANGE INC.
- * This script may NOT be RESOLD or REDISTRUBUTED under any
- * circumstances, and is only to be used with this purchased
- * copy of SmartAdmin Template.
  * =======================================================================
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
@@ -47091,12 +46868,15 @@ function isIE8orlower() {
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * =======================================================================
- * original filename: app.js
- * filesize: 50,499 bytes
- * author: Sunny (@bootstraphunt)
- * email: info@myorange.ca
+ * original filename  : app.js
+ * filesize           : 62,499~ bytes
+ * author             : Sunny (@bootstraphunt)
+ * email              : info@myorange.ca
+ * legal notice       : This script is part of a theme sold by 
+ *                      bootstraphunter.com
+ *    
  * =======================================================================
- * INDEX:
+ * INDEX (Note: line numbers for index items may not be up to date):
  * 
  * 1. APP CONFIGURATION..................................[ app.config.js ]
  * 2. APP DOM REFERENCES.................................[ app.config.js ]
@@ -47131,44 +46911,43 @@ function isIE8orlower() {
  * 11.UPDATE BREADCRUMB.......................................[line: 1775]
  * 12.PAGE SETUP..............................................[line: 1798]
  * 13.POP OVER THEORY.........................................[line: 1852]
+ * 14.DELETE MODEL DATA ON HIDDEN.............................[line: 1991]
+ * 15.HELPFUL FUNCTIONS.......................................[line: 2027]
  * 
  * =======================================================================
- *         IMPORTANT: ALL CONFIG VARS WERE MOVED TO APP.CONFIG.JS
+ *       IMPORTANT: ALL CONFIG VARS IS NOW MOVED TO APP.CONFIG.JS
  * =======================================================================
  * 
- *
- * GLOBAL: Reference DOM
+ * 
+ * GLOBAL: interval array (to be used with jarviswidget in ajax and 
+ * angular mode) to clear auto fetch interval
  */
-	$.root_ = $('body');
-/*
- * GLOBAL: interval array (to be used with jarviswidget in ajax and angular mode) to clear auto fetch interval
- */
-	$.intervalArr = [];
+$.intervalArr = [];
 /*
  * Calculate nav height
  */
-var calc_navbar_height = function() {
-		var height = null;
-	
-		if ($('#header').length)
-			height = $('#header').height();
-	
-		if (height === null)
-			height = $('<div id="header"></div>').height();
-	
-		if (height === null)
-			return 49;
-		// default
-		return height;
-	},
-	
-	navbar_height = calc_navbar_height, 
+var calc_navbar_height = function () {
+	var height = null;
+
+	if ($('#header').length)
+		height = $('#header').height();
+
+	if (height === null)
+		height = $('<div id="header"></div>').height();
+
+	if (height === null)
+		return 49;
+	// default
+	return height;
+},
+
+	navbar_height = calc_navbar_height,
 /*
  * APP DOM REFERENCES
  * Description: Obj DOM reference, please try to avoid changing these
- */	
+ */
 	shortcut_dropdown = $('#shortcut'),
-	
+
 	bread_crumb = $('#ribbon ol.breadcrumb'),
 /*
  * Top menu on/off
@@ -47180,82 +46959,82 @@ var calc_navbar_height = function() {
 	thisDevice = null,
 /*
  * DETECT MOBILE DEVICES
- * Description: Detects mobile device - if any of the listed device is detected
- * a class is inserted to $.root_ and the variable thisDevice is decleard. 
- * (so far this is covering most hand held devices)
- */	
+ * Description: Detects mobile device - if any of the listed device is 
+ * detected a class is inserted to $.root_ and the variable thisDevice 
+ * is decleard. (so far this is covering most hand held devices)
+ */
 	ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase())),
 /*
  * JS ARRAY SCRIPT STORAGE
  * Description: used with loadScript to store script path and file name
  * so it will not load twice
- */	
+ */
 	jsArray = {},
 /*
  * App Initialize
  * Description: Initializes the app with intApp();
- */	
-	initApp = (function(app) {
-		
+ */
+	initApp = (function (app) {
+
 		/*
 		 * ADD DEVICE TYPE
 		 * Detect if mobile or desktop
-		 */		
-		app.addDeviceType = function() {
-			
+		 */
+		app.addDeviceType = function () {
+
 			if (!ismobile) {
 				// Desktop
 				$.root_.addClass("desktop-detected");
 				thisDevice = "desktop";
-				return false; 
+				return false;
 			} else {
 				// Mobile
 				$.root_.addClass("mobile-detected");
 				thisDevice = "mobile";
-				
+
 				if (fastClick) {
 					// Removes the tap delay in idevices
 					// dependency: js/plugin/fastclick/fastclick.js 
 					$.root_.addClass("needsclick");
-					FastClick.attach(document.body); 
-					return false; 
+					FastClick.attach(document.body);
+					return false;
 				}
-				
+
 			}
-			
+
 		};
 		/* ~ END: ADD DEVICE TYPE */
-		
+
 		/*
 		 * CHECK FOR MENU POSITION
 		 * Scans localstroage for menu position (vertical or horizontal)
 		 */
-		app.menuPos = function() {
-			
-		 	if ($.root_.hasClass("menu-on-top") || localStorage.getItem('sm-setmenu')=='top' ) { 
-		 		topmenu = true;
-		 		$.root_.addClass("menu-on-top");
-		 	}
+		app.menuPos = function () {
+
+			if ($.root_.hasClass("menu-on-top") || localStorage.getItem('sm-setmenu') == 'top') {
+				topmenu = true;
+				$.root_.addClass("menu-on-top");
+			}
 		};
 		/* ~ END: CHECK MOBILE DEVICE */
 
 		/*
 		 * SMART ACTIONS
 		 */
-		app.SmartActions = function(){
-				
+		app.SmartActions = function () {
+
 			var smartActions = {
-			    
-			    // LOGOUT MSG 
-			    userLogout: function($this){
-			
+
+				// LOGOUT MSG 
+				userLogout: function ($this) {
+
 					// ask verification
 					$.SmartMessageBox({
-						title : "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
-						content : $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
-						buttons : '[No][Yes]'
-			
-					}, function(ButtonPressed) {
+						title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> Logout <span class='txt-color-orangeDark'><strong>" + $('#show-shortcut').text() + "</strong></span> ?",
+						content: $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
+						buttons: '[No][Yes]'
+
+					}, function (ButtonPressed) {
 						if (ButtonPressed == "Yes") {
 							$.root_.addClass('animated fadeOutUp');
 							setTimeout(logout, 1000);
@@ -47264,33 +47043,32 @@ var calc_navbar_height = function() {
 					function logout() {
 						window.location = $this.attr('href');
 					}
-			
+
 				},
-		
+
 				// RESET WIDGETS
-			    resetWidgets: function($this){
-					$.widresetMSG = $this.data('reset-msg');
-					
+				resetWidgets: function ($this) {
+
 					$.SmartMessageBox({
-						title : "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
-						content : $.widresetMSG || "Would you like to RESET all your saved widgets and clear LocalStorage?",
-						buttons : '[No][Yes]'
-					}, function(ButtonPressed) {
+						title: "<i class='fa fa-refresh' style='color:green'></i> Clear Local Storage",
+						content: $this.data('reset-msg') || "Would you like to RESET all your saved widgets and clear LocalStorage?1",
+						buttons: '[No][Yes]'
+					}, function (ButtonPressed) {
 						if (ButtonPressed == "Yes" && localStorage) {
 							localStorage.clear();
 							location.reload();
 						}
-			
+
 					});
-			    },
-			    
-			    // LAUNCH FULLSCREEN 
-			    launchFullscreen: function(element){
-			
+				},
+
+				// LAUNCH FULLSCREEN 
+				launchFullscreen: function (element) {
+
 					if (!$.root_.hasClass("full-screen")) {
-				
+
 						$.root_.addClass("full-screen");
-				
+
 						if (element.requestFullscreen) {
 							element.requestFullscreen();
 						} else if (element.mozRequestFullScreen) {
@@ -47300,11 +47078,11 @@ var calc_navbar_height = function() {
 						} else if (element.msRequestFullscreen) {
 							element.msRequestFullscreen();
 						}
-				
+
 					} else {
-						
+
 						$.root_.removeClass("full-screen");
-						
+
 						if (document.exitFullscreen) {
 							document.exitFullscreen();
 						} else if (document.mozCancelFullScreen) {
@@ -47312,184 +47090,206 @@ var calc_navbar_height = function() {
 						} else if (document.webkitExitFullscreen) {
 							document.webkitExitFullscreen();
 						}
-				
+
 					}
-			
-			   },
-			
-			   // MINIFY MENU
-			    minifyMenu: function($this){
-			    	if (!$.root_.hasClass("menu-on-top")){
+
+				},
+
+				// MINIFY MENU
+				minifyMenu: function ($this) {
+					if (!$.root_.hasClass("menu-on-top")) {
 						$.root_.toggleClass("minified");
 						$.root_.removeClass("hidden-menu");
 						$('html').removeClass("hidden-menu-mobile-lock");
 						$this.effect("highlight", {}, 500);
+						if ($.root_.hasClass('minified')) {
+							$('.fixed-save').css('left', '4.66%');
+							$('.fixed-save').css('width', '91.99%');
+						} else {
+							$('.fixed-save').css('left', '18.33%');
+							$('.fixed-save').css('width', '78.3%');
+						}
 					}
-			    },
-			    
-			    // TOGGLE MENU 
-			    toggleMenu: function(){
-			    	if (!$.root_.hasClass("menu-on-top")){
+				},
+
+				// TOGGLE MENU 
+				toggleMenu: function () {
+					if (!$.root_.hasClass("menu-on-top")) {
 						$('html').toggleClass("hidden-menu-mobile-lock");
 						$.root_.toggleClass("hidden-menu");
 						$.root_.removeClass("minified");
-			    	} else if ( $.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated") ) {
-			    		$('html').toggleClass("hidden-menu-mobile-lock");
+						if ($.root_.hasClass("hidden-menu")) {
+							$('.fixed-save').css('left', '1.99%');
+							$('.fixed-save').css('width', '94.66%');
+						} else {
+							$('.fixed-save').css('left', '18.33%');
+							$('.fixed-save').css('width', '78.3%');
+						}
+						//} else if ( $.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated") ) {
+						// suggested fix from Christian Jäger	
+					} else if ($.root_.hasClass("menu-on-top") && $(window).width() < 979) {
+						$('html').toggleClass("hidden-menu-mobile-lock");
 						$.root_.toggleClass("hidden-menu");
 						$.root_.removeClass("minified");
-			    	}
-			    },     
-			
-			    // TOGGLE SHORTCUT 
-			    toggleShortcut: function(){
-			    	
+						if ($.root_.hasClass("hidden-menu")) {
+							$('.fixed-save').css('left', '1.99%');
+							$('.fixed-save').css('width', '94.66%');
+						} else {
+							$('.fixed-save').css('left', '18.33%');
+							$('.fixed-save').css('width', '78.3%');
+						}
+					}
+				},
+
+				// TOGGLE SHORTCUT 
+				toggleShortcut: function () {
+
 					if (shortcut_dropdown.is(":visible")) {
 						shortcut_buttons_hide();
 					} else {
 						shortcut_buttons_show();
 					}
-		
+
 					// SHORT CUT (buttons that appear when clicked on user name)
-					shortcut_dropdown.find('a').click(function(e) {
+					shortcut_dropdown.find('a').click(function (e) {
 						e.preventDefault();
 						window.location = $(this).attr('href');
 						setTimeout(shortcut_buttons_hide, 300);
-				
+
 					});
-				
+
 					// SHORTCUT buttons goes away if mouse is clicked outside of the area
-					$(document).mouseup(function(e) {
+					$(document).mouseup(function (e) {
 						if (!shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
 							shortcut_buttons_hide();
 						}
 					});
-					
+
 					// SHORTCUT ANIMATE HIDE
 					function shortcut_buttons_hide() {
 						shortcut_dropdown.animate({
-							height : "hide"
+							height: "hide"
 						}, 300, "easeOutCirc");
 						$.root_.removeClass('shortcut-on');
-				
+
 					}
-				
+
 					// SHORTCUT ANIMATE SHOW
 					function shortcut_buttons_show() {
 						shortcut_dropdown.animate({
-							height : "show"
+							height: "show"
 						}, 200, "easeOutCirc");
 						$.root_.addClass('shortcut-on');
 					}
-			
-			    }  
-			   
+
+				}
+
 			};
-				
-			$.root_.on('click', '[data-action="userLogout"]', function(e) {
+
+			$.root_.on('click', '[data-action="userLogout"]', function (e) {
 				var $this = $(this);
 				smartActions.userLogout($this);
 				e.preventDefault();
-				
+
 				//clear memory reference
 				$this = null;
-				
-			}); 
+
+			});
 
 			/*
 			 * BUTTON ACTIONS 
-			 */		
-			$.root_.on('click', '[data-action="resetWidgets"]', function(e) {	
+			 */
+			$.root_.on('click', '[data-action="resetWidgets"]', function (e) {
 				var $this = $(this);
 				smartActions.resetWidgets($this);
 				e.preventDefault();
-				
+
 				//clear memory reference
 				$this = null;
 			});
-			
-			$.root_.on('click', '[data-action="launchFullscreen"]', function(e) {	
+
+			$.root_.on('click', '[data-action="launchFullscreen"]', function (e) {
 				smartActions.launchFullscreen(document.documentElement);
 				e.preventDefault();
-			}); 
-			
-			$.root_.on('click', '[data-action="minifyMenu"]', function(e) {
+			});
+
+			$.root_.on('click', '[data-action="minifyMenu"]', function (e) {
 				var $this = $(this);
 				smartActions.minifyMenu($this);
 				e.preventDefault();
-				
+
 				//clear memory reference
 				$this = null;
-			}); 
-			
-			$.root_.on('click', '[data-action="toggleMenu"]', function(e) {	
+			});
+
+			$.root_.on('click', '[data-action="toggleMenu"]', function (e) {
 				smartActions.toggleMenu();
 				e.preventDefault();
-			});  
-		
-			$.root_.on('click', '[data-action="toggleShortcut"]', function(e) {	
+			});
+
+			$.root_.on('click', '[data-action="toggleShortcut"]', function (e) {
 				smartActions.toggleShortcut();
 				e.preventDefault();
-			}); 
-					
+			});
+
 		};
 		/* ~ END: SMART ACTIONS */
-		
+
 		/*
 		 * ACTIVATE NAVIGATION
 		 * Description: Activation will fail if top navigation is on
 		 */
-		app.leftNav = function(){
-			
+		app.leftNav = function () {
+
 			// INITIALIZE LEFT NAV
 			if (!topmenu) {
 				if (!null) {
 					$('nav ul').jarvismenu({
-						accordion : true,
-						speed : menu_speed,
-						closedSign : '<em class="fa fa-plus-square-o"></em>',
-						openedSign : '<em class="fa fa-minus-square-o"></em>'
+						accordion: menu_accordion || true,
+						speed: menu_speed || true,
+						closedSign: '<em class="fa fa-plus-square-o"></em>',
+						openedSign: '<em class="fa fa-minus-square-o"></em>'
 					});
 				} else {
 					alert("Error - menu anchor does not exist");
 				}
 			}
-			
+
 		};
 		/* ~ END: ACTIVATE NAVIGATION */
-		
+
 		/*
 		 * MISCELANEOUS DOM READY FUNCTIONS
 		 * Description: fire with jQuery(document).ready...
 		 */
-		app.domReadyMisc = function() {
-			
+		app.domReadyMisc = function () {
+
 			/*
 			 * FIRE TOOLTIPS
 			 */
 			if ($("[rel=tooltip]").length) {
 				$("[rel=tooltip]").tooltip();
 			}
-		
+
 			// SHOW & HIDE MOBILE SEARCH FIELD
-			$('#search-mobile').click(function() {
+			$('#search-mobile').click(function () {
 				$.root_.addClass('search-mobile');
 			});
-		
-			$('#cancel-search-js').click(function() {
+
+			$('#cancel-search-js').click(function () {
 				$.root_.removeClass('search-mobile');
 			});
-		
+
 			// ACTIVITY
 			// ajax drop
-			$('#activity').click(function(e) {
+			$('#activity').click(function (e) {
 				var $this = $(this);
-		
+
 				if ($this.find('.badge').hasClass('bg-color-red')) {
 					$this.find('.badge').removeClassPrefix('bg-color-');
 					$this.find('.badge').text("0");
-					// console.log("Ajax call for activity")
 				}
-		
+
 				if (!$this.next('.ajax-dropdown').is(':visible')) {
 					$this.next('.ajax-dropdown').fadeIn(150);
 					$this.addClass('active');
@@ -47497,202 +47297,226 @@ var calc_navbar_height = function() {
 					$this.next('.ajax-dropdown').fadeOut(150);
 					$this.removeClass('active');
 				}
-		
-				var mytest = $this.next('.ajax-dropdown').find('.btn-group > .active > input').attr('id');
-				//console.log(mytest)
-				
+
+				var theUrlVal = $this.next('.ajax-dropdown').find('.btn-group > .active > input').attr('id');
+
 				//clear memory reference
 				$this = null;
-				mytest = null;
-						
+				theUrlVal = null;
+
 				e.preventDefault();
 			});
-		
-			$('input[name="activity"]').change(function() {
-				//alert($(this).val())
+
+			$('input[name="activity"]').change(function () {
 				var $this = $(this);
-		
+
 				url = $this.attr('id');
 				container = $('.ajax-notifications');
-				
+
 				loadURL(url, container);
-				
+
 				//clear memory reference
-				$this = null;		
+				$this = null;
 			});
-		
+
 			// close dropdown if mouse is not inside the area of .ajax-dropdown
-			$(document).mouseup(function(e) {
+			$(document).mouseup(function (e) {
 				if (!$('.ajax-dropdown').is(e.target) && $('.ajax-dropdown').has(e.target).length === 0) {
 					$('.ajax-dropdown').fadeOut(150);
 					$('.ajax-dropdown').prev().removeClass("active");
 				}
 			});
-			
+
 			// loading animation (demo purpose only)
-			$('button[data-btn-loading]').on('click', function() {
+			$('button[data-btn-loading]').on('click', function () {
 				var btn = $(this);
 				btn.button('loading');
-				setTimeout(function() {
+				setTimeout(function () {
 					btn.button('reset');
 				}, 3000);
-				
-				//clear memory reference
-				$this = null;
 			});
-		
+
 			// NOTIFICATION IS PRESENT
 			// Change color of lable once notification button is clicked
 
 			$this = $('#activity > .badge');
-	
+
 			if (parseInt($this.text()) > 0) {
 				$this.addClass("bg-color-red bounceIn animated");
-				
+
 				//clear memory reference
 				$this = null;
 			}
 
-			
+
 		};
 		/* ~ END: MISCELANEOUS DOM */
-		
+
+		/*
+		 * MISCELANEOUS DOM READY FUNCTIONS
+		 * Description: fire with jQuery(document).ready...
+		 */
+		app.mobileCheckActivation = function () {
+
+			if ($(window).width() < 979) {
+				$.root_.addClass('mobile-view-activated');
+				$.root_.removeClass('minified');
+			} else if ($.root_.hasClass('mobile-view-activated')) {
+				$.root_.removeClass('mobile-view-activated');
+			}
+
+			if (debugState) {
+				console.log("mobileCheckActivation");
+			}
+
+		}
+		/* ~ END: MISCELANEOUS DOM */
+
 		return app;
-		
+
 	})({});
 
+//initApp.addDeviceType();
+//initApp.menuPos();
+/*
+ * DOCUMENT LOADED EVENT
+ * Description: Fire when DOM is ready
+ */
+//jQuery(document).ready(function() {
+
+//	initApp.SmartActions();
+//	initApp.leftNav();
+//	initApp.domReadyMisc();
+
+//});
 /*
  * RESIZER WITH THROTTLE
  * Source: http://benalman.com/code/projects/jquery-resize/examples/resize/
  */
-	(function ($, window, undefined) {
-	
-	    var elems = $([]),
-	        jq_resize = $.resize = $.extend($.resize, {}),
-	        timeout_id, str_setTimeout = 'setTimeout',
-	        str_resize = 'resize',
-	        str_data = str_resize + '-special-event',
-	        str_delay = 'delay',
-	        str_throttle = 'throttleWindow';
-	
-	    jq_resize[str_delay] = throttle_delay;
-	
-	    jq_resize[str_throttle] = true;
-	
-	    $.event.special[str_resize] = {
-	
-	        setup: function () {
-	            if (!jq_resize[str_throttle] && this[str_setTimeout]) {
-	                return false;
-	            }
-	
-	            var elem = $(this);
-	            elems = elems.add(elem);
-	            try {
-	                $.data(this, str_data, {
-	                    w: elem.width(),
-	                    h: elem.height()
-	                });
-	            } catch (e) {
-	                $.data(this, str_data, {
-	                    w: elem.width, // elem.width();
-	                    h: elem.height // elem.height();
-	                });
-	            }
-	
-	            if (elems.length === 1) {
-	                loopy();
-	            }
-	        },
-	        teardown: function () {
-	            if (!jq_resize[str_throttle] && this[str_setTimeout]) {
-	                return false;
-	            }
-	
-	            var elem = $(this);
-	            elems = elems.not(elem);
-	            elem.removeData(str_data);
-	            if (!elems.length) {
-	                clearTimeout(timeout_id);
-	            }
-	        },
-	
-	        add: function (handleObj) {
-	            if (!jq_resize[str_throttle] && this[str_setTimeout]) {
-	                return false;
-	            }
-	            var old_handler;
-	
-	            function new_handler(e, w, h) {
-	                var elem = $(this),
-	                    data = $.data(this, str_data);
-	                data.w = w !== undefined ? w : elem.width();
-	                data.h = h !== undefined ? h : elem.height();
-	
-	                old_handler.apply(this, arguments);
-	            }
-	            if ($.isFunction(handleObj)) {
-	                old_handler = handleObj;
-	                return new_handler;
-	            } else {
-	                old_handler = handleObj.handler;
-	                handleObj.handler = new_handler;
-	            }
-	        }
-	    };
-	
-	    function loopy() {
-	        timeout_id = window[str_setTimeout](function () {
-	            elems.each(function () {
-	                var width;
-	                var height;
-	
-	                var elem = $(this),
-	                    data = $.data(this, str_data); //width = elem.width(), height = elem.height();
-	
-	                // Highcharts fix
-	                try {
-	                    width = elem.width();
-	                } catch (e) {
-	                    width = elem.width;
-	                }
-	
-	                try {
-	                    height = elem.height();
-	                } catch (e) {
-	                    height = elem.height;
-	                }
-	                //fixed bug
-	
-	
-	                if (width !== data.w || height !== data.h) {
-	                    elem.trigger(str_resize, [data.w = width, data.h = height]);
-	                }
-	
-	            });
-	            loopy();
-	
-	        }, jq_resize[str_delay]);
-	
-	    }
-	
-	})(jQuery, this);
+(function ($, window, undefined) {
+
+	var elems = $([]),
+		jq_resize = $.resize = $.extend($.resize, {}),
+		timeout_id, str_setTimeout = 'setTimeout',
+		str_resize = 'resize',
+		str_data = str_resize + '-special-event',
+		str_delay = 'delay',
+		str_throttle = 'throttleWindow';
+
+	jq_resize[str_delay] = throttle_delay;
+
+	jq_resize[str_throttle] = true;
+
+	$.event.special[str_resize] = {
+
+		setup: function () {
+			if (!jq_resize[str_throttle] && this[str_setTimeout]) {
+				return false;
+			}
+
+			var elem = $(this);
+			elems = elems.add(elem);
+			try {
+				$.data(this, str_data, {
+					w: elem.width(),
+					h: elem.height()
+				});
+			} catch (e) {
+				$.data(this, str_data, {
+					w: elem.width, // elem.width();
+					h: elem.height // elem.height();
+				});
+			}
+
+			if (elems.length === 1) {
+				loopy();
+			}
+		},
+		teardown: function () {
+			if (!jq_resize[str_throttle] && this[str_setTimeout]) {
+				return false;
+			}
+
+			var elem = $(this);
+			elems = elems.not(elem);
+			elem.removeData(str_data);
+			if (!elems.length) {
+				clearTimeout(timeout_id);
+			}
+		},
+
+		add: function (handleObj) {
+			if (!jq_resize[str_throttle] && this[str_setTimeout]) {
+				return false;
+			}
+			var old_handler;
+
+			function new_handler(e, w, h) {
+				var elem = $(this),
+					data = $.data(this, str_data);
+				data.w = w !== undefined ? w : elem.width();
+				data.h = h !== undefined ? h : elem.height();
+
+				old_handler.apply(this, arguments);
+			}
+			if ($.isFunction(handleObj)) {
+				old_handler = handleObj;
+				return new_handler;
+			} else {
+				old_handler = handleObj.handler;
+				handleObj.handler = new_handler;
+			}
+		}
+	};
+
+	function loopy() {
+		timeout_id = window[str_setTimeout](function () {
+			elems.each(function () {
+				var width;
+				var height;
+
+				var elem = $(this),
+					data = $.data(this, str_data); //width = elem.width(), height = elem.height();
+
+				// Highcharts fix
+				try {
+					width = elem.width();
+				} catch (e) {
+					width = elem.width;
+				}
+
+				try {
+					height = elem.height();
+				} catch (e) {
+					height = elem.height;
+				}
+				//fixed bug
+
+
+				if (width !== data.w || height !== data.h) {
+					elem.trigger(str_resize, [data.w = width, data.h = height]);
+				}
+
+			});
+			loopy();
+
+		}, jq_resize[str_delay]);
+
+	}
+
+})(jQuery, this);
 /*
 * ADD CLASS WHEN BELOW CERTAIN WIDTH (MOBILE MENU)
-* Description: changes the page min-width of #CONTENT and NAV when navigation is resized.
+* Description: tracks the page min-width of #CONTENT and NAV when navigation is resized.
 * This is to counter bugs for minimum page width on many desktop and mobile devices.
-* Note: This script uses JSthrottle technique so don't worry about memory/CPU usage
+* Note: This script utilizes JSthrottle script so don't worry about memory/CPU usage
 */
-	$('#main').resize(function() {
-		
-		if ($(window).width() < 979) {
-			$.root_.addClass('mobile-view-activated');
-			$.root_.removeClass('minified');
-		} else if ($.root_.hasClass('mobile-view-activated')) {
-			$.root_.removeClass('mobile-view-activated');
-		}
-		
-	});
+$('#main').resize(function () {
+
+	initApp.mobileCheckActivation();
+
+});
+
 /* ~ END: NAV OR #LEFT-BAR RESIZE DETECT */
 
 /*
@@ -47715,71 +47539,73 @@ var calc_navbar_height = function() {
  * ie < 9 // Anything less than IE9
  */
 // TODO: delete this function later on - no longer needed (?)
-	var ie = ( function() {
-	
-		var undef, v = 3, div = document.createElement('div'), all = div.getElementsByTagName('i');
-	
-		while (div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->', all[0]);
-	
-		return v > 4 ? v : undef;
-	
-	}()); 
+var ie = (function () {
+
+	var undef, v = 3, div = document.createElement('div'), all = div.getElementsByTagName('i');
+
+	while (div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->', all[0]);
+
+	return v > 4 ? v : undef;
+
+}());
 /* ~ END: DETECT IE VERSION */
 
 /*
  * CUSTOM MENU PLUGIN
  */
-	$.fn.extend({
-	
-		//pass the options variable to the function
-		jarvismenu : function(options) {
-	
-			var defaults = {
-				accordion : 'true',
-				speed : 200,
-				closedSign : '[+]',
-				openedSign : '[-]'
-			},
-	
-			// Extend our default options with those provided.
-				opts = $.extend(defaults, options),
-			//Assign current element to variable, in this case is UL element
-				$this = $(this);
-	
+$.fn.extend({
+
+	//pass the options variable to the function
+	jarvismenu: function (options, destroy) {
+
+		var defaults = {
+			accordion: 'true',
+			speed: 200,
+			closedSign: '[+]',
+			openedSign: '[-]'
+		},
+
+					// Extend our default options with those provided.
+					opts = $.extend(defaults, options),
+					//Assign current element to variable, in this case is UL element
+					$this = $(this);
+
+		if (!destroy) {
+
 			//add a mark [+] to a multilevel menu
-			$this.find("li").each(function() {
+			$this.find("li").each(function () {
 				if ($(this).find("ul").size() !== 0) {
 					//add the multilevel sign next to the link
 					$(this).find("a:first").append("<b class='collapse-sign'>" + opts.closedSign + "</b>");
-	
+
 					//avoid jumping to the top of the page when the href is an #
 					if ($(this).find("a:first").attr('href') == "#") {
-						$(this).find("a:first").click(function() {
+						$(this).find("a:first").click(function () {
 							return false;
 						});
 					}
 				}
 			});
-	
+
 			//open active level
-			$this.find("li.active").each(function() {
+			$this.find("li.active").each(function () {
 				$(this).parents("ul").slideDown(opts.speed);
 				$(this).parents("ul").parent("li").find("b:first").html(opts.openedSign);
 				$(this).parents("ul").parent("li").addClass("open");
 			});
-	
-			$this.find("li a").click(function() {
-	
+
+			$this.find("li a").click(function () {
+
 				if ($(this).parent().find("ul").size() !== 0) {
-	
+
 					if (opts.accordion) {
 						//Do nothing when the list is open
 						if (!$(this).parent().find("ul").is(':visible')) {
 							parents = $(this).parent().parents("ul");
 							visible = $this.find("ul:visible");
-							visible.each(function(visibleIndex) {
+							visible.each(function (visibleIndex) {
 								var close = true;
-								parents.each(function(parentIndex) {
+								parents.each(function (parentIndex) {
 									if (parents[parentIndex] == visible[visibleIndex]) {
 										close = false;
 										return false;
@@ -47787,24 +47613,24 @@ var calc_navbar_height = function() {
 								});
 								if (close) {
 									if ($(this).parent().find("ul") != visible[visibleIndex]) {
-										$(visible[visibleIndex]).slideUp(opts.speed, function() {
+										$(visible[visibleIndex]).slideUp(opts.speed, function () {
 											$(this).parent("li").find("b:first").html(opts.closedSign);
 											$(this).parent("li").removeClass("open");
 										});
-	
+
 									}
 								}
 							});
 						}
-					}// end if
+					} // end if
 					if ($(this).parent().find("ul:first").is(":visible") && !$(this).parent().find("ul:first").hasClass("active")) {
-						$(this).parent().find("ul:first").slideUp(opts.speed, function() {
+						$(this).parent().find("ul:first").slideUp(opts.speed, function () {
 							$(this).parent("li").removeClass("open");
 							$(this).parent("li").find("b:first").delay(opts.speed).html(opts.closedSign);
 						});
-	
+
 					} else {
-						$(this).parent().find("ul:first").slideDown(opts.speed, function() {
+						$(this).parent().find("ul:first").slideDown(opts.speed, function () {
 							/*$(this).effect("highlight", {color : '#616161'}, 500); - disabled due to CPU clocking on phones*/
 							$(this).parent("li").addClass("open");
 							$(this).parent("li").find("b:first").delay(opts.speed).html(opts.openedSign);
@@ -47812,8 +47638,25 @@ var calc_navbar_height = function() {
 					} // end else
 				} // end if
 			});
-		} // end function
-	});
+		} else {
+			$this.find("li").each(function () {
+				if ($(this).find("ul").size() !== 0) {
+					//add the multilevel sign next to the link
+					$(this).find("a:first").unbind("click");
+
+					$(this).find("a:first b.collapse-sign").remove();
+
+					//avoid jumping to the top of the page when the href is an #
+					if ($(this).find("a:first").attr('href') == "#") {
+						$(this).find("a:first").unbind("click");
+					}
+				}
+			});
+
+
+		}
+	} // end function
+});
 /* ~ END: CUSTOM MENU PLUGIN */
 
 /*
@@ -47821,699 +47664,699 @@ var calc_navbar_height = function() {
  * Description: returns true or false
  * Usage: $('#myDiv').doesExist();
  */
-	jQuery.fn.doesExist = function() {
-		return jQuery(this).length > 0;
-	};
+jQuery.fn.doesExist = function () {
+	return jQuery(this).length > 0;
+};
 /* ~ END: ELEMENT EXIST OR NOT */
 
 /*
  * INITIALIZE FORMS
  * Description: Select2, Masking, Datepicker, Autocomplete
- */	
-	function runAllForms() {
-	
-		/*
-		 * BOOTSTRAP SLIDER PLUGIN
-		 * Usage:
-		 * Dependency: js/plugin/bootstrap-slider
-		 */
-		if ($.fn.slider) {
-			$('.slider').slider();
-		}
-	
-		/*
-		 * SELECT2 PLUGIN
-		 * Usage:
-		 * Dependency: js/plugin/select2/
-		 */
-		if ($.fn.select2) {
-			$('.select2').each(function() {
-				var $this = $(this),
-					width = $this.attr('data-select-width') || '100%';
-				//, _showSearchInput = $this.attr('data-select-search') === 'true';
-				$this.select2({
-					//showSearchInput : _showSearchInput,
-					allowClear : true,
-					width : width
-				});
+ */
+function runAllForms() {
 
-				//clear memory reference
-				$this = null;
+	/*
+	 * BOOTSTRAP SLIDER PLUGIN
+	 * Usage:
+	 * Dependency: js/plugin/bootstrap-slider
+	 */
+	if ($.fn.slider) {
+		$('.slider').slider();
+	}
+
+	/*
+	 * SELECT2 PLUGIN
+	 * Usage:
+	 * Dependency: js/plugin/select2/
+	 */
+	if ($.fn.select2) {
+		$('select.select2').each(function () {
+			var $this = $(this),
+				width = $this.attr('data-select-width') || '100%';
+			//, _showSearchInput = $this.attr('data-select-search') === 'true';
+			$this.select2({
+				//showSearchInput : _showSearchInput,
+				allowClear: true,
+				width: width
 			});
-		}
-	
-		/*
-		 * MASKING
-		 * Dependency: js/plugin/masked-input/
-		 */
-		if ($.fn.mask) {
-			$('[data-mask]').each(function() {
-	
-				var $this = $(this),
-					mask = $this.attr('data-mask') || 'error...', mask_placeholder = $this.attr('data-mask-placeholder') || 'X';
-	
-				$this.mask(mask, {
-					placeholder : mask_placeholder
-				});
-				
-				//clear memory reference
-				$this = null;
+
+			//clear memory reference
+			$this = null;
+		});
+	}
+
+	/*
+	 * MASKING
+	 * Dependency: js/plugin/masked-input/
+	 */
+	if ($.fn.mask) {
+		$('[data-mask]').each(function () {
+
+			var $this = $(this),
+				mask = $this.attr('data-mask') || 'error...', mask_placeholder = $this.attr('data-mask-placeholder') || 'X';
+
+			$this.mask(mask, {
+				placeholder: mask_placeholder
 			});
-		}
-	
-		/*
-		 * AUTOCOMPLETE
-		 * Dependency: js/jqui
-		 */
-		if ($.fn.autocomplete) {
-			$('[data-autocomplete]').each(function() {
-	
-				var $this = $(this),
-					availableTags = $this.data('autocomplete') || ["The", "Quick", "Brown", "Fox", "Jumps", "Over", "Three", "Lazy", "Dogs"];
-	
-				$this.autocomplete({
-					source : availableTags
-				});
-				
-				//clear memory reference
-				$this = null;
+
+			//clear memory reference
+			$this = null;
+		});
+	}
+
+	/*
+	 * AUTOCOMPLETE
+	 * Dependency: js/jqui
+	 */
+	if ($.fn.autocomplete) {
+		$('[data-autocomplete]').each(function () {
+
+			var $this = $(this),
+				availableTags = $this.data('autocomplete') || ["The", "Quick", "Brown", "Fox", "Jumps", "Over", "Three", "Lazy", "Dogs"];
+
+			$this.autocomplete({
+				source: availableTags
 			});
-		}
-	
-		/*
-		 * JQUERY UI DATE
-		 * Dependency: js/libs/jquery-ui-1.10.3.min.js
-		 * Usage: <input class="datepicker" />
-		 */
-		if ($.fn.datepicker) {
-			$('.datepicker').each(function() {
-	
-				var $this = $(this),
-					dataDateFormat = $this.attr('data-dateformat') || 'dd.mm.yy';
-	
-				$this.datepicker({
-					dateFormat : dataDateFormat,
-					prevText : '<i class="fa fa-chevron-left"></i>',
-					nextText : '<i class="fa fa-chevron-right"></i>',
-				});
-				
-				//clear memory reference
-				$this = null;
+
+			//clear memory reference
+			$this = null;
+		});
+	}
+
+	/*
+	 * JQUERY UI DATE
+	 * Dependency: js/libs/jquery-ui-1.10.3.min.js
+	 * Usage: <input class="datepicker" />
+	 */
+	if ($.fn.datepicker) {
+		$('.datepicker').each(function () {
+
+			var $this = $(this),
+				dataDateFormat = $this.attr('data-dateformat') || 'dd.mm.yy';
+
+			$this.datepicker({
+				dateFormat: dataDateFormat,
+				prevText: '<i class="fa fa-chevron-left"></i>',
+				nextText: '<i class="fa fa-chevron-right"></i>',
 			});
-		}
-	
-		/*
-		 * AJAX BUTTON LOADING TEXT
-		 * Usage: <button type="button" data-loading-text="Loading..." class="btn btn-xs btn-default ajax-refresh"> .. </button>
-		 */
-		$('button[data-loading-text]').on('click', function() {
-			var btn = $(this);
-			btn.button('loading');
-			setTimeout(function() {
-				btn.button('reset');
-			}, 3000);
-				
+
+			//clear memory reference
+			$this = null;
+		});
+	}
+
+	/*
+	 * AJAX BUTTON LOADING TEXT
+	 * Usage: <button type="button" data-loading-text="Loading..." class="btn btn-xs btn-default ajax-refresh"> .. </button>
+	 */
+	$('button[data-loading-text]').on('click', function () {
+		var btn = $(this);
+		btn.button('loading');
+		setTimeout(function () {
+			btn.button('reset');
 			//clear memory reference
 			btn = null;
-		});
-	
-	}
+		}, 3000);
+
+	});
+
+}
 /* ~ END: INITIALIZE FORMS */
 
 /*
  * INITIALIZE CHARTS
  * Description: Sparklines, PieCharts
  */
-	function runAllCharts() {
-		/*
-		 * SPARKLINES
-		 * DEPENDENCY: js/plugins/sparkline/jquery.sparkline.min.js
-		 * See usage example below...
-		 */
-	
-		/* Usage:
-		 * 		<div class="sparkline-line txt-color-blue" data-fill-color="transparent" data-sparkline-height="26px">
-		 *			5,6,7,9,9,5,9,6,5,6,6,7,7,6,7,8,9,7
-		 *		</div>
-		 */
-	
-		if ($.fn.sparkline) {
-	
-			// variable declearations:
-	
-			var barColor,
-			    sparklineHeight,
-			    sparklineBarWidth,
-			    sparklineBarSpacing,
-			    sparklineNegBarColor,
-			    sparklineStackedColor,
-			    thisLineColor,
-			    thisLineWidth,
-			    thisFill,
-			    thisSpotColor,
-			    thisMinSpotColor,
-			    thisMaxSpotColor,
-			    thishighlightSpotColor,
-			    thisHighlightLineColor,
-			    thisSpotRadius,			        
-				pieColors,
-			    pieWidthHeight,
-			    pieBorderColor,
-			    pieOffset,
-			 	thisBoxWidth,
-			    thisBoxHeight,
-			    thisBoxRaw,
-			    thisBoxTarget,
-			    thisBoxMin,
-			    thisBoxMax,
-			    thisShowOutlier,
-			    thisIQR,
-			    thisBoxSpotRadius,
-			    thisBoxLineColor,
-			    thisBoxFillColor,
-			    thisBoxWhisColor,
-			    thisBoxOutlineColor,
-			    thisBoxOutlineFill,
-			    thisBoxMedianColor,
-			    thisBoxTargetColor,
-				thisBulletHeight,
-			    thisBulletWidth,
-			    thisBulletColor,
-			    thisBulletPerformanceColor,
-			    thisBulletRangeColors,
-				thisDiscreteHeight,
-			    thisDiscreteWidth,
-			    thisDiscreteLineColor,
-			    thisDiscreteLineHeight,
-			    thisDiscreteThrushold,
-			    thisDiscreteThrusholdColor,
-				thisTristateHeight,
-			    thisTristatePosBarColor,
-			    thisTristateNegBarColor,
-			    thisTristateZeroBarColor,
-			    thisTristateBarWidth,
-			    thisTristateBarSpacing,
-			    thisZeroAxis,
-			    thisBarColor,
-			    sparklineWidth,
-			    sparklineValue,
-			    sparklineValueSpots1,
-			    sparklineValueSpots2,
-			    thisLineWidth1,
-			    thisLineWidth2,
-			    thisLineColor1,
-			    thisLineColor2,
-			    thisSpotRadius1,
-			    thisSpotRadius2,
-			    thisMinSpotColor1,
-			    thisMaxSpotColor1,
-			    thisMinSpotColor2,
-			    thisMaxSpotColor2,
-			    thishighlightSpotColor1,
-			    thisHighlightLineColor1,
-			    thishighlightSpotColor2,
-			    thisFillColor1,
-			    thisFillColor2;
-					    				    
-	
-			$('.sparkline').each(function() {
-				var $this = $(this),
-					sparklineType = $this.data('sparkline-type') || 'bar';
-	
-				// BAR CHART
-				if (sparklineType == 'bar') {
-	
-						barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
-					    sparklineHeight = $this.data('sparkline-height') || '26px';
-					    sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
-					    sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
-					    sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
-					    sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
-					        
-					$this.sparkline('html', {
-						barColor : barColor,
-						type : sparklineType,
-						height : sparklineHeight,
-						barWidth : sparklineBarWidth,
-						barSpacing : sparklineBarSpacing,
-						stackedBarColor : sparklineStackedColor,
-						negBarColor : sparklineNegBarColor,
-						zeroAxis : 'false'
-					});
-					
-					$this = null;
-	
-				}
-	
-				// LINE CHART
-				if (sparklineType == 'line') {
-	
-						sparklineHeight = $this.data('sparkline-height') || '20px';
-					    sparklineWidth = $this.data('sparkline-width') || '90px';
-					    thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
-					    thisLineWidth = $this.data('sparkline-line-width') || 1;
-					    thisFill = $this.data('fill-color') || '#c0d0f0';
-					    thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-					    thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
-					    thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
-					    thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
-					    thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
-					    thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-						thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined'; 
-						thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined'; 
-						thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined'; 
-						thisChartMaxXRange = $this.data('sparkline-max-x') || 'undefined'; 
-						thisMinNormValue = $this.data('min-val') || 'undefined'; 
-						thisMaxNormValue = $this.data('max-val') || 'undefined'; 
-						thisNormColor =  $this.data('norm-color') || '#c0c0c0';
-						thisDrawNormalOnTop = $this.data('draw-normal') || false;
-					    
-					$this.sparkline('html', {
-						type : 'line',
-						width : sparklineWidth,
-						height : sparklineHeight,
-						lineWidth : thisLineWidth,
-						lineColor : thisLineColor,
-						fillColor : thisFill,
-						spotColor : thisSpotColor,
-						minSpotColor : thisMinSpotColor,
-						maxSpotColor : thisMaxSpotColor,
-						highlightSpotColor : thishighlightSpotColor,
-						highlightLineColor : thisHighlightLineColor,
-						spotRadius : thisSpotRadius,
-						chartRangeMin : thisChartMinYRange,
-						chartRangeMax : thisChartMaxYRange,
-						chartRangeMinX : thisChartMinXRange,
-						chartRangeMaxX : thisChartMaxXRange,
-						normalRangeMin : thisMinNormValue,
-						normalRangeMax : thisMaxNormValue,
-						normalRangeColor : thisNormColor,
-						drawNormalOnTop : thisDrawNormalOnTop
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-				// PIE CHART
-				if (sparklineType == 'pie') {
-	
-						pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c","#6E9461", "#0099c6", "#990099", "#717D8A"];
-					    pieWidthHeight = $this.data('sparkline-piesize') || 90;
-					    pieBorderColor = $this.data('border-color') || '#45494C';
-					    pieOffset = $this.data('sparkline-offset') || 0;
-					    
-					$this.sparkline('html', {
-						type : 'pie',
-						width : pieWidthHeight,
-						height : pieWidthHeight,
-						tooltipFormat : '<span style="color: {{color}}">&#9679;</span> ({{percent.1}}%)',
-						sliceColors : pieColors,
-						borderWidth : 1,
-						offset : pieOffset,
-						borderColor : pieBorderColor
-					});
-					
-					$this = null;
-	
-				}
-	
-				// BOX PLOT
-				if (sparklineType == 'box') {
-	
-						thisBoxWidth = $this.data('sparkline-width') || 'auto';
-					    thisBoxHeight = $this.data('sparkline-height') || 'auto';
-					    thisBoxRaw = $this.data('sparkline-boxraw') || false;
-					    thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
-					    thisBoxMin = $this.data('sparkline-min') || 'undefined';
-					    thisBoxMax = $this.data('sparkline-max') || 'undefined';
-					    thisShowOutlier = $this.data('sparkline-showoutlier') || true;
-					    thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
-					    thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
-					    thisBoxLineColor = $this.css('color') || '#000000';
-					    thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
-					    thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
-					    thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
-					    thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
-					    thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
-					    thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
-					    
-					$this.sparkline('html', {
-						type : 'box',
-						width : thisBoxWidth,
-						height : thisBoxHeight,
-						raw : thisBoxRaw,
-						target : thisBoxTarget,
-						minValue : thisBoxMin,
-						maxValue : thisBoxMax,
-						showOutliers : thisShowOutlier,
-						outlierIQR : thisIQR,
-						spotRadius : thisBoxSpotRadius,
-						boxLineColor : thisBoxLineColor,
-						boxFillColor : thisBoxFillColor,
-						whiskerColor : thisBoxWhisColor,
-						outlierLineColor : thisBoxOutlineColor,
-						outlierFillColor : thisBoxOutlineFill,
-						medianColor : thisBoxMedianColor,
-						targetColor : thisBoxTargetColor
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-				// BULLET
-				if (sparklineType == 'bullet') {
-	
-					var thisBulletHeight = $this.data('sparkline-height') || 'auto';
-					    thisBulletWidth = $this.data('sparkline-width') || 2;
-					    thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
-					    thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
-					    thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
-					    
-					$this.sparkline('html', {
-	
-						type : 'bullet',
-						height : thisBulletHeight,
-						targetWidth : thisBulletWidth,
-						targetColor : thisBulletColor,
-						performanceColor : thisBulletPerformanceColor,
-						rangeColors : thisBulletRangeColors
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-				// DISCRETE
-				if (sparklineType == 'discrete') {
-	
-					 	thisDiscreteHeight = $this.data('sparkline-height') || 26;
-					    thisDiscreteWidth = $this.data('sparkline-width') || 50;
-					    thisDiscreteLineColor = $this.css('color');
-					    thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
-					    thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
-					    thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
-					    
-					$this.sparkline('html', {
-	
-						type : 'discrete',
-						width : thisDiscreteWidth,
-						height : thisDiscreteHeight,
-						lineColor : thisDiscreteLineColor,
-						lineHeight : thisDiscreteLineHeight,
-						thresholdValue : thisDiscreteThrushold,
-						thresholdColor : thisDiscreteThrusholdColor
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-				// TRISTATE
-				if (sparklineType == 'tristate') {
-	
-					 	thisTristateHeight = $this.data('sparkline-height') || 26;
-					    thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
-					    thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
-					    thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
-					    thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
-					    thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
-					    thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
-					    
-					$this.sparkline('html', {
-	
-						type : 'tristate',
-						height : thisTristateHeight,
-						posBarColor : thisBarColor,
-						negBarColor : thisTristateNegBarColor,
-						zeroBarColor : thisTristateZeroBarColor,
-						barWidth : thisTristateBarWidth,
-						barSpacing : thisTristateBarSpacing,
-						zeroAxis : thisZeroAxis
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-				//COMPOSITE: BAR
-				if (sparklineType == 'compositebar') {
-	
-				 	sparklineHeight = $this.data('sparkline-height') || '20px';
-				    sparklineWidth = $this.data('sparkline-width') || '100%';
-				    sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
-				    thisLineWidth = $this.data('sparkline-line-width') || 1;
-				    thisLineColor = $this.data('sparkline-color-top') || '#ed1c24';
-				    thisBarColor = $this.data('sparkline-color-bottom') || '#333333';
-					    
-					$this.sparkline($this.data('sparkline-bar-val'), {
-	
-						type : 'bar',
-						width : sparklineWidth,
-						height : sparklineHeight,
-						barColor : thisBarColor,
-						barWidth : sparklineBarWidth
-						//barSpacing: 5
-	
-					});
-	
-					$this.sparkline($this.data('sparkline-line-val'), {
-	
-						width : sparklineWidth,
-						height : sparklineHeight,
-						lineColor : thisLineColor,
-						lineWidth : thisLineWidth,
-						composite : true,
-						fillColor : false
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-				//COMPOSITE: LINE
-				if (sparklineType == 'compositeline') {
-	
-						sparklineHeight = $this.data('sparkline-height') || '20px';
-					    sparklineWidth = $this.data('sparkline-width') || '90px';
-					    sparklineValue = $this.data('sparkline-bar-val');
-					    sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
-					    sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
-					    thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
-					    thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
-					    thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
-					    thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
-					    thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
-					    thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
-					    thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
-					    thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
-					    thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
-					    thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
-					    thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
-					    thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
-					    thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
-					    thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
-					        thishighlightSpotColor1;
-					    thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
-					        thisHighlightLineColor1;
-					    thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
-					    thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
-					    
-					$this.sparkline(sparklineValue, {
-	
-						type : 'line',
-						spotRadius : thisSpotRadius1,
-	
-						spotColor : thisSpotColor,
-						minSpotColor : thisMinSpotColor1,
-						maxSpotColor : thisMaxSpotColor1,
-						highlightSpotColor : thishighlightSpotColor1,
-						highlightLineColor : thisHighlightLineColor1,
-	
-						valueSpots : sparklineValueSpots1,
-	
-						lineWidth : thisLineWidth1,
-						width : sparklineWidth,
-						height : sparklineHeight,
-						lineColor : thisLineColor1,
-						fillColor : thisFillColor1
-	
-					});
-	
-					$this.sparkline($this.data('sparkline-line-val'), {
-	
-						type : 'line',
-						spotRadius : thisSpotRadius2,
-	
-						spotColor : thisSpotColor,
-						minSpotColor : thisMinSpotColor2,
-						maxSpotColor : thisMaxSpotColor2,
-						highlightSpotColor : thishighlightSpotColor2,
-						highlightLineColor : thisHighlightLineColor2,
-	
-						valueSpots : sparklineValueSpots2,
-	
-						lineWidth : thisLineWidth2,
-						width : sparklineWidth,
-						height : sparklineHeight,
-						lineColor : thisLineColor2,
-						composite : true,
-						fillColor : thisFillColor2
-	
-					});
-					
-					$this = null;
-	
-				}
-	
-			});
-	
-		}// end if
-	
-		/*
-		 * EASY PIE CHARTS
-		 * DEPENDENCY: js/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js
-		 * Usage: <div class="easy-pie-chart txt-color-orangeDark" data-pie-percent="33" data-pie-size="72" data-size="72">
-		 *			<span class="percent percent-sign">35</span>
-		 * 	  	  </div>
-		 */
-	
-		if ($.fn.easyPieChart) {
-	
-			$('.easy-pie-chart').each(function() {
-				var $this = $(this),
-					barColor = $this.css('color') || $this.data('pie-color'),
-				    trackColor = $this.data('pie-track-color') || '#eeeeee',
-				    size = parseInt($this.data('pie-size')) || 25;
-				    
-				$this.easyPieChart({
-					
-					barColor : barColor,
-					trackColor : trackColor,
-					scaleColor : false,
-					lineCap : 'butt',
-					lineWidth : parseInt(size / 8.5),
-					animate : 1500,
-					rotate : -90,
-					size : size,
-					onStep : function(value) {
-						this.$el.find('span').text(~~value);
-					}
-					
+function runAllCharts() {
+	/*
+	 * SPARKLINES
+	 * DEPENDENCY: js/plugins/sparkline/jquery.sparkline.min.js
+	 * See usage example below...
+	 */
+
+	/* Usage:
+	 * 		<div class="sparkline-line txt-color-blue" data-fill-color="transparent" data-sparkline-height="26px">
+	 *			5,6,7,9,9,5,9,6,5,6,6,7,7,6,7,8,9,7
+	 *		</div>
+	 */
+
+	if ($.fn.sparkline) {
+
+		// variable declearations:
+
+		var barColor,
+			sparklineHeight,
+			sparklineBarWidth,
+			sparklineBarSpacing,
+			sparklineNegBarColor,
+			sparklineStackedColor,
+			thisLineColor,
+			thisLineWidth,
+			thisFill,
+			thisSpotColor,
+			thisMinSpotColor,
+			thisMaxSpotColor,
+			thishighlightSpotColor,
+			thisHighlightLineColor,
+			thisSpotRadius,
+			pieColors,
+			pieWidthHeight,
+			pieBorderColor,
+			pieOffset,
+			thisBoxWidth,
+			thisBoxHeight,
+			thisBoxRaw,
+			thisBoxTarget,
+			thisBoxMin,
+			thisBoxMax,
+			thisShowOutlier,
+			thisIQR,
+			thisBoxSpotRadius,
+			thisBoxLineColor,
+			thisBoxFillColor,
+			thisBoxWhisColor,
+			thisBoxOutlineColor,
+			thisBoxOutlineFill,
+			thisBoxMedianColor,
+			thisBoxTargetColor,
+			thisBulletHeight,
+			thisBulletWidth,
+			thisBulletColor,
+			thisBulletPerformanceColor,
+			thisBulletRangeColors,
+			thisDiscreteHeight,
+			thisDiscreteWidth,
+			thisDiscreteLineColor,
+			thisDiscreteLineHeight,
+			thisDiscreteThrushold,
+			thisDiscreteThrusholdColor,
+			thisTristateHeight,
+			thisTristatePosBarColor,
+			thisTristateNegBarColor,
+			thisTristateZeroBarColor,
+			thisTristateBarWidth,
+			thisTristateBarSpacing,
+			thisZeroAxis,
+			thisBarColor,
+			sparklineWidth,
+			sparklineValue,
+			sparklineValueSpots1,
+			sparklineValueSpots2,
+			thisLineWidth1,
+			thisLineWidth2,
+			thisLineColor1,
+			thisLineColor2,
+			thisSpotRadius1,
+			thisSpotRadius2,
+			thisMinSpotColor1,
+			thisMaxSpotColor1,
+			thisMinSpotColor2,
+			thisMaxSpotColor2,
+			thishighlightSpotColor1,
+			thisHighlightLineColor1,
+			thishighlightSpotColor2,
+			thisFillColor1,
+			thisFillColor2;
+
+		$('.sparkline:not(:has(>canvas))').each(function () {
+			var $this = $(this),
+				sparklineType = $this.data('sparkline-type') || 'bar';
+
+			// BAR CHART
+			if (sparklineType == 'bar') {
+
+				barColor = $this.data('sparkline-bar-color') || $this.css('color') || '#0000f0';
+				sparklineHeight = $this.data('sparkline-height') || '26px';
+				sparklineBarWidth = $this.data('sparkline-barwidth') || 5;
+				sparklineBarSpacing = $this.data('sparkline-barspacing') || 2;
+				sparklineNegBarColor = $this.data('sparkline-negbar-color') || '#A90329';
+				sparklineStackedColor = $this.data('sparkline-barstacked-color') || ["#A90329", "#0099c6", "#98AA56", "#da532c", "#4490B1", "#6E9461", "#990099", "#B4CAD3"];
+
+				$this.sparkline('html', {
+					barColor: barColor,
+					type: sparklineType,
+					height: sparklineHeight,
+					barWidth: sparklineBarWidth,
+					barSpacing: sparklineBarSpacing,
+					stackedBarColor: sparklineStackedColor,
+					negBarColor: sparklineNegBarColor,
+					zeroAxis: 'false'
 				});
-				
+
 				$this = null;
+
+			}
+
+			// LINE CHART
+			if (sparklineType == 'line') {
+
+				sparklineHeight = $this.data('sparkline-height') || '20px';
+				sparklineWidth = $this.data('sparkline-width') || '90px';
+				thisLineColor = $this.data('sparkline-line-color') || $this.css('color') || '#0000f0';
+				thisLineWidth = $this.data('sparkline-line-width') || 1;
+				thisFill = $this.data('fill-color') || '#c0d0f0';
+				thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+				thisMinSpotColor = $this.data('sparkline-minspot-color') || '#ed1c24';
+				thisMaxSpotColor = $this.data('sparkline-maxspot-color') || '#f08000';
+				thishighlightSpotColor = $this.data('sparkline-highlightspot-color') || '#50f050';
+				thisHighlightLineColor = $this.data('sparkline-highlightline-color') || 'f02020';
+				thisSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+				thisChartMinYRange = $this.data('sparkline-min-y') || 'undefined';
+				thisChartMaxYRange = $this.data('sparkline-max-y') || 'undefined';
+				thisChartMinXRange = $this.data('sparkline-min-x') || 'undefined';
+				thisChartMaxXRange = $this.data('sparkline-max-x') || 'undefined';
+				thisMinNormValue = $this.data('min-val') || 'undefined';
+				thisMaxNormValue = $this.data('max-val') || 'undefined';
+				thisNormColor = $this.data('norm-color') || '#c0c0c0';
+				thisDrawNormalOnTop = $this.data('draw-normal') || false;
+
+				$this.sparkline('html', {
+					type: 'line',
+					width: sparklineWidth,
+					height: sparklineHeight,
+					lineWidth: thisLineWidth,
+					lineColor: thisLineColor,
+					fillColor: thisFill,
+					spotColor: thisSpotColor,
+					minSpotColor: thisMinSpotColor,
+					maxSpotColor: thisMaxSpotColor,
+					highlightSpotColor: thishighlightSpotColor,
+					highlightLineColor: thisHighlightLineColor,
+					spotRadius: thisSpotRadius,
+					chartRangeMin: thisChartMinYRange,
+					chartRangeMax: thisChartMaxYRange,
+					chartRangeMinX: thisChartMinXRange,
+					chartRangeMaxX: thisChartMaxXRange,
+					normalRangeMin: thisMinNormValue,
+					normalRangeMax: thisMaxNormValue,
+					normalRangeColor: thisNormColor,
+					drawNormalOnTop: thisDrawNormalOnTop
+
+				});
+
+				$this = null;
+
+			}
+
+			// PIE CHART
+			if (sparklineType == 'pie') {
+
+				pieColors = $this.data('sparkline-piecolor') || ["#B4CAD3", "#4490B1", "#98AA56", "#da532c", "#6E9461", "#0099c6", "#990099", "#717D8A"];
+				pieWidthHeight = $this.data('sparkline-piesize') || 90;
+				pieBorderColor = $this.data('border-color') || '#45494C';
+				pieOffset = $this.data('sparkline-offset') || 0;
+
+				$this.sparkline('html', {
+					type: 'pie',
+					width: pieWidthHeight,
+					height: pieWidthHeight,
+					tooltipFormat: '<span style="color: {{color}}">&#9679;</span> ({{percent.1}}%)',
+					sliceColors: pieColors,
+					borderWidth: 1,
+					offset: pieOffset,
+					borderColor: pieBorderColor
+				});
+
+				$this = null;
+
+			}
+
+			// BOX PLOT
+			if (sparklineType == 'box') {
+
+				thisBoxWidth = $this.data('sparkline-width') || 'auto';
+				thisBoxHeight = $this.data('sparkline-height') || 'auto';
+				thisBoxRaw = $this.data('sparkline-boxraw') || false;
+				thisBoxTarget = $this.data('sparkline-targetval') || 'undefined';
+				thisBoxMin = $this.data('sparkline-min') || 'undefined';
+				thisBoxMax = $this.data('sparkline-max') || 'undefined';
+				thisShowOutlier = $this.data('sparkline-showoutlier') || true;
+				thisIQR = $this.data('sparkline-outlier-iqr') || 1.5;
+				thisBoxSpotRadius = $this.data('sparkline-spotradius') || 1.5;
+				thisBoxLineColor = $this.css('color') || '#000000';
+				thisBoxFillColor = $this.data('fill-color') || '#c0d0f0';
+				thisBoxWhisColor = $this.data('sparkline-whis-color') || '#000000';
+				thisBoxOutlineColor = $this.data('sparkline-outline-color') || '#303030';
+				thisBoxOutlineFill = $this.data('sparkline-outlinefill-color') || '#f0f0f0';
+				thisBoxMedianColor = $this.data('sparkline-outlinemedian-color') || '#f00000';
+				thisBoxTargetColor = $this.data('sparkline-outlinetarget-color') || '#40a020';
+
+				$this.sparkline('html', {
+					type: 'box',
+					width: thisBoxWidth,
+					height: thisBoxHeight,
+					raw: thisBoxRaw,
+					target: thisBoxTarget,
+					minValue: thisBoxMin,
+					maxValue: thisBoxMax,
+					showOutliers: thisShowOutlier,
+					outlierIQR: thisIQR,
+					spotRadius: thisBoxSpotRadius,
+					boxLineColor: thisBoxLineColor,
+					boxFillColor: thisBoxFillColor,
+					whiskerColor: thisBoxWhisColor,
+					outlierLineColor: thisBoxOutlineColor,
+					outlierFillColor: thisBoxOutlineFill,
+					medianColor: thisBoxMedianColor,
+					targetColor: thisBoxTargetColor
+
+				});
+
+				$this = null;
+
+			}
+
+			// BULLET
+			if (sparklineType == 'bullet') {
+
+				var thisBulletHeight = $this.data('sparkline-height') || 'auto';
+				thisBulletWidth = $this.data('sparkline-width') || 2;
+				thisBulletColor = $this.data('sparkline-bullet-color') || '#ed1c24';
+				thisBulletPerformanceColor = $this.data('sparkline-performance-color') || '#3030f0';
+				thisBulletRangeColors = $this.data('sparkline-bulletrange-color') || ["#d3dafe", "#a8b6ff", "#7f94ff"];
+
+				$this.sparkline('html', {
+
+					type: 'bullet',
+					height: thisBulletHeight,
+					targetWidth: thisBulletWidth,
+					targetColor: thisBulletColor,
+					performanceColor: thisBulletPerformanceColor,
+					rangeColors: thisBulletRangeColors
+
+				});
+
+				$this = null;
+
+			}
+
+			// DISCRETE
+			if (sparklineType == 'discrete') {
+
+				thisDiscreteHeight = $this.data('sparkline-height') || 26;
+				thisDiscreteWidth = $this.data('sparkline-width') || 50;
+				thisDiscreteLineColor = $this.css('color');
+				thisDiscreteLineHeight = $this.data('sparkline-line-height') || 5;
+				thisDiscreteThrushold = $this.data('sparkline-threshold') || 'undefined';
+				thisDiscreteThrusholdColor = $this.data('sparkline-threshold-color') || '#ed1c24';
+
+				$this.sparkline('html', {
+
+					type: 'discrete',
+					width: thisDiscreteWidth,
+					height: thisDiscreteHeight,
+					lineColor: thisDiscreteLineColor,
+					lineHeight: thisDiscreteLineHeight,
+					thresholdValue: thisDiscreteThrushold,
+					thresholdColor: thisDiscreteThrusholdColor
+
+				});
+
+				$this = null;
+
+			}
+
+			// TRISTATE
+			if (sparklineType == 'tristate') {
+
+				thisTristateHeight = $this.data('sparkline-height') || 26;
+				thisTristatePosBarColor = $this.data('sparkline-posbar-color') || '#60f060';
+				thisTristateNegBarColor = $this.data('sparkline-negbar-color') || '#f04040';
+				thisTristateZeroBarColor = $this.data('sparkline-zerobar-color') || '#909090';
+				thisTristateBarWidth = $this.data('sparkline-barwidth') || 5;
+				thisTristateBarSpacing = $this.data('sparkline-barspacing') || 2;
+				thisZeroAxis = $this.data('sparkline-zeroaxis') || false;
+
+				$this.sparkline('html', {
+
+					type: 'tristate',
+					height: thisTristateHeight,
+					posBarColor: thisBarColor,
+					negBarColor: thisTristateNegBarColor,
+					zeroBarColor: thisTristateZeroBarColor,
+					barWidth: thisTristateBarWidth,
+					barSpacing: thisTristateBarSpacing,
+					zeroAxis: thisZeroAxis
+
+				});
+
+				$this = null;
+
+			}
+
+			//COMPOSITE: BAR
+			if (sparklineType == 'compositebar') {
+
+				sparklineHeight = $this.data('sparkline-height') || '20px';
+				sparklineWidth = $this.data('sparkline-width') || '100%';
+				sparklineBarWidth = $this.data('sparkline-barwidth') || 3;
+				thisLineWidth = $this.data('sparkline-line-width') || 1;
+				thisLineColor = $this.data('data-sparkline-linecolor') || '#ed1c24';
+				thisBarColor = $this.data('data-sparkline-barcolor') || '#333333';
+
+				$this.sparkline($this.data('sparkline-bar-val'), {
+
+					type: 'bar',
+					width: sparklineWidth,
+					height: sparklineHeight,
+					barColor: thisBarColor,
+					barWidth: sparklineBarWidth
+					//barSpacing: 5
+
+				});
+
+				$this.sparkline($this.data('sparkline-line-val'), {
+
+					width: sparklineWidth,
+					height: sparklineHeight,
+					lineColor: thisLineColor,
+					lineWidth: thisLineWidth,
+					composite: true,
+					fillColor: false
+
+				});
+
+				$this = null;
+
+			}
+
+			//COMPOSITE: LINE
+			if (sparklineType == 'compositeline') {
+
+				sparklineHeight = $this.data('sparkline-height') || '20px';
+				sparklineWidth = $this.data('sparkline-width') || '90px';
+				sparklineValue = $this.data('sparkline-bar-val');
+				sparklineValueSpots1 = $this.data('sparkline-bar-val-spots-top') || null;
+				sparklineValueSpots2 = $this.data('sparkline-bar-val-spots-bottom') || null;
+				thisLineWidth1 = $this.data('sparkline-line-width-top') || 1;
+				thisLineWidth2 = $this.data('sparkline-line-width-bottom') || 1;
+				thisLineColor1 = $this.data('sparkline-color-top') || '#333333';
+				thisLineColor2 = $this.data('sparkline-color-bottom') || '#ed1c24';
+				thisSpotRadius1 = $this.data('sparkline-spotradius-top') || 1.5;
+				thisSpotRadius2 = $this.data('sparkline-spotradius-bottom') || thisSpotRadius1;
+				thisSpotColor = $this.data('sparkline-spot-color') || '#f08000';
+				thisMinSpotColor1 = $this.data('sparkline-minspot-color-top') || '#ed1c24';
+				thisMaxSpotColor1 = $this.data('sparkline-maxspot-color-top') || '#f08000';
+				thisMinSpotColor2 = $this.data('sparkline-minspot-color-bottom') || thisMinSpotColor1;
+				thisMaxSpotColor2 = $this.data('sparkline-maxspot-color-bottom') || thisMaxSpotColor1;
+				thishighlightSpotColor1 = $this.data('sparkline-highlightspot-color-top') || '#50f050';
+				thisHighlightLineColor1 = $this.data('sparkline-highlightline-color-top') || '#f02020';
+				thishighlightSpotColor2 = $this.data('sparkline-highlightspot-color-bottom') ||
+					thishighlightSpotColor1;
+				thisHighlightLineColor2 = $this.data('sparkline-highlightline-color-bottom') ||
+					thisHighlightLineColor1;
+				thisFillColor1 = $this.data('sparkline-fillcolor-top') || 'transparent';
+				thisFillColor2 = $this.data('sparkline-fillcolor-bottom') || 'transparent';
+
+				$this.sparkline(sparklineValue, {
+
+					type: 'line',
+					spotRadius: thisSpotRadius1,
+
+					spotColor: thisSpotColor,
+					minSpotColor: thisMinSpotColor1,
+					maxSpotColor: thisMaxSpotColor1,
+					highlightSpotColor: thishighlightSpotColor1,
+					highlightLineColor: thisHighlightLineColor1,
+
+					valueSpots: sparklineValueSpots1,
+
+					lineWidth: thisLineWidth1,
+					width: sparklineWidth,
+					height: sparklineHeight,
+					lineColor: thisLineColor1,
+					fillColor: thisFillColor1
+
+				});
+
+				$this.sparkline($this.data('sparkline-line-val'), {
+
+					type: 'line',
+					spotRadius: thisSpotRadius2,
+
+					spotColor: thisSpotColor,
+					minSpotColor: thisMinSpotColor2,
+					maxSpotColor: thisMaxSpotColor2,
+					highlightSpotColor: thishighlightSpotColor2,
+					highlightLineColor: thisHighlightLineColor2,
+
+					valueSpots: sparklineValueSpots2,
+
+					lineWidth: thisLineWidth2,
+					width: sparklineWidth,
+					height: sparklineHeight,
+					lineColor: thisLineColor2,
+					composite: true,
+					fillColor: thisFillColor2
+
+				});
+
+				$this = null;
+
+			}
+
+		});
+
+	}// end if
+
+	/*
+	 * EASY PIE CHARTS
+	 * DEPENDENCY: js/plugins/easy-pie-chart/jquery.easy-pie-chart.min.js
+	 * Usage: <div class="easy-pie-chart txt-color-orangeDark" data-pie-percent="33" data-pie-size="72" data-size="72">
+	 *			<span class="percent percent-sign">35</span>
+	 * 	  	  </div>
+	 */
+
+	if ($.fn.easyPieChart) {
+
+		$('.easy-pie-chart').each(function () {
+			var $this = $(this),
+				barColor = $this.css('color') || $this.data('pie-color'),
+				trackColor = $this.data('pie-track-color') || 'rgba(0,0,0,0.04)',
+				size = parseInt($this.data('pie-size')) || 25;
+
+			$this.easyPieChart({
+
+				barColor: barColor,
+				trackColor: trackColor,
+				scaleColor: false,
+				lineCap: 'butt',
+				lineWidth: parseInt(size / 8.5),
+				animate: 1500,
+				rotate: -90,
+				size: size,
+				onStep: function (from, to, percent) {
+					$(this.el).find('.percent').text(Math.round(percent));
+				}
+
 			});
-	
-		} // end if
-	
-	}
+
+			$this = null;
+		});
+
+	} // end if
+
+}
 /* ~ END: INITIALIZE CHARTS */
 
 /*
  * INITIALIZE JARVIS WIDGETS
  * Setup Desktop Widgets
  */
-	function setup_widgets_desktop() {
-	
-		if ($.fn.jarvisWidgets && enableJarvisWidgets) {
-	
-			$('#widget-grid').jarvisWidgets({
-	
-				grid : 'article',
-				widgets : '.jarviswidget',
-				localStorage : true,
-				deleteSettingsKey : '#deletesettingskey-options',
-				settingsKeyLabel : 'Reset settings?',
-				deletePositionKey : '#deletepositionkey-options',
-				positionKeyLabel : 'Reset position?',
-				sortable : true,
-				buttonsHidden : false,
-				// toggle button
-				toggleButton : true,
-				toggleClass : 'fa fa-minus | fa fa-plus',
-				toggleSpeed : 200,
-				onToggle : function() {
-				},
-				// delete btn
-				deleteButton : true,
-				deleteClass : 'fa fa-times',
-				deleteSpeed : 200,
-				onDelete : function() {
-				},
-				// edit btn
-				editButton : true,
-				editPlaceholder : '.jarviswidget-editbox',
-				editClass : 'fa fa-cog | fa fa-save',
-				editSpeed : 200,
-				onEdit : function() {
-				},
-				// color button
-				colorButton : true,
-				// full screen
-				fullscreenButton : true,
-				fullscreenClass : 'fa fa-expand | fa fa-compress',
-				fullscreenDiff : 3,
-				onFullscreen : function() {
-				},
-				// custom btn
-				customButton : false,
-				customClass : 'folder-10 | next-10',
-				customStart : function() {
-					alert('Hello you, this is a custom button...');
-				},
-				customEnd : function() {
-					alert('bye, till next time...');
-				},
-				// order
-				buttonOrder : '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
-				opacity : 1.0,
-				dragHandle : '> header',
-				placeholderClass : 'jarviswidget-placeholder',
-				indicator : true,
-				indicatorTime : 600,
-				ajax : true,
-				timestampPlaceholder : '.jarviswidget-timestamp',
-				timestampFormat : 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
-				refreshButton : true,
-				refreshButtonClass : 'fa fa-refresh',
-				labelError : 'Sorry but there was a error:',
-				labelUpdated : 'Last Update:',
-				labelRefresh : 'Refresh',
-				labelDelete : 'Delete widget:',
-				afterLoad : function() {
-				},
-				rtl : false, // best not to toggle this!
-				onChange : function() {
-					
-				},
-				onSave : function() {
-					
-				},
-				ajaxnav : $.navAsAjax // declears how the localstorage should be saved (HTML or AJAX page)
-	
-			});
-	
-		}
-	
+function setup_widgets_desktop() {
+
+	if ($.fn.jarvisWidgets && enableJarvisWidgets) {
+
+		$('#widget-grid').jarvisWidgets({
+
+			grid: 'article',
+			widgets: '.jarviswidget',
+			localStorage: localStorageJarvisWidgets,
+			deleteSettingsKey: '#deletesettingskey-options',
+			settingsKeyLabel: 'Reset settings?',
+			deletePositionKey: '#deletepositionkey-options',
+			positionKeyLabel: 'Reset position?',
+			sortable: sortableJarvisWidgets,
+			buttonsHidden: false,
+			// toggle button
+			toggleButton: true,
+			toggleClass: 'fa fa-minus | fa fa-plus',
+			toggleSpeed: 200,
+			onToggle: function () {
+			},
+			// delete btn
+			deleteButton: true,
+			deleteMsg: 'Warning: This action cannot be undone!',
+			deleteClass: 'fa fa-times',
+			deleteSpeed: 200,
+			onDelete: function () {
+			},
+			// edit btn
+			editButton: true,
+			editPlaceholder: '.jarviswidget-editbox',
+			editClass: 'fa fa-cog | fa fa-save',
+			editSpeed: 200,
+			onEdit: function () {
+			},
+			// color button
+			colorButton: true,
+			// full screen
+			fullscreenButton: true,
+			fullscreenClass: 'fa fa-expand | fa fa-compress',
+			fullscreenDiff: 3,
+			onFullscreen: function () {
+			},
+			// custom btn
+			customButton: false,
+			customClass: 'folder-10 | next-10',
+			customStart: function () {
+				alert('Hello you, this is a custom button...');
+			},
+			customEnd: function () {
+				alert('bye, till next time...');
+			},
+			// order
+			buttonOrder: '%refresh% %custom% %edit% %toggle% %fullscreen% %delete%',
+			opacity: 1.0,
+			dragHandle: '> header',
+			placeholderClass: 'jarviswidget-placeholder',
+			indicator: true,
+			indicatorTime: 600,
+			ajax: true,
+			timestampPlaceholder: '.jarviswidget-timestamp',
+			timestampFormat: 'Last update: %m%/%d%/%y% %h%:%i%:%s%',
+			refreshButton: true,
+			refreshButtonClass: 'fa fa-refresh',
+			labelError: 'Sorry but there was a error:',
+			labelUpdated: 'Last Update:',
+			labelRefresh: 'Refresh',
+			labelDelete: 'Delete widget:',
+			afterLoad: function () {
+			},
+			rtl: false, // best not to toggle this!
+			onChange: function () {
+
+			},
+			onSave: function () {
+
+			},
+			ajaxnav: $.navAsAjax // declears how the localstorage should be saved (HTML or AJAX Version)
+
+		});
+
 	}
+
+}
 /*
  * SETUP DESKTOP WIDGET
  */
-	function setup_widgets_mobile() {
-	
-		if (enableMobileWidgets && enableJarvisWidgets) {
-			setup_widgets_desktop();
-		}
-	
+function setup_widgets_mobile() {
+
+	if (enableMobileWidgets && enableJarvisWidgets) {
+		setup_widgets_desktop();
 	}
+
+}
 /* ~ END: INITIALIZE JARVIS WIDGETS */
 
 /*
@@ -48521,21 +48364,21 @@ var calc_navbar_height = function() {
  * description: Append google maps to head dynamically (only execute for ajax version)
  * Loads at the begining for ajax pages
  */
-	if ($.navAsAjax || $(".google_maps")){
-		var gMapsLoaded = false;
-		window.gMapsCallback = function() {
-			gMapsLoaded = true;
-			$(window).trigger('gMapsLoaded');
-		};
-		window.loadGoogleMaps = function() {
-			if (gMapsLoaded)
-				return window.gMapsCallback();
-			var script_tag = document.createElement('script');
-			script_tag.setAttribute("type", "text/javascript");
-			script_tag.setAttribute("src", "http://maps.google.com/maps/api/js?sensor=false&callback=gMapsCallback");
-			(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
-		};
-	}
+if ($.navAsAjax || $(".google_maps")) {
+	var gMapsLoaded = false;
+	window.gMapsCallback = function () {
+		gMapsLoaded = true;
+		$(window).trigger('gMapsLoaded');
+	};
+	window.loadGoogleMaps = function () {
+		if (gMapsLoaded)
+			return window.gMapsCallback();
+		var script_tag = document.createElement('script');
+		script_tag.setAttribute("type", "text/javascript");
+		script_tag.setAttribute("src", "http://maps.google.com/maps/api/js?sensor=false&callback=gMapsCallback");
+		(document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
+	};
+}
 /* ~ END: GOOGLE MAPS */
 
 /*
@@ -48544,36 +48387,38 @@ var calc_navbar_height = function() {
  * Define function = myPrettyCode ()...
  * loadScript("js/my_lovely_script.js", myPrettyCode);
  */
-	function loadScript(scriptName, callback) {
-	
-		if (!jsArray[scriptName]) {
-			jsArray[scriptName] = true;
-	
-			// adding the script tag to the head as suggested before
-			var body = document.getElementsByTagName('body')[0],
-				script = document.createElement('script');
-			script.type = 'text/javascript';
-			script.src = scriptName;
-	
-			// then bind the event to the callback function
-			// there are several events for cross browser compatibility
-			script.onload = callback;
-	
-			// fire the loading
-			body.appendChild(script);
-			
-			// clear DOM reference
-			//body = null;
-			//script = null;
-	
-		} else if (callback) {
-			// changed else to else if(callback)
-			//console.log("JS file already added!");
-			//execute function
-			callback();
+function loadScript(scriptName, callback) {
+
+	if (!jsArray[scriptName]) {
+		jsArray[scriptName] = true;
+
+		// adding the script tag to the head as suggested before
+		var body = document.getElementsByTagName('body')[0],
+			script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = scriptName;
+
+		// then bind the event to the callback function
+		// there are several events for cross browser compatibility
+		script.onload = callback;
+
+		// fire the loading
+		body.appendChild(script);
+
+		// clear DOM reference
+		//body = null;
+		//script = null;
+
+	} else if (callback) {
+		// changed else to else if(callback)
+		if (debugState) {
+			root.root.console.log("This script was already loaded %c: " + scriptName, debugStyle_warning);
 		}
-	
+		//execute function
+		callback();
 	}
+
+}
 /* ~ END: LOAD SCRIPTS */
 
 /*
@@ -48581,36 +48426,26 @@ var calc_navbar_height = function() {
 * Description: Executes and fetches all ajax requests also
 * updates naivgation elements to active
 */
-	if($.navAsAjax) {
-	    // fire this on page load if nav exists
-	    if ($('nav').length) {
-		    checkURL();
-	    }
-	
-	    $(document).on('click', 'nav a[href!="#"]', function(e) {
-		    e.preventDefault();
-		    var $this = $(e.currentTarget);
-	
-		    // if parent is not active then get hash, or else page is assumed to be loaded
-			if (!$this.parent().hasClass("active") && !$this.attr('target')) {
-	
-			    // update window with hash
-			    // you could also do here:  thisDevice === "mobile" - and save a little more memory
-	
-			    if ($.root_.hasClass('mobile-view-activated')) {
-				    $.root_.removeClass('hidden-menu');
-				    $('html').removeClass("hidden-menu-mobile-lock");
-				    window.setTimeout(function() {
-						if (window.location.search) {
-							window.location.href =
-								window.location.href.replace(window.location.search, '')
-									.replace(window.location.hash, '') + '#' + $this.attr('href');
-						} else {
-							window.location.hash = $this.attr('href');
-						}
-				    }, 150);
-				    // it may not need this delay...
-			    } else {
+if ($.navAsAjax) {
+	// fire this on page load if nav exists
+	if ($('nav').length) {
+		checkURL();
+	}
+
+	$(document).on('click', 'nav a[href!="#"]', function (e) {
+		e.preventDefault();
+		var $this = $(e.currentTarget);
+
+		// if parent is not active then get hash, or else page is assumed to be loaded
+		if (!$this.parent().hasClass("active") && !$this.attr('target')) {
+
+			// update window with hash
+			// you could also do here:  thisDevice === "mobile" - and save a little more memory
+
+			if ($.root_.hasClass('mobile-view-activated')) {
+				$.root_.removeClass('hidden-menu');
+				$('html').removeClass("hidden-menu-mobile-lock");
+				window.setTimeout(function () {
 					if (window.location.search) {
 						window.location.href =
 							window.location.href.replace(window.location.search, '')
@@ -48618,222 +48453,381 @@ var calc_navbar_height = function() {
 					} else {
 						window.location.hash = $this.attr('href');
 					}
-			    }
-			    
-			    // clear DOM reference
-			    // $this = null;
-		    }
-	
-	    });
-	
-	    // fire links with targets on different window
-	    $(document).on('click', 'nav a[target="_blank"]', function(e) {
-		    e.preventDefault();
-		    var $this = $(e.currentTarget);
-	
-		    window.open($this.attr('href'));
-	    });
-	
-	    // fire links with targets on same window
-	    $(document).on('click', 'nav a[target="_top"]', function(e) {
-		    e.preventDefault();
-		    var $this = $(e.currentTarget);
-	
-		    window.location = ($this.attr('href'));
-	    });
-	
-	    // all links with hash tags are ignored
-	    $(document).on('click', 'nav a[href="#"]', function(e) {
-		    e.preventDefault();
-	    });
-	
-	    // DO on hash change
-	    $(window).on('hashchange', function() {
-		    checkURL();
-	    });
-	}
+				}, 150);
+				// it may not need this delay...
+			} else {
+				if (window.location.search) {
+					window.location.href =
+						window.location.href.replace(window.location.search, '')
+							.replace(window.location.hash, '') + '#' + $this.attr('href');
+				} else {
+					window.location.hash = $this.attr('href');
+				}
+			}
+
+			// clear DOM reference
+			// $this = null;
+		}
+
+	});
+
+	// fire links with targets on different window
+	$(document).on('click', 'nav a[target="_blank"]', function (e) {
+		e.preventDefault();
+		var $this = $(e.currentTarget);
+
+		window.open($this.attr('href'));
+	});
+
+	// fire links with targets on same window
+	$(document).on('click', 'nav a[target="_top"]', function (e) {
+		e.preventDefault();
+		var $this = $(e.currentTarget);
+
+		window.location = ($this.attr('href'));
+	});
+
+	// all links with hash tags are ignored
+	$(document).on('click', 'nav a[href="#"]', function (e) {
+		e.preventDefault();
+	});
+
+	// DO on hash change
+	$(window).on('hashchange', function () {
+		checkURL();
+	});
+}
 /*
  * CHECK TO SEE IF URL EXISTS
  */
-	function checkURL() {
-	
-		//get the url by removing the hash
-		//var url = location.hash.replace(/^#/, '');
-		var url = location.href.split('#').splice(1).join('#');
-		//BEGIN: IE11 Work Around
-		if (!url) {
-		
-			try {
-				var documentUrl = window.document.URL;
-				if (documentUrl) {
-					if (documentUrl.indexOf('#', 0) > 0 && documentUrl.indexOf('#', 0) < (documentUrl.length + 1)) {
-						url = documentUrl.substring(documentUrl.indexOf('#', 0) + 1);
-		
-					}
-		
-				}
-		
-			} catch (err) {}
-		}
-		//END: IE11 Work Around
-	
-		container = $('#content');
-		// Do this if url exists (for page refresh, etc...)
-		if (url) {
-			// remove all active class
-			$('nav li.active').removeClass("active");
-			// match the url and add the active class
-			$('nav li:has(a[href="' + url + '"])').addClass("active");
-			var title = ($('nav a[href="' + url + '"]').attr('title'));
-	
-			// change page title from global var
-			document.title = (title || document.title);
-			//console.log("page title: " + document.title);
-	
-			// parse url to jquery
-			loadURL(url + location.search, container);
+function checkURL() {
 
-		} else {
-	
-			// grab the first URL from nav
-			var $this = $('nav > ul > li:first-child > a[href!="#"]');
-	
-			//update hash
-			window.location.hash = $this.attr('href');
-			
-			//clear dom reference
-			$this = null;
-	
-		}
-	
+	//get the url by removing the hash
+	//var url = location.hash.replace(/^#/, '');
+	var url = location.href.split('#').splice(1).join('#');
+	//BEGIN: IE11 Work Around
+	if (!url) {
+
+		try {
+			var documentUrl = window.document.URL;
+			if (documentUrl) {
+				if (documentUrl.indexOf('#', 0) > 0 && documentUrl.indexOf('#', 0) < (documentUrl.length + 1)) {
+					url = documentUrl.substring(documentUrl.indexOf('#', 0) + 1);
+
+				}
+
+			}
+
+		} catch (err) { }
 	}
+	//END: IE11 Work Around
+
+	container = $('#content');
+	// Do this if url exists (for page refresh, etc...)
+	if (url) {
+		// remove all active class
+		$('nav li.active').removeClass("active");
+		// match the url and add the active class
+		$('nav li:has(a[href="' + url + '"])').addClass("active");
+		var title = ($('nav a[href="' + url + '"]').attr('title'));
+
+		// change page title from global var
+		document.title = (title || document.title);
+
+		// debugState
+		if (debugState) {
+			root.console.log("Page title: %c " + document.title, debugStyle_green);
+		}
+
+		// parse url to jquery
+		loadURL(url + location.search, container);
+
+	} else {
+
+		// grab the first URL from nav
+		var $this = $('nav > ul > li:first-child > a[href!="#"]');
+
+		//update hash
+		window.location.hash = $this.attr('href');
+
+		//clear dom reference
+		$this = null;
+
+	}
+
+}
 /*
  * LOAD AJAX PAGES
- */ 
-	function loadURL(url, container) {
-		//console.log(container)
-	
-		$.ajax({
-			type : "GET",
-			url : url,
-			dataType : 'html',
-			cache : true, // (warning: setting it to false will cause a timestamp and will call the request twice)
-			beforeSend : function() {
-				
-				//IE11 bug fix for googlemaps (delete all google map instances)
-				//check if the page is ajax = true, has google map class and the container is #content
-				if ($.navAsAjax && $(".google_maps")[0] && (container[0] == $("#content")[0]) ) {
-					
-					// target gmaps if any on page
-					var collection = $(".google_maps"),
-						i = 0;
-					// run for each	map
-					collection.each(function() {
-					    i ++;
-					    // get map id from class elements
-					    var divDealerMap = document.getElementById(this.id);
-					    
-					    if(i == collection.length + 1) {
-						    // "callback"
-						    //console.log("all maps destroyed");
-						} else {
-							// destroy every map found
-							if (divDealerMap) divDealerMap.parentNode.removeChild(divDealerMap);
-							//console.log(this.id + " destroying maps...");
-						}
-					});
-					
-					//console.log("google maps nuked!!!");
-					
-				} //end fix
-				
-				// destroy all datatable instances
-				if ( $.navAsAjax && $('.dataTables_wrapper')[0] && (container[0] == $("#content")[0]) ) {
-					
-					var tables = $.fn.dataTable.fnTables(true);				
-					$(tables).each(function () {
-					    $(this).dataTable().fnDestroy();
-					});
-					//console.log("datatable nuked!!!");
-				}
-				// end destroy
-				
-				// pop intervals (destroys jarviswidget related intervals)
-				if ( $.navAsAjax && $.intervalArr.length > 0 && (container[0] == $("#content")[0]) && enableJarvisWidgets ) {
-					
-					while($.intervalArr.length > 0)
-	        			clearInterval($.intervalArr.pop());
-	        			//console.log("all intervals cleared..")
-	        			
-				}
-				// end pop intervals
-				
-				// empty container and var to start garbage collection (frees memory)
-				pagefunction = null;
-				container.removeData().html("");
-				
-				// place cog
-				container.html('<h1 class="ajax-loading-animation"><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
-			
-				// Only draw breadcrumb if it is main content material
-				if (container[0] == $("#content")[0]) {
-					
-					// clear everything else except these key DOM elements
-					// we do this because sometime plugins will leave dynamic elements behind
-					$('body').find('> *').filter(':not(' + ignore_key_elms + ')').empty().remove();
-					
-					// draw breadcrumb
-					drawBreadCrumb();
-					
-					// scroll up
-					$("html").animate({
-						scrollTop : 0
-					}, "fast");
-				} 
-				// end if
-			},
-			success : function(data) {
-				
-				// dump data to container
-				container.css({
-					opacity : '0.0'
-				}).html(data).delay(50).animate({
-					opacity : '1.0'
-				}, 300);
-				
-				// clear data var
-				data = null;
-				container = null;
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
-				container.html('<h4 class="ajax-loading-error"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>');
-			},
-			async : true 
-		});
-	
-		//console.log("ajax request sent");
+ */
+function loadURL(url, container) {
+
+	// debugState
+	if (debugState) {
+		root.root.console.log("Loading URL: %c" + url, debugStyle);
 	}
+
+	$.ajax({
+		type: "GET",
+		url: url,
+		dataType: 'html',
+		cache: true, // (warning: setting it to false will cause a timestamp and will call the request twice)
+		beforeSend: function () {
+
+			//IE11 bug fix for googlemaps (delete all google map instances)
+			//check if the page is ajax = true, has google map class and the container is #content
+			if ($.navAsAjax && $(".google_maps")[0] && (container[0] == $("#content")[0])) {
+
+				// target gmaps if any on page
+				var collection = $(".google_maps"),
+					i = 0;
+				// run for each	map
+				collection.each(function () {
+					i++;
+					// get map id from class elements
+					var divDealerMap = document.getElementById(this.id);
+
+					if (i == collection.length + 1) {
+						// "callback"
+					} else {
+						// destroy every map found
+						if (divDealerMap) divDealerMap.parentNode.removeChild(divDealerMap);
+
+						// debugState
+						if (debugState) {
+							root.console.log("Destroying maps.........%c" + this.id, debugStyle_warning);
+						}
+					}
+				});
+
+				// debugState
+				if (debugState) {
+					root.console.log("✔ Google map instances nuked!!!");
+				}
+
+			} //end fix
+
+			// destroy all datatable instances
+			if ($.navAsAjax && $('.dataTables_wrapper')[0] && (container[0] == $("#content")[0])) {
+
+				var tables = $.fn.dataTable.fnTables(true);
+				$(tables).each(function () {
+
+					if ($(this).find('.details-control').length != 0) {
+						$(this).find('*').addBack().off().remove();
+						$(this).dataTable().fnDestroy();
+					} else {
+						$(this).dataTable().fnDestroy();
+					}
+
+				});
+
+				// debugState
+				if (debugState) {
+					root.console.log("✔ Datatable instances nuked!!!");
+				}
+			}
+			// end destroy
+
+			// pop intervals (destroys jarviswidget related intervals)
+			if ($.navAsAjax && $.intervalArr.length > 0 && (container[0] == $("#content")[0]) && enableJarvisWidgets) {
+
+				while ($.intervalArr.length > 0)
+					clearInterval($.intervalArr.pop());
+				// debugState
+				if (debugState) {
+					root.console.log("✔ All JarvisWidget intervals cleared");
+				}
+
+			}
+			// end pop intervals
+
+			// destroy all widget instances
+			if ($.navAsAjax && (container[0] == $("#content")[0]) && enableJarvisWidgets && $("#widget-grid")[0]) {
+
+				$("#widget-grid").jarvisWidgets('destroy');
+				// debugState
+				if (debugState) {
+					root.console.log("✔ JarvisWidgets destroyed");
+				}
+
+			}
+			// end destroy all widgets 
+
+			// cluster destroy: destroy other instances that could be on the page 
+			// this runs a script in the current loaded page before fetching the new page
+			if ($.navAsAjax && (container[0] == $("#content")[0])) {
+
+				/*
+				 * The following elements should be removed, if they have been created:
+				 *
+				 *	colorList
+				 *	icon
+				 *	picker
+				 *	inline
+				 *	And unbind events from elements:
+				 *	
+				 *	icon
+				 *	picker
+				 *	inline
+				 *	especially $(document).on('mousedown')
+				 *	It will be much easier to add namespace to plugin events and then unbind using selected namespace.
+				 *	
+				 *	See also:
+				 *	
+				 *	http://f6design.com/journal/2012/05/06/a-jquery-plugin-boilerplate/
+				 *	http://keith-wood.name/pluginFramework.html
+				 */
+
+				// this function is below the pagefunction for all pages that has instances
+
+				if (typeof pagedestroy == 'function') {
+
+					try {
+						pagedestroy();
+
+						if (debugState) {
+							root.console.log("✔ Pagedestroy()");
+						}
+					}
+					catch (err) {
+						pagedestroy = undefined;
+
+						if (debugState) {
+							root.console.log("! Pagedestroy() Catch Error");
+						}
+					}
+
+				}
+
+				// destroy all inline charts
+
+				if ($.fn.sparkline && $("#content .sparkline")[0]) {
+					$("#content .sparkline").sparkline('destroy');
+
+					if (debugState) {
+						root.console.log("✔ Sparkline Charts destroyed!");
+					}
+				}
+
+				if ($.fn.easyPieChart && $("#content .easy-pie-chart")[0]) {
+					$("#content .easy-pie-chart").easyPieChart('destroy');
+
+					if (debugState) {
+						root.console.log("✔ EasyPieChart Charts destroyed!");
+					}
+				}
+
+
+
+				// end destory all inline charts
+
+				// destroy form controls: Datepicker, select2, autocomplete, mask, bootstrap slider
+
+				if ($.fn.select2 && $("#content select.select2")[0]) {
+					$("#content select.select2").select2('destroy');
+
+					if (debugState) {
+						root.console.log("✔ Select2 destroyed!");
+					}
+				}
+
+				if ($.fn.mask && $('#content [data-mask]')[0]) {
+					$('#content [data-mask]').unmask();
+
+					if (debugState) {
+						root.console.log("✔ Input Mask destroyed!");
+					}
+				}
+
+				if ($.fn.datepicker && $('#content .datepicker')[0]) {
+					$('#content .datepicker').off();
+					$('#content .datepicker').remove();
+
+					if (debugState) {
+						root.console.log("✔ Datepicker destroyed!");
+					}
+				}
+
+				if ($.fn.slider && $('#content .slider')[0]) {
+					$('#content .slider').off();
+					$('#content .slider').remove();
+
+					if (debugState) {
+						root.console.log("✔ Bootstrap Slider destroyed!");
+					}
+				}
+
+				// end destroy form controls
+
+
+			}
+			// end cluster destroy
+
+			// empty container and var to start garbage collection (frees memory)
+			pagefunction = null;
+			container.removeData().html("");
+
+			// place cog
+			container.html('<h1 class="ajax-loading-animation"><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
+
+			// Only draw breadcrumb if it is main content material
+			if (container[0] == $("#content")[0]) {
+
+				// clear everything else except these key DOM elements
+				// we do this because sometime plugins will leave dynamic elements behind
+				$('body').find('> *').filter(':not(' + ignore_key_elms + ')').empty().remove();
+
+				// draw breadcrumb
+				drawBreadCrumb();
+
+				// scroll up
+				$("html").animate({
+					scrollTop: 0
+				}, "fast");
+			}
+			// end if
+		},
+		success: function (data) {
+
+			// dump data to container
+			container.css({
+				opacity: '0.0'
+			}).html(data).delay(50).animate({
+				opacity: '1.0'
+			}, 300);
+
+			// clear data var
+			data = null;
+			container = null;
+		},
+		error: function (xhr, status, thrownError, error) {
+			container.html('<h4 class="ajax-loading-error"><i class="fa fa-warning txt-color-orangeDark"></i> Error requesting <span class="txt-color-red">' + url + '</span>: ' + xhr.status + ' <span style="text-transform: capitalize;">' + thrownError + '</span></h4>');
+		},
+		async: true
+	});
+
+}
 /*
  * UPDATE BREADCRUMB
- */ 
-	function drawBreadCrumb() {
-		var nav_elems = $('nav li.active > a'), 
-			count = nav_elems.length;
-		
-		//console.log("breadcrumb")
-		bread_crumb.empty();
-		bread_crumb.append($("<li>Home</li>"));
-		nav_elems.each(function() {
-			bread_crumb.append($("<li></li>").html($.trim($(this).clone().children(".badge").remove().end().text())));
-			// update title when breadcrumb is finished...
-			if (!--count) document.title = bread_crumb.find("li:last-child").text();
-			//nav_elems = null;
-		});
-		
-		// clear dom reference
-		nav_elems = null;
+ */
+function drawBreadCrumb(opt_breadCrumbs) {
+	var a = $("nav li.active > a"),
+		b = a.length;
 
+	bread_crumb.empty(),
+	bread_crumb.append($("<li>Home</li>")), a.each(function () {
+		bread_crumb.append($("<li></li>").html($.trim($(this).clone().children(".badge").remove().end().text()))), --b || (document.title = bread_crumb.find("li:last-child").text())
+	});
+
+	// Push breadcrumb manually -> drawBreadCrumb(["Users", "John Doe"]);
+	// Credits: Philip Whitt | philip.whitt@sbcglobal.net
+	if (opt_breadCrumbs != undefined) {
+		$.each(opt_breadCrumbs, function (index, value) {
+			bread_crumb.append($("<li></li>").html(value));
+			document.title = bread_crumb.find("li:last-child").text();
+		});
 	}
+}
 /* ~ END: APP AJAX REQUEST SETUP */
 
 /*
@@ -48841,68 +48835,99 @@ var calc_navbar_height = function() {
  * Description: fire certain scripts that run through the page
  * to check for form elements, tooltip activation, popovers, etc...
  */
-	function pageSetUp() {
-	
-		if (thisDevice === "desktop"){
-			// is desktop
-			
-			// activate tooltips
-			$("[rel=tooltip]").tooltip();
-		
-			// activate popovers
-			$("[rel=popover]").popover();
-		
-			// activate popovers with hover states
-			$("[rel=popover-hover]").popover({
-				trigger : "hover"
-			});
-	
-			// setup widgets
-			setup_widgets_desktop();
-		
-			// activate inline charts
-			runAllCharts();
-		
-			// run form elements
-			runAllForms();
-	
-		} else {
-			
-			// is mobile
-			
-			// activate popovers
-			$("[rel=popover]").popover();
-		
-			// activate popovers with hover states
-			$("[rel=popover-hover]").popover({
-				trigger : "hover"
-			});
-		
-			// activate inline charts
-			runAllCharts();
-		
-			// setup widgets
-			setup_widgets_mobile();
-		
-			// run form elements
-			runAllForms();
-			
-		}
-	
+function pageSetUp() {
+
+	if (thisDevice === "desktop") {
+		// is desktop
+
+		// activate tooltips
+		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
+
+		// activate popovers
+		$("[rel=popover], [data-rel=popover]").popover();
+
+		// activate popovers with hover states
+		$("[rel=popover-hover], [data-rel=popover-hover]").popover({
+			trigger: "hover"
+		});
+
+		// setup widgets
+		setup_widgets_desktop();
+
+		// activate inline charts
+		runAllCharts();
+
+		// run form elements
+		runAllForms();
+
+	} else {
+
+		// is mobile
+
+		// activate popovers
+		$("[rel=popover], [data-rel=popover]").popover();
+
+		// activate popovers with hover states
+		$("[rel=popover-hover], [data-rel=popover-hover]").popover({
+			trigger: "hover"
+		});
+
+		// activate inline charts
+		runAllCharts();
+
+		// setup widgets
+		setup_widgets_mobile();
+
+		// run form elements
+		runAllForms();
+
 	}
+
+}
+/* ~ END: PAGE SETUP */
+
 /*
- * 1 POP OVER THEORY
+ * ONE POP OVER THEORY
  * Keep only 1 active popover per trigger - also check and hide active popover if user clicks on document
  */
-	$('body').on('click', function(e) {
-		$('[rel="popover"]').each(function() {
-			//the 'is' for buttons that trigger popups
-			//the 'has' for icons within a button that triggers a popup
-			if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-				$(this).popover('hide');
-			}
-		});
-	}); 
+$('body').on('click', function (e) {
+	$('[rel="popover"], [data-rel="popover"]').each(function () {
+		//the 'is' for buttons that trigger popups
+		//the 'has' for icons within a button that triggers a popup
+		if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+			$(this).popover('hide');
+		}
+	});
+});
+/* ~ END: ONE POP OVER THEORY */
+
+/*
+ * DELETE MODEL DATA ON HIDDEN
+ * Clears the model data once it is hidden, this way you do not create duplicated data on multiple modals
+ */
+$('body').on('hidden.bs.modal', '.modal', function () {
+	$(this).removeData('bs.modal');
+});
+/* ~ END: DELETE MODEL DATA ON HIDDEN */
+
+/*
+ * HELPFUL FUNCTIONS
+ * We have included some functions below that can be resued on various occasions
+ * 
+ * Get param value
+ * example: alert( getParam( 'param' ) );
+ */
+function getParam(name) {
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regexS = "[\\?&]" + name + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(window.location.href);
+	if (results == null)
+		return "";
+	else
+		return results[1];
+}
+/* ~ END: HELPFUL FUNCTIONS */
 /*
  * ******************************************************************************
  *  jquery.mb.components
@@ -64732,8 +64757,534 @@ t.events.push(["addFonts",function(t){var e,n,i,o,a,u="Unicode";for(n in t.fonts
     }
 
 })(jsPDF.API);
-/*! SmartAdmin - v1.5 - 2014-10-16 */var chatboxManager=function(){var a=function(a){$.extend(chatbox_config,a)},b=function(){},c=function(){return(chatbox_config.width+chatbox_config.gap)*showList.length},d=function(a){var b=showList.indexOf(a);if(-1!=b){showList.splice(b,1),diff=chatbox_config.width+chatbox_config.gap;for(var c=b;c<showList.length;c++)offset=$("#"+showList[c]).chatbox("option","offset"),$("#"+showList[c]).chatbox("option","offset",offset-diff)}else alert("NOTE: Id missing from array: "+a)},e=function(a,b){var e=showList.indexOf(a),g=boxList.indexOf(a);if(-1!=e);else if(-1!=g){$("#"+a).chatbox("option","offset",c());var h=$("#"+a).chatbox("option","boxManager");h.toggleBox(),showList.push(a)}else{var i=document.createElement("div");i.setAttribute("id",a),$(i).chatbox({"id":a,"user":b,"title":'<i title="'+b.status+'"></i>'+b.first_name+" "+b.last_name,"hidden":!1,"offset":c(),"width":chatbox_config.width,"status":b.status,"alertmsg":b.alertmsg,"alertshow":b.alertshow,"messageSent":f,"boxClosed":d}),boxList.push(a),showList.push(a),nameList.push(b.first_name)}},f=function(a,b,c){$("#chatlog").doesExist()&&$("#chatlog").append("You said to <b>"+b.first_name+" "+b.last_name+":</b> "+c+"<br/>").effect("highlight",{},500),$("#"+a).chatbox("option","boxManager").addMsg("Me",c)};return{"init":a,"addBox":e,"delBox":b,"dispatch":f}}();$("a[data-chat-id]:not(.offline)").click(function(a){var b=$(this),c=b.attr("data-chat-id"),d=b.attr("data-chat-fname"),e=b.attr("data-chat-lname"),f=b.attr("data-chat-status")||"online",g=b.attr("data-chat-alertmsg"),h=b.attr("data-chat-alertshow")||!1;chatboxManager.addBox(c,{"title":"username"+c,"first_name":d,"last_name":e,"status":f,"alertmsg":g,"alertshow":h}),a.preventDefault()});
-/*! SmartAdmin - v1.5 - 2014-10-16 */!function(a){a.widget("ui.chatbox",{"options":{"id":null,"title":null,"user":null,"hidden":!1,"offset":0,"width":300,"status":"online","alertmsg":null,"alertshow":null,"messageSent":function(a,b,c){this.boxManager.addMsg(b.first_name,c)},"boxClosed":function(){},"boxManager":{"init":function(a){this.elem=a},"addMsg":function(b,c){var d=this,e=d.elem.uiChatboxLog,f=document.createElement("div");e.append(f),a(f).hide();var g=!1;if(b){var h=document.createElement("b");a(h).text(b+": "),f.appendChild(h)}else g=!0;var i=document.createElement(g?"i":"span");a(i).text(c),f.appendChild(i),a(f).addClass("ui-chatbox-msg"),a(f).css("maxWidth",a(e).width()),a(f).fadeIn(),a(f).find("span").emoticonize(),d._scrollToBottom(),d.elem.uiChatboxTitlebar.hasClass("ui-state-focus")||d.highlightLock||(d.highlightLock=!0,d.highlightBox())},"highlightBox":function(){var a=this;a.elem.uiChatboxTitlebar.effect("highlight",{},300),a.elem.uiChatbox.effect("bounce",{"times":2},300,function(){a.highlightLock=!1,a._scrollToBottom()})},"toggleBox":function(){this.elem.uiChatbox.toggle()},"_scrollToBottom":function(){var a=this.elem.uiChatboxLog;a.scrollTop(a.get(0).scrollHeight)}}},"toggleContent":function(){this.uiChatboxContent.toggle(),this.uiChatboxContent.is(":visible")&&this.uiChatboxInputBox.focus()},"widget":function(){return this.uiChatbox},"_create":function(){var b=this,c=b.options,d=c.title||"No Title",e=(b.uiChatbox=a("<div></div>")).appendTo(document.body).addClass("ui-widget ui-chatbox").attr("outline",0).focusin(function(){b.uiChatboxTitlebar.addClass("ui-state-focus")}).focusout(function(){b.uiChatboxTitlebar.removeClass("ui-state-focus")}),f=(b.uiChatboxTitlebar=a("<div></div>")).addClass("ui-widget-header ui-chatbox-titlebar "+b.options.status+" ui-dialog-header").click(function(a){b.toggleContent(a)}).appendTo(e),g=((b.uiChatboxTitle=a("<span></span>")).html(d).appendTo(f),(b.uiChatboxTitlebarClose=a('<a href="#" rel="tooltip" data-placement="top" data-original-title="Hide"></a>')).addClass("ui-chatbox-icon ").attr("role","button").hover(function(){g.addClass("ui-state-hover")},function(){g.removeClass("ui-state-hover")}).click(function(){return e.hide(),b.options.boxClosed(b.options.id),!1}).appendTo(f)),h=(a("<i></i>").addClass("fa fa-times").appendTo(g),(b.uiChatboxTitlebarMinimize=a('<a href="#" rel="tooltip" data-placement="top" data-original-title="Minimize"></a>')).addClass("ui-chatbox-icon").attr("role","button").hover(function(){h.addClass("ui-state-hover")},function(){h.removeClass("ui-state-hover")}).click(function(a){return b.toggleContent(a),!1}).appendTo(f)),i=(a("<i></i>").addClass("fa fa-minus").appendTo(h),(b.uiChatboxContent=a('<div class="'+b.options.alertshow+'"><span class="alert-msg">'+b.options.alertmsg+"</span></div>")).addClass("ui-widget-content ui-chatbox-content ").appendTo(e)),j=((b.uiChatboxLog=b.element).addClass("ui-widget-content ui-chatbox-log custom-scroll").appendTo(i),(b.uiChatboxInput=a("<div></div>")).addClass("ui-widget-content ui-chatbox-input").click(function(){}).appendTo(i)),k=(b.uiChatboxInputBox=a("<textarea></textarea>")).addClass("ui-widget-content ui-chatbox-input-box ").appendTo(j).keydown(function(c){return c.keyCode&&c.keyCode==a.ui.keyCode.ENTER?(msg=a.trim(a(this).val()),msg.length>0&&b.options.messageSent(b.options.id,b.options.user,msg),a(this).val(""),!1):void 0}).focusin(function(){k.addClass("ui-chatbox-input-focus");var b=a(this).parent().prev();b.scrollTop(b.get(0).scrollHeight)}).focusout(function(){k.removeClass("ui-chatbox-input-focus")});f.find("*").add(f).disableSelection(),i.children().click(function(){b.uiChatboxInputBox.focus()}),b._setWidth(b.options.width),b._position(b.options.offset),b.options.boxManager.init(b),b.options.hidden||e.show(),a(".ui-chatbox [rel=tooltip]").tooltip()},"_setOption":function(b,c){if(null!=c)switch(b){case"hidden":c?this.uiChatbox.hide():this.uiChatbox.show();break;case"offset":this._position(c);break;case"width":this._setWidth(c)}a.Widget.prototype._setOption.apply(this,arguments)},"_setWidth":function(a){this.uiChatbox.width(a+28+"px"),this.uiChatboxInputBox.css("width",a+18+"px")},"_position":function(a){this.uiChatbox.css("right",a)}})}(jQuery),function(a){a.fn.emoticonize=function(b){for(var c=a.extend({},a.fn.emoticonize.defaults,b),d=[")","(","*","[","]","{","}","|","^","<",">","\\","?","+","=","."],e=[":-)",":o)",":c)",":^)",":-D",":-(",":-9",";-)",":-P",":-p",":-\xde",":-b",":-O",":-/",":-X",":-#",":'(","B-)","8-)",";*(",":-*",":-\\","?-)",": )",": ]","= ]","= )","8 )",": }",": D","8 D","X D","x D","= D",": (",": [",": {","= (","; )","; ]","; D",": P",": p","= P","= p",": b",": \xde",": O","8 O",": /","= /",": S",": #",": X","B )",": |",": \\","= \\",": *",": &gt;",": &lt;"],f=[":)",":]","=]","=)","8)",":}",":D",":(",":[",":{","=(",";)",";]",";D",":P",":p","=P","=p",":b",":\xde",":O",":/","=/",":S",":#",":X","B)",":|",":\\","=\\",":*",":&gt;",":&lt;"],g={"&gt;:)":{"cssClass":"red-emoticon small-emoticon spaced-emoticon"},"&gt;;)":{"cssClass":"red-emoticon small-emoticon spaced-emoticon"},"&gt;:(":{"cssClass":"red-emoticon small-emoticon spaced-emoticon"},"&gt;: )":{"cssClass":"red-emoticon small-emoticon"},"&gt;; )":{"cssClass":"red-emoticon small-emoticon"},"&gt;: (":{"cssClass":"red-emoticon small-emoticon"},";(":{"cssClass":"red-emoticon spaced-emoticon"},"&lt;3":{"cssClass":"pink-emoticon counter-rotated"},"O_O":{"cssClass":"no-rotate"},"o_o":{"cssClass":"no-rotate"},"0_o":{"cssClass":"no-rotate"},"O_o":{"cssClass":"no-rotate"},"T_T":{"cssClass":"no-rotate"},"^_^":{"cssClass":"no-rotate"},"O:)":{"cssClass":"small-emoticon spaced-emoticon"},"O: )":{"cssClass":"small-emoticon"},"8D":{"cssClass":"small-emoticon spaced-emoticon"},"XD":{"cssClass":"small-emoticon spaced-emoticon"},"xD":{"cssClass":"small-emoticon spaced-emoticon"},"=D":{"cssClass":"small-emoticon spaced-emoticon"},"8O":{"cssClass":"small-emoticon spaced-emoticon"},"[+=..]":{"cssClass":"no-rotate nintendo-controller"}},h=new RegExp("(\\"+d.join("|\\")+")","g"),i="(^|[\\s\\0])",j=e.length-1;j>=0;--j)e[j]=e[j].replace(h,"\\$1"),e[j]=new RegExp(i+"("+e[j]+")","g");for(var j=f.length-1;j>=0;--j)f[j]=f[j].replace(h,"\\$1"),f[j]=new RegExp(i+"("+f[j]+")","g");for(var k in g)g[k].regexp=k.replace(h,"\\$1"),g[k].regexp=new RegExp(i+"("+g[k].regexp+")","g");var l="span.css-emoticon";c.exclude&&(l+=","+c.exclude);var m=l.split(",");return this.not(l).each(function(){var b=a(this),d="css-emoticon";c.animate&&(d+=" un-transformed-emoticon animated-emoticon");for(var h in g)specialCssClass=d+" "+g[h].cssClass,b.html(b.html().replace(g[h].regexp,"$1<span class='"+specialCssClass+"'>$2</span>"));a(e).each(function(){b.html(b.html().replace(this,"$1<span class='"+d+"'>$2</span>"))}),a(f).each(function(){b.html(b.html().replace(this,"$1<span class='"+d+" spaced-emoticon'>$2</span>"))}),a.each(m,function(c,d){b.find(a.trim(d)+" span.css-emoticon").each(function(){a(this).replaceWith(a(this).text())})}),c.animate&&setTimeout(function(){a(".un-transformed-emoticon").removeClass("un-transformed-emoticon")},c.delay)})},a.fn.unemoticonize=function(b){var c=a.extend({},a.fn.emoticonize.defaults,b);return this.each(function(){var b=a(this);b.find("span.css-emoticon").each(function(){var b=a(this);c.animate?(b.addClass("un-transformed-emoticon"),setTimeout(function(){b.replaceWith(b.text())},c.delay)):b.replaceWith(b.text())})})},a.fn.emoticonize.defaults={"animate":!0,"delay":500,"exclude":"pre,code,.no-emoticons"}}(jQuery);
+/*
+ * SMART CHAT ENGINE (EXTENTION)
+ * Copyright (c) 2013 Wen Pu
+ * Modified by MyOrange
+ * All modifications made are hereby copyright (c) 2014-2015 MyOrange
+ */
+
+// clears the variable if left blank
+// Need this to make IE happy
+// see http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
+/*if (!Array.indexOf) {
+    Array.prototype.indexOf = function (obj) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] == obj) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}*/
+
+var chatboxManager = function () {
+		
+    var init = function (options) {
+        $.extend(chatbox_config, options)
+    };
+
+
+    var delBox = function (id) {
+        // TODO
+    };
+
+    var getNextOffset = function () {
+        return (chatbox_config.width + chatbox_config.gap) * showList.length;
+    };
+
+    var boxClosedCallback = function (id) {
+        // close button in the titlebar is clicked
+        var idx = showList.indexOf(id);
+        if (idx != -1) {
+            showList.splice(idx, 1);
+            diff = chatbox_config.width + chatbox_config.gap;
+            for (var i = idx; i < showList.length; i++) {
+                offset = $("#" + showList[i]).chatbox("option", "offset");
+                $("#" + showList[i]).chatbox("option", "offset", offset - diff);
+            }
+        } else {
+            alert("NOTE: Id missing from array: " + id);
+        }
+    };
+
+    // caller should guarantee the uniqueness of id
+    var addBox = function (id, user, name) {
+        var idx1 = showList.indexOf(id);
+        var idx2 = boxList.indexOf(id);
+        if (idx1 != -1) {
+            // found one in show box, do nothing
+        } else if (idx2 != -1) {
+            // exists, but hidden
+            // show it and put it back to showList
+            $("#" + id).chatbox("option", "offset", getNextOffset());
+            var manager = $("#" + id).chatbox("option", "boxManager");
+            manager.toggleBox();
+            showList.push(id);
+        } else {
+            var el = document.createElement('div');
+            el.setAttribute('id', id);
+            $(el).chatbox({
+                id: id,
+                user: user,
+                title: '<i title="' + user.status + '"></i>' + user.first_name + " " + user.last_name,
+                hidden: false,
+                offset: getNextOffset(),
+                width: chatbox_config.width,
+                status: user.status,
+                alertmsg: user.alertmsg,
+                alertshow: user.alertshow,
+                messageSent: dispatch,
+                boxClosed: boxClosedCallback
+            });
+            boxList.push(id);
+            showList.push(id);
+            nameList.push(user.first_name);
+        }
+    };
+
+    var messageSentCallback = function (id, user, msg) {
+        var idx = boxList.indexOf(id);
+        chatbox_config.messageSent(nameList[idx], msg);
+    };
+
+    // not used in demo
+    var dispatch = function (id, user, msg) {
+        //$("#log").append("<i>" + moment().calendar() + "</i> you said to <b>" + user.first_name + " " + user.last_name + ":</b> " + msg + "<br/>");
+        if ($('#chatlog').doesExist()){
+        	$("#chatlog").append("You said to <b>" + user.first_name + " " + user.last_name + ":</b> " + msg + "<br/>").effect("highlight", {}, 500);;
+        }
+        $("#" + id).chatbox("option", "boxManager").addMsg("Me", msg);
+    }
+
+    return {
+        init: init,
+        addBox: addBox,
+        delBox: delBox,
+        dispatch: dispatch
+    };
+}();
+
+
+$('a[data-chat-id]:not(.offline)').click(function (event, ui) {
+
+    var $this = $(this),
+        temp_chat_id = $this.attr("data-chat-id"),
+        fname = $this.attr("data-chat-fname"),
+        lname = $this.attr("data-chat-lname"),
+        status = $this.attr("data-chat-status") || "online",
+        alertmsg = $this.attr("data-chat-alertmsg"),
+        alertshow =  $this.attr("data-chat-alertshow") || false;
+
+
+    chatboxManager.addBox(temp_chat_id, {
+        // dest:"dest" + counter, 
+        // not used in demo
+        title: "username" + temp_chat_id,
+        first_name: fname,
+        last_name: lname,
+        status: status,
+        alertmsg: alertmsg,
+        alertshow: alertshow
+        //you can add your own options too
+    });
+
+    event.preventDefault();
+
+});
+/*
+ * SMART CHAT ENGINE
+ * Copyright (c) 2013 Wen Pu
+ * Modified by MyOrange
+ * All modifications made are hereby copyright (c) 2014-2015 MyOrange
+ */
+
+// TODO: implement destroy()
+(function($) {
+    $.widget("ui.chatbox", {
+        options: {
+            id: null, //id for the DOM element
+            title: null, // title of the chatbox
+            user: null, // can be anything associated with this chatbox
+            hidden: false,
+            offset: 0, // relative to right edge of the browser window
+            width: 300, // width of the chatbox
+            status: 'online', //
+            alertmsg: null,
+            alertshow: null,
+            messageSent: function(id, user, msg) {
+                // override this
+                this.boxManager.addMsg(user.first_name, msg);
+            },
+            boxClosed: function(id) {
+            }, // called when the close icon is clicked
+            boxManager: {
+                // thanks to the widget factory facility
+                // similar to http://alexsexton.com/?p=51
+                init: function(elem) {
+                    this.elem = elem;
+                },
+                addMsg: function(peer, msg) {
+                    var self = this;
+                    var box = self.elem.uiChatboxLog;
+                    var e = document.createElement('div');
+                    box.append(e);
+                    $(e).hide();
+
+                    var systemMessage = false;
+
+                    if (peer) {
+                        var peerName = document.createElement("b");
+                        $(peerName).text(peer + ": ");
+                        e.appendChild(peerName);
+                    } else {
+                        systemMessage = true;
+                    }
+
+                    var msgElement = document.createElement(
+                        systemMessage ? "i" : "span");
+                    $(msgElement).text(msg);
+                    e.appendChild(msgElement);
+                    $(e).addClass("ui-chatbox-msg");
+                    $(e).css("maxWidth", $(box).width());
+                    $(e).fadeIn();
+                    //$(e).prop( 'title', moment().calendar() ); // add dep: moment.js
+                    $(e).find("span").emoticonize(); // add dep: jquery.cssemoticons.js
+                    self._scrollToBottom();
+
+                    if (!self.elem.uiChatboxTitlebar.hasClass("ui-state-focus")
+                        && !self.highlightLock) {
+                        self.highlightLock = true;
+                        self.highlightBox();
+                    }
+                },
+                highlightBox: function() {
+                    var self = this;
+                    self.elem.uiChatboxTitlebar.effect("highlight", {}, 300);
+                    self.elem.uiChatbox.effect("bounce", {times: 2}, 300, function() {
+                        self.highlightLock = false;
+                        self._scrollToBottom();
+                    });
+                },
+                toggleBox: function() {
+                    this.elem.uiChatbox.toggle();
+                },
+                _scrollToBottom: function() {
+                    var box = this.elem.uiChatboxLog;
+                    box.scrollTop(box.get(0).scrollHeight);
+                }
+            }
+        },
+        toggleContent: function(event) {
+            this.uiChatboxContent.toggle();
+            if (this.uiChatboxContent.is(":visible")) {
+                this.uiChatboxInputBox.focus();
+            }
+        },
+        widget: function() {
+            return this.uiChatbox
+        },
+        _create: function() {
+            var self = this,
+            options = self.options,
+            title = options.title || "No Title",
+            // chatbox
+            uiChatbox = (self.uiChatbox = $('<div></div>'))
+                .appendTo(document.body)
+                .addClass('ui-widget ' +
+                          //'ui-corner-top ' +
+                          'ui-chatbox'
+                         )
+                .attr('outline', 0)
+                .focusin(function() {
+                    // ui-state-highlight is not really helpful here
+                    //self.uiChatbox.removeClass('ui-state-highlight');
+                    self.uiChatboxTitlebar.addClass('ui-state-focus');
+                })
+                .focusout(function() {
+                    self.uiChatboxTitlebar.removeClass('ui-state-focus');
+                }),
+            // titlebar
+            uiChatboxTitlebar = (self.uiChatboxTitlebar = $('<div></div>'))
+                .addClass('ui-widget-header ' +
+                          //'ui-corner-top ' +
+                          'ui-chatbox-titlebar ' +
+                          self.options.status +
+                          ' ui-dialog-header' // take advantage of dialog header style
+                         )
+                .click(function(event) {
+                    self.toggleContent(event);
+                })
+                .appendTo(uiChatbox),
+            uiChatboxTitle = (self.uiChatboxTitle = $('<span></span>'))
+                .html(title)
+                .appendTo(uiChatboxTitlebar),
+            uiChatboxTitlebarClose = (self.uiChatboxTitlebarClose = $('<a href="#" rel="tooltip" data-placement="top" data-original-title="Hide"></a>'))
+                .addClass(//'ui-corner-all ' +
+                          'ui-chatbox-icon '
+                         )
+                .attr('role', 'button')
+                .hover(function() { uiChatboxTitlebarClose.addClass('ui-state-hover'); },
+                       function() { uiChatboxTitlebarClose.removeClass('ui-state-hover'); })
+                .click(function(event) {
+                    uiChatbox.hide();
+                    self.options.boxClosed(self.options.id);
+                    return false;
+                })
+                .appendTo(uiChatboxTitlebar),
+            uiChatboxTitlebarCloseText = $('<i></i>')
+                .addClass('fa ' +
+                          'fa-times')
+                .appendTo(uiChatboxTitlebarClose),
+            uiChatboxTitlebarMinimize = (self.uiChatboxTitlebarMinimize = $('<a href="#" rel="tooltip" data-placement="top" data-original-title="Minimize"></a>'))
+                .addClass(//'ui-corner-all ' +
+                          'ui-chatbox-icon'
+                         )
+                .attr('role', 'button')
+                .hover(function() { uiChatboxTitlebarMinimize.addClass('ui-state-hover'); },
+                       function() { uiChatboxTitlebarMinimize.removeClass('ui-state-hover'); })
+                .click(function(event) {
+                    self.toggleContent(event);
+                    return false;
+                })
+                .appendTo(uiChatboxTitlebar),
+            uiChatboxTitlebarMinimizeText = $('<i></i>')
+                .addClass('fa ' +
+                          'fa-minus')
+                .appendTo(uiChatboxTitlebarMinimize),
+            // content
+            uiChatboxContent = (self.uiChatboxContent = $('<div class="'+ self.options.alertshow +'"><span class="alert-msg">'+ self.options.alertmsg + '</span></div>'))
+                .addClass('ui-widget-content ' +
+                          'ui-chatbox-content '
+                         )
+                .appendTo(uiChatbox),
+            uiChatboxLog = (self.uiChatboxLog = self.element)
+                .addClass('ui-widget-content ' +
+                          'ui-chatbox-log ' +
+                          'custom-scroll'
+                         )
+                .appendTo(uiChatboxContent),
+            uiChatboxInput = (self.uiChatboxInput = $('<div></div>'))
+                .addClass('ui-widget-content ' +
+                          'ui-chatbox-input'
+                         )
+                .click(function(event) {
+                    // anything?
+                })
+                .appendTo(uiChatboxContent),
+            uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea></textarea>'))
+                .addClass('ui-widget-content ' +
+                          'ui-chatbox-input-box '
+                         )
+                .appendTo(uiChatboxInput)
+                .keydown(function(event) {
+                    if (event.keyCode && event.keyCode == $.ui.keyCode.ENTER) {
+                        msg = $.trim($(this).val());
+                        if (msg.length > 0) {
+                            self.options.messageSent(self.options.id, self.options.user, msg);
+                        }
+                        $(this).val('');
+                        return false;
+                    }
+                })
+                .focusin(function() {
+                    uiChatboxInputBox.addClass('ui-chatbox-input-focus');
+                    var box = $(this).parent().prev();
+                    box.scrollTop(box.get(0).scrollHeight);
+                })
+                .focusout(function() {
+                    uiChatboxInputBox.removeClass('ui-chatbox-input-focus');
+                });
+
+            // disable selection
+            uiChatboxTitlebar.find('*').add(uiChatboxTitlebar).disableSelection();
+
+            // switch focus to input box when whatever clicked
+            uiChatboxContent.children().click(function() {
+                // click on any children, set focus on input box
+                self.uiChatboxInputBox.focus();
+            });
+
+            self._setWidth(self.options.width);
+            self._position(self.options.offset);
+
+            self.options.boxManager.init(self);
+
+            if (!self.options.hidden) {
+                uiChatbox.show();
+            }
+            
+            $(".ui-chatbox [rel=tooltip]").tooltip();
+            //console.log("tooltip created");
+        },
+        _setOption: function(option, value) {
+            if (value != null) {
+                switch (option) {
+                case "hidden":
+                    if (value)
+                        this.uiChatbox.hide();
+                    else
+                        this.uiChatbox.show();
+                    break;
+                case "offset":
+                    this._position(value);
+                    break;
+                case "width":
+                    this._setWidth(value);
+                    break;
+                }
+            }
+            $.Widget.prototype._setOption.apply(this, arguments);
+        },
+        _setWidth: function(width) {
+        	this.uiChatbox.width((width + 28) + "px");
+            //this.uiChatboxTitlebar.width((width + 28) + "px");
+            //this.uiChatboxLog.width(width + "px");
+           // this.uiChatboxInput.css("maxWidth", width + "px");
+            // padding:2, boarder:2, margin:5
+            this.uiChatboxInputBox.css("width", (width + 18) + "px");
+        },
+        _position: function(offset) {
+            this.uiChatbox.css("right", offset);
+        }
+    });
+}(jQuery));
+
+
+/*
+ * jQuery CSSEmoticons plugin 0.2.9
+ *
+ * Copyright (c) 2010 Steve Schwartz (JangoSteve)
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Date: Sun Oct 22 1:00:00 2010 -0500
+ */
+(function($) {
+  $.fn.emoticonize = function(options) {
+
+    var opts = $.extend({}, $.fn.emoticonize.defaults, options);
+    
+    var escapeCharacters = [ ")", "(", "*", "[", "]", "{", "}", "|", "^", "<", ">", "\\", "?", "+", "=", "." ];
+    
+    var threeCharacterEmoticons = [
+        // really weird bug if you have :{ and then have :{) in the same container anywhere *after* :{ then :{ doesn't get matched, e.g. :] :{ :) :{) :) :-) will match everything except :{
+        //  But if you take out the :{) or even just move :{ to the right of :{) then everything works fine. This has something to do with the preMatch string below I think, because
+        //  it'll work again if you set preMatch equal to '()'
+        //  So for now, we'll just remove :{) from the emoticons, because who actually uses this mustache man anyway?
+      // ":{)",
+      ":-)", ":o)", ":c)", ":^)", ":-D", ":-(", ":-9", ";-)", ":-P", ":-p", ":-Þ", ":-b", ":-O", ":-/", ":-X", ":-#", ":'(", "B-)", "8-)", ";*(", ":-*", ":-\\",
+      "?-)", // <== This is my own invention, it's a smiling pirate (with an eye-patch)!
+      // and the twoCharacterEmoticons from below, but with a space inserted
+      ": )", ": ]", "= ]", "= )", "8 )", ": }", ": D", "8 D", "X D", "x D", "= D", ": (", ": [", ": {", "= (", "; )", "; ]", "; D", ": P", ": p", "= P", "= p", ": b", ": Þ", ": O", "8 O", ": /", "= /", ": S", ": #", ": X", "B )", ": |", ": \\", "= \\", ": *", ": &gt;", ": &lt;"//, "* )"
+    ];
+    
+    var twoCharacterEmoticons = [ // separate these out so that we can add a letter-spacing between the characters for better proportions
+      ":)", ":]", "=]", "=)", "8)", ":}", ":D", ":(", ":[", ":{", "=(", ";)", ";]", ";D", ":P", ":p", "=P", "=p", ":b", ":Þ", ":O", ":/", "=/", ":S", ":#", ":X", "B)", ":|", ":\\", "=\\", ":*", ":&gt;", ":&lt;"//, "*)"
+    ];
+    
+    var specialEmoticons = { // emoticons to be treated with a special class, hash specifies the additional class to add, along with standard css-emoticon class
+      "&gt;:)": { cssClass: "red-emoticon small-emoticon spaced-emoticon" },
+      "&gt;;)": { cssClass: "red-emoticon small-emoticon spaced-emoticon"},
+      "&gt;:(": { cssClass: "red-emoticon small-emoticon spaced-emoticon" },
+      "&gt;: )": { cssClass: "red-emoticon small-emoticon" },
+      "&gt;; )": { cssClass: "red-emoticon small-emoticon"},
+      "&gt;: (": { cssClass: "red-emoticon small-emoticon" },
+      ";(":     { cssClass: "red-emoticon spaced-emoticon" },
+      "&lt;3":  { cssClass: "pink-emoticon counter-rotated" },
+      "O_O":    { cssClass: "no-rotate" },
+      "o_o":    { cssClass: "no-rotate" },
+      "0_o":    { cssClass: "no-rotate" },
+      "O_o":    { cssClass: "no-rotate" },
+      "T_T":    { cssClass: "no-rotate" },
+      "^_^":    { cssClass: "no-rotate" },
+      "O:)":    { cssClass: "small-emoticon spaced-emoticon" },
+      "O: )":   { cssClass: "small-emoticon" },
+      "8D":     { cssClass: "small-emoticon spaced-emoticon" },
+      "XD":     { cssClass: "small-emoticon spaced-emoticon" },
+      "xD":     { cssClass: "small-emoticon spaced-emoticon" },
+      "=D":     { cssClass: "small-emoticon spaced-emoticon" },
+      "8O":     { cssClass: "small-emoticon spaced-emoticon" },
+      "[+=..]":  { cssClass: "no-rotate nintendo-controller" }
+      //"OwO":  { cssClass: "no-rotate" }, // these emoticons overflow and look weird even if they're made even smaller, could probably fix this with some more css trickery
+      //"O-O":  { cssClass: "no-rotate" },
+      //"O=)":    { cssClass: "small-emoticon" } 
+    }
+    
+    var specialRegex = new RegExp( '(\\' + escapeCharacters.join('|\\') + ')', 'g' );
+    // One of these characters must be present before the matched emoticon, or the matched emoticon must be the first character in the container HTML
+    //  This is to ensure that the characters in the middle of HTML properties or URLs are not matched as emoticons
+    //  Below matches ^ (first character in container HTML), \s (whitespace like space or tab), or \0 (NULL character)
+    // (<\\S+.*>) matches <\\S+.*> (matches an HTML tag like <span> or <div>), but haven't quite gotten it working yet, need to push this fix now
+    var preMatch = '(^|[\\s\\0])';
+    
+    for ( var i=threeCharacterEmoticons.length-1; i>=0; --i ){
+      threeCharacterEmoticons[i] = threeCharacterEmoticons[i].replace(specialRegex,'\\$1');
+      threeCharacterEmoticons[i] = new RegExp( preMatch+'(' + threeCharacterEmoticons[i] + ')', 'g' );
+    }
+    
+    for ( var i=twoCharacterEmoticons.length-1; i>=0; --i ){
+      twoCharacterEmoticons[i] = twoCharacterEmoticons[i].replace(specialRegex,'\\$1');
+      twoCharacterEmoticons[i] = new RegExp( preMatch+'(' + twoCharacterEmoticons[i] + ')', 'g' );
+    }
+    
+    for ( var emoticon in specialEmoticons ){
+      specialEmoticons[emoticon].regexp = emoticon.replace(specialRegex,'\\$1');
+      specialEmoticons[emoticon].regexp = new RegExp( preMatch+'(' + specialEmoticons[emoticon].regexp + ')', 'g' );
+    }
+    
+    var exclude = 'span.css-emoticon';
+    if(opts.exclude){ exclude += ','+opts.exclude; }
+    var excludeArray = exclude.split(',')
+
+    return this.not(exclude).each(function() {
+      var container = $(this);
+      var cssClass = 'css-emoticon'
+      if(opts.animate){ cssClass += ' un-transformed-emoticon animated-emoticon'; }
+      
+      for( var emoticon in specialEmoticons ){
+        specialCssClass = cssClass + " " + specialEmoticons[emoticon].cssClass;
+        container.html(container.html().replace(specialEmoticons[emoticon].regexp,"$1<span class='" + specialCssClass + "'>$2</span>"));
+      }
+      $(threeCharacterEmoticons).each(function(){
+        container.html(container.html().replace(this,"$1<span class='" + cssClass + "'>$2</span>"));
+      });                                                          
+      $(twoCharacterEmoticons).each(function(){                    
+        container.html(container.html().replace(this,"$1<span class='" + cssClass + " spaced-emoticon'>$2</span>"));
+      });
+      // fix emoticons that got matched more then once (where one emoticon is a subset of another emoticon), and thus got nested spans
+      $.each(excludeArray,function(index,item){
+        container.find($.trim(item)+" span.css-emoticon").each(function(){
+          $(this).replaceWith($(this).text());
+        });
+      });
+      if(opts.animate){
+        setTimeout(function(){$('.un-transformed-emoticon').removeClass('un-transformed-emoticon');}, opts.delay);
+      }
+    });
+  }
+  
+  $.fn.unemoticonize = function(options) {
+    var opts = $.extend({}, $.fn.emoticonize.defaults, options);
+    return this.each(function() {
+      var container = $(this);
+      container.find('span.css-emoticon').each(function(){
+        // add delay equal to animate speed if animate is not false
+        var span = $(this);
+        if(opts.animate){
+          span.addClass('un-transformed-emoticon');
+          setTimeout(function(){span.replaceWith(span.text());}, opts.delay); 
+        }else{
+          span.replaceWith(span.text());
+        }
+      });
+    });
+  }
+
+  $.fn.emoticonize.defaults = {animate: true, delay: 500, exclude: 'pre,code,.no-emoticons'}
+})(jQuery);
 /*!
  * Timepicker Component for Twitter Bootstrap
  *
@@ -65996,3 +66547,6406 @@ t.events.push(["addFonts",function(t){var e,n,i,o,a,u="Unicode";for(n in t.fonts
     };
 
 })(window.jQuery);
+
+/*
+  html2canvas 0.5.0-alpha1 <http://html2canvas.hertzen.com>
+  Copyright (c) 2015 Niklas von Hertzen
+
+  Released under MIT License
+*/
+
+(function(window, document, exports, global, define, undefined){
+
+/*!
+ * @overview es6-promise - a tiny implementation of Promises/A+.
+ * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
+ * @license   Licensed under MIT license
+ *            See https://raw.githubusercontent.com/jakearchibald/es6-promise/master/LICENSE
+ * @version   2.0.1
+ */
+
+(function(){function r(a,b){n[l]=a;n[l+1]=b;l+=2;2===l&&A()}function s(a){return"function"===typeof a}function F(){return function(){process.nextTick(t)}}function G(){var a=0,b=new B(t),c=document.createTextNode("");b.observe(c,{characterData:!0});return function(){c.data=a=++a%2}}function H(){var a=new MessageChannel;a.port1.onmessage=t;return function(){a.port2.postMessage(0)}}function I(){return function(){setTimeout(t,1)}}function t(){for(var a=0;a<l;a+=2)(0,n[a])(n[a+1]),n[a]=void 0,n[a+1]=void 0;
+l=0}function p(){}function J(a,b,c,d){try{a.call(b,c,d)}catch(e){return e}}function K(a,b,c){r(function(a){var e=!1,f=J(c,b,function(c){e||(e=!0,b!==c?q(a,c):m(a,c))},function(b){e||(e=!0,g(a,b))});!e&&f&&(e=!0,g(a,f))},a)}function L(a,b){1===b.a?m(a,b.b):2===a.a?g(a,b.b):u(b,void 0,function(b){q(a,b)},function(b){g(a,b)})}function q(a,b){if(a===b)g(a,new TypeError("You cannot resolve a promise with itself"));else if("function"===typeof b||"object"===typeof b&&null!==b)if(b.constructor===a.constructor)L(a,
+b);else{var c;try{c=b.then}catch(d){v.error=d,c=v}c===v?g(a,v.error):void 0===c?m(a,b):s(c)?K(a,b,c):m(a,b)}else m(a,b)}function M(a){a.f&&a.f(a.b);x(a)}function m(a,b){void 0===a.a&&(a.b=b,a.a=1,0!==a.e.length&&r(x,a))}function g(a,b){void 0===a.a&&(a.a=2,a.b=b,r(M,a))}function u(a,b,c,d){var e=a.e,f=e.length;a.f=null;e[f]=b;e[f+1]=c;e[f+2]=d;0===f&&a.a&&r(x,a)}function x(a){var b=a.e,c=a.a;if(0!==b.length){for(var d,e,f=a.b,g=0;g<b.length;g+=3)d=b[g],e=b[g+c],d?C(c,d,e,f):e(f);a.e.length=0}}function D(){this.error=
+null}function C(a,b,c,d){var e=s(c),f,k,h,l;if(e){try{f=c(d)}catch(n){y.error=n,f=y}f===y?(l=!0,k=f.error,f=null):h=!0;if(b===f){g(b,new TypeError("A promises callback cannot return that same promise."));return}}else f=d,h=!0;void 0===b.a&&(e&&h?q(b,f):l?g(b,k):1===a?m(b,f):2===a&&g(b,f))}function N(a,b){try{b(function(b){q(a,b)},function(b){g(a,b)})}catch(c){g(a,c)}}function k(a,b,c,d){this.n=a;this.c=new a(p,d);this.i=c;this.o(b)?(this.m=b,this.d=this.length=b.length,this.l(),0===this.length?m(this.c,
+this.b):(this.length=this.length||0,this.k(),0===this.d&&m(this.c,this.b))):g(this.c,this.p())}function h(a){O++;this.b=this.a=void 0;this.e=[];if(p!==a){if(!s(a))throw new TypeError("You must pass a resolver function as the first argument to the promise constructor");if(!(this instanceof h))throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");N(this,a)}}var E=Array.isArray?Array.isArray:function(a){return"[object Array]"===
+Object.prototype.toString.call(a)},l=0,w="undefined"!==typeof window?window:{},B=w.MutationObserver||w.WebKitMutationObserver,w="undefined"!==typeof Uint8ClampedArray&&"undefined"!==typeof importScripts&&"undefined"!==typeof MessageChannel,n=Array(1E3),A;A="undefined"!==typeof process&&"[object process]"==={}.toString.call(process)?F():B?G():w?H():I();var v=new D,y=new D;k.prototype.o=function(a){return E(a)};k.prototype.p=function(){return Error("Array Methods must be provided an Array")};k.prototype.l=
+function(){this.b=Array(this.length)};k.prototype.k=function(){for(var a=this.length,b=this.c,c=this.m,d=0;void 0===b.a&&d<a;d++)this.j(c[d],d)};k.prototype.j=function(a,b){var c=this.n;"object"===typeof a&&null!==a?a.constructor===c&&void 0!==a.a?(a.f=null,this.g(a.a,b,a.b)):this.q(c.resolve(a),b):(this.d--,this.b[b]=this.h(a))};k.prototype.g=function(a,b,c){var d=this.c;void 0===d.a&&(this.d--,this.i&&2===a?g(d,c):this.b[b]=this.h(c));0===this.d&&m(d,this.b)};k.prototype.h=function(a){return a};
+k.prototype.q=function(a,b){var c=this;u(a,void 0,function(a){c.g(1,b,a)},function(a){c.g(2,b,a)})};var O=0;h.all=function(a,b){return(new k(this,a,!0,b)).c};h.race=function(a,b){function c(a){q(e,a)}function d(a){g(e,a)}var e=new this(p,b);if(!E(a))return (g(e,new TypeError("You must pass an array to race.")), e);for(var f=a.length,h=0;void 0===e.a&&h<f;h++)u(this.resolve(a[h]),void 0,c,d);return e};h.resolve=function(a,b){if(a&&"object"===typeof a&&a.constructor===this)return a;var c=new this(p,b);
+q(c,a);return c};h.reject=function(a,b){var c=new this(p,b);g(c,a);return c};h.prototype={constructor:h,then:function(a,b){var c=this.a;if(1===c&&!a||2===c&&!b)return this;var d=new this.constructor(p),e=this.b;if(c){var f=arguments[c-1];r(function(){C(c,d,f,e)})}else u(this,d,a,b);return d},"catch":function(a){return this.then(null,a)}};var z={Promise:h,polyfill:function(){var a;a="undefined"!==typeof global?global:"undefined"!==typeof window&&window.document?window:self;"Promise"in a&&"resolve"in
+a.Promise&&"reject"in a.Promise&&"all"in a.Promise&&"race"in a.Promise&&function(){var b;new a.Promise(function(a){b=a});return s(b)}()||(a.Promise=h)}};"function"===typeof define&&define.amd?define(function(){return z}):"undefined"!==typeof module&&module.exports?module.exports=z:"undefined"!==typeof this&&(this.ES6Promise=z);}).call(window);
+if (window) {
+    window.ES6Promise.polyfill();
+}
+
+
+if (typeof(document) === "undefined" || typeof(Object.create) !== "function" || typeof(document.createElement("canvas").getContext) !== "function") {
+    (window || module.exports).html2canvas = function() {
+        return Promise.reject("No canvas support");
+    };
+    return;
+}
+
+/*! https://mths.be/punycode v1.3.1 by @mathias */
+;(function(root) {
+
+	/** Detect free variables */
+	var freeExports = typeof exports == 'object' && exports &&
+		!exports.nodeType && exports;
+	var freeModule = typeof module == 'object' && module &&
+		!module.nodeType && module;
+	var freeGlobal = typeof global == 'object' && global;
+	if (
+		freeGlobal.global === freeGlobal ||
+		freeGlobal.window === freeGlobal ||
+		freeGlobal.self === freeGlobal
+	) {
+		root = freeGlobal;
+	}
+
+	/**
+	 * The `punycode` object.
+	 * @name punycode
+	 * @type Object
+	 */
+	var punycode,
+
+	/** Highest positive signed 32-bit float value */
+	maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
+
+	/** Bootstring parameters */
+	base = 36,
+	tMin = 1,
+	tMax = 26,
+	skew = 38,
+	damp = 700,
+	initialBias = 72,
+	initialN = 128, // 0x80
+	delimiter = '-', // '\x2D'
+
+	/** Regular expressions */
+	regexPunycode = /^xn--/,
+	regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
+	regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
+
+	/** Error messages */
+	errors = {
+		'overflow': 'Overflow: input needs wider integers to process',
+		'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+		'invalid-input': 'Invalid input'
+	},
+
+	/** Convenience shortcuts */
+	baseMinusTMin = base - tMin,
+	floor = Math.floor,
+	stringFromCharCode = String.fromCharCode,
+
+	/** Temporary variable */
+	key;
+
+	/*--------------------------------------------------------------------------*/
+
+	/**
+	 * A generic error utility function.
+	 * @private
+	 * @param {String} type The error type.
+	 * @returns {Error} Throws a `RangeError` with the applicable error message.
+	 */
+	function error(type) {
+		throw RangeError(errors[type]);
+	}
+
+	/**
+	 * A generic `Array#map` utility function.
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} callback The function that gets called for every array
+	 * item.
+	 * @returns {Array} A new array of values returned by the callback function.
+	 */
+	function map(array, fn) {
+		var length = array.length;
+		var result = [];
+		while (length--) {
+			result[length] = fn(array[length]);
+		}
+		return result;
+	}
+
+	/**
+	 * A simple `Array#map`-like wrapper to work with domain name strings or email
+	 * addresses.
+	 * @private
+	 * @param {String} domain The domain name or email address.
+	 * @param {Function} callback The function that gets called for every
+	 * character.
+	 * @returns {Array} A new string of characters returned by the callback
+	 * function.
+	 */
+	function mapDomain(string, fn) {
+		var parts = string.split('@');
+		var result = '';
+		if (parts.length > 1) {
+			// In email addresses, only the domain name should be punycoded. Leave
+			// the local part (i.e. everything up to `@`) intact.
+			result = parts[0] + '@';
+			string = parts[1];
+		}
+		var labels = string.split(regexSeparators);
+		var encoded = map(labels, fn).join('.');
+		return result + encoded;
+	}
+
+	/**
+	 * Creates an array containing the numeric code points of each Unicode
+	 * character in the string. While JavaScript uses UCS-2 internally,
+	 * this function will convert a pair of surrogate halves (each of which
+	 * UCS-2 exposes as separate characters) into a single code point,
+	 * matching UTF-16.
+	 * @see `punycode.ucs2.encode`
+	 * @see <https://mathiasbynens.be/notes/javascript-encoding>
+	 * @memberOf punycode.ucs2
+	 * @name decode
+	 * @param {String} string The Unicode input string (UCS-2).
+	 * @returns {Array} The new array of code points.
+	 */
+	function ucs2decode(string) {
+		var output = [],
+		    counter = 0,
+		    length = string.length,
+		    value,
+		    extra;
+		while (counter < length) {
+			value = string.charCodeAt(counter++);
+			if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+				// high surrogate, and there is a next character
+				extra = string.charCodeAt(counter++);
+				if ((extra & 0xFC00) == 0xDC00) { // low surrogate
+					output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+				} else {
+					// unmatched surrogate; only append this code unit, in case the next
+					// code unit is the high surrogate of a surrogate pair
+					output.push(value);
+					counter--;
+				}
+			} else {
+				output.push(value);
+			}
+		}
+		return output;
+	}
+
+	/**
+	 * Creates a string based on an array of numeric code points.
+	 * @see `punycode.ucs2.decode`
+	 * @memberOf punycode.ucs2
+	 * @name encode
+	 * @param {Array} codePoints The array of numeric code points.
+	 * @returns {String} The new Unicode string (UCS-2).
+	 */
+	function ucs2encode(array) {
+		return map(array, function(value) {
+			var output = '';
+			if (value > 0xFFFF) {
+				value -= 0x10000;
+				output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+				value = 0xDC00 | value & 0x3FF;
+			}
+			output += stringFromCharCode(value);
+			return output;
+		}).join('');
+	}
+
+	/**
+	 * Converts a basic code point into a digit/integer.
+	 * @see `digitToBasic()`
+	 * @private
+	 * @param {Number} codePoint The basic numeric code point value.
+	 * @returns {Number} The numeric value of a basic code point (for use in
+	 * representing integers) in the range `0` to `base - 1`, or `base` if
+	 * the code point does not represent a value.
+	 */
+	function basicToDigit(codePoint) {
+		if (codePoint - 48 < 10) {
+			return codePoint - 22;
+		}
+		if (codePoint - 65 < 26) {
+			return codePoint - 65;
+		}
+		if (codePoint - 97 < 26) {
+			return codePoint - 97;
+		}
+		return base;
+	}
+
+	/**
+	 * Converts a digit/integer into a basic code point.
+	 * @see `basicToDigit()`
+	 * @private
+	 * @param {Number} digit The numeric value of a basic code point.
+	 * @returns {Number} The basic code point whose value (when used for
+	 * representing integers) is `digit`, which needs to be in the range
+	 * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
+	 * used; else, the lowercase form is used. The behavior is undefined
+	 * if `flag` is non-zero and `digit` has no uppercase form.
+	 */
+	function digitToBasic(digit, flag) {
+		//  0..25 map to ASCII a..z or A..Z
+		// 26..35 map to ASCII 0..9
+		return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
+	}
+
+	/**
+	 * Bias adaptation function as per section 3.4 of RFC 3492.
+	 * http://tools.ietf.org/html/rfc3492#section-3.4
+	 * @private
+	 */
+	function adapt(delta, numPoints, firstTime) {
+		var k = 0;
+		delta = firstTime ? floor(delta / damp) : delta >> 1;
+		delta += floor(delta / numPoints);
+		for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
+			delta = floor(delta / baseMinusTMin);
+		}
+		return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+	}
+
+	/**
+	 * Converts a Punycode string of ASCII-only symbols to a string of Unicode
+	 * symbols.
+	 * @memberOf punycode
+	 * @param {String} input The Punycode string of ASCII-only symbols.
+	 * @returns {String} The resulting string of Unicode symbols.
+	 */
+	function decode(input) {
+		// Don't use UCS-2
+		var output = [],
+		    inputLength = input.length,
+		    out,
+		    i = 0,
+		    n = initialN,
+		    bias = initialBias,
+		    basic,
+		    j,
+		    index,
+		    oldi,
+		    w,
+		    k,
+		    digit,
+		    t,
+		    /** Cached calculation results */
+		    baseMinusT;
+
+		// Handle the basic code points: let `basic` be the number of input code
+		// points before the last delimiter, or `0` if there is none, then copy
+		// the first basic code points to the output.
+
+		basic = input.lastIndexOf(delimiter);
+		if (basic < 0) {
+			basic = 0;
+		}
+
+		for (j = 0; j < basic; ++j) {
+			// if it's not a basic code point
+			if (input.charCodeAt(j) >= 0x80) {
+				error('not-basic');
+			}
+			output.push(input.charCodeAt(j));
+		}
+
+		// Main decoding loop: start just after the last delimiter if any basic code
+		// points were copied; start at the beginning otherwise.
+
+		for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
+
+			// `index` is the index of the next character to be consumed.
+			// Decode a generalized variable-length integer into `delta`,
+			// which gets added to `i`. The overflow checking is easier
+			// if we increase `i` as we go, then subtract off its starting
+			// value at the end to obtain `delta`.
+			for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
+
+				if (index >= inputLength) {
+					error('invalid-input');
+				}
+
+				digit = basicToDigit(input.charCodeAt(index++));
+
+				if (digit >= base || digit > floor((maxInt - i) / w)) {
+					error('overflow');
+				}
+
+				i += digit * w;
+				t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+
+				if (digit < t) {
+					break;
+				}
+
+				baseMinusT = base - t;
+				if (w > floor(maxInt / baseMinusT)) {
+					error('overflow');
+				}
+
+				w *= baseMinusT;
+
+			}
+
+			out = output.length + 1;
+			bias = adapt(i - oldi, out, oldi == 0);
+
+			// `i` was supposed to wrap around from `out` to `0`,
+			// incrementing `n` each time, so we'll fix that now:
+			if (floor(i / out) > maxInt - n) {
+				error('overflow');
+			}
+
+			n += floor(i / out);
+			i %= out;
+
+			// Insert `n` at position `i` of the output
+			output.splice(i++, 0, n);
+
+		}
+
+		return ucs2encode(output);
+	}
+
+	/**
+	 * Converts a string of Unicode symbols (e.g. a domain name label) to a
+	 * Punycode string of ASCII-only symbols.
+	 * @memberOf punycode
+	 * @param {String} input The string of Unicode symbols.
+	 * @returns {String} The resulting Punycode string of ASCII-only symbols.
+	 */
+	function encode(input) {
+		var n,
+		    delta,
+		    handledCPCount,
+		    basicLength,
+		    bias,
+		    j,
+		    m,
+		    q,
+		    k,
+		    t,
+		    currentValue,
+		    output = [],
+		    /** `inputLength` will hold the number of code points in `input`. */
+		    inputLength,
+		    /** Cached calculation results */
+		    handledCPCountPlusOne,
+		    baseMinusT,
+		    qMinusT;
+
+		// Convert the input in UCS-2 to Unicode
+		input = ucs2decode(input);
+
+		// Cache the length
+		inputLength = input.length;
+
+		// Initialize the state
+		n = initialN;
+		delta = 0;
+		bias = initialBias;
+
+		// Handle the basic code points
+		for (j = 0; j < inputLength; ++j) {
+			currentValue = input[j];
+			if (currentValue < 0x80) {
+				output.push(stringFromCharCode(currentValue));
+			}
+		}
+
+		handledCPCount = basicLength = output.length;
+
+		// `handledCPCount` is the number of code points that have been handled;
+		// `basicLength` is the number of basic code points.
+
+		// Finish the basic string - if it is not empty - with a delimiter
+		if (basicLength) {
+			output.push(delimiter);
+		}
+
+		// Main encoding loop:
+		while (handledCPCount < inputLength) {
+
+			// All non-basic code points < n have been handled already. Find the next
+			// larger one:
+			for (m = maxInt, j = 0; j < inputLength; ++j) {
+				currentValue = input[j];
+				if (currentValue >= n && currentValue < m) {
+					m = currentValue;
+				}
+			}
+
+			// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+			// but guard against overflow
+			handledCPCountPlusOne = handledCPCount + 1;
+			if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+				error('overflow');
+			}
+
+			delta += (m - n) * handledCPCountPlusOne;
+			n = m;
+
+			for (j = 0; j < inputLength; ++j) {
+				currentValue = input[j];
+
+				if (currentValue < n && ++delta > maxInt) {
+					error('overflow');
+				}
+
+				if (currentValue == n) {
+					// Represent delta as a generalized variable-length integer
+					for (q = delta, k = base; /* no condition */; k += base) {
+						t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+						if (q < t) {
+							break;
+						}
+						qMinusT = q - t;
+						baseMinusT = base - t;
+						output.push(
+							stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
+						);
+						q = floor(qMinusT / baseMinusT);
+					}
+
+					output.push(stringFromCharCode(digitToBasic(q, 0)));
+					bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+					delta = 0;
+					++handledCPCount;
+				}
+			}
+
+			++delta;
+			++n;
+
+		}
+		return output.join('');
+	}
+
+	/**
+	 * Converts a Punycode string representing a domain name or an email address
+	 * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
+	 * it doesn't matter if you call it on a string that has already been
+	 * converted to Unicode.
+	 * @memberOf punycode
+	 * @param {String} input The Punycoded domain name or email address to
+	 * convert to Unicode.
+	 * @returns {String} The Unicode representation of the given Punycode
+	 * string.
+	 */
+	function toUnicode(input) {
+		return mapDomain(input, function(string) {
+			return regexPunycode.test(string)
+				? decode(string.slice(4).toLowerCase())
+				: string;
+		});
+	}
+
+	/**
+	 * Converts a Unicode string representing a domain name or an email address to
+	 * Punycode. Only the non-ASCII parts of the domain name will be converted,
+	 * i.e. it doesn't matter if you call it with a domain that's already in
+	 * ASCII.
+	 * @memberOf punycode
+	 * @param {String} input The domain name or email address to convert, as a
+	 * Unicode string.
+	 * @returns {String} The Punycode representation of the given domain name or
+	 * email address.
+	 */
+	function toASCII(input) {
+		return mapDomain(input, function(string) {
+			return regexNonASCII.test(string)
+				? 'xn--' + encode(string)
+				: string;
+		});
+	}
+
+	/*--------------------------------------------------------------------------*/
+
+	/** Define the public API */
+	punycode = {
+		/**
+		 * A string representing the current Punycode.js version number.
+		 * @memberOf punycode
+		 * @type String
+		 */
+		'version': '1.3.1',
+		/**
+		 * An object of methods to convert from JavaScript's internal character
+		 * representation (UCS-2) to Unicode code points, and back.
+		 * @see <https://mathiasbynens.be/notes/javascript-encoding>
+		 * @memberOf punycode
+		 * @type Object
+		 */
+		'ucs2': {
+			'decode': ucs2decode,
+			'encode': ucs2encode
+		},
+		'decode': decode,
+		'encode': encode,
+		'toASCII': toASCII,
+		'toUnicode': toUnicode
+	};
+
+	/** Expose `punycode` */
+	// Some AMD build optimizers, like r.js, check for specific condition patterns
+	// like the following:
+	if (
+		typeof define == 'function' &&
+		typeof define.amd == 'object' &&
+		define.amd
+	) {
+		define('punycode', function() {
+			return punycode;
+		});
+	} else if (freeExports && freeModule) {
+		if (module.exports == freeExports) { // in Node.js or RingoJS v0.8.0+
+			freeModule.exports = punycode;
+		} else { // in Narwhal or RingoJS v0.7.0-
+			for (key in punycode) {
+				punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
+			}
+		}
+	} else { // in Rhino or a web browser
+		root.punycode = punycode;
+	}
+
+}(this));
+
+var html2canvasNodeAttribute = "data-html2canvas-node";
+var html2canvasCanvasCloneAttribute = "data-html2canvas-canvas-clone";
+var html2canvasCanvasCloneIndex = 0;
+var html2canvasCloneIndex = 0;
+
+window.html2canvas = function(nodeList, options) {
+    var index = html2canvasCloneIndex++;
+    options = options || {};
+    if (options.logging) {
+        window.html2canvas.logging = true;
+        window.html2canvas.start = Date.now();
+    }
+
+    options.async = typeof(options.async) === "undefined" ? true : options.async;
+    options.allowTaint = typeof(options.allowTaint) === "undefined" ? false : options.allowTaint;
+    options.removeContainer = typeof(options.removeContainer) === "undefined" ? true : options.removeContainer;
+    options.javascriptEnabled = typeof(options.javascriptEnabled) === "undefined" ? false : options.javascriptEnabled;
+    options.imageTimeout = typeof(options.imageTimeout) === "undefined" ? 10000 : options.imageTimeout;
+    options.renderer = typeof(options.renderer) === "function" ? options.renderer : CanvasRenderer;
+    options.strict = !!options.strict;
+
+    if (typeof(nodeList) === "string") {
+        if (typeof(options.proxy) !== "string") {
+            return Promise.reject("Proxy must be used when rendering url");
+        }
+        var width = options.width != null ? options.width : window.innerWidth;
+        var height = options.height != null ? options.height : window.innerHeight;
+        return loadUrlDocument(absoluteUrl(nodeList), options.proxy, document, width, height, options).then(function(container) {
+            return renderWindow(container.contentWindow.document.documentElement, container, options, width, height);
+        });
+    }
+
+    var node = ((nodeList === undefined) ? [document.documentElement] : ((nodeList.length) ? nodeList : [nodeList]))[0];
+    node.setAttribute(html2canvasNodeAttribute + index, index);
+    return renderDocument(node.ownerDocument, options, node.ownerDocument.defaultView.innerWidth, node.ownerDocument.defaultView.innerHeight, index).then(function(canvas) {
+        if (typeof(options.onrendered) === "function") {
+            log("options.onrendered is deprecated, html2canvas returns a Promise containing the canvas");
+            options.onrendered(canvas);
+        }
+        return canvas;
+    });
+};
+
+window.html2canvas.punycode = this.punycode;
+window.html2canvas.proxy = {};
+
+function renderDocument(document, options, windowWidth, windowHeight, html2canvasIndex) {
+    return createWindowClone(document, document, windowWidth, windowHeight, options, document.defaultView.pageXOffset, document.defaultView.pageYOffset).then(function(container) {
+        log("Document cloned");
+        var attributeName = html2canvasNodeAttribute + html2canvasIndex;
+        var selector = "[" + attributeName + "='" + html2canvasIndex + "']";
+        document.querySelector(selector).removeAttribute(attributeName);
+        var clonedWindow = container.contentWindow;
+        var node = clonedWindow.document.querySelector(selector);
+        var oncloneHandler = (typeof(options.onclone) === "function") ? Promise.resolve(options.onclone(clonedWindow.document)) : Promise.resolve(true);
+        return oncloneHandler.then(function() {
+            return renderWindow(node, container, options, windowWidth, windowHeight);
+        });
+    });
+}
+
+function renderWindow(node, container, options, windowWidth, windowHeight) {
+    var clonedWindow = container.contentWindow;
+    var support = new Support(clonedWindow.document);
+    var imageLoader = new ImageLoader(options, support);
+    var bounds = getBounds(node);
+    var width = options.type === "view" ? windowWidth : documentWidth(clonedWindow.document);
+    var height = options.type === "view" ? windowHeight : documentHeight(clonedWindow.document);
+    var renderer = new options.renderer(width, height, imageLoader, options, document);
+    var parser = new NodeParser(node, renderer, support, imageLoader, options);
+    return parser.ready.then(function() {
+        log("Finished rendering");
+        var canvas;
+
+        if (options.type === "view") {
+            canvas = crop(renderer.canvas, {width: renderer.canvas.width, height: renderer.canvas.height, top: 0, left: 0, x: 0, y: 0});
+        } else if (node === clonedWindow.document.body || node === clonedWindow.document.documentElement || options.canvas != null) {
+            canvas = renderer.canvas;
+        } else {
+            canvas = crop(renderer.canvas, {width:  options.width != null ? options.width : bounds.width, height: options.height != null ? options.height : bounds.height, top: bounds.top, left: bounds.left, x: clonedWindow.pageXOffset, y: clonedWindow.pageYOffset});
+        }
+
+        cleanupContainer(container, options);
+        return canvas;
+    });
+}
+
+function cleanupContainer(container, options) {
+    if (options.removeContainer) {
+        container.parentNode.removeChild(container);
+        log("Cleaned up container");
+    }
+}
+
+function crop(canvas, bounds) {
+    var croppedCanvas = document.createElement("canvas");
+    var x1 = Math.min(canvas.width - 1, Math.max(0, bounds.left));
+    var x2 = Math.min(canvas.width, Math.max(1, bounds.left + bounds.width));
+    var y1 = Math.min(canvas.height - 1, Math.max(0, bounds.top));
+    var y2 = Math.min(canvas.height, Math.max(1, bounds.top + bounds.height));
+    croppedCanvas.width = bounds.width;
+    croppedCanvas.height =  bounds.height;
+    log("Cropping canvas at:", "left:", bounds.left, "top:", bounds.top, "width:", (x2-x1), "height:", (y2-y1));
+    log("Resulting crop with width", bounds.width, "and height", bounds.height, " with x", x1, "and y", y1);
+    croppedCanvas.getContext("2d").drawImage(canvas, x1, y1, x2-x1, y2-y1, bounds.x, bounds.y, x2-x1, y2-y1);
+    return croppedCanvas;
+}
+
+function documentWidth (doc) {
+    return Math.max(
+        Math.max(doc.body.scrollWidth, doc.documentElement.scrollWidth),
+        Math.max(doc.body.offsetWidth, doc.documentElement.offsetWidth),
+        Math.max(doc.body.clientWidth, doc.documentElement.clientWidth)
+    );
+}
+
+function documentHeight (doc) {
+    return Math.max(
+        Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight),
+        Math.max(doc.body.offsetHeight, doc.documentElement.offsetHeight),
+        Math.max(doc.body.clientHeight, doc.documentElement.clientHeight)
+    );
+}
+
+function smallImage() {
+    return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+}
+
+function isIE9() {
+    return document.documentMode && document.documentMode <= 9;
+}
+
+// https://github.com/niklasvh/html2canvas/issues/503
+function cloneNodeIE9(node, javascriptEnabled) {
+    var clone = node.nodeType === 3 ? document.createTextNode(node.nodeValue) : node.cloneNode(false);
+
+    var child = node.firstChild;
+    while(child) {
+        if (javascriptEnabled === true || child.nodeType !== 1 || child.nodeName !== 'SCRIPT') {
+            clone.appendChild(cloneNodeIE9(child, javascriptEnabled));
+        }
+        child = child.nextSibling;
+    }
+
+    return clone;
+}
+
+function createWindowClone(ownerDocument, containerDocument, width, height, options, x ,y) {
+    labelCanvasElements(ownerDocument);
+    var documentElement = isIE9() ? cloneNodeIE9(ownerDocument.documentElement, options.javascriptEnabled) : ownerDocument.documentElement.cloneNode(true);
+    var container = containerDocument.createElement("iframe");
+
+    container.className = "html2canvas-container";
+    container.style.visibility = "hidden";
+    container.style.position = "fixed";
+    container.style.left = "-10000px";
+    container.style.top = "0px";
+    container.style.border = "0";
+    container.width = width;
+    container.height = height;
+    container.scrolling = "no"; // ios won't scroll without it
+    containerDocument.body.appendChild(container);
+
+    return new Promise(function(resolve) {
+        var documentClone = container.contentWindow.document;
+
+        cloneNodeValues(ownerDocument.documentElement, documentElement, "textarea");
+        cloneNodeValues(ownerDocument.documentElement, documentElement, "select");
+
+        /* Chrome doesn't detect relative background-images assigned in inline <style> sheets when fetched through getComputedStyle
+         if window url is about:blank, we can assign the url to current by writing onto the document
+         */
+        container.contentWindow.onload = container.onload = function() {
+            var interval = setInterval(function() {
+                if (documentClone.body.childNodes.length > 0) {
+                    cloneCanvasContents(ownerDocument, documentClone);
+                    clearInterval(interval);
+                    if (options.type === "view") {
+                        container.contentWindow.scrollTo(x, y);
+                    }
+                    resolve(container);
+                }
+            }, 50);
+        };
+
+        documentClone.open();
+        documentClone.write("<!DOCTYPE html><html></html>");
+        // Chrome scrolls the parent document for some reason after the write to the cloned window???
+        restoreOwnerScroll(ownerDocument, x, y);
+        documentClone.replaceChild(options.javascriptEnabled === true ? documentClone.adoptNode(documentElement) : removeScriptNodes(documentClone.adoptNode(documentElement)), documentClone.documentElement);
+        documentClone.close();
+    });
+}
+
+function cloneNodeValues(document, clone, nodeName) {
+    var originalNodes = document.getElementsByTagName(nodeName);
+    var clonedNodes = clone.getElementsByTagName(nodeName);
+    var count = originalNodes.length;
+    for (var i = 0; i < count; i++) {
+        clonedNodes[i].value = originalNodes[i].value;
+    }
+}
+
+function restoreOwnerScroll(ownerDocument, x, y) {
+    if (ownerDocument.defaultView && (x !== ownerDocument.defaultView.pageXOffset || y !== ownerDocument.defaultView.pageYOffset)) {
+        ownerDocument.defaultView.scrollTo(x, y);
+    }
+}
+
+function loadUrlDocument(src, proxy, document, width, height, options) {
+    return new Proxy(src, proxy, window.document).then(documentFromHTML(src)).then(function(doc) {
+        return createWindowClone(doc, document, width, height, options, 0, 0);
+    });
+}
+
+function documentFromHTML(src) {
+    return function(html) {
+        var parser = new DOMParser(), doc;
+        try {
+            doc = parser.parseFromString(html, "text/html");
+        } catch(e) {
+            log("DOMParser not supported, falling back to createHTMLDocument");
+            doc = document.implementation.createHTMLDocument("");
+            try {
+                doc.open();
+                doc.write(html);
+                doc.close();
+            } catch(ee) {
+                log("createHTMLDocument write not supported, falling back to document.body.innerHTML");
+                doc.body.innerHTML = html; // ie9 doesnt support writing to documentElement
+            }
+        }
+
+        var b = doc.querySelector("base");
+        if (!b || !b.href.host) {
+            var base = doc.createElement("base");
+            base.href = src;
+            doc.head.insertBefore(base, doc.head.firstChild);
+        }
+
+        return doc;
+    };
+}
+
+
+function labelCanvasElements(ownerDocument) {
+    [].slice.call(ownerDocument.querySelectorAll("canvas"), 0).forEach(function(canvas) {
+        canvas.setAttribute(html2canvasCanvasCloneAttribute, "canvas-" + html2canvasCanvasCloneIndex++);
+    });
+}
+
+function cloneCanvasContents(ownerDocument, documentClone) {
+    [].slice.call(ownerDocument.querySelectorAll("[" + html2canvasCanvasCloneAttribute + "]"), 0).forEach(function(canvas) {
+        try {
+            var clonedCanvas = documentClone.querySelector('[' + html2canvasCanvasCloneAttribute + '="' + canvas.getAttribute(html2canvasCanvasCloneAttribute) + '"]');
+            if (clonedCanvas) {
+                clonedCanvas.width = canvas.width;
+                clonedCanvas.height = canvas.height;
+                clonedCanvas.getContext("2d").putImageData(canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height), 0, 0);
+            }
+        } catch(e) {
+            log("Unable to copy canvas content from", canvas, e);
+        }
+        canvas.removeAttribute(html2canvasCanvasCloneAttribute);
+    });
+}
+
+function removeScriptNodes(parent) {
+    [].slice.call(parent.childNodes, 0).filter(isElementNode).forEach(function(node) {
+        if (node.tagName === "SCRIPT") {
+            parent.removeChild(node);
+        } else {
+            removeScriptNodes(node);
+        }
+    });
+    return parent;
+}
+
+function isElementNode(node) {
+    return node.nodeType === Node.ELEMENT_NODE;
+}
+
+function absoluteUrl(url) {
+    var link = document.createElement("a");
+    link.href = url;
+    link.href = link.href;
+    return link;
+}
+
+// http://dev.w3.org/csswg/css-color/
+
+function Color(value) {
+    this.r = 0;
+    this.g = 0;
+    this.b = 0;
+    this.a = null;
+    var result = this.fromArray(value) ||
+        this.namedColor(value) ||
+        this.rgb(value) ||
+        this.rgba(value) ||
+        this.hex6(value) ||
+        this.hex3(value);
+}
+
+Color.prototype.darken = function(amount) {
+    var a = 1 - amount;
+    return  new Color([
+        Math.round(this.r * a),
+        Math.round(this.g * a),
+        Math.round(this.b * a),
+        this.a
+    ]);
+};
+
+Color.prototype.isTransparent = function() {
+    return this.a === 0;
+};
+
+Color.prototype.isBlack = function() {
+    return this.r === 0 && this.g === 0 && this.b === 0;
+};
+
+Color.prototype.fromArray = function(array) {
+    if (Array.isArray(array)) {
+        this.r = Math.min(array[0], 255);
+        this.g = Math.min(array[1], 255);
+        this.b = Math.min(array[2], 255);
+        if (array.length > 3) {
+            this.a = array[3];
+        }
+    }
+
+    return (Array.isArray(array));
+};
+
+var _hex3 = /^#([a-f0-9]{3})$/i;
+
+Color.prototype.hex3 = function(value) {
+    var match = null;
+    if ((match = value.match(_hex3)) !== null) {
+        this.r = parseInt(match[1][0] + match[1][0], 16);
+        this.g = parseInt(match[1][1] + match[1][1], 16);
+        this.b = parseInt(match[1][2] + match[1][2], 16);
+    }
+    return match !== null;
+};
+
+var _hex6 = /^#([a-f0-9]{6})$/i;
+
+Color.prototype.hex6 = function(value) {
+    var match = null;
+    if ((match = value.match(_hex6)) !== null) {
+        this.r = parseInt(match[1].substring(0, 2), 16);
+        this.g = parseInt(match[1].substring(2, 4), 16);
+        this.b = parseInt(match[1].substring(4, 6), 16);
+    }
+    return match !== null;
+};
+
+
+var _rgb = /^rgb\((\d{1,3}) *, *(\d{1,3}) *, *(\d{1,3})\)$/;
+
+Color.prototype.rgb = function(value) {
+    var match = null;
+    if ((match = value.match(_rgb)) !== null) {
+        this.r = Number(match[1]);
+        this.g = Number(match[2]);
+        this.b = Number(match[3]);
+    }
+    return match !== null;
+};
+
+var _rgba = /^rgba\((\d{1,3}) *, *(\d{1,3}) *, *(\d{1,3}) *, *(\d+\.?\d*)\)$/;
+
+Color.prototype.rgba = function(value) {
+    var match = null;
+    if ((match = value.match(_rgba)) !== null) {
+        this.r = Number(match[1]);
+        this.g = Number(match[2]);
+        this.b = Number(match[3]);
+        this.a = Number(match[4]);
+    }
+    return match !== null;
+};
+
+Color.prototype.toString = function() {
+    return this.a !== null && this.a !== 1 ?
+    "rgba(" + [this.r, this.g, this.b, this.a].join(",") + ")" :
+    "rgb(" + [this.r, this.g, this.b].join(",") + ")";
+};
+
+Color.prototype.namedColor = function(value) {
+    var color = colors[value.toLowerCase()];
+    if (color) {
+        this.r = color[0];
+        this.g = color[1];
+        this.b = color[2];
+    } else if (value.toLowerCase() === "transparent") {
+        this.r = this.g = this.b = this.a = 0;
+        return true;
+    }
+
+    return !!color;
+};
+
+Color.prototype.isColor = true;
+
+// JSON.stringify([].slice.call($$('.named-color-table tr'), 1).map(function(row) { return [row.childNodes[3].textContent, row.childNodes[5].textContent.trim().split(",").map(Number)] }).reduce(function(data, row) {data[row[0]] = row[1]; return data}, {}))
+var colors = {
+    "aliceblue": [240, 248, 255],
+    "antiquewhite": [250, 235, 215],
+    "aqua": [0, 255, 255],
+    "aquamarine": [127, 255, 212],
+    "azure": [240, 255, 255],
+    "beige": [245, 245, 220],
+    "bisque": [255, 228, 196],
+    "black": [0, 0, 0],
+    "blanchedalmond": [255, 235, 205],
+    "blue": [0, 0, 255],
+    "blueviolet": [138, 43, 226],
+    "brown": [165, 42, 42],
+    "burlywood": [222, 184, 135],
+    "cadetblue": [95, 158, 160],
+    "chartreuse": [127, 255, 0],
+    "chocolate": [210, 105, 30],
+    "coral": [255, 127, 80],
+    "cornflowerblue": [100, 149, 237],
+    "cornsilk": [255, 248, 220],
+    "crimson": [220, 20, 60],
+    "cyan": [0, 255, 255],
+    "darkblue": [0, 0, 139],
+    "darkcyan": [0, 139, 139],
+    "darkgoldenrod": [184, 134, 11],
+    "darkgray": [169, 169, 169],
+    "darkgreen": [0, 100, 0],
+    "darkgrey": [169, 169, 169],
+    "darkkhaki": [189, 183, 107],
+    "darkmagenta": [139, 0, 139],
+    "darkolivegreen": [85, 107, 47],
+    "darkorange": [255, 140, 0],
+    "darkorchid": [153, 50, 204],
+    "darkred": [139, 0, 0],
+    "darksalmon": [233, 150, 122],
+    "darkseagreen": [143, 188, 143],
+    "darkslateblue": [72, 61, 139],
+    "darkslategray": [47, 79, 79],
+    "darkslategrey": [47, 79, 79],
+    "darkturquoise": [0, 206, 209],
+    "darkviolet": [148, 0, 211],
+    "deeppink": [255, 20, 147],
+    "deepskyblue": [0, 191, 255],
+    "dimgray": [105, 105, 105],
+    "dimgrey": [105, 105, 105],
+    "dodgerblue": [30, 144, 255],
+    "firebrick": [178, 34, 34],
+    "floralwhite": [255, 250, 240],
+    "forestgreen": [34, 139, 34],
+    "fuchsia": [255, 0, 255],
+    "gainsboro": [220, 220, 220],
+    "ghostwhite": [248, 248, 255],
+    "gold": [255, 215, 0],
+    "goldenrod": [218, 165, 32],
+    "gray": [128, 128, 128],
+    "green": [0, 128, 0],
+    "greenyellow": [173, 255, 47],
+    "grey": [128, 128, 128],
+    "honeydew": [240, 255, 240],
+    "hotpink": [255, 105, 180],
+    "indianred": [205, 92, 92],
+    "indigo": [75, 0, 130],
+    "ivory": [255, 255, 240],
+    "khaki": [240, 230, 140],
+    "lavender": [230, 230, 250],
+    "lavenderblush": [255, 240, 245],
+    "lawngreen": [124, 252, 0],
+    "lemonchiffon": [255, 250, 205],
+    "lightblue": [173, 216, 230],
+    "lightcoral": [240, 128, 128],
+    "lightcyan": [224, 255, 255],
+    "lightgoldenrodyellow": [250, 250, 210],
+    "lightgray": [211, 211, 211],
+    "lightgreen": [144, 238, 144],
+    "lightgrey": [211, 211, 211],
+    "lightpink": [255, 182, 193],
+    "lightsalmon": [255, 160, 122],
+    "lightseagreen": [32, 178, 170],
+    "lightskyblue": [135, 206, 250],
+    "lightslategray": [119, 136, 153],
+    "lightslategrey": [119, 136, 153],
+    "lightsteelblue": [176, 196, 222],
+    "lightyellow": [255, 255, 224],
+    "lime": [0, 255, 0],
+    "limegreen": [50, 205, 50],
+    "linen": [250, 240, 230],
+    "magenta": [255, 0, 255],
+    "maroon": [128, 0, 0],
+    "mediumaquamarine": [102, 205, 170],
+    "mediumblue": [0, 0, 205],
+    "mediumorchid": [186, 85, 211],
+    "mediumpurple": [147, 112, 219],
+    "mediumseagreen": [60, 179, 113],
+    "mediumslateblue": [123, 104, 238],
+    "mediumspringgreen": [0, 250, 154],
+    "mediumturquoise": [72, 209, 204],
+    "mediumvioletred": [199, 21, 133],
+    "midnightblue": [25, 25, 112],
+    "mintcream": [245, 255, 250],
+    "mistyrose": [255, 228, 225],
+    "moccasin": [255, 228, 181],
+    "navajowhite": [255, 222, 173],
+    "navy": [0, 0, 128],
+    "oldlace": [253, 245, 230],
+    "olive": [128, 128, 0],
+    "olivedrab": [107, 142, 35],
+    "orange": [255, 165, 0],
+    "orangered": [255, 69, 0],
+    "orchid": [218, 112, 214],
+    "palegoldenrod": [238, 232, 170],
+    "palegreen": [152, 251, 152],
+    "paleturquoise": [175, 238, 238],
+    "palevioletred": [219, 112, 147],
+    "papayawhip": [255, 239, 213],
+    "peachpuff": [255, 218, 185],
+    "peru": [205, 133, 63],
+    "pink": [255, 192, 203],
+    "plum": [221, 160, 221],
+    "powderblue": [176, 224, 230],
+    "purple": [128, 0, 128],
+    "rebeccapurple": [102, 51, 153],
+    "red": [255, 0, 0],
+    "rosybrown": [188, 143, 143],
+    "royalblue": [65, 105, 225],
+    "saddlebrown": [139, 69, 19],
+    "salmon": [250, 128, 114],
+    "sandybrown": [244, 164, 96],
+    "seagreen": [46, 139, 87],
+    "seashell": [255, 245, 238],
+    "sienna": [160, 82, 45],
+    "silver": [192, 192, 192],
+    "skyblue": [135, 206, 235],
+    "slateblue": [106, 90, 205],
+    "slategray": [112, 128, 144],
+    "slategrey": [112, 128, 144],
+    "snow": [255, 250, 250],
+    "springgreen": [0, 255, 127],
+    "steelblue": [70, 130, 180],
+    "tan": [210, 180, 140],
+    "teal": [0, 128, 128],
+    "thistle": [216, 191, 216],
+    "tomato": [255, 99, 71],
+    "turquoise": [64, 224, 208],
+    "violet": [238, 130, 238],
+    "wheat": [245, 222, 179],
+    "white": [255, 255, 255],
+    "whitesmoke": [245, 245, 245],
+    "yellow": [255, 255, 0],
+    "yellowgreen": [154, 205, 50]
+};
+
+
+function DummyImageContainer(src) {
+    this.src = src;
+    log("DummyImageContainer for", src);
+    if (!this.promise || !this.image) {
+        log("Initiating DummyImageContainer");
+        DummyImageContainer.prototype.image = new Image();
+        var image = this.image;
+        DummyImageContainer.prototype.promise = new Promise(function(resolve, reject) {
+            image.onload = resolve;
+            image.onerror = reject;
+            image.src = smallImage();
+            if (image.complete === true) {
+                resolve(image);
+            }
+        });
+    }
+}
+
+function Font(family, size) {
+    var container = document.createElement('div'),
+        img = document.createElement('img'),
+        span = document.createElement('span'),
+        sampleText = 'Hidden Text',
+        baseline,
+        middle;
+
+    container.style.visibility = "hidden";
+    container.style.fontFamily = family;
+    container.style.fontSize = size;
+    container.style.margin = 0;
+    container.style.padding = 0;
+
+    document.body.appendChild(container);
+
+    img.src = smallImage();
+    img.width = 1;
+    img.height = 1;
+
+    img.style.margin = 0;
+    img.style.padding = 0;
+    img.style.verticalAlign = "baseline";
+
+    span.style.fontFamily = family;
+    span.style.fontSize = size;
+    span.style.margin = 0;
+    span.style.padding = 0;
+
+    span.appendChild(document.createTextNode(sampleText));
+    container.appendChild(span);
+    container.appendChild(img);
+    baseline = (img.offsetTop - span.offsetTop) + 1;
+
+    container.removeChild(span);
+    container.appendChild(document.createTextNode(sampleText));
+
+    container.style.lineHeight = "normal";
+    img.style.verticalAlign = "super";
+
+    middle = (img.offsetTop-container.offsetTop) + 1;
+
+    document.body.removeChild(container);
+
+    this.baseline = baseline;
+    this.lineWidth = 1;
+    this.middle = middle;
+}
+
+function FontMetrics() {
+    this.data = {};
+}
+
+FontMetrics.prototype.getMetrics = function(family, size) {
+    if (this.data[family + "-" + size] === undefined) {
+        this.data[family + "-" + size] = new Font(family, size);
+    }
+    return this.data[family + "-" + size];
+};
+
+function FrameContainer(container, sameOrigin, options) {
+    this.image = null;
+    this.src = container;
+    var self = this;
+    var bounds = getBounds(container);
+    this.promise = (!sameOrigin ? this.proxyLoad(options.proxy, bounds, options) : new Promise(function(resolve) {
+        if (container.contentWindow.document.URL === "about:blank" || container.contentWindow.document.documentElement == null) {
+            container.contentWindow.onload = container.onload = function() {
+                resolve(container);
+            };
+        } else {
+            resolve(container);
+        }
+    })).then(function(container) {
+        return html2canvas(container.contentWindow.document.documentElement, {type: 'view', width: container.width, height: container.height, proxy: options.proxy, javascriptEnabled: options.javascriptEnabled, removeContainer: options.removeContainer, allowTaint: options.allowTaint, imageTimeout: options.imageTimeout / 2});
+    }).then(function(canvas) {
+        return self.image = canvas;
+    });
+}
+
+FrameContainer.prototype.proxyLoad = function(proxy, bounds, options) {
+    var container = this.src;
+    return loadUrlDocument(container.src, proxy, container.ownerDocument, bounds.width, bounds.height, options);
+};
+
+function GradientContainer(imageData) {
+    this.src = imageData.value;
+    this.colorStops = [];
+    this.type = null;
+    this.x0 = 0.5;
+    this.y0 = 0.5;
+    this.x1 = 0.5;
+    this.y1 = 0.5;
+    this.promise = Promise.resolve(true);
+}
+
+GradientContainer.prototype.TYPES = {
+    LINEAR: 1,
+    RADIAL: 2
+};
+
+function ImageContainer(src, cors) {
+    this.src = src;
+    this.image = new Image();
+    var self = this;
+    this.tainted = null;
+    this.promise = new Promise(function(resolve, reject) {
+        self.image.onload = resolve;
+        self.image.onerror = reject;
+        if (cors) {
+            self.image.crossOrigin = "anonymous";
+        }
+        self.image.src = src;
+        if (self.image.complete === true) {
+            resolve(self.image);
+        }
+    });
+}
+
+function ImageLoader(options, support) {
+    this.link = null;
+    this.options = options;
+    this.support = support;
+    this.origin = this.getOrigin(window.location.href);
+}
+
+ImageLoader.prototype.findImages = function(nodes) {
+    var images = [];
+    nodes.reduce(function(imageNodes, container) {
+        switch(container.node.nodeName) {
+        case "IMG":
+            return imageNodes.concat([{
+                args: [container.node.src],
+                method: "url"
+            }]);
+        case "svg":
+        case "IFRAME":
+            return imageNodes.concat([{
+                args: [container.node],
+                method: container.node.nodeName
+            }]);
+        }
+        return imageNodes;
+    }, []).forEach(this.addImage(images, this.loadImage), this);
+    return images;
+};
+
+ImageLoader.prototype.findBackgroundImage = function(images, container) {
+    container.parseBackgroundImages().filter(this.hasImageBackground).forEach(this.addImage(images, this.loadImage), this);
+    return images;
+};
+
+ImageLoader.prototype.addImage = function(images, callback) {
+    return function(newImage) {
+        newImage.args.forEach(function(image) {
+            if (!this.imageExists(images, image)) {
+                images.splice(0, 0, callback.call(this, newImage));
+                log('Added image #' + (images.length), typeof(image) === "string" ? image.substring(0, 100) : image);
+            }
+        }, this);
+    };
+};
+
+ImageLoader.prototype.hasImageBackground = function(imageData) {
+    return imageData.method !== "none";
+};
+
+ImageLoader.prototype.loadImage = function(imageData) {
+    if (imageData.method === "url") {
+        var src = imageData.args[0];
+        if (this.isSVG(src) && !this.support.svg && !this.options.allowTaint) {
+            return new SVGContainer(src);
+        } else if (src.match(/data:image\/.*;base64,/i)) {
+            return new ImageContainer(src.replace(/url\(['"]{0,}|['"]{0,}\)$/ig, ''), false);
+        } else if (this.isSameOrigin(src) || this.options.allowTaint === true || this.isSVG(src)) {
+            return new ImageContainer(src, false);
+        } else if (this.support.cors && !this.options.allowTaint && this.options.useCORS) {
+            return new ImageContainer(src, true);
+        } else if (this.options.proxy) {
+            return new ProxyImageContainer(src, this.options.proxy);
+        } else {
+            return new DummyImageContainer(src);
+        }
+    } else if (imageData.method === "linear-gradient") {
+        return new LinearGradientContainer(imageData);
+    } else if (imageData.method === "gradient") {
+        return new WebkitGradientContainer(imageData);
+    } else if (imageData.method === "svg") {
+        return new SVGNodeContainer(imageData.args[0], this.support.svg);
+    } else if (imageData.method === "IFRAME") {
+        return new FrameContainer(imageData.args[0], this.isSameOrigin(imageData.args[0].src), this.options);
+    } else {
+        return new DummyImageContainer(imageData);
+    }
+};
+
+ImageLoader.prototype.isSVG = function(src) {
+    return src.substring(src.length - 3).toLowerCase() === "svg" || SVGContainer.prototype.isInline(src);
+};
+
+ImageLoader.prototype.imageExists = function(images, src) {
+    return images.some(function(image) {
+        return image.src === src;
+    });
+};
+
+ImageLoader.prototype.isSameOrigin = function(url) {
+    return (this.getOrigin(url) === this.origin);
+};
+
+ImageLoader.prototype.getOrigin = function(url) {
+    var link = this.link || (this.link = document.createElement("a"));
+    link.href = url;
+    link.href = link.href; // IE9, LOL! - http://jsfiddle.net/niklasvh/2e48b/
+    return link.protocol + link.hostname + link.port;
+};
+
+ImageLoader.prototype.getPromise = function(container) {
+    return this.timeout(container, this.options.imageTimeout)['catch'](function() {
+        var dummy = new DummyImageContainer(container.src);
+        return dummy.promise.then(function(image) {
+            container.image = image;
+        });
+    });
+};
+
+ImageLoader.prototype.get = function(src) {
+    var found = null;
+    return this.images.some(function(img) {
+        return (found = img).src === src;
+    }) ? found : null;
+};
+
+ImageLoader.prototype.fetch = function(nodes) {
+    this.images = nodes.reduce(bind(this.findBackgroundImage, this), this.findImages(nodes));
+    this.images.forEach(function(image, index) {
+        image.promise.then(function() {
+            log("Succesfully loaded image #"+ (index+1), image);
+        }, function(e) {
+            log("Failed loading image #"+ (index+1), image, e);
+        });
+    });
+    this.ready = Promise.all(this.images.map(this.getPromise, this));
+    log("Finished searching images");
+    return this;
+};
+
+ImageLoader.prototype.timeout = function(container, timeout) {
+    var timer;
+    var promise = Promise.race([container.promise, new Promise(function(res, reject) {
+        timer = setTimeout(function() {
+            log("Timed out loading image", container);
+            reject(container);
+        }, timeout);
+    })]).then(function(container) {
+        clearTimeout(timer);
+        return container;
+    });
+    promise['catch'](function() {
+        clearTimeout(timer);
+    });
+    return promise;
+};
+
+function LinearGradientContainer(imageData) {
+    GradientContainer.apply(this, arguments);
+    this.type = this.TYPES.LINEAR;
+
+    var hasDirection = imageData.args[0].match(this.stepRegExp) === null;
+
+    if (hasDirection) {
+        imageData.args[0].split(" ").reverse().forEach(function(position) {
+            switch(position) {
+            case "left":
+                this.x0 = 0;
+                this.x1 = 1;
+                break;
+            case "top":
+                this.y0 = 0;
+                this.y1 = 1;
+                break;
+            case "right":
+                this.x0 = 1;
+                this.x1 = 0;
+                break;
+            case "bottom":
+                this.y0 = 1;
+                this.y1 = 0;
+                break;
+            case "to":
+                var y0 = this.y0;
+                var x0 = this.x0;
+                this.y0 = this.y1;
+                this.x0 = this.x1;
+                this.x1 = x0;
+                this.y1 = y0;
+                break;
+            }
+        }, this);
+    } else {
+        this.y0 = 0;
+        this.y1 = 1;
+    }
+
+    this.colorStops = imageData.args.slice(hasDirection ? 1 : 0).map(function(colorStop) {
+        var colorStopMatch = colorStop.match(this.stepRegExp);
+        return {
+            color: new Color(colorStopMatch[1]),
+            stop: colorStopMatch[3] === "%" ? colorStopMatch[2] / 100 : null
+        };
+    }, this);
+
+    if (this.colorStops[0].stop === null) {
+        this.colorStops[0].stop = 0;
+    }
+
+    if (this.colorStops[this.colorStops.length - 1].stop === null) {
+        this.colorStops[this.colorStops.length - 1].stop = 1;
+    }
+
+    this.colorStops.forEach(function(colorStop, index) {
+        if (colorStop.stop === null) {
+            this.colorStops.slice(index).some(function(find, count) {
+                if (find.stop !== null) {
+                    colorStop.stop = ((find.stop - this.colorStops[index - 1].stop) / (count + 1)) + this.colorStops[index - 1].stop;
+                    return true;
+                } else {
+                    return false;
+                }
+            }, this);
+        }
+    }, this);
+}
+
+LinearGradientContainer.prototype = Object.create(GradientContainer.prototype);
+
+LinearGradientContainer.prototype.stepRegExp = /((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\))\s*(\d{1,3})?(%|px)?/;
+
+function log() {
+    if (window.html2canvas.logging && window.console && window.console.log) {
+        Function.prototype.bind.call(window.console.log, (window.console)).apply(window.console, [(Date.now() - window.html2canvas.start) + "ms", "html2canvas:"].concat([].slice.call(arguments, 0)));
+    }
+}
+
+function NodeContainer(node, parent) {
+    this.node = node;
+    this.parent = parent;
+    this.stack = null;
+    this.bounds = null;
+    this.borders = null;
+    this.clip = [];
+    this.backgroundClip = [];
+    this.offsetBounds = null;
+    this.visible = null;
+    this.computedStyles = null;
+    this.colors = {};
+    this.styles = {};
+    this.backgroundImages = null;
+    this.transformData = null;
+    this.transformMatrix = null;
+    this.isPseudoElement = false;
+    this.opacity = null;
+}
+
+NodeContainer.prototype.cloneTo = function(stack) {
+    stack.visible = this.visible;
+    stack.borders = this.borders;
+    stack.bounds = this.bounds;
+    stack.clip = this.clip;
+    stack.backgroundClip = this.backgroundClip;
+    stack.computedStyles = this.computedStyles;
+    stack.styles = this.styles;
+    stack.backgroundImages = this.backgroundImages;
+    stack.opacity = this.opacity;
+};
+
+NodeContainer.prototype.getOpacity = function() {
+    return this.opacity === null ? (this.opacity = this.cssFloat('opacity')) : this.opacity;
+};
+
+NodeContainer.prototype.assignStack = function(stack) {
+    this.stack = stack;
+    stack.children.push(this);
+};
+
+NodeContainer.prototype.isElementVisible = function() {
+    return this.node.nodeType === Node.TEXT_NODE ? this.parent.visible : (
+        this.css('display') !== "none" &&
+        this.css('visibility') !== "hidden" &&
+        !this.node.hasAttribute("data-html2canvas-ignore") &&
+        (this.node.nodeName !== "INPUT" || this.node.getAttribute("type") !== "hidden")
+    );
+};
+
+NodeContainer.prototype.css = function(attribute) {
+    if (!this.computedStyles) {
+        this.computedStyles = this.isPseudoElement ? this.parent.computedStyle(this.before ? ":before" : ":after") : this.computedStyle(null);
+    }
+
+    return this.styles[attribute] || (this.styles[attribute] = this.computedStyles[attribute]);
+};
+
+NodeContainer.prototype.prefixedCss = function(attribute) {
+    var prefixes = ["webkit", "moz", "ms", "o"];
+    var value = this.css(attribute);
+    if (value === undefined) {
+        prefixes.some(function(prefix) {
+            value = this.css(prefix + attribute.substr(0, 1).toUpperCase() + attribute.substr(1));
+            return value !== undefined;
+        }, this);
+    }
+    return value === undefined ? null : value;
+};
+
+NodeContainer.prototype.computedStyle = function(type) {
+    return this.node.ownerDocument.defaultView.getComputedStyle(this.node, type);
+};
+
+NodeContainer.prototype.cssInt = function(attribute) {
+    var value = parseInt(this.css(attribute), 10);
+    return (isNaN(value)) ? 0 : value; // borders in old IE are throwing 'medium' for demo.html
+};
+
+NodeContainer.prototype.color = function(attribute) {
+    return this.colors[attribute] || (this.colors[attribute] = new Color(this.css(attribute)));
+};
+
+NodeContainer.prototype.cssFloat = function(attribute) {
+    var value = parseFloat(this.css(attribute));
+    return (isNaN(value)) ? 0 : value;
+};
+
+NodeContainer.prototype.fontWeight = function() {
+    var weight = this.css("fontWeight");
+    switch(parseInt(weight, 10)){
+    case 401:
+        weight = "bold";
+        break;
+    case 400:
+        weight = "normal";
+        break;
+    }
+    return weight;
+};
+
+NodeContainer.prototype.parseClip = function() {
+    var matches = this.css('clip').match(this.CLIP);
+    if (matches) {
+        return {
+            top: parseInt(matches[1], 10),
+            right: parseInt(matches[2], 10),
+            bottom: parseInt(matches[3], 10),
+            left: parseInt(matches[4], 10)
+        };
+    }
+    return null;
+};
+
+NodeContainer.prototype.parseBackgroundImages = function() {
+    return this.backgroundImages || (this.backgroundImages = parseBackgrounds(this.css("backgroundImage")));
+};
+
+NodeContainer.prototype.cssList = function(property, index) {
+    var value = (this.css(property) || '').split(',');
+    value = value[index || 0] || value[0] || 'auto';
+    value = value.trim().split(' ');
+    if (value.length === 1) {
+        value = [value[0], value[0]];
+    }
+    return value;
+};
+
+NodeContainer.prototype.parseBackgroundSize = function(bounds, image, index) {
+    var size = this.cssList("backgroundSize", index);
+    var width, height;
+
+    if (isPercentage(size[0])) {
+        width = bounds.width * parseFloat(size[0]) / 100;
+    } else if (/contain|cover/.test(size[0])) {
+        var targetRatio = bounds.width / bounds.height, currentRatio = image.width / image.height;
+        return (targetRatio < currentRatio ^ size[0] === 'contain') ?  {width: bounds.height * currentRatio, height: bounds.height} : {width: bounds.width, height: bounds.width / currentRatio};
+    } else {
+        width = parseInt(size[0], 10);
+    }
+
+    if (size[0] === 'auto' && size[1] === 'auto') {
+        height = image.height;
+    } else if (size[1] === 'auto') {
+        height = width / image.width * image.height;
+    } else if (isPercentage(size[1])) {
+        height =  bounds.height * parseFloat(size[1]) / 100;
+    } else {
+        height = parseInt(size[1], 10);
+    }
+
+    if (size[0] === 'auto') {
+        width = height / image.height * image.width;
+    }
+
+    return {width: width, height: height};
+};
+
+NodeContainer.prototype.parseBackgroundPosition = function(bounds, image, index, backgroundSize) {
+    var position = this.cssList('backgroundPosition', index);
+    var left, top;
+
+    if (isPercentage(position[0])){
+        left = (bounds.width - (backgroundSize || image).width) * (parseFloat(position[0]) / 100);
+    } else {
+        left = parseInt(position[0], 10);
+    }
+
+    if (position[1] === 'auto') {
+        top = left / image.width * image.height;
+    } else if (isPercentage(position[1])){
+        top =  (bounds.height - (backgroundSize || image).height) * parseFloat(position[1]) / 100;
+    } else {
+        top = parseInt(position[1], 10);
+    }
+
+    if (position[0] === 'auto') {
+        left = top / image.height * image.width;
+    }
+
+    return {left: left, top: top};
+};
+
+NodeContainer.prototype.parseBackgroundRepeat = function(index) {
+    return this.cssList("backgroundRepeat", index)[0];
+};
+
+NodeContainer.prototype.parseTextShadows = function() {
+    var textShadow = this.css("textShadow");
+    var results = [];
+
+    if (textShadow && textShadow !== 'none') {
+        var shadows = textShadow.match(this.TEXT_SHADOW_PROPERTY);
+        for (var i = 0; shadows && (i < shadows.length); i++) {
+            var s = shadows[i].match(this.TEXT_SHADOW_VALUES);
+            results.push({
+                color: new Color(s[0]),
+                offsetX: s[1] ? parseFloat(s[1].replace('px', '')) : 0,
+                offsetY: s[2] ? parseFloat(s[2].replace('px', '')) : 0,
+                blur: s[3] ? s[3].replace('px', '') : 0
+            });
+        }
+    }
+    return results;
+};
+
+NodeContainer.prototype.parseTransform = function() {
+    if (!this.transformData) {
+        if (this.hasTransform()) {
+            var offset = this.parseBounds();
+            var origin = this.prefixedCss("transformOrigin").split(" ").map(removePx).map(asFloat);
+            origin[0] += offset.left;
+            origin[1] += offset.top;
+            this.transformData = {
+                origin: origin,
+                matrix: this.parseTransformMatrix()
+            };
+        } else {
+            this.transformData = {
+                origin: [0, 0],
+                matrix: [1, 0, 0, 1, 0, 0]
+            };
+        }
+    }
+    return this.transformData;
+};
+
+NodeContainer.prototype.parseTransformMatrix = function() {
+    if (!this.transformMatrix) {
+        var transform = this.prefixedCss("transform");
+        var matrix = transform ? parseMatrix(transform.match(this.MATRIX_PROPERTY)) : null;
+        this.transformMatrix = matrix ? matrix : [1, 0, 0, 1, 0, 0];
+    }
+    return this.transformMatrix;
+};
+
+NodeContainer.prototype.parseBounds = function() {
+    return this.bounds || (this.bounds = this.hasTransform() ? offsetBounds(this.node) : getBounds(this.node));
+};
+
+NodeContainer.prototype.hasTransform = function() {
+    return this.parseTransformMatrix().join(",") !== "1,0,0,1,0,0" || (this.parent && this.parent.hasTransform());
+};
+
+NodeContainer.prototype.getValue = function() {
+    var value = this.node.value || "";
+    if (this.node.tagName === "SELECT") {
+        value = selectionValue(this.node);
+    } else if (this.node.type === "password") {
+        value = Array(value.length + 1).join('\u2022'); // jshint ignore:line
+    }
+    return value.length === 0 ? (this.node.placeholder || "") : value;
+};
+
+NodeContainer.prototype.MATRIX_PROPERTY = /(matrix)\((.+)\)/;
+NodeContainer.prototype.TEXT_SHADOW_PROPERTY = /((rgba|rgb)\([^\)]+\)(\s-?\d+px){0,})/g;
+NodeContainer.prototype.TEXT_SHADOW_VALUES = /(-?\d+px)|(#.+)|(rgb\(.+\))|(rgba\(.+\))/g;
+NodeContainer.prototype.CLIP = /^rect\((\d+)px,? (\d+)px,? (\d+)px,? (\d+)px\)$/;
+
+function selectionValue(node) {
+    var option = node.options[node.selectedIndex || 0];
+    return option ? (option.text || "") : "";
+}
+
+function parseMatrix(match) {
+    if (match && match[1] === "matrix") {
+        return match[2].split(",").map(function(s) {
+            return parseFloat(s.trim());
+        });
+    }
+}
+
+function isPercentage(value) {
+    return value.toString().indexOf("%") !== -1;
+}
+
+function parseBackgrounds(backgroundImage) {
+    var whitespace = ' \r\n\t',
+        method, definition, prefix, prefix_i, block, results = [],
+        mode = 0, numParen = 0, quote, args;
+    var appendResult = function() {
+        if(method) {
+            if (definition.substr(0, 1) === '"') {
+                definition = definition.substr(1, definition.length - 2);
+            }
+            if (definition) {
+                args.push(definition);
+            }
+            if (method.substr(0, 1) === '-' && (prefix_i = method.indexOf('-', 1 ) + 1) > 0) {
+                prefix = method.substr(0, prefix_i);
+                method = method.substr(prefix_i);
+            }
+            results.push({
+                prefix: prefix,
+                method: method.toLowerCase(),
+                value: block,
+                args: args,
+                image: null
+            });
+        }
+        args = [];
+        method = prefix = definition = block = '';
+    };
+    args = [];
+    method = prefix = definition = block = '';
+    backgroundImage.split("").forEach(function(c) {
+        if (mode === 0 && whitespace.indexOf(c) > -1) {
+            return;
+        }
+        switch(c) {
+        case '"':
+            if(!quote) {
+                quote = c;
+            } else if(quote === c) {
+                quote = null;
+            }
+            break;
+        case '(':
+            if(quote) {
+                break;
+            } else if(mode === 0) {
+                mode = 1;
+                block += c;
+                return;
+            } else {
+                numParen++;
+            }
+            break;
+        case ')':
+            if (quote) {
+                break;
+            } else if(mode === 1) {
+                if(numParen === 0) {
+                    mode = 0;
+                    block += c;
+                    appendResult();
+                    return;
+                } else {
+                    numParen--;
+                }
+            }
+            break;
+
+        case ',':
+            if (quote) {
+                break;
+            } else if(mode === 0) {
+                appendResult();
+                return;
+            } else if (mode === 1) {
+                if (numParen === 0 && !method.match(/^url$/i)) {
+                    args.push(definition);
+                    definition = '';
+                    block += c;
+                    return;
+                }
+            }
+            break;
+        }
+
+        block += c;
+        if (mode === 0) {
+            method += c;
+        } else {
+            definition += c;
+        }
+    });
+
+    appendResult();
+    return results;
+}
+
+function removePx(str) {
+    return str.replace("px", "");
+}
+
+function asFloat(str) {
+    return parseFloat(str);
+}
+
+function getBounds(node) {
+    if (node.getBoundingClientRect) {
+        var clientRect = node.getBoundingClientRect();
+        var width = node.offsetWidth == null ? clientRect.width : node.offsetWidth;
+        return {
+            top: clientRect.top,
+            bottom: clientRect.bottom || (clientRect.top + clientRect.height),
+            right: clientRect.left + width,
+            left: clientRect.left,
+            width:  width,
+            height: node.offsetHeight == null ? clientRect.height : node.offsetHeight
+        };
+    }
+    return {};
+}
+
+function offsetBounds(node) {
+    var parent = node.offsetParent ? offsetBounds(node.offsetParent) : {top: 0, left: 0};
+
+    return {
+        top: node.offsetTop + parent.top,
+        bottom: node.offsetTop + node.offsetHeight + parent.top,
+        right: node.offsetLeft + parent.left + node.offsetWidth,
+        left: node.offsetLeft + parent.left,
+        width: node.offsetWidth,
+        height: node.offsetHeight
+    };
+}
+
+function NodeParser(element, renderer, support, imageLoader, options) {
+    log("Starting NodeParser");
+    this.renderer = renderer;
+    this.options = options;
+    this.range = null;
+    this.support = support;
+    this.renderQueue = [];
+    this.stack = new StackingContext(true, 1, element.ownerDocument, null);
+    var parent = new NodeContainer(element, null);
+    if (options.background) {
+        renderer.rectangle(0, 0, renderer.width, renderer.height, new Color(options.background));
+    }
+    if (element === element.ownerDocument.documentElement) {
+        // http://www.w3.org/TR/css3-background/#special-backgrounds
+        var canvasBackground = new NodeContainer(parent.color('backgroundColor').isTransparent() ? element.ownerDocument.body : element.ownerDocument.documentElement, null);
+        renderer.rectangle(0, 0, renderer.width, renderer.height, canvasBackground.color('backgroundColor'));
+    }
+    parent.visibile = parent.isElementVisible();
+    this.createPseudoHideStyles(element.ownerDocument);
+    this.disableAnimations(element.ownerDocument);
+    this.nodes = flatten([parent].concat(this.getChildren(parent)).filter(function(container) {
+        return container.visible = container.isElementVisible();
+    }).map(this.getPseudoElements, this));
+    this.fontMetrics = new FontMetrics();
+    log("Fetched nodes, total:", this.nodes.length);
+    log("Calculate overflow clips");
+    this.calculateOverflowClips();
+    log("Start fetching images");
+    this.images = imageLoader.fetch(this.nodes.filter(isElement));
+    this.ready = this.images.ready.then(bind(function() {
+        log("Images loaded, starting parsing");
+        log("Creating stacking contexts");
+        this.createStackingContexts();
+        log("Sorting stacking contexts");
+        this.sortStackingContexts(this.stack);
+        this.parse(this.stack);
+        log("Render queue created with " + this.renderQueue.length + " items");
+        return new Promise(bind(function(resolve) {
+            if (!options.async) {
+                this.renderQueue.forEach(this.paint, this);
+                resolve();
+            } else if (typeof(options.async) === "function") {
+                options.async.call(this, this.renderQueue, resolve);
+            } else if (this.renderQueue.length > 0){
+                this.renderIndex = 0;
+                this.asyncRenderer(this.renderQueue, resolve);
+            } else {
+                resolve();
+            }
+        }, this));
+    }, this));
+}
+
+NodeParser.prototype.calculateOverflowClips = function() {
+    this.nodes.forEach(function(container) {
+        if (isElement(container)) {
+            if (isPseudoElement(container)) {
+                container.appendToDOM();
+            }
+            container.borders = this.parseBorders(container);
+            var clip = (container.css('overflow') === "hidden") ? [container.borders.clip] : [];
+            var cssClip = container.parseClip();
+            if (cssClip && ["absolute", "fixed"].indexOf(container.css('position')) !== -1) {
+                clip.push([["rect",
+                        container.bounds.left + cssClip.left,
+                        container.bounds.top + cssClip.top,
+                        cssClip.right - cssClip.left,
+                        cssClip.bottom - cssClip.top
+                ]]);
+            }
+            container.clip = hasParentClip(container) ? container.parent.clip.concat(clip) : clip;
+            container.backgroundClip = (container.css('overflow') !== "hidden") ? container.clip.concat([container.borders.clip]) : container.clip;
+            if (isPseudoElement(container)) {
+                container.cleanDOM();
+            }
+        } else if (isTextNode(container)) {
+            container.clip = hasParentClip(container) ? container.parent.clip : [];
+        }
+        if (!isPseudoElement(container)) {
+            container.bounds = null;
+        }
+    }, this);
+};
+
+function hasParentClip(container) {
+    return container.parent && container.parent.clip.length;
+}
+
+NodeParser.prototype.asyncRenderer = function(queue, resolve, asyncTimer) {
+    asyncTimer = asyncTimer || Date.now();
+    this.paint(queue[this.renderIndex++]);
+    if (queue.length === this.renderIndex) {
+        resolve();
+    } else if (asyncTimer + 20 > Date.now()) {
+        this.asyncRenderer(queue, resolve, asyncTimer);
+    } else {
+        setTimeout(bind(function() {
+            this.asyncRenderer(queue, resolve);
+        }, this), 0);
+    }
+};
+
+NodeParser.prototype.createPseudoHideStyles = function(document) {
+    this.createStyles(document, '.' + PseudoElementContainer.prototype.PSEUDO_HIDE_ELEMENT_CLASS_BEFORE + ':before { content: "" !important; display: none !important; }' +
+        '.' + PseudoElementContainer.prototype.PSEUDO_HIDE_ELEMENT_CLASS_AFTER + ':after { content: "" !important; display: none !important; }');
+};
+
+NodeParser.prototype.disableAnimations = function(document) {
+    this.createStyles(document, '* { -webkit-animation: none !important; -moz-animation: none !important; -o-animation: none !important; animation: none !important; ' +
+        '-webkit-transition: none !important; -moz-transition: none !important; -o-transition: none !important; transition: none !important;}');
+};
+
+NodeParser.prototype.createStyles = function(document, styles) {
+    var hidePseudoElements = document.createElement('style');
+    hidePseudoElements.innerHTML = styles;
+    document.body.appendChild(hidePseudoElements);
+};
+
+NodeParser.prototype.getPseudoElements = function(container) {
+    var nodes = [[container]];
+    if (container.node.nodeType === Node.ELEMENT_NODE) {
+        var before = this.getPseudoElement(container, ":before");
+        var after = this.getPseudoElement(container, ":after");
+
+        if (before) {
+            nodes.push(before);
+        }
+
+        if (after) {
+            nodes.push(after);
+        }
+    }
+    return flatten(nodes);
+};
+
+function toCamelCase(str) {
+    return str.replace(/(\-[a-z])/g, function(match){
+        return match.toUpperCase().replace('-','');
+    });
+}
+
+NodeParser.prototype.getPseudoElement = function(container, type) {
+    var style = container.computedStyle(type);
+    if(!style || !style.content || style.content === "none" || style.content === "-moz-alt-content" || style.display === "none") {
+        return null;
+    }
+
+    var content = stripQuotes(style.content);
+    var isImage = content.substr(0, 3) === 'url';
+    var pseudoNode = document.createElement(isImage ? 'img' : 'html2canvaspseudoelement');
+    var pseudoContainer = new PseudoElementContainer(pseudoNode, container, type);
+
+    for (var i = style.length-1; i >= 0; i--) {
+        var property = toCamelCase(style.item(i));
+        pseudoNode.style[property] = style[property];
+    }
+
+    pseudoNode.className = PseudoElementContainer.prototype.PSEUDO_HIDE_ELEMENT_CLASS_BEFORE + " " + PseudoElementContainer.prototype.PSEUDO_HIDE_ELEMENT_CLASS_AFTER;
+
+    if (isImage) {
+        pseudoNode.src = parseBackgrounds(content)[0].args[0];
+        return [pseudoContainer];
+    } else {
+        var text = document.createTextNode(content);
+        pseudoNode.appendChild(text);
+        return [pseudoContainer, new TextContainer(text, pseudoContainer)];
+    }
+};
+
+
+NodeParser.prototype.getChildren = function(parentContainer) {
+    return flatten([].filter.call(parentContainer.node.childNodes, renderableNode).map(function(node) {
+        var container = [node.nodeType === Node.TEXT_NODE ? new TextContainer(node, parentContainer) : new NodeContainer(node, parentContainer)].filter(nonIgnoredElement);
+        return node.nodeType === Node.ELEMENT_NODE && container.length && node.tagName !== "TEXTAREA" ? (container[0].isElementVisible() ? container.concat(this.getChildren(container[0])) : []) : container;
+    }, this));
+};
+
+NodeParser.prototype.newStackingContext = function(container, hasOwnStacking) {
+    var stack = new StackingContext(hasOwnStacking, container.getOpacity(), container.node, container.parent);
+    container.cloneTo(stack);
+    var parentStack = hasOwnStacking ? stack.getParentStack(this) : stack.parent.stack;
+    parentStack.contexts.push(stack);
+    container.stack = stack;
+};
+
+NodeParser.prototype.createStackingContexts = function() {
+    this.nodes.forEach(function(container) {
+        if (isElement(container) && (this.isRootElement(container) || hasOpacity(container) || isPositionedForStacking(container) || this.isBodyWithTransparentRoot(container) || container.hasTransform())) {
+            this.newStackingContext(container, true);
+        } else if (isElement(container) && ((isPositioned(container) && zIndex0(container)) || isInlineBlock(container) || isFloating(container))) {
+            this.newStackingContext(container, false);
+        } else {
+            container.assignStack(container.parent.stack);
+        }
+    }, this);
+};
+
+NodeParser.prototype.isBodyWithTransparentRoot = function(container) {
+    return container.node.nodeName === "BODY" && container.parent.color('backgroundColor').isTransparent();
+};
+
+NodeParser.prototype.isRootElement = function(container) {
+    return container.parent === null;
+};
+
+NodeParser.prototype.sortStackingContexts = function(stack) {
+    stack.contexts.sort(zIndexSort(stack.contexts.slice(0)));
+    stack.contexts.forEach(this.sortStackingContexts, this);
+};
+
+NodeParser.prototype.parseTextBounds = function(container) {
+    return function(text, index, textList) {
+        if (container.parent.css("textDecoration").substr(0, 4) !== "none" || text.trim().length !== 0) {
+            if (this.support.rangeBounds && !container.parent.hasTransform()) {
+                var offset = textList.slice(0, index).join("").length;
+                return this.getRangeBounds(container.node, offset, text.length);
+            } else if (container.node && typeof(container.node.data) === "string") {
+                var replacementNode = container.node.splitText(text.length);
+                var bounds = this.getWrapperBounds(container.node, container.parent.hasTransform());
+                container.node = replacementNode;
+                return bounds;
+            }
+        } else if(!this.support.rangeBounds || container.parent.hasTransform()){
+            container.node = container.node.splitText(text.length);
+        }
+        return {};
+    };
+};
+
+NodeParser.prototype.getWrapperBounds = function(node, transform) {
+    var wrapper = node.ownerDocument.createElement('html2canvaswrapper');
+    var parent = node.parentNode,
+        backupText = node.cloneNode(true);
+
+    wrapper.appendChild(node.cloneNode(true));
+    parent.replaceChild(wrapper, node);
+    var bounds = transform ? offsetBounds(wrapper) : getBounds(wrapper);
+    parent.replaceChild(backupText, wrapper);
+    return bounds;
+};
+
+NodeParser.prototype.getRangeBounds = function(node, offset, length) {
+    var range = this.range || (this.range = node.ownerDocument.createRange());
+    range.setStart(node, offset);
+    range.setEnd(node, offset + length);
+    return range.getBoundingClientRect();
+};
+
+function ClearTransform() {}
+
+NodeParser.prototype.parse = function(stack) {
+    // http://www.w3.org/TR/CSS21/visuren.html#z-index
+    var negativeZindex = stack.contexts.filter(negativeZIndex); // 2. the child stacking contexts with negative stack levels (most negative first).
+    var descendantElements = stack.children.filter(isElement);
+    var descendantNonFloats = descendantElements.filter(not(isFloating));
+    var nonInlineNonPositionedDescendants = descendantNonFloats.filter(not(isPositioned)).filter(not(inlineLevel)); // 3 the in-flow, non-inline-level, non-positioned descendants.
+    var nonPositionedFloats = descendantElements.filter(not(isPositioned)).filter(isFloating); // 4. the non-positioned floats.
+    var inFlow = descendantNonFloats.filter(not(isPositioned)).filter(inlineLevel); // 5. the in-flow, inline-level, non-positioned descendants, including inline tables and inline blocks.
+    var stackLevel0 = stack.contexts.concat(descendantNonFloats.filter(isPositioned)).filter(zIndex0); // 6. the child stacking contexts with stack level 0 and the positioned descendants with stack level 0.
+    var text = stack.children.filter(isTextNode).filter(hasText);
+    var positiveZindex = stack.contexts.filter(positiveZIndex); // 7. the child stacking contexts with positive stack levels (least positive first).
+    negativeZindex.concat(nonInlineNonPositionedDescendants).concat(nonPositionedFloats)
+        .concat(inFlow).concat(stackLevel0).concat(text).concat(positiveZindex).forEach(function(container) {
+            this.renderQueue.push(container);
+            if (isStackingContext(container)) {
+                this.parse(container);
+                this.renderQueue.push(new ClearTransform());
+            }
+        }, this);
+};
+
+NodeParser.prototype.paint = function(container) {
+    try {
+        if (container instanceof ClearTransform) {
+            this.renderer.ctx.restore();
+        } else if (isTextNode(container)) {
+            if (isPseudoElement(container.parent)) {
+                container.parent.appendToDOM();
+            }
+            this.paintText(container);
+            if (isPseudoElement(container.parent)) {
+                container.parent.cleanDOM();
+            }
+        } else {
+            this.paintNode(container);
+        }
+    } catch(e) {
+        log(e);
+        if (this.options.strict) {
+            throw e;
+        }
+    }
+};
+
+NodeParser.prototype.paintNode = function(container) {
+    if (isStackingContext(container)) {
+        this.renderer.setOpacity(container.opacity);
+        this.renderer.ctx.save();
+        if (container.hasTransform()) {
+            this.renderer.setTransform(container.parseTransform());
+        }
+    }
+
+    if (container.node.nodeName === "INPUT" && container.node.type === "checkbox") {
+        this.paintCheckbox(container);
+    } else if (container.node.nodeName === "INPUT" && container.node.type === "radio") {
+        this.paintRadio(container);
+    } else {
+        this.paintElement(container);
+    }
+};
+
+NodeParser.prototype.paintElement = function(container) {
+    var bounds = container.parseBounds();
+    this.renderer.clip(container.backgroundClip, function() {
+        this.renderer.renderBackground(container, bounds, container.borders.borders.map(getWidth));
+    }, this);
+
+    this.renderer.clip(container.clip, function() {
+        this.renderer.renderBorders(container.borders.borders);
+    }, this);
+
+    this.renderer.clip(container.backgroundClip, function() {
+        switch (container.node.nodeName) {
+        case "svg":
+        case "IFRAME":
+            var imgContainer = this.images.get(container.node);
+            if (imgContainer) {
+                this.renderer.renderImage(container, bounds, container.borders, imgContainer);
+            } else {
+                log("Error loading <" + container.node.nodeName + ">", container.node);
+            }
+            break;
+        case "IMG":
+            var imageContainer = this.images.get(container.node.src);
+            if (imageContainer) {
+                this.renderer.renderImage(container, bounds, container.borders, imageContainer);
+            } else {
+                log("Error loading <img>", container.node.src);
+            }
+            break;
+        case "CANVAS":
+            this.renderer.renderImage(container, bounds, container.borders, {image: container.node});
+            break;
+        case "SELECT":
+        case "INPUT":
+        case "TEXTAREA":
+            this.paintFormValue(container);
+            break;
+        }
+    }, this);
+};
+
+NodeParser.prototype.paintCheckbox = function(container) {
+    var b = container.parseBounds();
+
+    var size = Math.min(b.width, b.height);
+    var bounds = {width: size - 1, height: size - 1, top: b.top, left: b.left};
+    var r = [3, 3];
+    var radius = [r, r, r, r];
+    var borders = [1,1,1,1].map(function(w) {
+        return {color: new Color('#A5A5A5'), width: w};
+    });
+
+    var borderPoints = calculateCurvePoints(bounds, radius, borders);
+
+    this.renderer.clip(container.backgroundClip, function() {
+        this.renderer.rectangle(bounds.left + 1, bounds.top + 1, bounds.width - 2, bounds.height - 2, new Color("#DEDEDE"));
+        this.renderer.renderBorders(calculateBorders(borders, bounds, borderPoints, radius));
+        if (container.node.checked) {
+            this.renderer.font(new Color('#424242'), 'normal', 'normal', 'bold', (size - 3) + "px", 'arial');
+            this.renderer.text("\u2714", bounds.left + size / 6, bounds.top + size - 1);
+        }
+    }, this);
+};
+
+NodeParser.prototype.paintRadio = function(container) {
+    var bounds = container.parseBounds();
+
+    var size = Math.min(bounds.width, bounds.height) - 2;
+
+    this.renderer.clip(container.backgroundClip, function() {
+        this.renderer.circleStroke(bounds.left + 1, bounds.top + 1, size, new Color('#DEDEDE'), 1, new Color('#A5A5A5'));
+        if (container.node.checked) {
+            this.renderer.circle(Math.ceil(bounds.left + size / 4) + 1, Math.ceil(bounds.top + size / 4) + 1, Math.floor(size / 2), new Color('#424242'));
+        }
+    }, this);
+};
+
+NodeParser.prototype.paintFormValue = function(container) {
+    var value = container.getValue();
+    if (value.length > 0) {
+        var document = container.node.ownerDocument;
+        var wrapper = document.createElement('html2canvaswrapper');
+        var properties = ['lineHeight', 'textAlign', 'fontFamily', 'fontWeight', 'fontSize', 'color',
+            'paddingLeft', 'paddingTop', 'paddingRight', 'paddingBottom',
+            'width', 'height', 'borderLeftStyle', 'borderTopStyle', 'borderLeftWidth', 'borderTopWidth',
+            'boxSizing', 'whiteSpace', 'wordWrap'];
+
+        properties.forEach(function(property) {
+            try {
+                wrapper.style[property] = container.css(property);
+            } catch(e) {
+                // Older IE has issues with "border"
+                log("html2canvas: Parse: Exception caught in renderFormValue: " + e.message);
+            }
+        });
+        var bounds = container.parseBounds();
+        wrapper.style.position = "fixed";
+        wrapper.style.left = bounds.left + "px";
+        wrapper.style.top = bounds.top + "px";
+        wrapper.textContent = value;
+        document.body.appendChild(wrapper);
+        this.paintText(new TextContainer(wrapper.firstChild, container));
+        document.body.removeChild(wrapper);
+    }
+};
+
+NodeParser.prototype.paintText = function(container) {
+    container.applyTextTransform();
+    var characters = window.html2canvas.punycode.ucs2.decode(container.node.data);
+    var textList = (!this.options.letterRendering || noLetterSpacing(container)) && !hasUnicode(container.node.data) ? getWords(characters) : characters.map(function(character) {
+        return window.html2canvas.punycode.ucs2.encode([character]);
+    });
+
+    var weight = container.parent.fontWeight();
+    var size = container.parent.css('fontSize');
+    var family = container.parent.css('fontFamily');
+    var shadows = container.parent.parseTextShadows();
+
+    this.renderer.font(container.parent.color('color'), container.parent.css('fontStyle'), container.parent.css('fontVariant'), weight, size, family);
+    if (shadows.length) {
+        // TODO: support multiple text shadows
+        this.renderer.fontShadow(shadows[0].color, shadows[0].offsetX, shadows[0].offsetY, shadows[0].blur);
+    } else {
+        this.renderer.clearShadow();
+    }
+
+    this.renderer.clip(container.parent.clip, function() {
+        textList.map(this.parseTextBounds(container), this).forEach(function(bounds, index) {
+            if (bounds) {
+                this.renderer.text(textList[index], bounds.left, bounds.bottom);
+                this.renderTextDecoration(container.parent, bounds, this.fontMetrics.getMetrics(family, size));
+            }
+        }, this);
+    }, this);
+};
+
+NodeParser.prototype.renderTextDecoration = function(container, bounds, metrics) {
+    switch(container.css("textDecoration").split(" ")[0]) {
+    case "underline":
+        // Draws a line at the baseline of the font
+        // TODO As some browsers display the line as more than 1px if the font-size is big, need to take that into account both in position and size
+        this.renderer.rectangle(bounds.left, Math.round(bounds.top + metrics.baseline + metrics.lineWidth), bounds.width, 1, container.color("color"));
+        break;
+    case "overline":
+        this.renderer.rectangle(bounds.left, Math.round(bounds.top), bounds.width, 1, container.color("color"));
+        break;
+    case "line-through":
+        // TODO try and find exact position for line-through
+        this.renderer.rectangle(bounds.left, Math.ceil(bounds.top + metrics.middle + metrics.lineWidth), bounds.width, 1, container.color("color"));
+        break;
+    }
+};
+
+var borderColorTransforms = {
+    inset: [
+        ["darken", 0.60],
+        ["darken", 0.10],
+        ["darken", 0.10],
+        ["darken", 0.60]
+    ]
+};
+
+NodeParser.prototype.parseBorders = function(container) {
+    var nodeBounds = container.parseBounds();
+    var radius = getBorderRadiusData(container);
+    var borders = ["Top", "Right", "Bottom", "Left"].map(function(side, index) {
+        var style = container.css('border' + side + 'Style');
+        var color = container.color('border' + side + 'Color');
+        if (style === "inset" && color.isBlack()) {
+            color = new Color([255, 255, 255, color.a]); // this is wrong, but
+        }
+        var colorTransform = borderColorTransforms[style] ? borderColorTransforms[style][index] : null;
+        return {
+            width: container.cssInt('border' + side + 'Width'),
+            color: colorTransform ? color[colorTransform[0]](colorTransform[1]) : color,
+            args: null
+        };
+    });
+    var borderPoints = calculateCurvePoints(nodeBounds, radius, borders);
+
+    return {
+        clip: this.parseBackgroundClip(container, borderPoints, borders, radius, nodeBounds),
+        borders: calculateBorders(borders, nodeBounds, borderPoints, radius)
+    };
+};
+
+function calculateBorders(borders, nodeBounds, borderPoints, radius) {
+    return borders.map(function(border, borderSide) {
+        if (border.width > 0) {
+            var bx = nodeBounds.left;
+            var by = nodeBounds.top;
+            var bw = nodeBounds.width;
+            var bh = nodeBounds.height - (borders[2].width);
+
+            switch(borderSide) {
+            case 0:
+                // top border
+                bh = borders[0].width;
+                border.args = drawSide({
+                        c1: [bx, by],
+                        c2: [bx + bw, by],
+                        c3: [bx + bw - borders[1].width, by + bh],
+                        c4: [bx + borders[3].width, by + bh]
+                    }, radius[0], radius[1],
+                    borderPoints.topLeftOuter, borderPoints.topLeftInner, borderPoints.topRightOuter, borderPoints.topRightInner);
+                break;
+            case 1:
+                // right border
+                bx = nodeBounds.left + nodeBounds.width - (borders[1].width);
+                bw = borders[1].width;
+
+                border.args = drawSide({
+                        c1: [bx + bw, by],
+                        c2: [bx + bw, by + bh + borders[2].width],
+                        c3: [bx, by + bh],
+                        c4: [bx, by + borders[0].width]
+                    }, radius[1], radius[2],
+                    borderPoints.topRightOuter, borderPoints.topRightInner, borderPoints.bottomRightOuter, borderPoints.bottomRightInner);
+                break;
+            case 2:
+                // bottom border
+                by = (by + nodeBounds.height) - (borders[2].width);
+                bh = borders[2].width;
+                border.args = drawSide({
+                        c1: [bx + bw, by + bh],
+                        c2: [bx, by + bh],
+                        c3: [bx + borders[3].width, by],
+                        c4: [bx + bw - borders[3].width, by]
+                    }, radius[2], radius[3],
+                    borderPoints.bottomRightOuter, borderPoints.bottomRightInner, borderPoints.bottomLeftOuter, borderPoints.bottomLeftInner);
+                break;
+            case 3:
+                // left border
+                bw = borders[3].width;
+                border.args = drawSide({
+                        c1: [bx, by + bh + borders[2].width],
+                        c2: [bx, by],
+                        c3: [bx + bw, by + borders[0].width],
+                        c4: [bx + bw, by + bh]
+                    }, radius[3], radius[0],
+                    borderPoints.bottomLeftOuter, borderPoints.bottomLeftInner, borderPoints.topLeftOuter, borderPoints.topLeftInner);
+                break;
+            }
+        }
+        return border;
+    });
+}
+
+NodeParser.prototype.parseBackgroundClip = function(container, borderPoints, borders, radius, bounds) {
+    var backgroundClip = container.css('backgroundClip'),
+        borderArgs = [];
+
+    switch(backgroundClip) {
+    case "content-box":
+    case "padding-box":
+        parseCorner(borderArgs, radius[0], radius[1], borderPoints.topLeftInner, borderPoints.topRightInner, bounds.left + borders[3].width, bounds.top + borders[0].width);
+        parseCorner(borderArgs, radius[1], radius[2], borderPoints.topRightInner, borderPoints.bottomRightInner, bounds.left + bounds.width - borders[1].width, bounds.top + borders[0].width);
+        parseCorner(borderArgs, radius[2], radius[3], borderPoints.bottomRightInner, borderPoints.bottomLeftInner, bounds.left + bounds.width - borders[1].width, bounds.top + bounds.height - borders[2].width);
+        parseCorner(borderArgs, radius[3], radius[0], borderPoints.bottomLeftInner, borderPoints.topLeftInner, bounds.left + borders[3].width, bounds.top + bounds.height - borders[2].width);
+        break;
+
+    default:
+        parseCorner(borderArgs, radius[0], radius[1], borderPoints.topLeftOuter, borderPoints.topRightOuter, bounds.left, bounds.top);
+        parseCorner(borderArgs, radius[1], radius[2], borderPoints.topRightOuter, borderPoints.bottomRightOuter, bounds.left + bounds.width, bounds.top);
+        parseCorner(borderArgs, radius[2], radius[3], borderPoints.bottomRightOuter, borderPoints.bottomLeftOuter, bounds.left + bounds.width, bounds.top + bounds.height);
+        parseCorner(borderArgs, radius[3], radius[0], borderPoints.bottomLeftOuter, borderPoints.topLeftOuter, bounds.left, bounds.top + bounds.height);
+        break;
+    }
+
+    return borderArgs;
+};
+
+function getCurvePoints(x, y, r1, r2) {
+    var kappa = 4 * ((Math.sqrt(2) - 1) / 3);
+    var ox = (r1) * kappa, // control point offset horizontal
+        oy = (r2) * kappa, // control point offset vertical
+        xm = x + r1, // x-middle
+        ym = y + r2; // y-middle
+    return {
+        topLeft: bezierCurve({x: x, y: ym}, {x: x, y: ym - oy}, {x: xm - ox, y: y}, {x: xm, y: y}),
+        topRight: bezierCurve({x: x, y: y}, {x: x + ox,y: y}, {x: xm, y: ym - oy}, {x: xm, y: ym}),
+        bottomRight: bezierCurve({x: xm, y: y}, {x: xm, y: y + oy}, {x: x + ox, y: ym}, {x: x, y: ym}),
+        bottomLeft: bezierCurve({x: xm, y: ym}, {x: xm - ox, y: ym}, {x: x, y: y + oy}, {x: x, y:y})
+    };
+}
+
+function calculateCurvePoints(bounds, borderRadius, borders) {
+    var x = bounds.left,
+        y = bounds.top,
+        width = bounds.width,
+        height = bounds.height,
+
+        tlh = borderRadius[0][0],
+        tlv = borderRadius[0][1],
+        trh = borderRadius[1][0],
+        trv = borderRadius[1][1],
+        brh = borderRadius[2][0],
+        brv = borderRadius[2][1],
+        blh = borderRadius[3][0],
+        blv = borderRadius[3][1];
+
+    var topWidth = width - trh,
+        rightHeight = height - brv,
+        bottomWidth = width - brh,
+        leftHeight = height - blv;
+
+    return {
+        topLeftOuter: getCurvePoints(x, y, tlh, tlv).topLeft.subdivide(0.5),
+        topLeftInner: getCurvePoints(x + borders[3].width, y + borders[0].width, Math.max(0, tlh - borders[3].width), Math.max(0, tlv - borders[0].width)).topLeft.subdivide(0.5),
+        topRightOuter: getCurvePoints(x + topWidth, y, trh, trv).topRight.subdivide(0.5),
+        topRightInner: getCurvePoints(x + Math.min(topWidth, width + borders[3].width), y + borders[0].width, (topWidth > width + borders[3].width) ? 0 :trh - borders[3].width, trv - borders[0].width).topRight.subdivide(0.5),
+        bottomRightOuter: getCurvePoints(x + bottomWidth, y + rightHeight, brh, brv).bottomRight.subdivide(0.5),
+        bottomRightInner: getCurvePoints(x + Math.min(bottomWidth, width - borders[3].width), y + Math.min(rightHeight, height + borders[0].width), Math.max(0, brh - borders[1].width),  brv - borders[2].width).bottomRight.subdivide(0.5),
+        bottomLeftOuter: getCurvePoints(x, y + leftHeight, blh, blv).bottomLeft.subdivide(0.5),
+        bottomLeftInner: getCurvePoints(x + borders[3].width, y + leftHeight, Math.max(0, blh - borders[3].width), blv - borders[2].width).bottomLeft.subdivide(0.5)
+    };
+}
+
+function bezierCurve(start, startControl, endControl, end) {
+    var lerp = function (a, b, t) {
+        return {
+            x: a.x + (b.x - a.x) * t,
+            y: a.y + (b.y - a.y) * t
+        };
+    };
+
+    return {
+        start: start,
+        startControl: startControl,
+        endControl: endControl,
+        end: end,
+        subdivide: function(t) {
+            var ab = lerp(start, startControl, t),
+                bc = lerp(startControl, endControl, t),
+                cd = lerp(endControl, end, t),
+                abbc = lerp(ab, bc, t),
+                bccd = lerp(bc, cd, t),
+                dest = lerp(abbc, bccd, t);
+            return [bezierCurve(start, ab, abbc, dest), bezierCurve(dest, bccd, cd, end)];
+        },
+        curveTo: function(borderArgs) {
+            borderArgs.push(["bezierCurve", startControl.x, startControl.y, endControl.x, endControl.y, end.x, end.y]);
+        },
+        curveToReversed: function(borderArgs) {
+            borderArgs.push(["bezierCurve", endControl.x, endControl.y, startControl.x, startControl.y, start.x, start.y]);
+        }
+    };
+}
+
+function drawSide(borderData, radius1, radius2, outer1, inner1, outer2, inner2) {
+    var borderArgs = [];
+
+    if (radius1[0] > 0 || radius1[1] > 0) {
+        borderArgs.push(["line", outer1[1].start.x, outer1[1].start.y]);
+        outer1[1].curveTo(borderArgs);
+    } else {
+        borderArgs.push([ "line", borderData.c1[0], borderData.c1[1]]);
+    }
+
+    if (radius2[0] > 0 || radius2[1] > 0) {
+        borderArgs.push(["line", outer2[0].start.x, outer2[0].start.y]);
+        outer2[0].curveTo(borderArgs);
+        borderArgs.push(["line", inner2[0].end.x, inner2[0].end.y]);
+        inner2[0].curveToReversed(borderArgs);
+    } else {
+        borderArgs.push(["line", borderData.c2[0], borderData.c2[1]]);
+        borderArgs.push(["line", borderData.c3[0], borderData.c3[1]]);
+    }
+
+    if (radius1[0] > 0 || radius1[1] > 0) {
+        borderArgs.push(["line", inner1[1].end.x, inner1[1].end.y]);
+        inner1[1].curveToReversed(borderArgs);
+    } else {
+        borderArgs.push(["line", borderData.c4[0], borderData.c4[1]]);
+    }
+
+    return borderArgs;
+}
+
+function parseCorner(borderArgs, radius1, radius2, corner1, corner2, x, y) {
+    if (radius1[0] > 0 || radius1[1] > 0) {
+        borderArgs.push(["line", corner1[0].start.x, corner1[0].start.y]);
+        corner1[0].curveTo(borderArgs);
+        corner1[1].curveTo(borderArgs);
+    } else {
+        borderArgs.push(["line", x, y]);
+    }
+
+    if (radius2[0] > 0 || radius2[1] > 0) {
+        borderArgs.push(["line", corner2[0].start.x, corner2[0].start.y]);
+    }
+}
+
+function negativeZIndex(container) {
+    return container.cssInt("zIndex") < 0;
+}
+
+function positiveZIndex(container) {
+    return container.cssInt("zIndex") > 0;
+}
+
+function zIndex0(container) {
+    return container.cssInt("zIndex") === 0;
+}
+
+function inlineLevel(container) {
+    return ["inline", "inline-block", "inline-table"].indexOf(container.css("display")) !== -1;
+}
+
+function isStackingContext(container) {
+    return (container instanceof StackingContext);
+}
+
+function hasText(container) {
+    return container.node.data.trim().length > 0;
+}
+
+function noLetterSpacing(container) {
+    return (/^(normal|none|0px)$/.test(container.parent.css("letterSpacing")));
+}
+
+function getBorderRadiusData(container) {
+    return ["TopLeft", "TopRight", "BottomRight", "BottomLeft"].map(function(side) {
+        var value = container.css('border' + side + 'Radius');
+        var arr = value.split(" ");
+        if (arr.length <= 1) {
+            arr[1] = arr[0];
+        }
+        return arr.map(asInt);
+    });
+}
+
+function renderableNode(node) {
+    return (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE);
+}
+
+function isPositionedForStacking(container) {
+    var position = container.css("position");
+    var zIndex = (["absolute", "relative", "fixed"].indexOf(position) !== -1) ? container.css("zIndex") : "auto";
+    return zIndex !== "auto";
+}
+
+function isPositioned(container) {
+    return container.css("position") !== "static";
+}
+
+function isFloating(container) {
+    return container.css("float") !== "none";
+}
+
+function isInlineBlock(container) {
+    return ["inline-block", "inline-table"].indexOf(container.css("display")) !== -1;
+}
+
+function not(callback) {
+    var context = this;
+    return function() {
+        return !callback.apply(context, arguments);
+    };
+}
+
+function isElement(container) {
+    return container.node.nodeType === Node.ELEMENT_NODE;
+}
+
+function isPseudoElement(container) {
+    return container.isPseudoElement === true;
+}
+
+function isTextNode(container) {
+    return container.node.nodeType === Node.TEXT_NODE;
+}
+
+function zIndexSort(contexts) {
+    return function(a, b) {
+        return (a.cssInt("zIndex") + (contexts.indexOf(a) / contexts.length)) - (b.cssInt("zIndex") + (contexts.indexOf(b) / contexts.length));
+    };
+}
+
+function hasOpacity(container) {
+    return container.getOpacity() < 1;
+}
+
+function bind(callback, context) {
+    return function() {
+        return callback.apply(context, arguments);
+    };
+}
+
+function asInt(value) {
+    return parseInt(value, 10);
+}
+
+function getWidth(border) {
+    return border.width;
+}
+
+function nonIgnoredElement(nodeContainer) {
+    return (nodeContainer.node.nodeType !== Node.ELEMENT_NODE || ["SCRIPT", "HEAD", "TITLE", "OBJECT", "BR", "OPTION"].indexOf(nodeContainer.node.nodeName) === -1);
+}
+
+function flatten(arrays) {
+    return [].concat.apply([], arrays);
+}
+
+function stripQuotes(content) {
+    var first = content.substr(0, 1);
+    return (first === content.substr(content.length - 1) && first.match(/'|"/)) ? content.substr(1, content.length - 2) : content;
+}
+
+function getWords(characters) {
+    var words = [], i = 0, onWordBoundary = false, word;
+    while(characters.length) {
+        if (isWordBoundary(characters[i]) === onWordBoundary) {
+            word = characters.splice(0, i);
+            if (word.length) {
+                words.push(window.html2canvas.punycode.ucs2.encode(word));
+            }
+            onWordBoundary =! onWordBoundary;
+            i = 0;
+        } else {
+            i++;
+        }
+
+        if (i >= characters.length) {
+            word = characters.splice(0, i);
+            if (word.length) {
+                words.push(window.html2canvas.punycode.ucs2.encode(word));
+            }
+        }
+    }
+    return words;
+}
+
+function isWordBoundary(characterCode) {
+    return [
+        32, // <space>
+        13, // \r
+        10, // \n
+        9, // \t
+        45 // -
+    ].indexOf(characterCode) !== -1;
+}
+
+function hasUnicode(string) {
+    return (/[^\u0000-\u00ff]/).test(string);
+}
+
+function Proxy(src, proxyUrl, document) {
+    if (!proxyUrl) {
+        return Promise.reject("No proxy configured");
+    }
+    var callback = createCallback(supportsCORS);
+    var url = createProxyUrl(proxyUrl, src, callback);
+
+    return supportsCORS ? XHR(url) : (jsonp(document, url, callback).then(function(response) {
+        return decode64(response.content);
+    }));
+}
+var proxyCount = 0;
+
+var supportsCORS = ('withCredentials' in new XMLHttpRequest());
+var supportsCORSImage = ('crossOrigin' in new Image());
+
+function ProxyURL(src, proxyUrl, document) {
+    var callback = createCallback(supportsCORSImage);
+    var url = createProxyUrl(proxyUrl, src, callback);
+    return (supportsCORSImage ? Promise.resolve(url) : jsonp(document, url, callback).then(function(response) {
+        return "data:" + response.type + ";base64," + response.content;
+    }));
+}
+
+function jsonp(document, url, callback) {
+    return new Promise(function(resolve, reject) {
+        var s = document.createElement("script");
+        var cleanup = function() {
+            delete window.html2canvas.proxy[callback];
+            document.body.removeChild(s);
+        };
+        window.html2canvas.proxy[callback] = function(response) {
+            cleanup();
+            resolve(response);
+        };
+        s.src = url;
+        s.onerror = function(e) {
+            cleanup();
+            reject(e);
+        };
+        document.body.appendChild(s);
+    });
+}
+
+function createCallback(useCORS) {
+    return !useCORS ? "html2canvas_" + Date.now() + "_" + (++proxyCount) + "_" + Math.round(Math.random() * 100000) : "";
+}
+
+function createProxyUrl(proxyUrl, src, callback) {
+    return proxyUrl + "?url=" + encodeURIComponent(src) + (callback.length ? "&callback=html2canvas.proxy." + callback : "");
+}
+
+function ProxyImageContainer(src, proxy) {
+    var script = document.createElement("script");
+    var link = document.createElement("a");
+    link.href = src;
+    src = link.href;
+    this.src = src;
+    this.image = new Image();
+    var self = this;
+    this.promise = new Promise(function(resolve, reject) {
+        self.image.crossOrigin = "Anonymous";
+        self.image.onload = resolve;
+        self.image.onerror = reject;
+
+        new ProxyURL(src, proxy, document).then(function(url) {
+            self.image.src = url;
+        })['catch'](reject);
+    });
+}
+
+function PseudoElementContainer(node, parent, type) {
+    NodeContainer.call(this, node, parent);
+    this.isPseudoElement = true;
+    this.before = type === ":before";
+}
+
+PseudoElementContainer.prototype.cloneTo = function(stack) {
+    PseudoElementContainer.prototype.cloneTo.call(this, stack);
+    stack.isPseudoElement = true;
+    stack.before = this.before;
+};
+
+PseudoElementContainer.prototype = Object.create(NodeContainer.prototype);
+
+PseudoElementContainer.prototype.appendToDOM = function() {
+    if (this.before) {
+        this.parent.node.insertBefore(this.node, this.parent.node.firstChild);
+    } else {
+        this.parent.node.appendChild(this.node);
+    }
+    this.parent.node.className += " " + this.getHideClass();
+};
+
+PseudoElementContainer.prototype.cleanDOM = function() {
+    this.node.parentNode.removeChild(this.node);
+    this.parent.node.className = this.parent.node.className.replace(this.getHideClass(), "");
+};
+
+PseudoElementContainer.prototype.getHideClass = function() {
+    return this["PSEUDO_HIDE_ELEMENT_CLASS_" + (this.before ? "BEFORE" : "AFTER")];
+};
+
+PseudoElementContainer.prototype.PSEUDO_HIDE_ELEMENT_CLASS_BEFORE = "___html2canvas___pseudoelement_before";
+PseudoElementContainer.prototype.PSEUDO_HIDE_ELEMENT_CLASS_AFTER = "___html2canvas___pseudoelement_after";
+
+function Renderer(width, height, images, options, document) {
+    this.width = width;
+    this.height = height;
+    this.images = images;
+    this.options = options;
+    this.document = document;
+}
+
+Renderer.prototype.renderImage = function(container, bounds, borderData, imageContainer) {
+    var paddingLeft = container.cssInt('paddingLeft'),
+        paddingTop = container.cssInt('paddingTop'),
+        paddingRight = container.cssInt('paddingRight'),
+        paddingBottom = container.cssInt('paddingBottom'),
+        borders = borderData.borders;
+
+    var width = bounds.width - (borders[1].width + borders[3].width + paddingLeft + paddingRight);
+    var height = bounds.height - (borders[0].width + borders[2].width + paddingTop + paddingBottom);
+    this.drawImage(
+        imageContainer,
+        0,
+        0,
+        imageContainer.image.width || width,
+        imageContainer.image.height || height,
+        bounds.left + paddingLeft + borders[3].width,
+        bounds.top + paddingTop + borders[0].width,
+        width,
+        height
+    );
+};
+
+Renderer.prototype.renderBackground = function(container, bounds, borderData) {
+    if (bounds.height > 0 && bounds.width > 0) {
+        this.renderBackgroundColor(container, bounds);
+        this.renderBackgroundImage(container, bounds, borderData);
+    }
+};
+
+Renderer.prototype.renderBackgroundColor = function(container, bounds) {
+    var color = container.color("backgroundColor");
+    if (!color.isTransparent()) {
+        this.rectangle(bounds.left, bounds.top, bounds.width, bounds.height, color);
+    }
+};
+
+Renderer.prototype.renderBorders = function(borders) {
+    borders.forEach(this.renderBorder, this);
+};
+
+Renderer.prototype.renderBorder = function(data) {
+    if (!data.color.isTransparent() && data.args !== null) {
+        this.drawShape(data.args, data.color);
+    }
+};
+
+Renderer.prototype.renderBackgroundImage = function(container, bounds, borderData) {
+    var backgroundImages = container.parseBackgroundImages();
+    backgroundImages.reverse().forEach(function(backgroundImage, index, arr) {
+        switch(backgroundImage.method) {
+        case "url":
+            var image = this.images.get(backgroundImage.args[0]);
+            if (image) {
+                this.renderBackgroundRepeating(container, bounds, image, arr.length - (index+1), borderData);
+            } else {
+                log("Error loading background-image", backgroundImage.args[0]);
+            }
+            break;
+        case "linear-gradient":
+        case "gradient":
+            var gradientImage = this.images.get(backgroundImage.value);
+            if (gradientImage) {
+                this.renderBackgroundGradient(gradientImage, bounds, borderData);
+            } else {
+                log("Error loading background-image", backgroundImage.args[0]);
+            }
+            break;
+        case "none":
+            break;
+        default:
+            log("Unknown background-image type", backgroundImage.args[0]);
+        }
+    }, this);
+};
+
+Renderer.prototype.renderBackgroundRepeating = function(container, bounds, imageContainer, index, borderData) {
+    var size = container.parseBackgroundSize(bounds, imageContainer.image, index);
+    var position = container.parseBackgroundPosition(bounds, imageContainer.image, index, size);
+    var repeat = container.parseBackgroundRepeat(index);
+    switch (repeat) {
+    case "repeat-x":
+    case "repeat no-repeat":
+        this.backgroundRepeatShape(imageContainer, position, size, bounds, bounds.left + borderData[3], bounds.top + position.top + borderData[0], 99999, size.height, borderData);
+        break;
+    case "repeat-y":
+    case "no-repeat repeat":
+        this.backgroundRepeatShape(imageContainer, position, size, bounds, bounds.left + position.left + borderData[3], bounds.top + borderData[0], size.width, 99999, borderData);
+        break;
+    case "no-repeat":
+        this.backgroundRepeatShape(imageContainer, position, size, bounds, bounds.left + position.left + borderData[3], bounds.top + position.top + borderData[0], size.width, size.height, borderData);
+        break;
+    default:
+        this.renderBackgroundRepeat(imageContainer, position, size, {top: bounds.top, left: bounds.left}, borderData[3], borderData[0]);
+        break;
+    }
+};
+
+function StackingContext(hasOwnStacking, opacity, element, parent) {
+    NodeContainer.call(this, element, parent);
+    this.ownStacking = hasOwnStacking;
+    this.contexts = [];
+    this.children = [];
+    this.opacity = (this.parent ? this.parent.stack.opacity : 1) * opacity;
+}
+
+StackingContext.prototype = Object.create(NodeContainer.prototype);
+
+StackingContext.prototype.getParentStack = function(context) {
+    var parentStack = (this.parent) ? this.parent.stack : null;
+    return parentStack ? (parentStack.ownStacking ? parentStack : parentStack.getParentStack(context)) : context.stack;
+};
+
+function Support(document) {
+    this.rangeBounds = this.testRangeBounds(document);
+    this.cors = this.testCORS();
+    this.svg = this.testSVG();
+}
+
+Support.prototype.testRangeBounds = function(document) {
+    var range, testElement, rangeBounds, rangeHeight, support = false;
+
+    if (document.createRange) {
+        range = document.createRange();
+        if (range.getBoundingClientRect) {
+            testElement = document.createElement('boundtest');
+            testElement.style.height = "123px";
+            testElement.style.display = "block";
+            document.body.appendChild(testElement);
+
+            range.selectNode(testElement);
+            rangeBounds = range.getBoundingClientRect();
+            rangeHeight = rangeBounds.height;
+
+            if (rangeHeight === 123) {
+                support = true;
+            }
+            document.body.removeChild(testElement);
+        }
+    }
+
+    return support;
+};
+
+Support.prototype.testCORS = function() {
+    return typeof((new Image()).crossOrigin) !== "undefined";
+};
+
+Support.prototype.testSVG = function() {
+    var img = new Image();
+    var canvas = document.createElement("canvas");
+    var ctx =  canvas.getContext("2d");
+    img.src = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'></svg>";
+
+    try {
+        ctx.drawImage(img, 0, 0);
+        canvas.toDataURL();
+    } catch(e) {
+        return false;
+    }
+    return true;
+};
+
+function SVGContainer(src) {
+    this.src = src;
+    this.image = null;
+    var self = this;
+
+    this.promise = this.hasFabric().then(function() {
+        return (self.isInline(src) ? Promise.resolve(self.inlineFormatting(src)) : XHR(src));
+    }).then(function(svg) {
+        return new Promise(function(resolve) {
+            html2canvas.fabric.loadSVGFromString(svg, self.createCanvas.call(self, resolve));
+        });
+    });
+}
+
+SVGContainer.prototype.hasFabric = function() {
+    return !html2canvas.fabric ? Promise.reject(new Error("html2canvas.svg.js is not loaded, cannot render svg")) : Promise.resolve();
+};
+
+SVGContainer.prototype.inlineFormatting = function(src) {
+    return (/^data:image\/svg\+xml;base64,/.test(src)) ? this.decode64(this.removeContentType(src)) : this.removeContentType(src);
+};
+
+SVGContainer.prototype.removeContentType = function(src) {
+    return src.replace(/^data:image\/svg\+xml(;base64)?,/,'');
+};
+
+SVGContainer.prototype.isInline = function(src) {
+    return (/^data:image\/svg\+xml/i.test(src));
+};
+
+SVGContainer.prototype.createCanvas = function(resolve) {
+    var self = this;
+    return function (objects, options) {
+        var canvas = new html2canvas.fabric.StaticCanvas('c');
+        self.image = canvas.lowerCanvasEl;
+        canvas
+            .setWidth(options.width)
+            .setHeight(options.height)
+            .add(html2canvas.fabric.util.groupSVGElements(objects, options))
+            .renderAll();
+        resolve(canvas.lowerCanvasEl);
+    };
+};
+
+SVGContainer.prototype.decode64 = function(str) {
+    return (typeof(window.atob) === "function") ? window.atob(str) : decode64(str);
+};
+
+/*
+ * base64-arraybuffer
+ * https://github.com/niklasvh/base64-arraybuffer
+ *
+ * Copyright (c) 2012 Niklas von Hertzen
+ * Licensed under the MIT license.
+ */
+
+function decode64(base64) {
+    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    var len = base64.length, i, encoded1, encoded2, encoded3, encoded4, byte1, byte2, byte3;
+
+    var output = "";
+
+    for (i = 0; i < len; i+=4) {
+        encoded1 = chars.indexOf(base64[i]);
+        encoded2 = chars.indexOf(base64[i+1]);
+        encoded3 = chars.indexOf(base64[i+2]);
+        encoded4 = chars.indexOf(base64[i+3]);
+
+        byte1 = (encoded1 << 2) | (encoded2 >> 4);
+        byte2 = ((encoded2 & 15) << 4) | (encoded3 >> 2);
+        byte3 = ((encoded3 & 3) << 6) | encoded4;
+        if (encoded3 === 64) {
+            output += String.fromCharCode(byte1);
+        } else if (encoded4 === 64 || encoded4 === -1) {
+            output += String.fromCharCode(byte1, byte2);
+        } else{
+            output += String.fromCharCode(byte1, byte2, byte3);
+        }
+    }
+
+    return output;
+}
+
+function SVGNodeContainer(node, native) {
+    this.src = node;
+    this.image = null;
+    var self = this;
+
+    this.promise = native ? new Promise(function(resolve, reject) {
+        self.image = new Image();
+        self.image.onload = resolve;
+        self.image.onerror = reject;
+        self.image.src = "data:image/svg+xml," + (new XMLSerializer()).serializeToString(node);
+        if (self.image.complete === true) {
+            resolve(self.image);
+        }
+    }) : this.hasFabric().then(function() {
+        return new Promise(function(resolve) {
+            html2canvas.fabric.parseSVGDocument(node, self.createCanvas.call(self, resolve));
+        });
+    });
+}
+
+SVGNodeContainer.prototype = Object.create(SVGContainer.prototype);
+
+function TextContainer(node, parent) {
+    NodeContainer.call(this, node, parent);
+}
+
+TextContainer.prototype = Object.create(NodeContainer.prototype);
+
+TextContainer.prototype.applyTextTransform = function() {
+    this.node.data = this.transform(this.parent.css("textTransform"));
+};
+
+TextContainer.prototype.transform = function(transform) {
+    var text = this.node.data;
+    switch(transform){
+        case "lowercase":
+            return text.toLowerCase();
+        case "capitalize":
+            return text.replace(/(^|\s|:|-|\(|\))([a-z])/g, capitalize);
+        case "uppercase":
+            return text.toUpperCase();
+        default:
+            return text;
+    }
+};
+
+function capitalize(m, p1, p2) {
+    if (m.length > 0) {
+        return p1 + p2.toUpperCase();
+    }
+}
+
+function WebkitGradientContainer(imageData) {
+    GradientContainer.apply(this, arguments);
+    this.type = (imageData.args[0] === "linear") ? this.TYPES.LINEAR : this.TYPES.RADIAL;
+}
+
+WebkitGradientContainer.prototype = Object.create(GradientContainer.prototype);
+
+function XHR(url) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                resolve(xhr.responseText);
+            } else {
+                reject(new Error(xhr.statusText));
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(new Error("Network Error"));
+        };
+
+        xhr.send();
+    });
+}
+
+function CanvasRenderer(width, height) {
+    Renderer.apply(this, arguments);
+    this.canvas = this.options.canvas || this.document.createElement("canvas");
+    if (!this.options.canvas) {
+        this.canvas.width = width;
+        this.canvas.height = height;
+    }
+    this.ctx = this.canvas.getContext("2d");
+    this.taintCtx = this.document.createElement("canvas").getContext("2d");
+    this.ctx.textBaseline = "bottom";
+    this.variables = {};
+    log("Initialized CanvasRenderer with size", width, "x", height);
+}
+
+CanvasRenderer.prototype = Object.create(Renderer.prototype);
+
+CanvasRenderer.prototype.setFillStyle = function(fillStyle) {
+    this.ctx.fillStyle = typeof(fillStyle) === "object" && !!fillStyle.isColor ? fillStyle.toString() : fillStyle;
+    return this.ctx;
+};
+
+CanvasRenderer.prototype.rectangle = function(left, top, width, height, color) {
+    this.setFillStyle(color).fillRect(left, top, width, height);
+};
+
+CanvasRenderer.prototype.circle = function(left, top, size, color) {
+    this.setFillStyle(color);
+    this.ctx.beginPath();
+    this.ctx.arc(left + size / 2, top + size / 2, size / 2, 0, Math.PI*2, true);
+    this.ctx.closePath();
+    this.ctx.fill();
+};
+
+CanvasRenderer.prototype.circleStroke = function(left, top, size, color, stroke, strokeColor) {
+    this.circle(left, top, size, color);
+    this.ctx.strokeStyle = strokeColor.toString();
+    this.ctx.stroke();
+};
+
+CanvasRenderer.prototype.drawShape = function(shape, color) {
+    this.shape(shape);
+    this.setFillStyle(color).fill();
+};
+
+CanvasRenderer.prototype.taints = function(imageContainer) {
+    if (imageContainer.tainted === null) {
+        this.taintCtx.drawImage(imageContainer.image, 0, 0);
+        try {
+            this.taintCtx.getImageData(0, 0, 1, 1);
+            imageContainer.tainted = false;
+        } catch(e) {
+            this.taintCtx = document.createElement("canvas").getContext("2d");
+            imageContainer.tainted = true;
+        }
+    }
+
+    return imageContainer.tainted;
+};
+
+CanvasRenderer.prototype.drawImage = function(imageContainer, sx, sy, sw, sh, dx, dy, dw, dh) {
+    if (!this.taints(imageContainer) || this.options.allowTaint) {
+        this.ctx.drawImage(imageContainer.image, sx, sy, sw, sh, dx, dy, dw, dh);
+    }
+};
+
+CanvasRenderer.prototype.clip = function(shapes, callback, context) {
+    this.ctx.save();
+    shapes.filter(hasEntries).forEach(function(shape) {
+        this.shape(shape).clip();
+    }, this);
+    callback.call(context);
+    this.ctx.restore();
+};
+
+CanvasRenderer.prototype.shape = function(shape) {
+    this.ctx.beginPath();
+    shape.forEach(function(point, index) {
+        if (point[0] === "rect") {
+            this.ctx.rect.apply(this.ctx, point.slice(1));
+        } else {
+            this.ctx[(index === 0) ? "moveTo" : point[0] + "To" ].apply(this.ctx, point.slice(1));
+        }
+    }, this);
+    this.ctx.closePath();
+    return this.ctx;
+};
+
+CanvasRenderer.prototype.font = function(color, style, variant, weight, size, family) {
+    this.setFillStyle(color).font = [style, variant, weight, size, family].join(" ").split(",")[0];
+};
+
+CanvasRenderer.prototype.fontShadow = function(color, offsetX, offsetY, blur) {
+    this.setVariable("shadowColor", color.toString())
+        .setVariable("shadowOffsetY", offsetX)
+        .setVariable("shadowOffsetX", offsetY)
+        .setVariable("shadowBlur", blur);
+};
+
+CanvasRenderer.prototype.clearShadow = function() {
+    this.setVariable("shadowColor", "rgba(0,0,0,0)");
+};
+
+CanvasRenderer.prototype.setOpacity = function(opacity) {
+    this.ctx.globalAlpha = opacity;
+};
+
+CanvasRenderer.prototype.setTransform = function(transform) {
+    this.ctx.translate(transform.origin[0], transform.origin[1]);
+    this.ctx.transform.apply(this.ctx, transform.matrix);
+    this.ctx.translate(-transform.origin[0], -transform.origin[1]);
+};
+
+CanvasRenderer.prototype.setVariable = function(property, value) {
+    if (this.variables[property] !== value) {
+        this.variables[property] = this.ctx[property] = value;
+    }
+
+    return this;
+};
+
+CanvasRenderer.prototype.text = function(text, left, bottom) {
+    this.ctx.fillText(text, left, bottom);
+};
+
+CanvasRenderer.prototype.backgroundRepeatShape = function(imageContainer, backgroundPosition, size, bounds, left, top, width, height, borderData) {
+    var shape = [
+        ["line", Math.round(left), Math.round(top)],
+        ["line", Math.round(left + width), Math.round(top)],
+        ["line", Math.round(left + width), Math.round(height + top)],
+        ["line", Math.round(left), Math.round(height + top)]
+    ];
+    this.clip([shape], function() {
+        this.renderBackgroundRepeat(imageContainer, backgroundPosition, size, bounds, borderData[3], borderData[0]);
+    }, this);
+};
+
+CanvasRenderer.prototype.renderBackgroundRepeat = function(imageContainer, backgroundPosition, size, bounds, borderLeft, borderTop) {
+    var offsetX = Math.round(bounds.left + backgroundPosition.left + borderLeft), offsetY = Math.round(bounds.top + backgroundPosition.top + borderTop);
+    this.setFillStyle(this.ctx.createPattern(this.resizeImage(imageContainer, size), "repeat"));
+    this.ctx.translate(offsetX, offsetY);
+    this.ctx.fill();
+    this.ctx.translate(-offsetX, -offsetY);
+};
+
+CanvasRenderer.prototype.renderBackgroundGradient = function(gradientImage, bounds) {
+    if (gradientImage instanceof LinearGradientContainer) {
+        var gradient = this.ctx.createLinearGradient(
+            bounds.left + bounds.width * gradientImage.x0,
+            bounds.top + bounds.height * gradientImage.y0,
+            bounds.left +  bounds.width * gradientImage.x1,
+            bounds.top +  bounds.height * gradientImage.y1);
+        gradientImage.colorStops.forEach(function(colorStop) {
+            gradient.addColorStop(colorStop.stop, colorStop.color.toString());
+        });
+        this.rectangle(bounds.left, bounds.top, bounds.width, bounds.height, gradient);
+    }
+};
+
+CanvasRenderer.prototype.resizeImage = function(imageContainer, size) {
+    var image = imageContainer.image;
+    if(image.width === size.width && image.height === size.height) {
+        return image;
+    }
+
+    var ctx, canvas = document.createElement('canvas');
+    canvas.width = size.width;
+    canvas.height = size.height;
+    ctx = canvas.getContext("2d");
+    ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, size.width, size.height );
+    return canvas;
+};
+
+function hasEntries(array) {
+    return array.length > 0;
+}
+
+}).call({}, typeof(window) !== "undefined" ? window : undefined, typeof(document) !== "undefined" ? document : undefined);
+/*! SmartAdmin - v1.5 - 2014-10-16 */!function(a,b,c,d){function e(c,d){this.w=a(b),this.el=a(c),this.options=a.extend({},k,d),this.init()}var f="ontouchstart"in b,g=function(){var a=c.createElement("div"),d=c.documentElement;if(!("pointerEvents"in a.style))return!1;a.style.pointerEvents="auto",a.style.pointerEvents="x",d.appendChild(a);var e=b.getComputedStyle&&"auto"===b.getComputedStyle(a,"").pointerEvents;return d.removeChild(a),!!e}(),h=f?"touchstart":"mousedown",i=f?"touchmove":"mousemove",j=f?"touchend":"mouseup";eCancel=f?"touchcancel":"mouseup";var k={"listNodeName":"ol","itemNodeName":"li","rootClass":"dd","listClass":"dd-list","itemClass":"dd-item","dragClass":"dd-dragel","handleClass":"dd-handle","collapsedClass":"dd-collapsed","placeClass":"dd-placeholder","noDragClass":"dd-nodrag","emptyClass":"dd-empty","expandBtnHTML":'<button data-action="expand" type="button">Expand</button>',"collapseBtnHTML":'<button data-action="collapse" type="button">Collapse</button>',"group":0,"maxDepth":5,"threshold":20};e.prototype={"init":function(){var c=this;c.reset(),c.el.data("nestable-group",this.options.group),c.placeEl=a('<div class="'+c.options.placeClass+'"/>'),a.each(this.el.find(c.options.itemNodeName),function(b,d){c.setParent(a(d))}),c.el.on("click","button",function(b){if(!c.dragEl&&(f||0===b.button)){var d=a(b.currentTarget),e=d.data("action"),g=d.parent(c.options.itemNodeName);"collapse"===e&&c.collapseItem(g),"expand"===e&&c.expandItem(g)}});var d=function(b){var d=a(b.target);if(!d.hasClass(c.options.handleClass)){if(d.closest("."+c.options.noDragClass).length)return;d=d.closest("."+c.options.handleClass)}!d.length||c.dragEl||!f&&0!==b.button||f&&1!==b.touches.length||(b.preventDefault(),c.dragStart(f?b.touches[0]:b))},e=function(a){c.dragEl&&(a.preventDefault(),c.dragMove(f?a.touches[0]:a))},g=function(a){c.dragEl&&(a.preventDefault(),c.dragStop(f?a.touches[0]:a))};f?(c.el[0].addEventListener(h,d,!1),b.addEventListener(i,e,!1),b.addEventListener(j,g,!1),b.addEventListener(eCancel,g,!1)):(c.el.on(h,d),c.w.on(i,e),c.w.on(j,g))},"serialize":function(){var b,c=0,d=this;return step=function(b,c){var e=[],f=b.children(d.options.itemNodeName);return f.each(function(){var b=a(this),f=a.extend({},b.data()),g=b.children(d.options.listNodeName);g.length&&(f.children=step(g,c+1)),e.push(f)}),e},b=step(d.el.find(d.options.listNodeName).first(),c)},"serialise":function(){return this.serialize()},"reset":function(){this.mouse={"offsetX":0,"offsetY":0,"startX":0,"startY":0,"lastX":0,"lastY":0,"nowX":0,"nowY":0,"distX":0,"distY":0,"dirAx":0,"dirX":0,"dirY":0,"lastDirX":0,"lastDirY":0,"distAxX":0,"distAxY":0},this.moving=!1,this.dragEl=null,this.dragRootEl=null,this.dragDepth=0,this.hasNewRoot=!1,this.pointEl=null},"expandItem":function(a){a.removeClass(this.options.collapsedClass),a.children('[data-action="expand"]').hide(),a.children('[data-action="collapse"]').show(),a.children(this.options.listNodeName).show()},"collapseItem":function(a){var b=a.children(this.options.listNodeName);b.length&&(a.addClass(this.options.collapsedClass),a.children('[data-action="collapse"]').hide(),a.children('[data-action="expand"]').show(),a.children(this.options.listNodeName).hide())},"expandAll":function(){var b=this;b.el.find(b.options.itemNodeName).each(function(){b.expandItem(a(this))})},"collapseAll":function(){var b=this;b.el.find(b.options.itemNodeName).each(function(){b.collapseItem(a(this))})},"setParent":function(b){b.children(this.options.listNodeName).length&&(b.prepend(a(this.options.expandBtnHTML)),b.prepend(a(this.options.collapseBtnHTML))),b.children('[data-action="expand"]').hide()},"unsetParent":function(a){a.removeClass(this.options.collapsedClass),a.children("[data-action]").remove(),a.children(this.options.listNodeName).remove()},"dragStart":function(b){var e=this.mouse,f=a(b.target),g=f.closest(this.options.itemNodeName);this.placeEl.css("height",g.height()),e.offsetX=b.offsetX!==d?b.offsetX:b.pageX-f.offset().left,e.offsetY=b.offsetY!==d?b.offsetY:b.pageY-f.offset().top,e.startX=e.lastX=b.pageX,e.startY=e.lastY=b.pageY,this.dragRootEl=this.el,this.dragEl=a(c.createElement(this.options.listNodeName)).addClass(this.options.listClass+" "+this.options.dragClass),this.dragEl.css("width",g.width()),g.after(this.placeEl),g[0].parentNode.removeChild(g[0]),g.appendTo(this.dragEl),a(c.body).append(this.dragEl),this.dragEl.css({"left":b.pageX-e.offsetX,"top":b.pageY-e.offsetY});var h,i,j=this.dragEl.find(this.options.itemNodeName);for(h=0;h<j.length;h++)i=a(j[h]).parents(this.options.listNodeName).length,i>this.dragDepth&&(this.dragDepth=i)},"dragStop":function(){var a=this.dragEl.children(this.options.itemNodeName).first();a[0].parentNode.removeChild(a[0]),this.placeEl.replaceWith(a),this.dragEl.remove(),this.el.trigger("change"),this.hasNewRoot&&this.dragRootEl.trigger("change"),this.reset()},"dragMove":function(d){var e,f,h,i,j,k=this.options,l=this.mouse;this.dragEl.css({"left":d.pageX-l.offsetX,"top":d.pageY-l.offsetY}),l.lastX=l.nowX,l.lastY=l.nowY,l.nowX=d.pageX,l.nowY=d.pageY,l.distX=l.nowX-l.lastX,l.distY=l.nowY-l.lastY,l.lastDirX=l.dirX,l.lastDirY=l.dirY,l.dirX=0===l.distX?0:l.distX>0?1:-1,l.dirY=0===l.distY?0:l.distY>0?1:-1;var m=Math.abs(l.distX)>Math.abs(l.distY)?1:0;if(!l.moving)return l.dirAx=m,void(l.moving=!0);l.dirAx!==m?(l.distAxX=0,l.distAxY=0):(l.distAxX+=Math.abs(l.distX),0!==l.dirX&&l.dirX!==l.lastDirX&&(l.distAxX=0),l.distAxY+=Math.abs(l.distY),0!==l.dirY&&l.dirY!==l.lastDirY&&(l.distAxY=0)),l.dirAx=m,l.dirAx&&l.distAxX>=k.threshold&&(l.distAxX=0,h=this.placeEl.prev(k.itemNodeName),l.distX>0&&h.length&&!h.hasClass(k.collapsedClass)&&(e=h.find(k.listNodeName).last(),j=this.placeEl.parents(k.listNodeName).length,j+this.dragDepth<=k.maxDepth&&(e.length?(e=h.children(k.listNodeName).last(),e.append(this.placeEl)):(e=a("<"+k.listNodeName+"/>").addClass(k.listClass),e.append(this.placeEl),h.append(e),this.setParent(h)))),l.distX<0&&(i=this.placeEl.next(k.itemNodeName),i.length||(f=this.placeEl.parent(),this.placeEl.closest(k.itemNodeName).after(this.placeEl),f.children().length||this.unsetParent(f.parent()))));var n=!1;if(g||(this.dragEl[0].style.visibility="hidden"),this.pointEl=a(c.elementFromPoint(d.pageX-c.body.scrollLeft,d.pageY-(b.pageYOffset||c.documentElement.scrollTop))),g||(this.dragEl[0].style.visibility="visible"),this.pointEl.hasClass(k.handleClass)&&(this.pointEl=this.pointEl.parent(k.itemNodeName)),this.pointEl.hasClass(k.emptyClass))n=!0;else if(!this.pointEl.length||!this.pointEl.hasClass(k.itemClass))return;var o=this.pointEl.closest("."+k.rootClass),p=this.dragRootEl.data("nestable-id")!==o.data("nestable-id");if(!l.dirAx||p||n){if(p&&k.group!==o.data("nestable-group"))return;if(j=this.dragDepth-1+this.pointEl.parents(k.listNodeName).length,j>k.maxDepth)return;var q=d.pageY<this.pointEl.offset().top+this.pointEl.height()/2;f=this.placeEl.parent(),n?(e=a(c.createElement(k.listNodeName)).addClass(k.listClass),e.append(this.placeEl),this.pointEl.replaceWith(e)):q?this.pointEl.before(this.placeEl):this.pointEl.after(this.placeEl),f.children().length||this.unsetParent(f.parent()),this.dragRootEl.find(k.itemNodeName).length||this.dragRootEl.append('<div class="'+k.emptyClass+'"/>'),p&&(this.dragRootEl=o,this.hasNewRoot=this.el[0]!==this.dragRootEl[0])}}},a.fn.nestable=function(b){var c=this,d=this;return c.each(function(){var c=a(this).data("nestable");c?"string"==typeof b&&"function"==typeof c[b]&&(d=c[b]()):(a(this).data("nestable",new e(this,b)),a(this).data("nestable-id",(new Date).getTime()))}),d||c}}(window.jQuery||window.Zepto,window,document);
+/**
+ * jQuery CSS Customizable Scrollbar
+ *
+ * Copyright 2014, Yuriy Khabarov
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * If you found bug, please contact me via email <13real008@gmail.com>
+ *
+ * @author Yuriy Khabarov aka Gromo
+ * @version 0.2.5
+ * @url https://github.com/gromo/jquery.scrollbar/
+ *
+ */
+;
+(function($, doc, win){
+    'use strict';
+
+    // init flags & variables
+    var debug = false;
+    var lmb = 1, px = "px";
+
+    var browser = {
+        "data": {},
+        "macosx": win.navigator.platform.toLowerCase().indexOf('mac') !== -1,
+        "mobile": /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(win.navigator.userAgent),
+        "overlay": null,
+        "scroll": null,
+        "scrolls": [],
+        "webkit": /WebKit/.test(win.navigator.userAgent),
+
+        "log": debug ? function(data, toString){
+            var output = data;
+            if(toString && typeof data != "string"){
+                output = [];
+                $.each(data, function(i, v){
+                    output.push('"' + i + '": ' + v);
+                });
+                output = output.join(", ");
+            }
+            if(win.console && win.console.log){
+                win.console.log(output);
+            } else {
+                alert(output);
+            }
+        } : function(){
+
+        }
+    };
+
+    var defaults = {
+        "autoScrollSize": true,     // automatically calculate scrollsize
+        "autoUpdate": true,         // update scrollbar if content/container size changed
+        "debug": false,             // debug mode
+        "disableBodyScroll": false, // disable body scroll if mouse over container
+        "duration": 200,            // scroll animate duration in ms
+        "ignoreMobile": true,       // ignore mobile devices
+        "ignoreOverlay": true,      // ignore browsers with overlay scrollbars (mobile, MacOS)
+        "scrollStep": 30,           // scroll step for scrollbar arrows
+        "showArrows": false,        // add class to show arrows
+        "stepScrolling": true,      // when scrolling to scrollbar mousedown position
+        "type":"simple",            // [advanced|simple] scrollbar html type
+
+        "scrollx": null,            // horizontal scroll element
+        "scrolly": null,            // vertical scroll element
+
+        "onDestroy": null,          // callback function on destroy,
+        "onInit": null,             // callback function on first initialization
+        "onScroll": null,           // callback function on content scrolling
+        "onUpdate": null            // callback function on init/resize (before scrollbar size calculation)
+    };
+
+
+    var customScrollbar = function(container, options){
+
+        if(!browser.scroll){
+            browser.log("Init jQuery Scrollbar v0.2.5");
+            browser.overlay = isScrollOverlaysContent();
+            browser.scroll = getBrowserScrollSize();
+            updateScrollbars();
+
+            $(win).resize(function(){
+                var forceUpdate = false;
+                if(browser.scroll && (browser.scroll.height || browser.scroll.width)){
+                    var scroll = getBrowserScrollSize();
+                    if(scroll.height != browser.scroll.height || scroll.width != browser.scroll.width){
+                        browser.scroll = scroll;
+                        forceUpdate = true; // handle page zoom
+                    }
+                }
+                updateScrollbars(forceUpdate);
+            });
+        }
+
+        this.container = container;
+        this.options = $.extend({}, defaults, win.jQueryScrollbarOptions || {});
+        this.scrollTo = null;
+        this.scrollx = {};
+        this.scrolly = {};
+
+        this.init(options);
+    };
+
+    customScrollbar.prototype = {
+
+        destroy: function(){
+
+            if(!this.wrapper){
+                return;
+            }
+
+            // init variables
+            var scrollLeft = this.container.scrollLeft();
+            var scrollTop  = this.container.scrollTop();
+
+            this.container.insertBefore(this.wrapper).css({
+                "height":"",
+                "margin":""
+            })
+            .removeClass("scroll-content")
+            .removeClass("scroll-scrollx_visible")
+            .removeClass("scroll-scrolly_visible")
+            .off(".scrollbar")
+            .scrollLeft(scrollLeft)
+            .scrollTop(scrollTop);
+
+            this.scrollx.scrollbar.removeClass("scroll-scrollx_visible").find("div").andSelf().off(".scrollbar");
+            this.scrolly.scrollbar.removeClass("scroll-scrolly_visible").find("div").andSelf().off(".scrollbar");
+
+            this.wrapper.remove();
+
+            $(doc).add("body").off(".scrollbar");
+
+            if($.isFunction(this.options.onDestroy))
+                this.options.onDestroy.apply(this, [this.container]);
+        },
+
+
+
+        getScrollbar: function(d){
+
+            var scrollbar = this.options["scroll" + d];
+            var html = {
+                "advanced":
+                '<div class="scroll-element_corner"></div>' +
+                '<div class="scroll-arrow scroll-arrow_less"></div>' +
+                '<div class="scroll-arrow scroll-arrow_more"></div>' +
+                '<div class="scroll-element_outer">' +
+                '    <div class="scroll-element_size"></div>' + // required! used for scrollbar size calculation !
+                '    <div class="scroll-element_inner-wrapper">' +
+                '        <div class="scroll-element_inner scroll-element_track">'  + // used for handling scrollbar click
+                '            <div class="scroll-element_inner-bottom"></div>' +
+                '        </div>' +
+                '    </div>' +
+                '    <div class="scroll-bar">' +
+                '        <div class="scroll-bar_body">' +
+                '            <div class="scroll-bar_body-inner"></div>' +
+                '        </div>' +
+                '        <div class="scroll-bar_bottom"></div>' +
+                '        <div class="scroll-bar_center"></div>' +
+                '    </div>' +
+                '</div>',
+
+                "simple":
+                '<div class="scroll-element_outer">' +
+                '    <div class="scroll-element_size"></div>'  + // required! used for scrollbar size calculation !
+                '    <div class="scroll-element_track"></div>' + // used for handling scrollbar click
+                '    <div class="scroll-bar"></div>' +
+                '</div>'
+            };
+            var type = html[this.options.type] ? this.options.type : "advanced";
+
+            if(scrollbar){
+                if(typeof(scrollbar) == "string"){
+                    scrollbar = $(scrollbar).appendTo(this.wrapper);
+                } else {
+                    scrollbar = $(scrollbar);
+                }
+            } else {
+                scrollbar = $("<div>").addClass("scroll-element").html(html[type]).appendTo(this.wrapper);
+            }
+
+            if(this.options.showArrows){
+                scrollbar.addClass("scroll-element_arrows_visible");
+            }
+
+            return scrollbar.addClass("scroll-" + d);
+        },
+
+
+
+        init: function(options){
+
+            // init variables
+            var S = this;
+
+            var c = this.container;
+            var cw = this.containerWrapper || c;
+            var o = $.extend(this.options, options || {});
+            var s = {
+                "x": this.scrollx,
+                "y": this.scrolly
+            };
+            var w = this.wrapper;
+
+            var initScroll = {
+                "scrollLeft": c.scrollLeft(),
+                "scrollTop": c.scrollTop()
+            };
+
+            // do not init if in ignorable browser
+            if ((browser.mobile && o.ignoreMobile)
+                    || (browser.overlay && o.ignoreOverlay)
+                    || (browser.macosx && !browser.webkit) // still required to ignore nonWebKit browsers on Mac
+                    ) {
+                return false;
+            }
+
+            // init scroll container
+            if(!w){
+                this.wrapper = w = $('<div>').addClass('scroll-wrapper').addClass(c.attr('class'))
+                .css('position', c.css('position') == 'absolute' ? 'absolute' : 'relative')
+                .insertBefore(c).append(c);
+
+                if(c.is('textarea')){
+                    this.containerWrapper = cw = $('<div>').insertBefore(c).append(c);
+                    w.addClass('scroll-textarea');
+                }
+
+                cw.addClass("scroll-content").css({
+                    "height":"",
+                    "margin-bottom": browser.scroll.height * -1 + px,
+                    "margin-right":  browser.scroll.width  * -1 + px
+                });
+
+                c.on("scroll.scrollbar", function(event){
+                    if($.isFunction(o.onScroll)){
+                        o.onScroll.call(S, {
+                            "maxScroll": s.y.maxScrollOffset,
+                            "scroll": c.scrollTop(),
+                            "size": s.y.size,
+                            "visible": s.y.visible
+                        }, {
+                            "maxScroll": s.x.maxScrollOffset,
+                            "scroll": c.scrollLeft(),
+                            "size": s.x.size,
+                            "visible": s.x.visible
+                        });
+                    }
+                    s.x.isVisible && s.x.scroller.css("left", c.scrollLeft() * s.x.kx + px);
+                    s.y.isVisible && s.y.scroller.css("top",  c.scrollTop()  * s.y.kx + px);
+                });
+
+                /* prevent native scrollbars to be visible on #anchor click */
+                w.on("scroll", function(){
+                    w.scrollTop(0).scrollLeft(0);
+                });
+
+                if(o.disableBodyScroll){
+                    var handleMouseScroll = function(event){
+                        isVerticalScroll(event) ?
+                        s.y.isVisible && s.y.mousewheel(event) :
+                        s.x.isVisible && s.x.mousewheel(event);
+                    };
+                    w.on({
+                        "MozMousePixelScroll.scrollbar": handleMouseScroll,
+                        "mousewheel.scrollbar": handleMouseScroll
+                    });
+
+                    if(browser.mobile){
+                        w.on("touchstart.scrollbar", function(event){
+                            var touch = event.originalEvent.touches && event.originalEvent.touches[0] || event;
+                            var originalTouch = {
+                                "pageX": touch.pageX,
+                                "pageY": touch.pageY
+                            };
+                            var originalScroll = {
+                                "left": c.scrollLeft(),
+                                "top": c.scrollTop()
+                            };
+                            $(doc).on({
+                                "touchmove.scrollbar": function(event){
+                                    var touch = event.originalEvent.targetTouches && event.originalEvent.targetTouches[0] || event;
+                                    c.scrollLeft(originalScroll.left + originalTouch.pageX - touch.pageX);
+                                    c.scrollTop(originalScroll.top + originalTouch.pageY - touch.pageY);
+                                    event.preventDefault();
+                                },
+                                "touchend.scrollbar": function(){
+                                    $(doc).off(".scrollbar");
+                                }
+                            });
+                        });
+                    }
+                }
+                if($.isFunction(o.onInit))
+                    o.onInit.apply(this, [c]);
+            } else {
+                cw.css({
+                    "height":"",
+                    "margin-bottom": browser.scroll.height * -1 + px,
+                    "margin-right":  browser.scroll.width  * -1 + px
+                });
+            }
+
+            // init scrollbars & recalculate sizes
+            $.each(s, function(d, scrollx){
+
+                var scrollCallback = null;
+                var scrollForward = 1;
+                var scrollOffset = (d == "x") ? "scrollLeft" : "scrollTop";
+                var scrollStep = o.scrollStep;
+                var scrollTo = function(){
+                    var currentOffset = c[scrollOffset]();
+                    c[scrollOffset](currentOffset + scrollStep);
+                    if(scrollForward == 1 && (currentOffset + scrollStep) >= scrollToValue)
+                        currentOffset = c[scrollOffset]();
+                    if(scrollForward == -1 && (currentOffset + scrollStep) <= scrollToValue)
+                        currentOffset = c[scrollOffset]();
+                    if(c[scrollOffset]() == currentOffset && scrollCallback){
+                        scrollCallback();
+                    }
+                }
+                var scrollToValue = 0;
+
+                if(!scrollx.scrollbar){
+
+                    scrollx.scrollbar = S.getScrollbar(d);
+                    scrollx.scroller = scrollx.scrollbar.find(".scroll-bar");
+
+                    scrollx.mousewheel = function(event){
+
+                        if(!scrollx.isVisible || (d == 'x' && isVerticalScroll(event))){
+                            return true;
+                        }
+                        if(d == 'y' && !isVerticalScroll(event)){
+                            s.x.mousewheel(event);
+                            return true;
+                        }
+
+                        var delta = event.originalEvent.wheelDelta * -1 || event.originalEvent.detail;
+                        var maxScrollValue = scrollx.size - scrollx.visible - scrollx.offset;
+
+                        if(!((scrollToValue <= 0 && delta < 0) || (scrollToValue >= maxScrollValue && delta > 0))){
+                            scrollToValue = scrollToValue + delta;
+                            if(scrollToValue < 0)
+                                scrollToValue = 0;
+                            if(scrollToValue > maxScrollValue)
+                                scrollToValue = maxScrollValue;
+
+                            S.scrollTo = S.scrollTo || {};
+                            S.scrollTo[scrollOffset] = scrollToValue;
+                            setTimeout(function(){
+                                if(S.scrollTo){
+                                    c.stop().animate(S.scrollTo, 240, 'linear', function(){
+                                        scrollToValue = c[scrollOffset]();
+                                    });
+                                    S.scrollTo = null;
+                                }
+                            }, 1);
+                        }
+
+                        event.preventDefault();
+                        return false;
+                    };
+
+                    scrollx.scrollbar.on({
+                        "MozMousePixelScroll.scrollbar": scrollx.mousewheel,
+                        "mousewheel.scrollbar": scrollx.mousewheel,
+                        "mouseenter.scrollbar": function(){
+                            scrollToValue = c[scrollOffset]();
+                        }
+                    });
+
+                    // handle arrows & scroll inner mousedown event
+                    scrollx.scrollbar.find(".scroll-arrow, .scroll-element_track")
+                    .on("mousedown.scrollbar", function(event){
+
+                        if(event.which != lmb)
+                            return true;
+
+                        scrollForward = 1;
+
+                        var data = {
+                            "eventOffset": event[(d == "x") ? "pageX" : "pageY"],
+                            "maxScrollValue": scrollx.size - scrollx.visible - scrollx.offset,
+                            "scrollbarOffset": scrollx.scroller.offset()[(d == "x") ? "left" : "top"],
+                            "scrollbarSize": scrollx.scroller[(d == "x") ? "outerWidth" : "outerHeight"]()
+                        };
+                        var timeout = 0, timer = 0;
+
+                        if($(this).hasClass('scroll-arrow')){
+                            scrollForward = $(this).hasClass("scroll-arrow_more") ? 1 : -1;
+                            scrollStep = o.scrollStep * scrollForward;
+                            scrollToValue = scrollForward > 0 ? data.maxScrollValue : 0;
+                        } else {
+                            scrollForward = (data.eventOffset > (data.scrollbarOffset + data.scrollbarSize) ? 1
+                                : (data.eventOffset < data.scrollbarOffset ? -1 : 0));
+                            scrollStep = Math.round(scrollx.visible * 0.75) * scrollForward;
+                            scrollToValue = (data.eventOffset - data.scrollbarOffset -
+                                (o.stepScrolling ? (scrollForward == 1 ? data.scrollbarSize : 0)
+                                    : Math.round(data.scrollbarSize / 2)));
+                            scrollToValue = c[scrollOffset]() + (scrollToValue / scrollx.kx);
+                        }
+
+                        S.scrollTo = S.scrollTo || {};
+                        S.scrollTo[scrollOffset] = o.stepScrolling ? c[scrollOffset]() + scrollStep : scrollToValue;
+
+                        if(o.stepScrolling){
+                            scrollCallback = function(){
+                                scrollToValue = c[scrollOffset]();
+                                clearInterval(timer);
+                                clearTimeout(timeout);
+                                timeout = 0;
+                                timer = 0;
+                            };
+                            timeout = setTimeout(function(){
+                                timer = setInterval(scrollTo, 40);
+                            }, o.duration + 100);
+                        }
+
+                        setTimeout(function(){
+                            if(S.scrollTo){
+                                c.animate(S.scrollTo, o.duration);
+                                S.scrollTo = null;
+                            }
+                        }, 1);
+
+                        return handleMouseDown(scrollCallback, event);
+                    });
+
+                    // handle scrollbar drag'n'drop
+                    scrollx.scroller.on("mousedown.scrollbar", function(event){
+
+                        if(event.which != lmb)
+                            return true;
+
+                        var eventPosition = event[(d == "x")? "pageX" : "pageY"];
+                        var initOffset = c[scrollOffset]();
+
+                        scrollx.scrollbar.addClass("scroll-draggable");
+
+                        $(doc).on("mousemove.scrollbar", function(event){
+                            var diff = parseInt((event[(d == "x")? "pageX" : "pageY"] - eventPosition) / scrollx.kx, 10);
+                            c[scrollOffset](initOffset + diff);
+                        });
+
+                        return handleMouseDown(function(){
+                            scrollx.scrollbar.removeClass("scroll-draggable");
+                            scrollToValue = c[scrollOffset]();
+                        }, event);
+                    });
+                }
+            });
+
+            // remove classes & reset applied styles
+            $.each(s, function(d, scrollx){
+                var scrollClass = "scroll-scroll" + d + "_visible";
+                var scrolly = (d == "x") ? s.y : s.x;
+
+                scrollx.scrollbar.removeClass(scrollClass);
+                scrolly.scrollbar.removeClass(scrollClass);
+                cw.removeClass(scrollClass);
+            });
+
+            // calculate init sizes
+            $.each(s, function(d, scrollx){
+                $.extend(scrollx, (d == "x") ? {
+                    "offset": parseInt(c.css("left"), 10) || 0,
+                    "size": c.prop("scrollWidth"),
+                    "visible": w.width()
+                } : {
+                    "offset": parseInt(c.css("top"), 10) || 0,
+                    "size": c.prop("scrollHeight"),
+                    "visible": w.height()
+                });
+            });
+
+
+            var updateScroll = function(d, scrollx){
+
+                var scrollClass = "scroll-scroll" + d + "_visible";
+                var scrolly = (d == "x") ? s.y : s.x;
+                var offset = parseInt(c.css((d == "x") ? "left" : "top"), 10) || 0;
+
+                var AreaSize = scrollx.size;
+                var AreaVisible = scrollx.visible + offset;
+
+                scrollx.isVisible = (AreaSize - AreaVisible) > 1; // bug in IE9/11 with 1px diff
+                if(scrollx.isVisible){
+                    scrollx.scrollbar.addClass(scrollClass);
+                    scrolly.scrollbar.addClass(scrollClass);
+                    cw.addClass(scrollClass);
+                } else {
+                    scrollx.scrollbar.removeClass(scrollClass);
+                    scrolly.scrollbar.removeClass(scrollClass);
+                    cw.removeClass(scrollClass);
+                }
+
+                if(d == "y" && (scrollx.isVisible || scrollx.size < scrollx.visible)){
+                    cw.css("height", (AreaVisible + browser.scroll.height) + px);
+                }
+
+                if(s.x.size != c.prop("scrollWidth")
+                    || s.y.size != c.prop("scrollHeight")
+                    || s.x.visible != w.width()
+                    || s.y.visible != w.height()
+                    || s.x.offset  != (parseInt(c.css("left"), 10) || 0)
+                    || s.y.offset  != (parseInt(c.css("top"), 10) || 0)
+                    ){
+                    $.each(s, function(d, scrollx){
+                        $.extend(scrollx, (d == "x") ? {
+                            "offset": parseInt(c.css("left"), 10) || 0,
+                            "size": c.prop("scrollWidth"),
+                            "visible": w.width()
+                        } : {
+                            "offset": parseInt(c.css("top"), 10) || 0,
+                            "size": c.prop("scrollHeight"),
+                            "visible": w.height()
+                        });
+                    });
+                    updateScroll(d == "x" ? "y" : "x", scrolly);
+                }
+            };
+            $.each(s, updateScroll);
+
+            if($.isFunction(o.onUpdate))
+                o.onUpdate.apply(this, [c]);
+
+            // calculate scroll size
+            $.each(s, function(d, scrollx){
+
+                var cssOffset = (d == "x") ? "left" : "top";
+                var cssFullSize = (d == "x") ? "outerWidth" : "outerHeight";
+                var cssSize = (d == "x") ? "width" : "height";
+                var offset = parseInt(c.css(cssOffset), 10) || 0;
+
+                var AreaSize = scrollx.size;
+                var AreaVisible = scrollx.visible + offset;
+
+                var scrollSize = scrollx.scrollbar.find(".scroll-element_size");
+                scrollSize = scrollSize[cssFullSize]() + (parseInt(scrollSize.css(cssOffset), 10) || 0);
+
+                if(o.autoScrollSize){
+                    scrollx.scrollbarSize = parseInt(scrollSize * AreaVisible / AreaSize, 10);
+                    scrollx.scroller.css(cssSize, scrollx.scrollbarSize + px);
+                }
+
+                scrollx.scrollbarSize = scrollx.scroller[cssFullSize]();
+                scrollx.kx = ((scrollSize - scrollx.scrollbarSize) / (AreaSize - AreaVisible)) || 1;
+                scrollx.maxScrollOffset = AreaSize - AreaVisible;
+            });
+
+            c.scrollLeft(initScroll.scrollLeft).scrollTop(initScroll.scrollTop).trigger("scroll");
+        }
+    };
+
+    /*
+     * Extend jQuery as plugin
+     *
+     * @param {object|string} options or command to execute
+     * @param {object|array} args additional arguments as array []
+     */
+    $.fn.scrollbar = function(options, args){
+
+        var toReturn = this;
+
+        if(options === "get")
+            toReturn = null;
+
+        this.each(function() {
+
+            var container = $(this);
+
+            if(container.hasClass("scroll-wrapper")
+                || container.get(0).nodeName == "body"){
+                return true;
+            }
+
+            var instance = container.data("scrollbar");
+            if(instance){
+                if(options === "get"){
+                    toReturn = instance;
+                    return false;
+                }
+
+                var func = (typeof options == "string" && instance[options]) ? options : "init";
+                instance[func].apply(instance, $.isArray(args) ? args : []);
+
+                if(options === "destroy"){
+                    container.removeData("scrollbar");
+                    while($.inArray(instance, browser.scrolls) >= 0)
+                        browser.scrolls.splice($.inArray(instance, browser.scrolls), 1);
+                }
+            } else {
+                if(typeof options != "string"){
+                    instance = new customScrollbar(container, options);
+                    container.data("scrollbar", instance);
+                    browser.scrolls.push(instance);
+                }
+            }
+            return true;
+        });
+
+        return toReturn;
+    };
+
+    /**
+     * Connect default options to global object
+     */
+    $.fn.scrollbar.options = defaults;
+
+    /**
+     * Extend AngularJS as UI directive
+     *
+     *
+     */
+    if(win.angular){
+        (function(angular){
+            var app = angular.module('jQueryScrollbar', []);
+            app.directive('jqueryScrollbar', function(){
+                return {
+                    "link": function(scope, element){
+                        element.scrollbar(scope.options).on('$destroy', function(){
+                            element.scrollbar('destroy');
+                        });
+                    },
+                    "restring": "AC",
+                    "scope": {
+                        "options": "=jqueryScrollbar"
+                    }
+                };
+            });
+        })(win.angular);
+    }
+
+    /**
+     * Check if scroll content/container size is changed
+     */
+    var timer = 0, timerCounter = 0;
+    var updateScrollbars = function(force){
+        var i, c, o, s, w, x, y;
+        for( i = 0; i < browser.scrolls.length; i++){
+            s = browser.scrolls[i];
+            c = s.container;
+            o = s.options;
+            w = s.wrapper;
+            x = s.scrollx;
+            y = s.scrolly;
+            if(force || (o.autoUpdate && w && w.is(":visible") &&
+                (c.prop("scrollWidth") != x.size
+                    || c.prop("scrollHeight") != y.size
+                    || w.width()  != x.visible
+                    || w.height() != y.visible
+                    ))){
+                s.init();
+
+                if(debug){
+                    browser.log({
+                        "scrollHeight":  c.prop("scrollHeight") + ":" + s.scrolly.size,
+                        "scrollWidth":   c.prop("scrollWidth") + ":" + s.scrollx.size,
+                        "visibleHeight": w.height() + ":" + s.scrolly.visible,
+                        "visibleWidth":  w.width() + ":" + s.scrollx.visible
+                    }, true);
+                    timerCounter++;
+                }
+            }
+        }
+        if(debug && timerCounter > 10){
+            browser.log("Scroll updates exceed 10");
+            updateScrollbars = function(){};
+        } else {
+            clearTimeout(timer);
+            timer = setTimeout(updateScrollbars, 300);
+        }
+    };
+
+    /* ADDITIONAL FUNCTIONS */
+    /**
+     * Get native browser scrollbar size (height/width)
+     *
+     * @param {Boolean} actual size or CSS size, default - CSS size
+     * @returns {Object} with height, width
+     */
+    function getBrowserScrollSize(actualSize){
+
+        if(browser.webkit && !actualSize){
+            return {
+                "height": 0,
+                "width": 0
+            };
+        }
+
+        if(!browser.data.outer){
+            var css = {
+                "border":  "none",
+                "box-sizing": "content-box",
+                "height":  "200px",
+                "margin":  "0",
+                "padding": "0",
+                "width":   "200px"
+            };
+            browser.data.inner = $("<div>").css($.extend({}, css));
+            browser.data.outer = $("<div>").css($.extend({
+                "left":       "-1000px",
+                "overflow":   "scroll",
+                "position":   "absolute",
+                "top":        "-1000px"
+            }, css)).append(browser.data.inner).appendTo("body");
+        }
+
+        browser.data.outer.scrollLeft(1000).scrollTop(1000);
+
+        return {
+            "height": Math.ceil((browser.data.outer.offset().top - browser.data.inner.offset().top) || 0),
+            "width": Math.ceil((browser.data.outer.offset().left - browser.data.inner.offset().left) || 0)
+        };
+    }
+
+    function handleMouseDown(callback, event){
+        $(doc).on({
+            "blur.scrollbar": function(){
+                $(doc).add('body').off('.scrollbar');
+                callback && callback();
+            },
+            "dragstart.scrollbar": function(event){
+                event.preventDefault();
+                return false;
+            },
+            "mouseup.scrollbar": function(){
+                $(doc).add('body').off('.scrollbar');
+                callback && callback();
+            }
+        });
+        $("body").on({
+            "selectstart.scrollbar": function(event){
+                event.preventDefault();
+                return false;
+            }
+        });
+        event && event.preventDefault();
+        return false;
+    }
+
+    /**
+     * Check if native browser scrollbars overlay content
+     *
+     * @returns {Boolean}
+     */
+    function isScrollOverlaysContent(){
+        var scrollSize = getBrowserScrollSize(true);
+        return !(scrollSize.height || scrollSize.width);
+    }
+
+    function isVerticalScroll(event){
+        var e = event.originalEvent;
+        if (e.axis && e.axis === e.HORIZONTAL_AXIS)
+            return false;
+        if (e.wheelDeltaX)
+            return false;
+        return true;
+    }
+
+})(jQuery, document, window);
+/***********************************************
+* koGrid JavaScript Library
+* Authors: https://github.com/ericmbarnard/koGrid/blob/master/README.md
+* License: MIT (http://www.opensource.org/licenses/mit-license.php)
+* Compiled At: 12/19/2012 10:15:47
+***********************************************/
+/***********************************************
+* koGrid JavaScript Library
+* Authors: https://github.com/ericmbarnard/koGrid/blob/master/README.md
+* License: MIT (http://www.opensource.org/licenses/mit-license.php)
+* Compiled At: 12/19/2012 10:15:47
+***********************************************/
+
+(function (window) {
+    'use strict';
+
+    /***********************************************
+    * FILE: ..\src\namespace.js
+    ***********************************************/
+    if (!window.kg) {
+        window.kg = {};
+    }
+    window.kg.numberOfGrids = 0;
+    window.kg.eventStorage = {};
+
+    /***********************************************
+    * FILE: ..\src\constants.js
+    ***********************************************/
+    var SELECTED_PROP = '__kg_selected__',
+        GRID_KEY = '__koGrid__',
+        // the # of rows we want to add to the top and bottom of the rendered grid rows 
+        EXCESS_ROWS = 8,
+        SCROLL_THRESHOLD = 6,
+        ASC = "asc", // constant for sorting direction
+        DESC = "desc", // constant for sorting direction
+        KG_FIELD = '_kg_field_',
+        KG_DEPTH = '_kg_depth_',
+        KG_HIDDEN = '_kg_hidden_',
+        KG_COLUMN = '_kg_column_',
+        TEMPLATE_REGEXP = /<.+>/;
+
+    /***********************************************
+    * FILE: ..\src\navigation.js
+    ***********************************************/
+    //set event binding on the grid so we can select using the up/down keys
+    window.kg.moveSelectionHandler = function (grid, evt) {
+        // null checks 
+        if (window.kg.utils.isNullOrUndefined(grid) || window.kg.utils.isNullOrUndefined(grid.config.selectedItems)) {
+            return true;
+        }
+        var charCode = evt.which || evt.keyCode,
+            // detect which direction for arrow keys to navigate the grid
+            offset = (charCode === 38 ? -1 : (charCode === 40 ? 1 : null));
+        if (!offset) {
+            return true;
+        }
+        var items = grid.renderedRows(),
+            index = items.indexOf(grid.selectionService.lastClickedRow) + offset;
+        if (index < 0 || index >= items.length) {
+            return true;
+        }
+        grid.selectionService.ChangeSelection(items[index], evt);
+        if (index > items.length - EXCESS_ROWS) {
+            grid.$viewport.scrollTop(grid.$viewport.scrollTop() + (grid.config.rowHeight * EXCESS_ROWS));
+        } else if (index < EXCESS_ROWS) {
+            grid.$viewport.scrollTop(grid.$viewport.scrollTop() - (grid.config.rowHeight * EXCESS_ROWS));
+        }
+        return false;
+    };
+
+    /***********************************************
+    * FILE: ..\src\utils.js
+    ***********************************************/
+    if (!String.prototype.trim) {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, '');
+        };
+    }
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function (elt /*, from*/) {
+            var len = this.length >>> 0;
+            var from = Number(arguments[1]) || 0;
+            from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+            if (from < 0) {
+                from += len;
+            }
+            for (; from < len; from++) {
+                if (from in this && this[from] === elt) {
+                    return from;
+                }
+            }
+            return -1;
+        };
+    }
+    if (!Array.prototype.filter) {
+        Array.prototype.filter = function (fun /*, thisp */) {
+            "use strict";
+            var t = Object(this),
+                len = t.length >>> 0;
+            if (typeof fun !== "function") {
+                throw new TypeError();
+            }
+            var res = [];
+            var thisp = arguments[1];
+            for (var i = 0; i < len; i++) {
+                if (i in t) {
+                    var val = t[i]; // in case fun mutates this
+                    if (fun.call(thisp, val, i, t)) {
+                        res.push(val);
+                    }
+                }
+            }
+            return res;
+        };
+    }
+    window.kg.utils = {
+        visualLength: function (node) {
+            var elem = document.getElementById('testDataLength');
+            if (!elem) {
+                elem = document.createElement('SPAN');
+                elem.id = "testDataLength";
+                elem.style.visibility = "hidden";
+                document.body.appendChild(elem);
+            }
+            $(elem).css('font', $(node).css('font'));
+            elem.innerHTML = $(node).text();
+            return elem.offsetWidth;
+        },
+        forIn: function (obj, action) {
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    action(obj[prop], prop);
+                }
+            }
+        },
+        evalProperty: function (entity, path) {
+            var e = ko.utils.unwrapObservable(entity);
+            var propPath = path.split('.'), i = 0;
+            var tempProp = ko.utils.unwrapObservable(e[propPath[i]]), links = propPath.length;
+            i++;
+            while (tempProp && i < links) {
+                tempProp = ko.utils.unwrapObservable(tempProp[propPath[i]]);
+                i++;
+            }
+            return tempProp;
+        },
+        endsWith: function (str, suffix) {
+            if (!str || !suffix || typeof str != "string") {
+                return false;
+            }
+            return str.indexOf(suffix, str.length - suffix.length) !== -1;
+        },
+        isNullOrUndefined: function (obj) {
+            if (obj === undefined || obj === null) {
+                return true;
+            }
+            return false;
+        },
+        getElementsByClassName: function (cl) {
+            var retnode = [];
+            var myclass = new RegExp('\\b' + cl + '\\b');
+            var elem = document.getElementsByTagName('*');
+            for (var i = 0; i < elem.length; i++) {
+                var classes = elem[i].className;
+                if (myclass.test(classes)) {
+                    retnode.push(elem[i]);
+                }
+            }
+            return retnode;
+        },
+        getTemplatePromise: function (path) {
+            return $.ajax(path);
+        },
+        newId: (function () {
+            var seedId = new Date().getTime();
+            return function () {
+                return seedId += 1;
+            };
+        })(),
+
+        // we copy KO's ie detection here bc it isn't exported in the min versions of KO
+        // Detect IE versions for workarounds (uses IE conditionals, not UA string, for robustness) 
+        ieVersion: (function () {
+            var version = 3, div = document.createElement('div'), iElems = div.getElementsByTagName('i');
+            // Keep constructing conditional HTML blocks until we hit one that resolves to an empty fragment
+            while (div.innerHTML = '<!--[if gt IE ' + (++version) + ']><i></i><![endif]-->',
+            iElems[0]);
+            return version > 4 ? version : undefined;
+        })()
+    };
+
+    $.extend(window.kg.utils, {
+        isIe6: (function () {
+            return window.kg.utils.ieVersion === 6;
+        })(),
+        isIe7: (function () {
+            return window.kg.utils.ieVersion === 7;
+        })(),
+        isIe: (function () {
+            return window.kg.utils.ieVersion !== undefined;
+        })()
+    });
+
+    /***********************************************
+    * FILE: ..\src\templates\gridTemplate.html
+    ***********************************************/
+    window.kg.defaultGridTemplate = function () { return '<div data-bind="css: {\'ui-widget\': jqueryUITheme, \'kgNoSelect\' : disableTextSelection}"><div class="kgTopPanel" data-bind="css: {\'ui-widget-header\':jqueryUITheme, \'ui-corner-top\': jqueryUITheme}, style: $data.topPanelStyle"><div class="kgGroupPanel" data-bind="visible: $data.showGroupPanel, style: headerStyle"><div class="kgGroupPanelDescription" data-bind="visible: configGroups().length == 0">Drag a column header here and drop it to group by that column</div><ul data-bind="visible: configGroups().length > 0, foreach: configGroups" class="kgGroupList"><li class="kgGroupItem"><span class="kgGroupElement"><div class="kgGroupName"><span data-bind="text: displayName"></span><span data-bind="click: function(data) { $root.removeGroup($index()) }" class="kgRemoveGroup">x</span></div><span data-bind="visible: $index() < ($root.configGroups().length - 1)" class="kgGroupArrow"></span></span></li></ul></div><div class="kgHeaderContainer" data-bind="style: headerStyle"><div class="kgHeaderScroller" data-bind="style: headerScrollerStyle, kgHeaderRow: $data" ></div></div><div class="kgHeaderButton" data-bind="visible: ($data.showColumnMenu || $data.showFilter), click: toggleShowMenu"><div class="kgHeaderButtonArrow"></div></div><div data-bind="visible: showMenu" class="kgColMenu"><div data-bind="visible: showFilter"><input placeholder="Seach Field:Value" type="text" data-bind="value: filterText, valueUpdate: \'afterkeydown\'"/></div><div data-bind="visible: showColumnMenu"><span class="kgMenuText">Choose Columns:</span><ul class="kgColList" data-bind="foreach: nonAggColumns"><li class="kgColListItem"><label style="position: relative;"><input type="checkbox" class="kgColListCheckbox" data-bind="checked: visible"/><span data-bind="text: displayName, click: toggleVisible"></span><a title="Group By" data-bind="attr: {\'class\': groupedByClass }, visible: (field != \'\u2714\'), click: $parent.groupBy"></a><span class="kgGroupingNumber" data-bind="visible: groupIndex() > 0, text: groupIndex"></span></label></li></ul></div></div></div><div class="kgViewport" data-bind="css: {\'ui-widget-content\': jqueryUITheme}, style: viewportStyle"><div class="kgCanvas" data-bind="style: canvasStyle"><div data-bind="foreach: renderedRows" style="position: absolute;"><div data-bind="style: { \'top\': offsetTop, \'height\': $parent.rowHeight + \'px\' }, click: toggleSelected, css: {\'selected\': selected, \'even\': isEven , \'odd\': isOdd, \'ui-state-default\': $parent.jqueryUITheme && isOdd, \'ui-state-active\':$parent.jqueryUITheme && isEven}, kgRow: $data" class="kgRow"></div></div></div></div><div class="kgFooterPanel" data-bind="css: {\'ui-widget-content\': jqueryUITheme, \'ui-corner-bottom\': jqueryUITheme}, style: footerStyle"><div class="kgTotalSelectContainer" data-bind="visible: footerVisible"><div class="kgFooterTotalItems" data-bind="css: {\'kgNoMultiSelect\': !multiSelect}" ><span class="kgLabel">Total Items: <span data-bind="text: maxRowsDisplay"></span></span><span data-bind="visible: filterText().length > 0" class="kgLabel">(Showing: <span data-bind="text: totalFilteredItemsLength"></span>)</span></div><div class="btn-group" role="group"><button type="button" data-bind="click: loadMoreData" class="btn btn-xs btn-default"><i class="fa fa-download"></i></button><div data-bind="css: { hidden: !isLoadingMoreData() }" style="margin-left: 25px; "><span style="margin-left: 5px;">Loading</span><i style="margin-left: 8px; margin-top: 5px; color: darkcyan" class="fa fa-refresh fa-spin"></i></div></div><div class="kgFooterSelectedItems" data-bind="visible: multiSelect"><span class="kgLabel">Selected Items: <span data-bind="text: selectedItemCount"></span></span></div></div><div class="kgPagerContainer" style="float: right; margin-top: 10px;" data-bind="visible: (footerVisible && enablePaging), css: {\'kgNoMultiSelect\': !multiSelect}"><div style="float:left; margin-right: 10px;" class="kgRowCountPicker"><span style="float: left; margin-top: 3px;" class="kgLabel">Page Size:</span><select style="float: left;height: 27px; width: 100px" data-bind="value: pagingOptions.pageSize, options: pagingOptions.pageSizes"></select></div><div style="float:left; margin-right: 10px; line-height:25px;" class="kgPagerControl" style="float: left; min-width: 135px;"><button class="kgPagerButton" data-bind="click: pageToFirst, disable: cantPageBackward()" title="First Page"><div class="kgPagerFirstTriangle"><div class="kgPagerFirstBar"></div></div></button><button class="kgPagerButton" data-bind="click: pageBackward, disable: cantPageBackward()" title="Previous Page"><div class="kgPagerFirstTriangle kgPagerPrevTriangle"></div></button><input class="kgPagerCurrent" type="number" style="width:50px; height: 24px; margin-top: 1px; padding: 0px 4px;" data-bind="value: pagingOptions.currentPage, valueUpdate: \'afterkeydown\'"/><button class="kgPagerButton" data-bind="click: pageForward, disable: cantPageForward()" title="Next Page"><div class="kgPagerLastTriangle kgPagerNextTriangle"></div></button><button class="kgPagerButton" data-bind="click: pageToLast, disable: cantPageForward()" title="Last Page"><div class="kgPagerLastTriangle"><div class="kgPagerLastBar"></div></div></button></div></div></div></div>'; };
+
+    /***********************************************
+    * FILE: ..\src\templates\rowTemplate.html
+    ***********************************************/
+    window.kg.defaultRowTemplate = function () { return '<div data-bind="style: { cursor : canSelectRows ? \'pointer\' : \'default\' }, foreach: $grid.visibleColumns, css: { \'ui-widget-content\': $grid.jqueryUITheme }"><div data-bind="attr: { \'class\': cellClass() + \' kgCell col\' + $index() }, kgCell: $data"></div></div>'; };
+
+    /***********************************************
+    * FILE: ..\src\templates\cellTemplate.html
+    ***********************************************/
+    window.kg.defaultCellTemplate = function () { return '<div data-bind="attr: { \'class\': \'kgCellText colt\' + $index()}, html: $data.getProperty($parent)"></div>'; };
+
+    /***********************************************
+    * FILE: ..\src\templates\aggregateTemplate.html
+    ***********************************************/
+    window.kg.aggregateTemplate = function () { return '<div data-bind="click: toggleExpand, style: {\'left\': offsetLeft()}" class="kgAggregate"><span class="kgAggregateText" data-bind="html: $data.label">(<span data-bind="html: totalChildren"></span> Items)</span><div data-bind="attr: {\'class\' : aggClass }"></div></div>'; };
+
+    /***********************************************
+    * FILE: ..\src\templates\headerRowTemplate.html
+    ***********************************************/
+    window.kg.defaultHeaderRowTemplate = function () { return '<div data-bind="foreach: visibleColumns"><div data-bind="kgHeaderCell: $data, attr: { \'class\': \'kgHeaderCell col\' + $index() }"></div></div>'; };
+
+    /***********************************************
+    * FILE: ..\src\templates\headerCellTemplate.html
+    ***********************************************/
+    window.kg.defaultHeaderCellTemplate = function () { return '<div data-bind="style: { cursor : sortable() ? \'pointer\' : \'default\' }, click: sort, css: {\'kgSorted\': !noSortVisible }, attr: {\'class\': \'kgHeaderSortColumn \' + headerClass()}"><div data-bind="attr: { \'class\': \'colt\' + $index() + \' kgHeaderText\' }, html: displayName"></div><div class="kgSortButtonDown" data-bind="visible: showSortButtonDown"></div><div class="kgSortButtonUp" data-bind="visible: showSortButtonUp"></div><div data-bind="visible: resizable, click: gripClick, mouseEvents: { mouseDown: gripOnMouseDown }" class="kgHeaderGrip" ></div></div>'; };
+
+    /***********************************************
+    * FILE: ..\src\bindingHandlers\ko-grid.js
+    ***********************************************/
+    ko.bindingHandlers['koGrid'] = (function () {
+        return {
+            'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var options = valueAccessor();
+                var elem = $(element);
+                options.gridDim = new window.kg.Dimension({ outerHeight: ko.observable(elem.height()), outerWidth: ko.observable(elem.width()) });
+                var grid = new window.kg.Grid(options);
+                var gridElem = $(window.kg.defaultGridTemplate());
+                // if it is a string we can watch for data changes. otherwise you won't be able to update the grid data
+                options.data.subscribe(function () {
+                    if (grid.$$selectionPhase) {
+                        return;
+                    }
+                    grid.searchProvider.evalFilter();
+                    grid.refreshDomSizes();
+                });
+                // if columndefs are observable watch for changes and rebuild columns.
+                if (ko.isObservable(options.columnDefs)) {
+                    options.columnDefs.subscribe(function (newDefs) {
+                        grid.columns([]);
+                        grid.config.columnDefs = newDefs;
+                        grid.buildColumns();
+                        grid.configureColumnWidths();
+                    });
+                }
+                //set the right styling on the container
+                elem.addClass("koGrid").addClass(grid.gridId.toString());
+                elem.append(gridElem);
+                grid.$userViewModel = bindingContext.$data;
+                ko.applyBindings(grid, gridElem[0]);
+                //walk the element's graph and the correct properties on the grid
+                window.kg.domUtilityService.AssignGridContainers(elem, grid);
+                grid.configureColumnWidths();
+                grid.refreshDomSizes();
+                //now use the manager to assign the event handlers
+                grid.eventProvider = new window.kg.EventProvider(grid);
+                //initialize plugins.
+                $.each(grid.config.plugins, function (i, p) {
+                    if (typeof p.onGridInit === 'function') {
+                        p.onGridInit(grid);
+                    }
+                });
+                window.kg.domUtilityService.BuildStyles(grid);
+                return { controlsDescendantBindings: true };
+            }
+        };
+    }());
+
+    /***********************************************
+    * FILE: ..\src\bindingHandlers\kg-row.js
+    ***********************************************/
+    ko.bindingHandlers['kgRow'] = (function () {
+        return {
+            'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var row = valueAccessor();
+                var grid = row.$grid = bindingContext.$parent;
+                var source;
+                if (row.isAggRow) {
+                    source = window.kg.aggregateTemplate();
+                } else {
+                    source = grid.rowTemplate;
+                }
+                var compile = function (html) {
+                    var rowElem = $(html);
+                    row.$userViewModel = bindingContext.$parent.$userViewModel;
+                    ko.applyBindings(row, rowElem[0]);
+                    $(element).html(rowElem);
+                };
+                if (source.then) {
+                    source.then(function (p) {
+                        compile(p);
+                    });
+                } else {
+                    compile(source);
+                }
+                return { controlsDescendantBindings: true };
+            }
+        };
+    }());
+
+    /***********************************************
+    * FILE: ..\src\bindingHandlers\kg-cell.js
+    ***********************************************/
+    ko.bindingHandlers['kgCell'] = (function () {
+        return {
+            'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                bindingContext.$userViewModel = bindingContext.$parent.$userViewModel;
+                var compile = function (html) {
+                    var cell = $(html);
+                    ko.applyBindings(bindingContext, cell[0]);
+                    $(element).html(cell);
+                };
+                if (viewModel.cellTemplate.then) {
+                    viewModel.cellTemplate.then(function (p) {
+                        compile(p);
+                    });
+                } else {
+                    compile(viewModel.cellTemplate);
+                }
+                return { controlsDescendantBindings: true };
+            }
+        };
+    }());
+
+    /***********************************************
+    * FILE: ..\src\bindingHandlers\kg-header-row.js
+    ***********************************************/
+    ko.bindingHandlers['kgHeaderRow'] = (function () {
+        return {
+            'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                bindingContext.$userViewModel = bindingContext.$data.$userViewModel;
+                var compile = function (html) {
+                    var headerRow = $(html);
+                    ko.applyBindings(bindingContext, headerRow[0]);
+                    $(element).html(headerRow);
+                };
+                if (viewModel.headerRowTemplate.then) {
+                    viewModel.headerRowTemplate.then(function (p) {
+                        compile(p);
+                    });
+                } else {
+                    compile(viewModel.headerRowTemplate);
+                }
+                return { controlsDescendantBindings: true };
+            }
+        };
+    }());
+
+    /***********************************************
+    * FILE: ..\src\bindingHandlers\kg-header-cell.js
+    ***********************************************/
+    ko.bindingHandlers['kgHeaderCell'] = (function () {
+        return {
+            'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var newContext = bindingContext.extend({ $grid: bindingContext.$parent, $userViewModel: bindingContext.$parent.$userViewModel });
+                var compile = function (html) {
+                    var headerCell = $(html);
+                    ko.applyBindings(newContext, headerCell[0]);
+                    $(element).html(headerCell);
+                };
+                if (viewModel.headerCellTemplate.then) {
+                    viewModel.headerCellTemplate.then(function (p) {
+                        compile(p);
+                    });
+                } else {
+                    compile(viewModel.headerCellTemplate);
+                }
+                return { controlsDescendantBindings: true };
+            }
+        };
+    }());
+
+    /***********************************************
+    * FILE: ..\src\bindingHandlers\kg-mouse-events.js
+    ***********************************************/
+    ko.bindingHandlers['mouseEvents'] = (function () {
+        return {
+            'init': function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var eFuncs = valueAccessor();
+                if (eFuncs.mouseDown) {
+                    $(element).mousedown(eFuncs.mouseDown);
+                }
+            }
+        };
+    }());
+
+    /***********************************************
+    * FILE: ..\src\classes\aggregate.js
+    ***********************************************/
+    window.kg.Aggregate = function (aggEntity, rowFactory) {
+        var self = this;
+        self.index = 0;
+        self.offsetTop = ko.observable(0);
+        self.entity = aggEntity;
+        self.label = ko.observable(aggEntity.gLabel);
+        self.field = aggEntity.gField;
+        self.depth = aggEntity.gDepth;
+        self.parent = aggEntity.parent;
+        self.children = aggEntity.children;
+        self.aggChildren = aggEntity.aggChildren;
+        self.aggIndex = aggEntity.aggIndex;
+        self.collapsed = ko.observable(true);
+        self.isAggRow = true;
+        self.offsetLeft = ko.observable((aggEntity.gDepth * 25).toString() + 'px');
+        self.aggLabelFilter = aggEntity.aggLabelFilter;
+        self.toggleExpand = function () {
+            var c = self.collapsed();
+            self.collapsed(!c);
+            self.notifyChildren();
+        };
+        self.setExpand = function (state) {
+            self.collapsed(state);
+            self.notifyChildren();
+        };
+        self.notifyChildren = function () {
+            $.each(self.aggChildren, function (i, child) {
+                child.entity[KG_HIDDEN] = self.collapsed();
+                if (self.collapsed()) {
+                    var c = self.collapsed();
+                    child.setExpand(c);
+                }
+            });
+            $.each(self.children, function (i, child) {
+                child[KG_HIDDEN] = self.collapsed();
+            });
+            rowFactory.rowCache = [];
+            var foundMyself = false;
+            $.each(rowFactory.aggCache, function (i, agg) {
+                if (foundMyself) {
+                    var offset = (30 * self.children.length);
+                    var c = self.collapsed();
+                    agg.offsetTop(c ? agg.offsetTop() - offset : agg.offsetTop() + offset);
+                } else {
+                    if (i == self.aggIndex) {
+                        foundMyself = true;
+                    }
+                }
+            });
+            rowFactory.renderedChange();
+        };
+        self.aggClass = ko.computed(function () {
+            return self.collapsed() ? "kgAggArrowCollapsed" : "kgAggArrowExpanded";
+        });
+        self.totalChildren = ko.computed(function () {
+            if (self.aggChildren.length > 0) {
+                var i = 0;
+                var recurse = function (cur) {
+                    if (cur.aggChildren.length > 0) {
+                        $.each(cur.aggChildren, function (x, a) {
+                            recurse(a);
+                        });
+                    } else {
+                        i += cur.children.length;
+                    }
+                };
+                recurse(self);
+                return i;
+            } else {
+                return self.children.length;
+            }
+        });
+        self.selected = ko.observable(false);
+        self.isEven = ko.observable(false);
+        self.isOdd = ko.observable(false);
+        self.toggleSelected = function () { return true; };
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\column.js
+    ***********************************************/
+    window.kg.Column = function (config, grid) {
+        var self = this,
+            colDef = config.colDef,
+            delay = 500,
+            clicks = 0,
+            timer = null;
+        self.eventTaget = undefined;
+        self.width = colDef.width;
+        self.groupIndex = ko.observable(0);
+        self.isGroupedBy = ko.observable(false);
+        self.groupedByClass = ko.computed(function () { return self.isGroupedBy() ? "kgGroupedByIcon" : "kgGroupIcon"; });
+        self.sortable = ko.observable(false);
+        self.resizable = ko.observable(false);
+        self.minWidth = !colDef.minWidth ? 50 : colDef.minWidth;
+        self.maxWidth = !colDef.maxWidth ? 9000 : colDef.maxWidth;
+        self.headerRowHeight = config.headerRowHeight;
+        self.filterValue = colDef.filterValue;
+        self.displayName = ko.observable(colDef.displayName || colDef.field);
+        self.index = config.index;
+        self.isAggCol = config.isAggCol;
+        self.cellClass = ko.observable(colDef.cellClass || "");
+        self.cellFilter = colDef.cellFilter || colDef.cellFormatter;
+        self.field = colDef.field;
+        self.aggLabelFilter = colDef.cellFilter || colDef.cellFormatter || colDef.aggLabelFilter || colDef.aggLabelFormatter;
+        self._visible = ko.observable(window.kg.utils.isNullOrUndefined(colDef.visible) || colDef.visible);
+        self.visible = ko.computed({
+            read: function () {
+                return self._visible();
+            },
+            write: function (val) {
+                self.toggleVisible(val);
+            }
+        });
+        if (config.enableSort) {
+            self.sortable(window.kg.utils.isNullOrUndefined(colDef.sortable) || colDef.sortable);
+        }
+        if (config.enableResize) {
+            self.resizable(window.kg.utils.isNullOrUndefined(colDef.resizable) || colDef.resizable);
+        }
+        self.sortDirection = ko.observable(undefined);
+        self.sortingAlgorithm = colDef.sortFn;
+        self.headerClass = ko.observable(colDef.headerClass);
+        self.headerCellTemplate = colDef.headerCellTemplate || window.kg.defaultHeaderCellTemplate();
+        self.cellTemplate = colDef.cellTemplate || window.kg.defaultCellTemplate();
+        if (colDef.cellTemplate && !TEMPLATE_REGEXP.test(colDef.cellTemplate)) {
+            self.cellTemplate = window.kg.utils.getTemplatePromise(colDef.cellTemplate);
+        }
+        if (colDef.headerCellTemplate && !TEMPLATE_REGEXP.test(colDef.headerCellTemplate)) {
+            self.headerCellTemplate = window.kg.utils.getTemplatePromise(colDef.headerCellTemplate);
+        }
+        self.getProperty = function (row) {
+            var ret;
+            if (self.cellFilter) {
+                ret = self.cellFilter(row.getProperty(self.field));
+            } else {
+                ret = row.getProperty(self.field);
+            }
+            return ret;
+        };
+        self.toggleVisible = function (val) {
+            var v;
+            if (window.kg.utils.isNullOrUndefined(val) || typeof val == "object") {
+                v = !self._visible();
+            } else {
+                v = val;
+            }
+            self._visible(v);
+            window.kg.domUtilityService.BuildStyles(grid);
+        };
+
+        self.showSortButtonUp = ko.computed(function () {
+            return self.sortable ? self.sortDirection() === DESC : self.sortable;
+        });
+        self.showSortButtonDown = ko.computed(function () {
+            return self.sortable ? self.sortDirection() === ASC : self.sortable;
+        });
+        self.noSortVisible = ko.computed(function () {
+            return !self.sortDirection();
+        });
+        self.sort = function () {
+            if (!self.sortable()) {
+                return true; // column sorting is disabled, do nothing
+            }
+            var dir = self.sortDirection() === ASC ? DESC : ASC;
+            self.sortDirection(dir);
+            config.sortCallback(self, dir);
+            return false;
+        };
+        self.gripClick = function (data, event) {
+            event.stopPropagation();
+            clicks++;  //count clicks
+            if (clicks === 1) {
+                timer = setTimeout(function () {
+                    //Here you can add a single click action.
+                    clicks = 0;  //after action performed, reset counter
+                }, delay);
+            } else {
+                clearTimeout(timer);  //prevent single-click action
+                config.resizeOnDataCallback(self);  //perform double-click action
+                clicks = 0;  //after action performed, reset counter
+            }
+        };
+        self.gripOnMouseDown = function (event) {
+            event.stopPropagation();
+            if (event.ctrlKey) {
+                self.toggleVisible();
+                window.kg.domUtilityService.BuildStyles(grid);
+                grid.config.columnsChanged(grid.columns.peek());
+                return true;
+            }
+            self.eventTaget = event.target.parentElement;
+            self.eventTaget.style.cursor = 'col-resize';
+            self.startMousePosition = event.clientX;
+            self.origWidth = self.width;
+            $(document).mousemove(self.onMouseMove);
+            $(document).mouseup(self.gripOnMouseUp);
+            return false;
+        };
+        self.onMouseMove = function (event) {
+            event.stopPropagation();
+            var diff = event.clientX - self.startMousePosition;
+            var newWidth = diff + self.origWidth;
+            self.width = (newWidth < self.minWidth ? self.minWidth : (newWidth > self.maxWidth ? self.maxWidth : newWidth));
+            window.kg.domUtilityService.BuildStyles(grid);
+            return false;
+        };
+        self.gripOnMouseUp = function (event) {
+            event.stopPropagation();
+            $(document).off('mousemove');
+            $(document).off('mouseup');
+            self.eventTaget.style.cursor = self.sortable() ? 'pointer' : 'default';
+            self.eventTaget = undefined;
+            grid.config.columnsChanged(grid.columns.peek());
+            return false;
+        };
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\dimension.js
+    ***********************************************/
+    window.kg.Dimension = function (options) {
+        this.outerHeight = null;
+        this.outerWidth = null;
+        $.extend(this, options);
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\eventProvider.js
+    ***********************************************/
+    window.kg.EventProvider = function (grid) {
+        var self = this;
+        // The init method gets called during the ng-grid directive execution.
+        self.colToMove = undefined;
+        self.groupToMove = undefined;
+        self.assignEvents = function () {
+            // Here we set the onmousedown event handler to the header container.
+            if (grid.config.jqueryUIDraggable) {
+                grid.$groupPanel.droppable({
+                    addClasses: false,
+                    drop: function (event) {
+                        self.onGroupDrop(event);
+                    }
+                });
+                $(document).ready(self.setDraggables);
+            } else {
+                grid.$groupPanel.on('mousedown', self.onGroupMouseDown).on('dragover', self.dragOver).on('drop', self.onGroupDrop);
+                grid.$headerScroller.on('mousedown', self.onHeaderMouseDown).on('dragover', self.dragOver).on('drop', self.onHeaderDrop);
+                if (grid.config.enableRowReordering) {
+                    grid.$viewport.on('mousedown', self.onRowMouseDown).on('dragover', self.dragOver).on('drop', self.onRowDrop);
+                }
+                self.setDraggables();
+            }
+            grid.columns.subscribe(self.setDraggables);
+        };
+        self.dragOver = function (evt) {
+            evt.preventDefault();
+        };
+
+        //For JQueryUI
+        self.setDraggables = function () {
+            if (!grid.config.jqueryUIDraggable) {
+                grid.$root.find('.kgHeaderSortColumn').attr('draggable', 'true');
+            } else {
+                grid.$root.find('.kgHeaderSortColumn').draggable({
+                    helper: 'clone',
+                    appendTo: 'body',
+                    stack: 'div',
+                    addClasses: false,
+                    start: function (event) {
+                        self.onHeaderMouseDown(event);
+                    }
+                }).droppable({
+                    drop: function (event) {
+                        self.onHeaderDrop(event);
+                    }
+                });
+            }
+        };
+
+        self.onGroupMouseDown = function (event) {
+            var groupItem = $(event.target);
+            // Get the scope from the header container
+            if (groupItem[0].className != 'kgRemoveGroup') {
+                var groupItemScope = ko.dataFor(groupItem[0]);
+                if (groupItemScope) {
+                    // set draggable events
+                    if (!grid.config.jqueryUIDraggable) {
+                        groupItem.attr('draggable', 'true');
+                    }
+                    // Save the column for later.
+                    self.groupToMove = { header: groupItem, groupName: groupItemScope, index: groupItemScope.groupIndex() - 1 };
+                }
+            } else {
+                self.groupToMove = undefined;
+            }
+        };
+
+        self.onGroupDrop = function (event) {
+            // clear out the colToMove object
+            var groupContainer;
+            var groupScope;
+            if (self.groupToMove) {
+                // Get the closest header to where we dropped
+                groupContainer = $(event.target).closest('.kgGroupElement'); // Get the scope from the header.
+                if (groupContainer.context.className == 'kgGroupPanel') {
+                    grid.configGroups.splice(self.groupToMove.index, 1);
+                    grid.configGroups.push(self.groupToMove.groupName);
+                } else {
+                    groupScope = ko.dataFor(groupContainer[0]);
+                    if (groupScope) {
+                        // If we have the same column, do nothing.
+                        if (self.groupToMove.index != groupScope.groupIndex()) {
+                            // Splice the columns
+                            grid.configGroups.splice(self.groupToMove.index, 1);
+                            grid.configGroups.splice(groupScope.groupIndex(), 0, self.groupToMove.groupName);
+                        }
+                    }
+                }
+                self.groupToMove = undefined;
+                grid.fixGroupIndexes();
+            } else {
+                if (grid.configGroups.indexOf(self.colToMove.col) == -1) {
+                    groupContainer = $(event.target).closest('.kgGroupElement'); // Get the scope from the header.
+                    if (groupContainer.context.className == 'kgGroupPanel' || groupContainer.context.className == 'kgGroupPanelDescription') {
+                        grid.groupBy(self.colToMove.col);
+                    } else {
+                        groupScope = ko.dataFor(groupContainer[0]);
+                        if (groupScope) {
+                            // Splice the columns
+                            grid.removeGroup(groupScope.groupIndex());
+                        }
+                    }
+                }
+                self.colToMove = undefined;
+            }
+        };
+
+        //Header functions
+        self.onHeaderMouseDown = function (event) {
+            // Get the closest header container from where we clicked.
+            var headerContainer = $(event.target).closest('.kgHeaderSortColumn');
+            if (!headerContainer[0]) {
+                return true;
+            }
+            // Get the scope from the header container
+
+            var headerScope = ko.dataFor(headerContainer[0]);
+            if (headerScope) {
+                // Save the column for later.
+                self.colToMove = { header: headerContainer, col: headerScope };
+            }
+            return true;
+        };
+
+        self.onHeaderDrop = function (event) {
+            if (!self.colToMove) {
+                return true;
+            }
+            // Get the closest header to where we dropped
+            var headerContainer = $(event.target).closest('.kgHeaderSortColumn');
+            if (!headerContainer[0]) {
+                return true;
+            }
+            // Get the scope from the header.
+            var headerScope = ko.dataFor(headerContainer[0]);
+            if (headerScope) {
+                // If we have the same column, do nothing.
+                if (self.colToMove.col == headerScope) {
+                    return true;
+                }
+                // Splice the columns
+                var cols = grid.columns.peek();
+                cols.splice(self.colToMove.col.index, 1);
+                cols.splice(headerScope.index, 0, self.colToMove.col);
+                grid.fixColumnIndexes();
+                grid.columns(cols);
+                // Finally, rebuild the CSS styles.
+                window.kg.domUtilityService.BuildStyles(grid);
+                // clear out the colToMove object
+                self.colToMove = undefined;
+            }
+            return true;
+        };
+
+        // Row functions
+        self.onRowMouseDown = function (event) {
+            // Get the closest row element from where we clicked.
+            var targetRow = $(event.target).closest('.kgRow');
+            if (!targetRow[0]) {
+                return;
+            }
+            // Get the scope from the row element
+            var rowScope = ko.dataFor(targetRow[0]);
+            if (rowScope) {
+                // set draggable events
+                targetRow.attr('draggable', 'true');
+                // Save the row for later.
+                window.kg.eventStorage.rowToMove = { targetRow: targetRow, scope: rowScope };
+            }
+        };
+
+        self.onRowDrop = function (event) {
+            // Get the closest row to where we dropped
+            var targetRow = $(event.target).closest('.kgRow');
+            // Get the scope from the row element.
+            var rowScope = ko.dataFor(targetRow[0]);
+            if (rowScope) {
+                // If we have the same Row, do nothing.
+                var prevRow = window.kg.eventStorage.rowToMove;
+                if (prevRow.scope == rowScope) {
+                    return;
+                }
+                // Splice the Rows via the actual datasource
+                var sd = grid.sortedData();
+                var i = sd.indexOf(prevRow.scope.entity);
+                var j = sd.indexOf(rowScope.entity);
+                grid.sortedData.splice(i, 1);
+                grid.sortedData.splice(j, 0, prevRow.scope.entity);
+                grid.searchProvider.evalFilter();
+                // clear out the rowToMove object
+                window.kg.eventStorage.rowToMove = undefined;
+                // if there isn't an apply already in progress lets start one
+            }
+        };
+        self.assignGridEventHandlers = function () {
+            grid.$viewport.scroll(function (e) {
+                var scrollLeft = e.target.scrollLeft,
+                    scrollTop = e.target.scrollTop;
+                grid.adjustScrollLeft(scrollLeft);
+                grid.adjustScrollTop(scrollTop);
+            });
+            grid.$viewport.off('keydown');
+            grid.$viewport.on('keydown', function (e) {
+                return window.kg.moveSelectionHandler(grid, e);
+            });
+            //Chrome and firefox both need a tab index so the grid can recieve focus.
+            //need to give the grid a tabindex if it doesn't already have one so
+            //we'll just give it a tab index of the corresponding gridcache index 
+            //that way we'll get the same result every time it is run.
+            //configurable within the options.
+            if (grid.config.tabIndex === -1) {
+                grid.$viewport.attr('tabIndex', window.kg.numberOfGrids);
+                window.kg.numberOfGrids++;
+            } else {
+                grid.$viewport.attr('tabIndex', grid.config.tabIndex);
+            }
+            $(window).resize(function () {
+                window.kg.domUtilityService.UpdateGridLayout(grid);
+                if (grid.config.maintainColumnRatios) {
+                    grid.configureColumnWidths();
+                }
+            });
+        };
+        self.assignGridEventHandlers();
+        // In this example we want to assign grid events.
+        self.assignEvents();
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\rowFactory.js
+    ***********************************************/
+    window.kg.RowFactory = function (grid) {
+        var self = this;
+        // we cache rows when they are built, and then blow the cache away when sorting
+        self.rowCache = [];
+        self.aggCache = {};
+        self.parentCache = []; // Used for grouping and is cleared each time groups are calulated.
+        self.dataChanged = true;
+        self.parsedData = [];
+        self.rowConfig = {};
+        self.selectionService = grid.selectionService;
+        self.rowHeight = 30;
+        self.numberOfAggregates = 0;
+        self.groupedData = undefined;
+        self.rowHeight = grid.config.rowHeight;
+        self.rowConfig = {
+            canSelectRows: grid.config.canSelectRows,
+            rowClasses: grid.config.rowClasses,
+            selectedItems: grid.config.selectedItems,
+            selectWithCheckboxOnly: grid.config.selectWithCheckboxOnly,
+            beforeSelectionChangeCallback: grid.config.beforeSelectionChange,
+            afterSelectionChangeCallback: grid.config.afterSelectionChange
+        };
+
+        self.renderedRange = new window.kg.Range(0, grid.minRowsToRender() + EXCESS_ROWS);
+        // Builds rows for each data item in the 'filteredData'
+        // @entity - the data item
+        // @rowIndex - the index of the row
+        self.buildEntityRow = function (entity, rowIndex) {
+            var row = self.rowCache[rowIndex]; // first check to see if we've already built it
+            if (!row) {
+                // build the row
+                row = new window.kg.Row(entity, self.rowConfig, self.selectionService);
+                row.rowIndex(rowIndex + 1); //not a zero-based rowIndex
+                row.offsetTop((self.rowHeight * rowIndex).toString() + 'px');
+                row.selected(entity[SELECTED_PROP]);
+                // finally cache it for the next round
+                self.rowCache[rowIndex] = row;
+            }
+            return row;
+        };
+
+        self.buildAggregateRow = function (aggEntity, rowIndex) {
+            var agg = self.aggCache[aggEntity.aggIndex]; // first check to see if we've already built it 
+            if (!agg) {
+                // build the row
+                agg = new window.kg.Aggregate(aggEntity, self);
+                self.aggCache[aggEntity.aggIndex] = agg;
+            }
+            agg.index = rowIndex + 1; //not a zero-based rowIndex
+            agg.offsetTop((self.rowHeight * rowIndex).toString() + 'px');
+            return agg;
+        };
+        self.UpdateViewableRange = function (newRange) {
+            self.renderedRange = newRange;
+            self.renderedChange();
+        };
+        self.filteredDataChanged = function () {
+            // check for latebound autogenerated columns
+            if (grid.lateBoundColumns && grid.filteredData().length > 1) {
+                grid.config.columnDefs = undefined;
+                grid.buildColumns();
+                grid.lateBoundColumns = false;
+            }
+            self.dataChanged = true;
+            self.rowCache = []; //if data source changes, kill this!
+            if (grid.config.groups.length > 0) {
+                self.getGrouping(grid.config.groups);
+            }
+            self.UpdateViewableRange(self.renderedRange);
+        };
+
+        self.renderedChange = function () {
+            if (!self.groupedData || grid.config.groups.length < 1) {
+                self.renderedChangeNoGroups();
+                grid.refreshDomSizes();
+                return;
+            }
+            self.parentCache = [];
+            var rowArr = [];
+            var dataArray = self.parsedData.filter(function (e) {
+                return e[KG_HIDDEN] === false;
+            }).slice(self.renderedRange.topRow, self.renderedRange.bottomRow);
+            $.each(dataArray, function (indx, item) {
+                var row;
+                if (item.isAggRow) {
+                    row = self.buildAggregateRow(item, self.renderedRange.topRow + indx);
+                } else {
+                    row = self.buildEntityRow(item, self.renderedRange.topRow + indx);
+                }
+                //add the row to our return array
+                rowArr.push(row);
+            });
+            grid.setRenderedRows(rowArr);
+            grid.refreshDomSizes();
+        };
+
+        self.renderedChangeNoGroups = function () {
+            var rowArr = [];
+            var dataArr = grid.filteredData.slice(self.renderedRange.topRow, self.renderedRange.bottomRow);
+            $.each(dataArr, function (i, item) {
+                var row = self.buildEntityRow(item, self.renderedRange.topRow + i);
+                //add the row to our return array
+                rowArr.push(row);
+            });
+            grid.setRenderedRows(rowArr);
+        };
+
+        //magical recursion. it works. I swear it. I figured it out in the shower one day.
+        self.parseGroupData = function (g) {
+            if (g.values) {
+                $.each(g.values, function (i, item) {
+                    // get the last parent in the array because that's where our children want to be
+                    self.parentCache[self.parentCache.length - 1].children.push(item);
+                    //add the row to our return array
+                    self.parsedData.push(item);
+                });
+            } else {
+                for (var prop in g) {
+                    // exclude the meta properties.
+                    if (prop == KG_FIELD || prop == KG_DEPTH || prop == KG_COLUMN) {
+                        continue;
+                    } else if (g.hasOwnProperty(prop)) {
+                        //build the aggregate row
+                        var agg = self.buildAggregateRow({
+                            gField: g[KG_FIELD],
+                            gLabel: prop,
+                            gDepth: g[KG_DEPTH],
+                            isAggRow: true,
+                            '_kg_hidden_': false,
+                            children: [],
+                            aggChildren: [],
+                            aggIndex: self.numberOfAggregates,
+                            aggLabelFilter: g[KG_COLUMN].aggLabelFilter
+                        }, 0);
+                        self.numberOfAggregates++;
+                        //set the aggregate parent to the parent in the array that is one less deep.
+                        agg.parent = self.parentCache[agg.depth - 1];
+                        // if we have a parent, set the parent to not be collapsed and append the current agg to its children
+                        if (agg.parent) {
+                            agg.parent.collapsed(false);
+                            agg.parent.aggChildren.push(agg);
+                        }
+                        // add the aggregate row to the parsed data.
+                        self.parsedData.push(agg.entity);
+                        // the current aggregate now the parent of the current depth
+                        self.parentCache[agg.depth] = agg;
+                        // dig deeper for more aggregates or children.
+                        self.parseGroupData(g[prop]);
+                    }
+                }
+            }
+        };
+        //Shuffle the data into their respective groupings.
+        self.getGrouping = function (groups) {
+            self.aggCache = [];
+            self.rowCache = [];
+            self.numberOfAggregates = 0;
+            self.groupedData = {};
+            // Here we set the onmousedown event handler to the header container.
+            var data = grid.filteredData();
+            var maxDepth = groups.length;
+            var cols = grid.columns();
+
+            $.each(data, function (i, item) {
+                item[KG_HIDDEN] = true;
+                var ptr = self.groupedData;
+                $.each(groups, function (depth, group) {
+                    if (!cols[depth].isAggCol && depth <= maxDepth) {
+                        grid.columns.splice(item.gDepth, 0, new window.kg.Column({
+                            colDef: {
+                                field: '',
+                                width: 25,
+                                sortable: false,
+                                resizable: false,
+                                headerCellTemplate: '<div class="kgAggHeader"></div>'
+                            },
+                            isAggCol: true,
+                            index: item.gDepth,
+                            headerRowHeight: grid.config.headerRowHeight
+                        }));
+                        window.kg.domUtilityService.BuildStyles(grid);
+                    }
+                    var col = cols.filter(function (c) { return c.field == group; })[0];
+                    var val = window.kg.utils.evalProperty(item, group);
+                    if (col.cellFilter) {
+                        val = col.cellFilter(val);
+                    }
+                    val = val ? val.toString() : 'null';
+                    if (!ptr[val]) {
+                        ptr[val] = {};
+                    }
+                    if (!ptr[KG_FIELD]) {
+                        ptr[KG_FIELD] = group;
+                    }
+                    if (!ptr[KG_DEPTH]) {
+                        ptr[KG_DEPTH] = depth;
+                    }
+                    if (!ptr[KG_COLUMN]) {
+                        ptr[KG_COLUMN] = col;
+                    }
+                    ptr = ptr[val];
+                });
+                if (!ptr.values) {
+                    ptr.values = [];
+                }
+                ptr.values.push(item);
+            });
+            grid.fixColumnIndexes();
+            self.parsedData.length = 0;
+            self.parseGroupData(self.groupedData);
+        };
+
+        if (grid.config.groups.length > 0 && grid.filteredData().length > 0) {
+            self.getGrouping(grid.config.groups);
+        }
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\grid.js
+    ***********************************************/
+    window.kg.Grid = function (options) {
+        var defaults = {
+            rowHeight: 30,
+            columnWidth: 100,
+            headerRowHeight: 30,
+            footerRowHeight: 55,
+            footerVisible: true,
+            displayFooter: undefined,
+            canSelectRows: true,
+            selectAllState: ko.observable(false),
+            data: ko.observableArray([]),
+            columnDefs: undefined,
+            selectedItems: ko.observableArray([]), // array, if multi turned off will have only one item in array
+            displaySelectionCheckbox: true, //toggles whether row selection check boxes appear
+            selectWithCheckboxOnly: false,
+            useExternalSorting: false,
+            sortInfo: ko.observable(undefined), // similar to filterInfo
+            multiSelect: true,
+            tabIndex: -1,
+            enableColumnResize: true,
+            enableSorting: true,
+            maintainColumnRatios: undefined,
+            beforeSelectionChange: function () { return true; },
+            afterSelectionChange: function () { },
+            columnsChanged: function () { },
+            rowTemplate: undefined,
+            headerRowTemplate: undefined,
+            jqueryUITheme: false,
+            jqueryUIDraggable: false,
+            plugins: [],
+            keepLastSelected: true,
+            groups: [],
+            showGroupPanel: false,
+            enableRowReordering: false,
+            showColumnMenu: true,
+            showFilter: true,
+            disableTextSelection: true,
+            filterOptions: {
+                filterText: ko.observable(""),
+                useExternalFilter: false
+            },
+            //Paging 
+            enablePaging: false,
+            pagingOptions: {
+                pageSizes: ko.observableArray([250, 500, 1000]), //page Sizes
+                pageSize: ko.observable(250), //Size of Paging data
+                totalServerItems: ko.observable(0), //how many items are on the server (for paging)
+                currentPage: ko.observable(1) //what page they are currently on
+            }
+        },
+            self = this;
+
+        self.maxCanvasHt = ko.observable(0);
+        //self vars
+        self.config = $.extend(defaults, options);
+        self.config.columnDefs = ko.utils.unwrapObservable(options.columnDefs);
+        self.gridId = "ng" + window.kg.utils.newId();
+        self.$root = null; //this is the root element that is passed in with the binding handler
+        self.$groupPanel = null;
+        self.$topPanel = null;
+        self.$headerContainer = null;
+        self.$headerScroller = null;
+        self.$headers = null;
+        self.$viewport = null;
+        self.$canvas = null;
+        self.rootDim = self.config.gridDim;
+        self.sortInfo = ko.isObservable(self.config.sortInfo) ? self.config.sortInfo : ko.observable(self.config.sortInfo);
+        self.sortedData = self.config.data;
+        self.lateBindColumns = false;
+        self.filteredData = ko.observableArray([]);
+        self.lastSortedColumn = undefined;
+        self.showFilter = self.config.showFilter;
+        self.filterText = self.config.filterOptions.filterText;
+        self.disableTextSelection = ko.observable(self.config.disableTextSelection);
+        self.calcMaxCanvasHeight = function () {
+            return (self.configGroups().length > 0) ? (self.rowFactory.parsedData.filter(function (e) {
+                return e[KG_HIDDEN] === false;
+            }).length * self.config.rowHeight) : (self.filteredData().length * self.config.rowHeight);
+        };
+        self.elementDims = {
+            scrollW: 0,
+            scrollH: 0,
+            rowIndexCellW: 25,
+            rowSelectedCellW: 25,
+            rootMaxW: 0,
+            rootMaxH: 0
+        };
+        //self funcs
+        self.setRenderedRows = function (newRows) {
+            self.renderedRows(newRows);
+            self.refreshDomSizes();
+        };
+        self.minRowsToRender = function () {
+            var viewportH = self.viewportDimHeight() || 1;
+            return Math.floor(viewportH / self.config.rowHeight);
+        };
+        self.refreshDomSizes = function () {
+            self.rootDim.outerWidth(self.elementDims.rootMaxW);
+            self.rootDim.outerHeight(self.elementDims.rootMaxH);
+            self.maxCanvasHt(self.calcMaxCanvasHeight());
+        };
+        self.buildColumnDefsFromData = function () {
+            var sd = self.sortedData();
+            if (!self.config.columnDefs) {
+                self.config.columnDefs = [];
+            }
+            if (!sd || !sd[0]) {
+                self.lateBoundColumns = true;
+                return;
+            }
+            var item;
+            item = sd[0];
+
+            window.kg.utils.forIn(item, function (prop, propName) {
+                if (propName != SELECTED_PROP) {
+                    self.config.columnDefs.push({
+                        field: propName
+                    });
+                }
+            });
+        };
+        self.buildColumns = function () {
+            var columnDefs = self.config.columnDefs,
+                cols = [];
+
+            if (!columnDefs) {
+                self.buildColumnDefsFromData();
+                columnDefs = self.config.columnDefs;
+            }
+            if (self.config.displaySelectionCheckbox && self.config.canSelectRows) {
+                columnDefs.splice(0, 0, {
+                    field: '\u2714',
+                    width: self.elementDims.rowSelectedCellW,
+                    sortable: false,
+                    resizable: false,
+                    headerCellTemplate: '<input class="kgSelectionHeader" type="checkbox" data-bind="visible: $grid.multiSelect, checked: $grid.allSelected"/>',
+                    cellTemplate: '<div class="kgSelectionCell"><input class="kgSelectionCheckbox" type="checkbox" data-bind="checked: $parent.selected" /></div>'
+                });
+            }
+            if (columnDefs.length > 0) {
+                $.each(columnDefs, function (i, colDef) {
+                    var column = new window.kg.Column({
+                        colDef: colDef,
+                        index: i,
+                        headerRowHeight: self.config.headerRowHeight,
+                        sortCallback: self.sortData,
+                        resizeOnDataCallback: self.resizeOnData,
+                        enableResize: self.config.enableColumnResize,
+                        enableSort: self.config.enableSorting
+                    }, self);
+                    cols.push(column);
+                    var indx = self.config.groups.indexOf(colDef.field);
+                    if (indx != -1) {
+                        self.configGroups.splice(indx, 0, column);
+                    }
+                });
+                self.columns(cols);
+            }
+        };
+        self.configureColumnWidths = function () {
+            var cols = self.config.columnDefs;
+            var numOfCols = cols.length,
+                asterisksArray = [],
+                percentArray = [],
+                asteriskNum = 0,
+                totalWidth = 0;
+            var columns = self.columns();
+            $.each(cols, function (i, col) {
+                var isPercent = false, t = undefined;
+                //if width is not defined, set it to a single star
+                if (window.kg.utils.isNullOrUndefined(col.width)) {
+                    col.width = "*";
+                } else { // get column width
+                    isPercent = isNaN(col.width) ? window.kg.utils.endsWith(col.width, "%") : false;
+                    t = isPercent ? col.width : parseInt(col.width, 10);
+                }
+                // check if it is a number
+                if (isNaN(t)) {
+                    t = col.width;
+                    // figure out if the width is defined or if we need to calculate it
+                    if (t == 'auto') { // set it for now until we have data and subscribe when it changes so we can set the width.
+                        columns[i].width = columns[i].minWidth;
+                        var temp = columns[i];
+                        $(document).ready(function () { self.resizeOnData(temp, true); });
+                        return;
+                    } else if (t.indexOf("*") != -1) {
+                        asteriskNum += t.length;
+                        col.index = i;
+                        asterisksArray.push(col);
+                        return;
+                    } else if (isPercent) { // If the width is a percentage, save it until the very last.
+                        col.index = i;
+                        percentArray.push(col);
+                        return;
+                    } else { // we can't parse the width so lets throw an error.
+                        throw "unable to parse column width, use percentage (\"10%\",\"20%\", etc...) or \"*\" to use remaining width of grid";
+                    }
+                } else {
+                    totalWidth += columns[i].width = parseInt(col.width, 10);
+                }
+            });
+            // check if we saved any asterisk columns for calculating later
+            if (asterisksArray.length > 0) {
+                self.config.maintainColumnRatios === false ? $.noop() : self.config.maintainColumnRatios = true;
+                // get the remaining width
+                var remainingWidth = self.rootDim.outerWidth() - totalWidth;
+                // calculate the weight of each asterisk rounded down
+                var asteriskVal = Math.floor(remainingWidth / asteriskNum);
+                // set the width of each column based on the number of stars
+                $.each(asterisksArray, function (i, col) {
+                    var t = col.width.length;
+                    columns[col.index].width = asteriskVal * t;
+                    //check if we are on the last column
+                    if (col.index + 1 == numOfCols) {
+                        var offset = 2; //We're going to remove 2 px so we won't overlflow the viwport by default
+                        // are we overflowing?
+                        if (self.maxCanvasHt() > self.viewportDimHeight()) {
+                            //compensate for scrollbar
+                            offset += window.kg.domUtilityService.ScrollW;
+                        }
+                        columns[col.index].width -= offset;
+                    }
+                    totalWidth += columns[col.index].width;
+                });
+            }
+            // Now we check if we saved any percentage columns for calculating last
+            if (percentArray.length > 0) {
+                // do the math
+                $.each(percentArray, function (i, col) {
+                    var t = col.width;
+                    columns[col.index].width = Math.floor($('#' + self.gridId).width() * (parseInt(t.slice(0, -1), 10) / 100));
+                });
+            }
+            self.columns(columns);
+            window.kg.domUtilityService.BuildStyles(self);
+        };
+        self.init = function () {
+            //factories and services
+            self.selectionService = new window.kg.SelectionService(self);
+            self.rowFactory = new window.kg.RowFactory(self);
+            self.selectionService.Initialize(self.rowFactory);
+            self.searchProvider = new window.kg.SearchProvider(self);
+            self.styleProvider = new window.kg.StyleProvider(self);
+            self.buildColumns();
+            window.kg.sortService.columns = self.columns;
+            self.configGroups.subscribe(function (a) {
+                if (!a) {
+                    return;
+                }
+                var tempArr = [];
+                $.each(a, function (i, item) {
+                    if (item) {
+                        tempArr.push(item.field || item);
+                    }
+                });
+                self.config.groups = tempArr;
+                self.rowFactory.filteredDataChanged();
+            });
+            self.filteredData.subscribe(function () {
+                if (self.$$selectionPhase) {
+                    return;
+                }
+                self.maxCanvasHt(self.calcMaxCanvasHeight());
+                if (!self.isSorting) {
+                    self.configureColumnWidths();
+                }
+            });
+            self.maxCanvasHt(self.calcMaxCanvasHeight());
+            self.searchProvider.evalFilter();
+            self.refreshDomSizes();
+        };
+        self.prevScrollTop = 0;
+        self.prevScrollIndex = 0;
+        self.adjustScrollTop = function (scrollTop, force) {
+            if (self.prevScrollTop === scrollTop && !force) { return; }
+            var rowIndex = Math.floor(scrollTop / self.config.rowHeight);
+            // Have we hit the threshold going down?
+            if (self.prevScrollTop < scrollTop && rowIndex < self.prevScrollIndex + SCROLL_THRESHOLD) {
+                return;
+            }
+            //Have we hit the threshold going up?
+            if (self.prevScrollTop > scrollTop && rowIndex > self.prevScrollIndex - SCROLL_THRESHOLD) {
+                return;
+            }
+            self.prevScrollTop = scrollTop;
+            self.rowFactory.UpdateViewableRange(new window.kg.Range(Math.max(0, rowIndex - EXCESS_ROWS), rowIndex + self.minRowsToRender() + EXCESS_ROWS));
+            self.prevScrollIndex = rowIndex;
+        };
+        self.adjustScrollLeft = function (scrollLeft) {
+            if (self.$headerContainer) {
+                self.$headerContainer.scrollLeft(scrollLeft);
+            }
+        };
+        self.resizeOnData = function (col) {
+            // we calculate the longest data.
+            var longest = col.minWidth;
+            var arr = window.kg.utils.getElementsByClassName('col' + col.index);
+            $.each(arr, function (index, elem) {
+                var i;
+                if (index === 0) {
+                    var kgHeaderText = $(elem).find('.kgHeaderText');
+                    i = window.kg.utils.visualLength(kgHeaderText) + 10;// +10 some margin
+                } else {
+                    var ngCellText = $(elem).find('.kgCellText');
+                    i = window.kg.utils.visualLength(ngCellText) + 10; // +10 some margin
+                }
+                if (i > longest) {
+                    longest = i;
+                }
+            });
+            col.width = longest = Math.min(col.maxWidth, longest + 7); // + 7 px to make it look decent.
+            window.kg.domUtilityService.BuildStyles(self);
+        };
+        self.sortData = function (col, direction) {
+            // if external sorting is being used, do nothing.
+            self.isSorting = true;
+            self.sortInfo({
+                column: col,
+                direction: direction
+            });
+            self.clearSortingData(col);
+            if (!self.config.useExternalSorting) {
+                window.kg.sortService.Sort(self.sortInfo.peek(), self.sortedData);
+            } else {
+                self.config.sortInfo(self.sortInfo.peek());
+            }
+            self.lastSortedColumn = col;
+            self.isSorting = false;
+        };
+        self.clearSortingData = function (col) {
+            if (!col) {
+                $.each(self.columns(), function (i, c) {
+                    c.sortDirection("");
+                });
+            } else if (self.lastSortedColumn && col != self.lastSortedColumn) {
+                self.lastSortedColumn.sortDirection("");
+            }
+        };
+        self.fixColumnIndexes = function () {
+            self.$$indexPhase = true;
+            //fix column indexes
+            var cols = self.columns.peek();
+            $.each(cols, function (i, col) {
+                col.index = i;
+            });
+            self.$$indexPhase = false;
+        };
+        //self vars
+        self.elementsNeedMeasuring = true;
+        self.columns = ko.observableArray([]);
+        self.columns.subscribe(function (newCols) {
+            self.config.columnsChanged(newCols);
+        });
+        self.renderedRows = ko.observableArray([]);
+        self.headerRow = null;
+        self.rowHeight = self.config.rowHeight;
+        self.jqueryUITheme = ko.observable(self.config.jqueryUITheme);
+        self.footer = null;
+        self.selectedItems = self.config.selectedItems;
+        self.multiSelect = self.config.multiSelect;
+        self.footerVisible = window.kg.utils.isNullOrUndefined(self.config.displayFooter) ? self.config.footerVisible : self.config.displayFooter;
+        self.config.footerRowHeight = self.footerVisible ? self.config.footerRowHeight : 0;
+        self.showColumnMenu = self.config.showColumnMenu;
+        self.showMenu = ko.observable(false);
+        self.configGroups = ko.observableArray([]);
+
+        self.loadMoreData = options.loadMoreData;
+
+        self.isLoadingMoreData = ko.observable(false);
+
+        //Paging
+        self.enablePaging = self.config.enablePaging;
+        self.pagingOptions = self.config.pagingOptions;
+        //Templates
+        self.rowTemplate = self.config.rowTemplate || window.kg.defaultRowTemplate();
+        self.headerRowTemplate = self.config.headerRowTemplate || window.kg.defaultHeaderRowTemplate();
+        if (self.config.rowTemplate && !TEMPLATE_REGEXP.test(self.config.rowTemplate)) {
+            self.rowTemplate = window.kg.utils.getTemplatePromise(self.config.rowTemplate);
+        }
+        if (self.config.headerRowTemplate && !TEMPLATE_REGEXP.test(self.config.headerRowTemplate)) {
+            self.headerRowTemplate = window.kg.utils.getTemplatePromise(self.config.headerRowTemplate);
+        }
+        //scope funcs
+        self.visibleColumns = ko.computed(function () {
+            var cols = self.columns();
+            return cols.filter(function (col) {
+                var isVis = col.visible();
+                return isVis;
+            });
+        });
+        self.nonAggColumns = ko.computed(function () {
+            return self.columns().filter(function (col) {
+                return !col.isAggCol;
+            });
+        });
+        self.toggleShowMenu = function () {
+            self.showMenu(!self.showMenu());
+        };
+        self.allSelected = self.config.selectAllState;
+        self.allSelected.subscribe(function (state) {
+            if (self.config.beforeSelectionChange(self.sortedData.peek(), this)) {
+                self.selectionService.toggleSelectAll(state);
+                self.config.afterSelectionChange(self.selectedItems.peek(), this);
+            }
+        });
+        self.totalFilteredItemsLength = ko.computed(function () {
+            return self.filteredData().length;
+        });
+        self.showGroupPanel = ko.computed(function () {
+            return self.config.showGroupPanel;
+        });
+        self.topPanelHeight = ko.observable(self.config.showGroupPanel === true ? (self.config.headerRowHeight * 2) : self.config.headerRowHeight);
+        self.viewportDimHeight = ko.computed(function () {
+            return Math.max(0, self.rootDim.outerHeight() - self.topPanelHeight() - self.config.footerRowHeight - 2);
+        });
+        self.groupBy = function (col) {
+            if (self.sortedData().length < 1) {
+                return;
+            }
+            var indx = self.configGroups().indexOf(col);
+            if (indx == -1) {
+                col.isGroupedBy(true);
+                self.configGroups.push(col);
+                col.groupIndex(self.configGroups().length);
+            } else {
+                self.removeGroup(indx);
+            }
+            window.kg.domUtilityService.BuildStyles(self);
+        };
+        self.removeGroup = function (index) {
+            var col = self.columns().filter(function (item) {
+                return item.groupIndex() == (index + 1);
+            })[0];
+            col.isGroupedBy(false);
+            col.groupIndex(0);
+            self.columns.splice(index, 1);
+            self.configGroups.splice(index, 1);
+            self.fixGroupIndexes();
+            if (self.configGroups().length === 0) {
+                self.fixColumnIndexes();
+            }
+            window.kg.domUtilityService.BuildStyles(self);
+        };
+        self.fixGroupIndexes = function () {
+            $.each(self.configGroups(), function (i, item) {
+                item.groupIndex(i + 1);
+            });
+        };
+        self.totalRowWidth = function () {
+            var totalWidth = 0,
+                cols = self.visibleColumns();
+            $.each(cols, function (i, col) {
+                totalWidth += col.width;
+            });
+            return totalWidth;
+        };
+        self.headerScrollerDim = function () {
+            var viewportH = self.viewportDimHeight(),
+                maxHeight = self.maxCanvasHt(),
+                vScrollBarIsOpen = (maxHeight > viewportH),
+                newDim = new window.kg.Dimension();
+
+            newDim.autoFitHeight = true;
+            newDim.outerWidth = self.totalRowWidth();
+            if (vScrollBarIsOpen) { newDim.outerWidth += self.elementDims.scrollW; }
+            else if ((maxHeight - viewportH) <= self.elementDims.scrollH) { //if the horizontal scroll is open it forces the viewport to be smaller
+                newDim.outerWidth += self.elementDims.scrollW;
+            }
+            return newDim;
+        };
+        //footer
+        self.jqueryUITheme = self.config.jqueryUITheme;
+        self.maxRows = ko.observable(Math.max(self.config.pagingOptions.totalServerItems() || self.sortedData().length, 1));
+        self.maxRowsDisplay = ko.computed(function () {
+            return self.maxRows();
+        });
+        self.multiSelect = ko.observable((self.config.canSelectRows && self.config.multiSelect));
+        self.selectedItemCount = ko.computed(function () {
+            return self.selectedItems().length;
+        });
+        self.maxPages = ko.computed(function () {
+            self.maxRows(Math.max(self.config.pagingOptions.totalServerItems() || self.sortedData().length, 1));
+            return Math.ceil(self.maxRows() / self.pagingOptions.pageSize());
+        });
+        self.pageForward = function () {
+            var page = self.config.pagingOptions.currentPage();
+            self.config.pagingOptions.currentPage(Math.min(page + 1, self.maxPages()));
+        };
+        self.pageBackward = function () {
+            var page = self.config.pagingOptions.currentPage();
+            self.config.pagingOptions.currentPage(Math.max(page - 1, 1));
+        };
+        self.pageToFirst = function () {
+            self.config.pagingOptions.currentPage(1);
+        };
+        self.pageToLast = function () {
+            var maxPages = self.maxPages();
+            self.config.pagingOptions.currentPage(maxPages);
+        };
+        self.cantPageForward = ko.computed(function () {
+            var curPage = self.config.pagingOptions.currentPage();
+            var maxPages = self.maxPages();
+            return !(curPage < maxPages);
+        });
+        self.cantPageBackward = ko.computed(function () {
+            var curPage = self.config.pagingOptions.currentPage();
+            return !(curPage > 1);
+        });
+        //call init
+        self.init();
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\range.js
+    ***********************************************/
+    kg.Range = function (top, bottom) {
+        this.topRow = top;
+        this.bottomRow = bottom;
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\row.js
+    ***********************************************/
+    window.kg.Row = function (entity, config, selectionService) {
+        var self = this; // constant for the selection property that we add to each data item
+
+        self.canSelectRows = config.canSelectRows;
+
+        self.rowClasses = config.rowClasses;
+        self.selectedItems = config.selectedItems;
+        self.entity = entity;
+        self.selectionService = selectionService;
+
+        self.selected = ko.observable(false);
+        self.continueSelection = function (event) {
+            self.selectionService.ChangeSelection(self, event);
+        };
+        self.toggleSelected = function (row, event) {
+            if (!self.canSelectRows) {
+                return true;
+            }
+            var element = event.target || event;
+            //check and make sure its not the bubbling up of our checked 'click' event 
+            if (element.type === "checkbox") {
+                //self.selected(!self.selected());
+                return self.afterSelectionChange(self, event);
+            }
+            if (config.selectWithCheckboxOnly && element.type != "checkbox") {
+                return true;
+            } else {
+                if (self.beforeSelectionChange(self, event)) {
+                    self.continueSelection(event);
+                    return self.afterSelectionChange(self, event);
+                }
+            }
+            return false;
+        };
+        //selectify the entity
+        if (self.entity[SELECTED_PROP] === undefined) {
+            self.entity[SELECTED_PROP] = false;
+        } else {
+            // or else maintain the selection set by the entity.
+            self.selectionService.setSelection(self, self.entity[SELECTED_PROP]);
+        }
+        self.rowIndex = ko.observable(0);
+        self.offsetTop = ko.observable("0px");
+        self.rowDisplayIndex = 0;
+        self.isEven = ko.computed(function () {
+            if (self.rowIndex() % 2 === 0) {
+                return true;
+            }
+            return false;
+        });
+        self.isOdd = ko.computed(function () {
+            if (self.rowIndex() % 2 !== 0) {
+                return true;
+            }
+            return false;
+        });
+        self.beforeSelectionChange = config.beforeSelectionChangeCallback;
+        self.afterSelectionChange = config.afterSelectionChangeCallback;
+        self.propertyCache = {};
+        self.getProperty = function (path) {
+            return self.propertyCache[path] || (self.propertyCache[path] = window.kg.utils.evalProperty(self.entity, path));
+        };
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\searchProvider.js
+    ***********************************************/
+    window.kg.SearchProvider = function (grid) {
+        var self = this,
+            searchConditions = [],
+            lastSearchStr;
+        self.extFilter = grid.config.filterOptions.useExternalFilter;
+        self.showFilter = grid.config.showFilter;
+        self.filterText = grid.config.filterOptions.filterText;
+        self.throttle = grid.config.filterOptions.filterThrottle;
+        self.fieldMap = {};
+        self.evalFilter = function () {
+            if (searchConditions.length === 0) {
+                grid.filteredData(grid.sortedData.peek().filter(function (item) {
+                    return !item._destroy;
+                }));
+            } else {
+                grid.filteredData(grid.sortedData.peek().filter(function (item) {
+                    if (item._destroy) {
+                        return false;
+                    }
+
+                    for (var i = 0, len = searchConditions.length; i < len; i++) {
+                        var condition = searchConditions[i];
+                        //Search entire row
+                        if (!condition.column) {
+                            for (var prop in item) {
+                                if (item.hasOwnProperty(prop)) {
+                                    var pVal = ko.utils.unwrapObservable(item[prop]);
+                                    if (pVal && condition.regex.test(pVal.toString())) {
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }
+                        //Search by column.
+                        var field = ko.utils.unwrapObservable(item[condition.column]) || ko.utils.unwrapObservable(item[self.fieldMap[condition.columnDisplay]]);
+                        if (!field || !condition.regex.test(field.toString())) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }));
+            }
+            grid.rowFactory.filteredDataChanged();
+        };
+        var getRegExp = function (str, modifiers) {
+            try {
+                return new RegExp(str, modifiers);
+            } catch (err) {
+                //Escape all RegExp metacharacters.
+                return new RegExp(str.replace(/(\^|\$|\(|\)|\<|\>|\[|\]|\{|\}|\\|\||\.|\*|\+|\?)/g, '\\$1'));
+            }
+        };
+        var buildSearchConditions = function (a) {
+            //reset.
+            searchConditions = [];
+            var qStr;
+            if (!(qStr = $.trim(a))) {
+                return;
+            }
+            var columnFilters = qStr.split(";");
+            $.each(columnFilters, function (i, filter) {
+                var args = filter.split(':');
+                if (args.length > 1) {
+                    var columnName = $.trim(args[0]);
+                    var columnValue = $.trim(args[1]);
+                    if (columnName && columnValue) {
+                        searchConditions.push({
+                            column: columnName,
+                            columnDisplay: columnName.replace(/\s+/g, '').toLowerCase(),
+                            regex: getRegExp(columnValue, 'i')
+                        });
+                    }
+                } else {
+                    var val = $.trim(args[0]);
+                    if (val) {
+                        searchConditions.push({
+                            column: '',
+                            regex: getRegExp(val, 'i')
+                        });
+                    }
+                }
+            });
+        };
+
+        var filterTextComputed = ko.computed(function () {
+            var a = self.filterText();
+            if (!self.extFilter && a != lastSearchStr) {
+                //To prevent circular dependency when throttle is enabled.
+                lastSearchStr = a;
+                buildSearchConditions(a);
+                self.evalFilter();
+            }
+        });
+        if (typeof self.throttle === 'number') {
+            filterTextComputed.extend({ throttle: self.throttle });
+        }
+        if (!self.extFilter) {
+            grid.columns.subscribe(function (a) {
+                $.each(a, function (i, col) {
+                    self.fieldMap[col.displayName().toLowerCase().replace(/\s+/g, '')] = col.field;
+                });
+            });
+        }
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\selectionService.js
+    ***********************************************/
+    window.kg.SelectionService = function (grid) {
+        var self = this;
+        self.multi = grid.config.multiSelect;
+        self.selectedItems = grid.config.selectedItems;
+        self.selectedIndex = grid.config.selectedIndex;
+        self.lastClickedRow = undefined;
+        self.ignoreSelectedItemChanges = false; // flag to prevent circular event loops keeping single-select var in sync
+
+        self.rowFactory = {};
+        self.Initialize = function (rowFactory) {
+            self.rowFactory = rowFactory;
+        };
+
+        // function to manage the selection action of a data item (entity)
+        self.ChangeSelection = function (rowItem, evt) {
+            grid.$$selectionPhase = true;
+            if (evt && evt.shiftKey && self.multi) {
+                if (self.lastClickedRow) {
+                    var thisIndx = grid.filteredData.indexOf(rowItem.entity);
+                    var prevIndx = grid.filteredData.indexOf(self.lastClickedRow.entity);
+                    if (thisIndx == prevIndx) {
+                        return false;
+                    }
+                    prevIndx++;
+                    if (thisIndx < prevIndx) {
+                        thisIndx = thisIndx ^ prevIndx;
+                        prevIndx = thisIndx ^ prevIndx;
+                        thisIndx = thisIndx ^ prevIndx;
+                    }
+                    var rows = [];
+                    for (; prevIndx <= thisIndx; prevIndx++) {
+                        rows.push(self.rowFactory.rowCache[prevIndx]);
+                    }
+                    if (rows[rows.length - 1].beforeSelectionChange(rows, evt)) {
+                        $.each(rows, function (i, ri) {
+                            ri.selected(true);
+                            ri.entity[SELECTED_PROP] = true;
+                            if (self.selectedItems.indexOf(ri.entity) === -1) {
+                                self.selectedItems.push(ri.entity);
+                            }
+                        });
+                        rows[rows.length - 1].afterSelectionChange(rows, evt);
+                    }
+                    self.lastClickedRow = rows[rows.length - 1];
+                    return true;
+                }
+            } else if (!self.multi) {
+                if (self.lastClickedRow && self.lastClickedRow != rowItem) {
+                    self.setSelection(self.lastClickedRow, false);
+                }
+                self.setSelection(rowItem, grid.config.keepLastSelected ? true : !rowItem.selected());
+            } else {
+                self.setSelection(rowItem, !rowItem.selected());
+            }
+            self.lastClickedRow = rowItem;
+            grid.$$selectionPhase = false;
+            return true;
+        };
+
+        // just call this func and hand it the rowItem you want to select (or de-select)    
+        self.setSelection = function (rowItem, isSelected) {
+            rowItem.selected(isSelected);
+            rowItem.entity[SELECTED_PROP] = isSelected;
+            if (!isSelected) {
+                var indx = self.selectedItems.indexOf(rowItem.entity);
+                self.selectedItems.splice(indx, 1);
+            } else {
+                if (self.selectedItems.indexOf(rowItem.entity) === -1) {
+                    self.selectedItems.push(rowItem.entity);
+                }
+            }
+        };
+
+        // @return - boolean indicating if all items are selected or not
+        // @val - boolean indicating whether to select all/de-select all
+        self.toggleSelectAll = function (checkAll) {
+            var selectedlength = self.selectedItems().length;
+            if (selectedlength > 0) {
+                self.selectedItems.splice(0, selectedlength);
+            }
+            $.each(grid.filteredData(), function (i, item) {
+                item[SELECTED_PROP] = checkAll;
+                if (checkAll) {
+                    self.selectedItems.push(item);
+                }
+            });
+            $.each(self.rowFactory.rowCache, function (i, row) {
+                if (row && row.selected) {
+                    row.selected(checkAll);
+                }
+            });
+        };
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\styleProvider.js
+    ***********************************************/
+    window.kg.StyleProvider = function (grid) {
+        grid.canvasStyle = ko.computed(function () {
+            return { "height": grid.maxCanvasHt().toString() + "px" };
+        });
+        grid.headerScrollerStyle = ko.computed(function () {
+            return { "height": grid.config.headerRowHeight + "px" };
+        });
+        grid.topPanelStyle = ko.computed(function () {
+            return { "width": grid.rootDim.outerWidth() + "px", "height": grid.topPanelHeight() + "px" };
+        });
+        grid.headerStyle = ko.computed(function () {
+            return { "width": Math.max(0, grid.rootDim.outerWidth() - window.kg.domUtilityService.ScrollW) + "px", "height": grid.config.headerRowHeight + "px" };
+        });
+        grid.viewportStyle = ko.computed(function () {
+            return { "width": grid.rootDim.outerWidth() + "px", "height": grid.viewportDimHeight() + "px" };
+        });
+        grid.footerStyle = ko.computed(function () {
+            return { "width": grid.rootDim.outerWidth() + "px", "height": grid.config.footerRowHeight + "px" };
+        });
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\SortService.js
+    ***********************************************/
+    window.kg.sortService = {
+        colSortFnCache: {}, // cache of sorting functions. Once we create them, we don't want to keep re-doing it
+        dateRE: /^(\d\d?)[\/\.-](\d\d?)[\/\.-]((\d\d)?\d\d)$/, // nasty regex for date parsing
+        guessSortFn: function (item) {
+            var sortFn, // sorting function that is guessed
+                itemType, // the typeof item
+                dateParts, // for date parsing
+                month, // for date parsing
+                day; // for date parsing
+
+            if (item === undefined || item === null || item === '') {
+                return null;
+            }
+            itemType = typeof (item);
+            //check for numbers and booleans
+            switch (itemType) {
+                case "number":
+                    sortFn = window.kg.sortService.sortNumber;
+                    break;
+                case "boolean":
+                    sortFn = window.kg.sortService.sortBool;
+                    break;
+                default:
+                    sortFn = undefined;
+                    break;
+            }
+            //if we found one, return it
+            if (sortFn) {
+                return sortFn;
+            }
+            //check if the item is a valid Date
+            if (Object.prototype.toString.call(item) === '[object Date]') {
+                return window.kg.sortService.sortDate;
+            }
+            // if we aren't left with a string, return a basic sorting function...
+            if (itemType !== "string") {
+                return window.kg.sortService.basicSort;
+            }
+            // now lets string check..
+            //check if the item data is a valid number
+            if (item.match(/^-?[£$¤]?[\d,.]+%?$/)) {
+                return window.kg.sortService.sortNumberStr;
+            }
+            // check for a date: dd/mm/yyyy or dd/mm/yy
+            // can have / or . or - as separator
+            // can be mm/dd as well
+            dateParts = item.match(window.kg.sortService.dateRE);
+            if (dateParts) {
+                // looks like a date
+                month = parseInt(dateParts[1], 10);
+                day = parseInt(dateParts[2], 10);
+                if (month > 12) {
+                    // definitely dd/mm
+                    return window.kg.sortService.sortDDMMStr;
+                } else if (day > 12) {
+                    return window.kg.sortService.sortMMDDStr;
+                } else {
+                    // looks like a date, but we can't tell which, so assume that it's MM/DD
+                    return window.kg.sortService.sortMMDDStr;
+                }
+            }
+            //finally just sort the normal string...
+            return window.kg.sortService.sortAlpha;
+        },
+        basicSort: function (a, b) {
+            if (a == b) {
+                return 0;
+            }
+            if (a < b) {
+                return -1;
+            }
+            return 1;
+        },
+        sortNumber: function (a, b) {
+            return a - b;
+        },
+        sortNumberStr: function (a, b) {
+            var numA,
+                numB,
+                badA = false,
+                badB = false;
+            numA = parseFloat(a.replace(/[^0-9.-]/g, ''));
+            if (isNaN(numA)) {
+                badA = true;
+            }
+            numB = parseFloat(b.replace(/[^0-9.-]/g, ''));
+            if (isNaN(numB)) {
+                badB = true;
+            }
+            // we want bad ones to get pushed to the bottom... which effectively is "greater than"
+            if (badA && badB) {
+                return 0;
+            }
+            if (badA) {
+                return 1;
+            }
+            if (badB) {
+                return -1;
+            }
+            return numA - numB;
+        },
+        sortAlpha: function (a, b) {
+            var strA = a.toLowerCase(),
+                strB = b.toLowerCase();
+            return strA == strB ? 0 : (strA < strB ? -1 : 1);
+        },
+        sortBool: function (a, b) {
+            if (a && b) {
+                return 0;
+            }
+            if (!a && !b) {
+                return 0;
+            } else {
+                return a ? 1 : -1;
+            }
+        },
+        sortDate: function (a, b) {
+            var timeA = a.getTime(),
+                timeB = b.getTime();
+            return timeA == timeB ? 0 : (timeA < timeB ? -1 : 1);
+        },
+        sortDDMMStr: function (a, b) {
+            var dateA, dateB, mtch, m, d, y;
+            mtch = a.match(window.kg.sortService.dateRE);
+            y = mtch[3];
+            m = mtch[2];
+            d = mtch[1];
+            if (m.length == 1) {
+                m = '0' + m;
+            }
+            if (d.length == 1) {
+                d = '0' + d;
+            }
+            dateA = y + m + d;
+            mtch = b.match(window.kg.sortService.dateRE);
+            y = mtch[3];
+            m = mtch[2];
+            d = mtch[1];
+            if (m.length == 1) {
+                m = '0' + m;
+            }
+            if (d.length == 1) {
+                d = '0' + d;
+            }
+            dateB = y + m + d;
+            if (dateA == dateB) {
+                return 0;
+            }
+            if (dateA < dateB) {
+                return -1;
+            }
+            return 1;
+        },
+        sortMMDDStr: function (a, b) {
+            var dateA, dateB, mtch, m, d, y;
+            mtch = a.match(window.kg.sortService.dateRE);
+            y = mtch[3];
+            d = mtch[2];
+            m = mtch[1];
+            if (m.length == 1) {
+                m = '0' + m;
+            }
+            if (d.length == 1) {
+                d = '0' + d;
+            }
+            dateA = y + m + d;
+            mtch = b.match(dateRE);
+            y = mtch[3];
+            d = mtch[2];
+            m = mtch[1];
+            if (m.length == 1) {
+                m = '0' + m;
+            }
+            if (d.length == 1) {
+                d = '0' + d;
+            }
+            dateB = y + m + d;
+            if (dateA == dateB) {
+                return 0;
+            }
+            if (dateA < dateB) {
+                return -1;
+            }
+            return 1;
+        },
+        sortData: function (data /*datasource*/, sortInfo) {
+            var unwrappedData = data();
+            // first make sure we are even supposed to do work
+            if (!unwrappedData || !sortInfo) {
+                return;
+            }
+            // grab the metadata for the rest of the logic
+            var col = sortInfo.column,
+                direction = sortInfo.direction,
+                sortFn,
+                item;
+            //see if we already figured out what to use to sort the column
+            if (window.kg.sortService.colSortFnCache[col.field]) {
+                sortFn = window.kg.sortService.colSortFnCache[col.field];
+            } else if (col.sortingAlgorithm != undefined) {
+                sortFn = col.sortingAlgorithm;
+                window.kg.sortService.colSortFnCache[col.field] = col.sortingAlgorithm;
+            } else { // try and guess what sort function to use
+                item = unwrappedData[0];
+                if (!item) {
+                    return;
+                }
+                sortFn = kg.sortService.guessSortFn(item[col.field]);
+                //cache it
+                if (sortFn) {
+                    window.kg.sortService.colSortFnCache[col.field] = sortFn;
+                } else {
+                    // we assign the alpha sort because anything that is null/undefined will never get passed to
+                    // the actual sorting function. It will get caught in our null check and returned to be sorted
+                    // down to the bottom
+                    sortFn = window.kg.sortService.sortAlpha;
+                }
+            }
+            //now actually sort the data
+            unwrappedData.sort(function (itemA, itemB) {
+                var propA = window.kg.utils.evalProperty(itemA, col.field);
+                var propB = window.kg.utils.evalProperty(itemB, col.field);
+                // we want to force nulls and such to the bottom when we sort... which effectively is "greater than"
+                if (!propB && !propA) {
+                    return 0;
+                } else if (!propA) {
+                    return 1;
+                } else if (!propB) {
+                    return -1;
+                }
+                //made it this far, we don't have to worry about null & undefined
+                if (direction === ASC) {
+                    return sortFn(propA, propB);
+                } else {
+                    return 0 - sortFn(propA, propB);
+                }
+            });
+            data(unwrappedData);
+            return;
+        },
+        Sort: function (sortInfo, data) {
+            if (window.kg.sortService.isSorting) {
+                return;
+            }
+            window.kg.sortService.isSorting = true;
+            window.kg.sortService.sortData(data, sortInfo);
+            window.kg.sortService.isSorting = false;
+        }
+    };
+
+    /***********************************************
+    * FILE: ..\src\classes\DomUtilityService.js
+    ***********************************************/
+    var getWidths = function () {
+        var $testContainer = $('<div></div>');
+        $testContainer.appendTo('body');
+        // 1. Run all the following measurements on startup!
+        //measure Scroll Bars
+        $testContainer.height(100).width(100).css("position", "absolute").css("overflow", "scroll");
+        $testContainer.append('<div style="height: 400px; width: 400px;"></div>');
+        window.kg.domUtilityService.ScrollH = ($testContainer.height() - $testContainer[0].clientHeight);
+        window.kg.domUtilityService.ScrollW = ($testContainer.width() - $testContainer[0].clientWidth);
+        $testContainer.empty();
+        //clear styles
+        $testContainer.attr('style', '');
+        //measure letter sizes using a pretty typical font size and fat font-family
+        $testContainer.append('<span style="font-family: Verdana, Helvetica, Sans-Serif; font-size: 14px;"><strong>M</strong></span>');
+        window.kg.domUtilityService.LetterW = $testContainer.children().first().width();
+        $testContainer.remove();
+    };
+    window.kg.domUtilityService = {
+        AssignGridContainers: function (rootEl, grid) {
+            grid.$root = $(rootEl);
+            //Headers
+            grid.$topPanel = grid.$root.find(".kgTopPanel");
+            grid.$groupPanel = grid.$root.find(".kgGroupPanel");
+            grid.$headerContainer = grid.$topPanel.find(".kgHeaderContainer");
+            grid.$headerScroller = grid.$topPanel.find(".kgHeaderScroller");
+            grid.$headers = grid.$headerScroller.children();
+            //Viewport
+            grid.$viewport = grid.$root.find(".kgViewport");
+            //Canvas
+            grid.$canvas = grid.$viewport.find(".kgCanvas");
+            //Footers
+            grid.$footerPanel = grid.$root.find(".ngFooterPanel");
+            window.kg.domUtilityService.UpdateGridLayout(grid);
+        },
+        UpdateGridLayout: function (grid) {
+            //catch this so we can return the viewer to their original scroll after the resize!
+            var scrollTop = grid.$viewport.scrollTop();
+            grid.elementDims.rootMaxW = grid.$root.width();
+            grid.elementDims.rootMaxH = grid.$root.height();
+            //check to see if anything has changed
+            grid.refreshDomSizes();
+            grid.adjustScrollTop(scrollTop, true); //ensure that the user stays scrolled where they were
+        },
+        BuildStyles: function (grid) {
+            var rowHeight = grid.config.rowHeight,
+                $style = grid.$styleSheet,
+                gridId = grid.gridId,
+                css,
+                cols = grid.visibleColumns(),
+                sumWidth = 0;
+
+            if (!$style) {
+                $style = $('#' + gridId);
+                if (!$style[0]) {
+                    $style = $("<style id='" + gridId + "' type='text/css' rel='stylesheet' />");
+                    $style.appendTo('body');
+                }
+            }
+            $style.empty();
+            var trw = grid.totalRowWidth();
+            css = "." + gridId + " .kgCanvas { width: " + trw + "px; }" +
+                  "." + gridId + " .kgRow { width: " + trw + "px; }" +
+                  "." + gridId + " .kgCell { height: " + rowHeight + "px; }" +
+                  "." + gridId + " .kgCanvas { width: " + trw + "px; }" +
+                  "." + gridId + " .kgHeaderCell { top: 0; bottom: 0; }" +
+                  "." + gridId + " .kgHeaderScroller { width: " + (trw + window.kg.domUtilityService.scrollH + 2) + "px}";
+            $.each(cols, function (i, col) {
+                css += "." + gridId + " .col" + i + " { width: " + col.width + "px; left: " + sumWidth + "px; right: " + (trw - sumWidth - col.width) + "px; height: " + rowHeight + "px }" +
+                       "." + gridId + " .colt" + i + " { width: " + col.width + "px; }";
+                sumWidth += col.width;
+            });
+            if (window.kg.utils.isIe) { // IE
+                $style[0].styleSheet.cssText = css;
+            } else {
+                $style.append(document.createTextNode(css));
+            }
+            grid.$styleSheet = $style;
+        },
+        ScrollH: 17, // default in IE, Chrome, & most browsers
+        ScrollW: 17, // default in IE, Chrome, & most browsers
+        LetterW: 10
+    };
+    getWidths();
+}(window));
+/*
+     _ _      _       _
+ ___| (_) ___| | __  (_)___
+/ __| | |/ __| |/ /  | / __|
+\__ \ | | (__|   < _ | \__ \
+|___/_|_|\___|_|\_(_)/ |___/
+                   |__/
+
+ Version: 1.5.0
+  Author: Ken Wheeler
+ Website: http://kenwheeler.github.io
+    Docs: http://kenwheeler.github.io/slick
+    Repo: http://github.com/kenwheeler/slick
+  Issues: http://github.com/kenwheeler/slick/issues
+
+ */
+/* global window, document, define, jQuery, setInterval, clearInterval */
+
+!function(a){"use strict";"function"==typeof define&&define.amd?define(["jquery"],a):"undefined"!=typeof exports?module.exports=a(require("jquery")):a(jQuery)}(function(a){"use strict";var b=window.Slick||{};b=function(){function c(c,d){var f,g,h,e=this;if(e.defaults={accessibility:!0,adaptiveHeight:!1,appendArrows:a(c),appendDots:a(c),arrows:!0,asNavFor:null,prevArrow:'<button type="button" data-role="none" class="slick-prev" aria-label="previous">Previous</button>',nextArrow:'<button type="button" data-role="none" class="slick-next" aria-label="next">Next</button>',autoplay:!1,autoplaySpeed:3e3,centerMode:!1,centerPadding:"50px",cssEase:"ease",customPaging:function(a,b){return'<button type="button" data-role="none">'+(b+1)+"</button>"},dots:!1,dotsClass:"slick-dots",draggable:!0,easing:"linear",edgeFriction:.35,fade:!1,focusOnSelect:!1,infinite:!0,initialSlide:0,lazyLoad:"ondemand",mobileFirst:!1,pauseOnHover:!0,pauseOnDotsHover:!1,respondTo:"window",responsive:null,rows:1,rtl:!1,slide:"",slidesPerRow:1,slidesToShow:1,slidesToScroll:1,speed:500,swipe:!0,swipeToSlide:!1,touchMove:!0,touchThreshold:5,useCSS:!0,variableWidth:!1,vertical:!1,verticalSwiping:!1,waitForAnimate:!0},e.initials={animating:!1,dragging:!1,autoPlayTimer:null,currentDirection:0,currentLeft:null,currentSlide:0,direction:1,$dots:null,listWidth:null,listHeight:null,loadIndex:0,$nextArrow:null,$prevArrow:null,slideCount:null,slideWidth:null,$slideTrack:null,$slides:null,sliding:!1,slideOffset:0,swipeLeft:null,$list:null,touchObject:{},transformsEnabled:!1},a.extend(e,e.initials),e.activeBreakpoint=null,e.animType=null,e.animProp=null,e.breakpoints=[],e.breakpointSettings=[],e.cssTransitions=!1,e.hidden="hidden",e.paused=!1,e.positionProp=null,e.respondTo=null,e.rowCount=1,e.shouldClick=!0,e.$slider=a(c),e.$slidesCache=null,e.transformType=null,e.transitionType=null,e.visibilityChange="visibilitychange",e.windowWidth=0,e.windowTimer=null,f=a(c).data("slick")||{},e.options=a.extend({},e.defaults,f,d),e.currentSlide=e.options.initialSlide,e.originalSettings=e.options,g=e.options.responsive||null,g&&g.length>-1){e.respondTo=e.options.respondTo||"window";for(h in g)g.hasOwnProperty(h)&&(e.breakpoints.push(g[h].breakpoint),e.breakpointSettings[g[h].breakpoint]=g[h].settings);e.breakpoints.sort(function(a,b){return e.options.mobileFirst===!0?a-b:b-a})}"undefined"!=typeof document.mozHidden?(e.hidden="mozHidden",e.visibilityChange="mozvisibilitychange"):"undefined"!=typeof document.msHidden?(e.hidden="msHidden",e.visibilityChange="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(e.hidden="webkitHidden",e.visibilityChange="webkitvisibilitychange"),e.autoPlay=a.proxy(e.autoPlay,e),e.autoPlayClear=a.proxy(e.autoPlayClear,e),e.changeSlide=a.proxy(e.changeSlide,e),e.clickHandler=a.proxy(e.clickHandler,e),e.selectHandler=a.proxy(e.selectHandler,e),e.setPosition=a.proxy(e.setPosition,e),e.swipeHandler=a.proxy(e.swipeHandler,e),e.dragHandler=a.proxy(e.dragHandler,e),e.keyHandler=a.proxy(e.keyHandler,e),e.autoPlayIterator=a.proxy(e.autoPlayIterator,e),e.instanceUid=b++,e.htmlExpr=/^(?:\s*(<[\w\W]+>)[^>]*)$/,e.init(),e.checkResponsive(!0)}var b=0;return c}(),b.prototype.addSlide=b.prototype.slickAdd=function(b,c,d){var e=this;if("boolean"==typeof c)d=c,c=null;else if(0>c||c>=e.slideCount)return!1;e.unload(),"number"==typeof c?0===c&&0===e.$slides.length?a(b).appendTo(e.$slideTrack):d?a(b).insertBefore(e.$slides.eq(c)):a(b).insertAfter(e.$slides.eq(c)):d===!0?a(b).prependTo(e.$slideTrack):a(b).appendTo(e.$slideTrack),e.$slides=e.$slideTrack.children(this.options.slide),e.$slideTrack.children(this.options.slide).detach(),e.$slideTrack.append(e.$slides),e.$slides.each(function(b,c){a(c).attr("data-slick-index",b)}),e.$slidesCache=e.$slides,e.reinit()},b.prototype.animateHeight=function(){var a=this;if(1===a.options.slidesToShow&&a.options.adaptiveHeight===!0&&a.options.vertical===!1){var b=a.$slides.eq(a.currentSlide).outerHeight(!0);a.$list.animate({height:b},a.options.speed)}},b.prototype.animateSlide=function(b,c){var d={},e=this;e.animateHeight(),e.options.rtl===!0&&e.options.vertical===!1&&(b=-b),e.transformsEnabled===!1?e.options.vertical===!1?e.$slideTrack.animate({left:b},e.options.speed,e.options.easing,c):e.$slideTrack.animate({top:b},e.options.speed,e.options.easing,c):e.cssTransitions===!1?(e.options.rtl===!0&&(e.currentLeft=-e.currentLeft),a({animStart:e.currentLeft}).animate({animStart:b},{duration:e.options.speed,easing:e.options.easing,step:function(a){a=Math.ceil(a),e.options.vertical===!1?(d[e.animType]="translate("+a+"px, 0px)",e.$slideTrack.css(d)):(d[e.animType]="translate(0px,"+a+"px)",e.$slideTrack.css(d))},complete:function(){c&&c.call()}})):(e.applyTransition(),b=Math.ceil(b),d[e.animType]=e.options.vertical===!1?"translate3d("+b+"px, 0px, 0px)":"translate3d(0px,"+b+"px, 0px)",e.$slideTrack.css(d),c&&setTimeout(function(){e.disableTransition(),c.call()},e.options.speed))},b.prototype.asNavFor=function(b){var c=this,d=null!==c.options.asNavFor?a(c.options.asNavFor).slick("getSlick"):null;null!==d&&d.slideHandler(b,!0)},b.prototype.applyTransition=function(a){var b=this,c={};c[b.transitionType]=b.options.fade===!1?b.transformType+" "+b.options.speed+"ms "+b.options.cssEase:"opacity "+b.options.speed+"ms "+b.options.cssEase,b.options.fade===!1?b.$slideTrack.css(c):b.$slides.eq(a).css(c)},b.prototype.autoPlay=function(){var a=this;a.autoPlayTimer&&clearInterval(a.autoPlayTimer),a.slideCount>a.options.slidesToShow&&a.paused!==!0&&(a.autoPlayTimer=setInterval(a.autoPlayIterator,a.options.autoplaySpeed))},b.prototype.autoPlayClear=function(){var a=this;a.autoPlayTimer&&clearInterval(a.autoPlayTimer)},b.prototype.autoPlayIterator=function(){var a=this;a.options.infinite===!1?1===a.direction?(a.currentSlide+1===a.slideCount-1&&(a.direction=0),a.slideHandler(a.currentSlide+a.options.slidesToScroll)):(0===a.currentSlide-1&&(a.direction=1),a.slideHandler(a.currentSlide-a.options.slidesToScroll)):a.slideHandler(a.currentSlide+a.options.slidesToScroll)},b.prototype.buildArrows=function(){var b=this;b.options.arrows===!0&&b.slideCount>b.options.slidesToShow&&(b.$prevArrow=a(b.options.prevArrow),b.$nextArrow=a(b.options.nextArrow),b.htmlExpr.test(b.options.prevArrow)&&b.$prevArrow.appendTo(b.options.appendArrows),b.htmlExpr.test(b.options.nextArrow)&&b.$nextArrow.appendTo(b.options.appendArrows),b.options.infinite!==!0&&b.$prevArrow.addClass("slick-disabled"))},b.prototype.buildDots=function(){var c,d,b=this;if(b.options.dots===!0&&b.slideCount>b.options.slidesToShow){for(d='<ul class="'+b.options.dotsClass+'">',c=0;c<=b.getDotCount();c+=1)d+="<li>"+b.options.customPaging.call(this,b,c)+"</li>";d+="</ul>",b.$dots=a(d).appendTo(b.options.appendDots),b.$dots.find("li").first().addClass("slick-active").attr("aria-hidden","false")}},b.prototype.buildOut=function(){var b=this;b.$slides=b.$slider.children(":not(.slick-cloned)").addClass("slick-slide"),b.slideCount=b.$slides.length,b.$slides.each(function(b,c){a(c).attr("data-slick-index",b)}),b.$slidesCache=b.$slides,b.$slider.addClass("slick-slider"),b.$slideTrack=0===b.slideCount?a('<div class="slick-track"/>').appendTo(b.$slider):b.$slides.wrapAll('<div class="slick-track"/>').parent(),b.$list=b.$slideTrack.wrap('<div aria-live="polite" class="slick-list"/>').parent(),b.$slideTrack.css("opacity",0),(b.options.centerMode===!0||b.options.swipeToSlide===!0)&&(b.options.slidesToScroll=1),a("img[data-lazy]",b.$slider).not("[src]").addClass("slick-loading"),b.setupInfinite(),b.buildArrows(),b.buildDots(),b.updateDots(),b.options.accessibility===!0&&b.$list.prop("tabIndex",0),b.setSlideClasses("number"==typeof this.currentSlide?this.currentSlide:0),b.options.draggable===!0&&b.$list.addClass("draggable")},b.prototype.buildRows=function(){var b,c,d,e,f,g,h,a=this;if(e=document.createDocumentFragment(),g=a.$slider.children(),a.options.rows>1){for(h=a.options.slidesPerRow*a.options.rows,f=Math.ceil(g.length/h),b=0;f>b;b++){var i=document.createElement("div");for(c=0;c<a.options.rows;c++){var j=document.createElement("div");for(d=0;d<a.options.slidesPerRow;d++){var k=b*h+(c*a.options.slidesPerRow+d);g.get(k)&&j.appendChild(g.get(k))}i.appendChild(j)}e.appendChild(i)}a.$slider.html(e),a.$slider.children().children().children().width(100/a.options.slidesPerRow+"%").css({display:"inline-block"})}},b.prototype.checkResponsive=function(b){var d,e,f,c=this,g=c.$slider.width(),h=window.innerWidth||a(window).width();if("window"===c.respondTo?f=h:"slider"===c.respondTo?f=g:"min"===c.respondTo&&(f=Math.min(h,g)),c.originalSettings.responsive&&c.originalSettings.responsive.length>-1&&null!==c.originalSettings.responsive){e=null;for(d in c.breakpoints)c.breakpoints.hasOwnProperty(d)&&(c.originalSettings.mobileFirst===!1?f<c.breakpoints[d]&&(e=c.breakpoints[d]):f>c.breakpoints[d]&&(e=c.breakpoints[d]));null!==e?null!==c.activeBreakpoint?e!==c.activeBreakpoint&&(c.activeBreakpoint=e,"unslick"===c.breakpointSettings[e]?c.unslick():(c.options=a.extend({},c.originalSettings,c.breakpointSettings[e]),b===!0&&(c.currentSlide=c.options.initialSlide),c.refresh())):(c.activeBreakpoint=e,"unslick"===c.breakpointSettings[e]?c.unslick():(c.options=a.extend({},c.originalSettings,c.breakpointSettings[e]),b===!0&&(c.currentSlide=c.options.initialSlide),c.refresh())):null!==c.activeBreakpoint&&(c.activeBreakpoint=null,c.options=c.originalSettings,b===!0&&(c.currentSlide=c.options.initialSlide),c.refresh())}},b.prototype.changeSlide=function(b,c){var f,g,h,d=this,e=a(b.target);switch(e.is("a")&&b.preventDefault(),h=0!==d.slideCount%d.options.slidesToScroll,f=h?0:(d.slideCount-d.currentSlide)%d.options.slidesToScroll,b.data.message){case"previous":g=0===f?d.options.slidesToScroll:d.options.slidesToShow-f,d.slideCount>d.options.slidesToShow&&d.slideHandler(d.currentSlide-g,!1,c);break;case"next":g=0===f?d.options.slidesToScroll:f,d.slideCount>d.options.slidesToShow&&d.slideHandler(d.currentSlide+g,!1,c);break;case"index":var i=0===b.data.index?0:b.data.index||a(b.target).parent().index()*d.options.slidesToScroll;d.slideHandler(d.checkNavigable(i),!1,c);break;default:return}},b.prototype.checkNavigable=function(a){var c,d,b=this;if(c=b.getNavigableIndexes(),d=0,a>c[c.length-1])a=c[c.length-1];else for(var e in c){if(a<c[e]){a=d;break}d=c[e]}return a},b.prototype.cleanUpEvents=function(){var b=this;b.options.dots===!0&&b.slideCount>b.options.slidesToShow&&a("li",b.$dots).off("click.slick",b.changeSlide),b.options.dots===!0&&b.options.pauseOnDotsHover===!0&&b.options.autoplay===!0&&a("li",b.$dots).off("mouseenter.slick",b.setPaused.bind(b,!0)).off("mouseleave.slick",b.setPaused.bind(b,!1)),b.options.arrows===!0&&b.slideCount>b.options.slidesToShow&&(b.$prevArrow&&b.$prevArrow.off("click.slick",b.changeSlide),b.$nextArrow&&b.$nextArrow.off("click.slick",b.changeSlide)),b.$list.off("touchstart.slick mousedown.slick",b.swipeHandler),b.$list.off("touchmove.slick mousemove.slick",b.swipeHandler),b.$list.off("touchend.slick mouseup.slick",b.swipeHandler),b.$list.off("touchcancel.slick mouseleave.slick",b.swipeHandler),b.$list.off("click.slick",b.clickHandler),b.options.autoplay===!0&&a(document).off(b.visibilityChange,b.visibility),b.$list.off("mouseenter.slick",b.setPaused.bind(b,!0)),b.$list.off("mouseleave.slick",b.setPaused.bind(b,!1)),b.options.accessibility===!0&&b.$list.off("keydown.slick",b.keyHandler),b.options.focusOnSelect===!0&&a(b.$slideTrack).children().off("click.slick",b.selectHandler),a(window).off("orientationchange.slick.slick-"+b.instanceUid,b.orientationChange),a(window).off("resize.slick.slick-"+b.instanceUid,b.resize),a("[draggable!=true]",b.$slideTrack).off("dragstart",b.preventDefault),a(window).off("load.slick.slick-"+b.instanceUid,b.setPosition),a(document).off("ready.slick.slick-"+b.instanceUid,b.setPosition)},b.prototype.cleanUpRows=function(){var b,a=this;a.options.rows>1&&(b=a.$slides.children().children(),b.removeAttr("style"),a.$slider.html(b))},b.prototype.clickHandler=function(a){var b=this;b.shouldClick===!1&&(a.stopImmediatePropagation(),a.stopPropagation(),a.preventDefault())},b.prototype.destroy=function(){var b=this;b.autoPlayClear(),b.touchObject={},b.cleanUpEvents(),a(".slick-cloned",b.$slider).remove(),b.$dots&&b.$dots.remove(),b.$prevArrow&&"object"!=typeof b.options.prevArrow&&b.$prevArrow.remove(),b.$nextArrow&&"object"!=typeof b.options.nextArrow&&b.$nextArrow.remove(),b.$slides&&(b.$slides.removeClass("slick-slide slick-active slick-center slick-visible").attr("aria-hidden","true").removeAttr("data-slick-index").css({position:"",left:"",top:"",zIndex:"",opacity:"",width:""}),b.$slider.html(b.$slides)),b.cleanUpRows(),b.$slider.removeClass("slick-slider"),b.$slider.removeClass("slick-initialized")},b.prototype.disableTransition=function(a){var b=this,c={};c[b.transitionType]="",b.options.fade===!1?b.$slideTrack.css(c):b.$slides.eq(a).css(c)},b.prototype.fadeSlide=function(a,b){var c=this;c.cssTransitions===!1?(c.$slides.eq(a).css({zIndex:1e3}),c.$slides.eq(a).animate({opacity:1},c.options.speed,c.options.easing,b)):(c.applyTransition(a),c.$slides.eq(a).css({opacity:1,zIndex:1e3}),b&&setTimeout(function(){c.disableTransition(a),b.call()},c.options.speed))},b.prototype.filterSlides=b.prototype.slickFilter=function(a){var b=this;null!==a&&(b.unload(),b.$slideTrack.children(this.options.slide).detach(),b.$slidesCache.filter(a).appendTo(b.$slideTrack),b.reinit())},b.prototype.getCurrent=b.prototype.slickCurrentSlide=function(){var a=this;return a.currentSlide},b.prototype.getDotCount=function(){var a=this,b=0,c=0,d=0;if(a.options.infinite===!0)d=Math.ceil(a.slideCount/a.options.slidesToScroll);else if(a.options.centerMode===!0)d=a.slideCount;else for(;b<a.slideCount;)++d,b=c+a.options.slidesToShow,c+=a.options.slidesToScroll<=a.options.slidesToShow?a.options.slidesToScroll:a.options.slidesToShow;return d-1},b.prototype.getLeft=function(a){var c,d,f,b=this,e=0;return b.slideOffset=0,d=b.$slides.first().outerHeight(),b.options.infinite===!0?(b.slideCount>b.options.slidesToShow&&(b.slideOffset=-1*b.slideWidth*b.options.slidesToShow,e=-1*d*b.options.slidesToShow),0!==b.slideCount%b.options.slidesToScroll&&a+b.options.slidesToScroll>b.slideCount&&b.slideCount>b.options.slidesToShow&&(a>b.slideCount?(b.slideOffset=-1*(b.options.slidesToShow-(a-b.slideCount))*b.slideWidth,e=-1*(b.options.slidesToShow-(a-b.slideCount))*d):(b.slideOffset=-1*b.slideCount%b.options.slidesToScroll*b.slideWidth,e=-1*b.slideCount%b.options.slidesToScroll*d))):a+b.options.slidesToShow>b.slideCount&&(b.slideOffset=(a+b.options.slidesToShow-b.slideCount)*b.slideWidth,e=(a+b.options.slidesToShow-b.slideCount)*d),b.slideCount<=b.options.slidesToShow&&(b.slideOffset=0,e=0),b.options.centerMode===!0&&b.options.infinite===!0?b.slideOffset+=b.slideWidth*Math.floor(b.options.slidesToShow/2)-b.slideWidth:b.options.centerMode===!0&&(b.slideOffset=0,b.slideOffset+=b.slideWidth*Math.floor(b.options.slidesToShow/2)),c=b.options.vertical===!1?-1*a*b.slideWidth+b.slideOffset:-1*a*d+e,b.options.variableWidth===!0&&(f=b.slideCount<=b.options.slidesToShow||b.options.infinite===!1?b.$slideTrack.children(".slick-slide").eq(a):b.$slideTrack.children(".slick-slide").eq(a+b.options.slidesToShow),c=f[0]?-1*f[0].offsetLeft:0,b.options.centerMode===!0&&(f=b.options.infinite===!1?b.$slideTrack.children(".slick-slide").eq(a):b.$slideTrack.children(".slick-slide").eq(a+b.options.slidesToShow+1),c=f[0]?-1*f[0].offsetLeft:0,c+=(b.$list.width()-f.outerWidth())/2)),c},b.prototype.getOption=b.prototype.slickGetOption=function(a){var b=this;return b.options[a]},b.prototype.getNavigableIndexes=function(){var e,a=this,b=0,c=0,d=[];for(a.options.infinite===!1?(e=a.slideCount-a.options.slidesToShow+1,a.options.centerMode===!0&&(e=a.slideCount)):(b=-1*a.options.slidesToScroll,c=-1*a.options.slidesToScroll,e=2*a.slideCount);e>b;)d.push(b),b=c+a.options.slidesToScroll,c+=a.options.slidesToScroll<=a.options.slidesToShow?a.options.slidesToScroll:a.options.slidesToShow;return d},b.prototype.getSlick=function(){return this},b.prototype.getSlideCount=function(){var c,d,e,b=this;return e=b.options.centerMode===!0?b.slideWidth*Math.floor(b.options.slidesToShow/2):0,b.options.swipeToSlide===!0?(b.$slideTrack.find(".slick-slide").each(function(c,f){return f.offsetLeft-e+a(f).outerWidth()/2>-1*b.swipeLeft?(d=f,!1):void 0}),c=Math.abs(a(d).attr("data-slick-index")-b.currentSlide)||1):b.options.slidesToScroll},b.prototype.goTo=b.prototype.slickGoTo=function(a,b){var c=this;c.changeSlide({data:{message:"index",index:parseInt(a)}},b)},b.prototype.init=function(){var b=this;a(b.$slider).hasClass("slick-initialized")||(a(b.$slider).addClass("slick-initialized"),b.buildRows(),b.buildOut(),b.setProps(),b.startLoad(),b.loadSlider(),b.initializeEvents(),b.updateArrows(),b.updateDots()),b.$slider.trigger("init",[b])},b.prototype.initArrowEvents=function(){var a=this;a.options.arrows===!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.on("click.slick",{message:"previous"},a.changeSlide),a.$nextArrow.on("click.slick",{message:"next"},a.changeSlide))},b.prototype.initDotEvents=function(){var b=this;b.options.dots===!0&&b.slideCount>b.options.slidesToShow&&a("li",b.$dots).on("click.slick",{message:"index"},b.changeSlide),b.options.dots===!0&&b.options.pauseOnDotsHover===!0&&b.options.autoplay===!0&&a("li",b.$dots).on("mouseenter.slick",b.setPaused.bind(b,!0)).on("mouseleave.slick",b.setPaused.bind(b,!1))},b.prototype.initializeEvents=function(){var b=this;b.initArrowEvents(),b.initDotEvents(),b.$list.on("touchstart.slick mousedown.slick",{action:"start"},b.swipeHandler),b.$list.on("touchmove.slick mousemove.slick",{action:"move"},b.swipeHandler),b.$list.on("touchend.slick mouseup.slick",{action:"end"},b.swipeHandler),b.$list.on("touchcancel.slick mouseleave.slick",{action:"end"},b.swipeHandler),b.$list.on("click.slick",b.clickHandler),b.options.autoplay===!0&&a(document).on(b.visibilityChange,b.visibility.bind(b)),b.$list.on("mouseenter.slick",b.setPaused.bind(b,!0)),b.$list.on("mouseleave.slick",b.setPaused.bind(b,!1)),b.options.accessibility===!0&&b.$list.on("keydown.slick",b.keyHandler),b.options.focusOnSelect===!0&&a(b.$slideTrack).children().on("click.slick",b.selectHandler),a(window).on("orientationchange.slick.slick-"+b.instanceUid,b.orientationChange.bind(b)),a(window).on("resize.slick.slick-"+b.instanceUid,b.resize.bind(b)),a("[draggable!=true]",b.$slideTrack).on("dragstart",b.preventDefault),a(window).on("load.slick.slick-"+b.instanceUid,b.setPosition),a(document).on("ready.slick.slick-"+b.instanceUid,b.setPosition)},b.prototype.initUI=function(){var a=this;a.options.arrows===!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.show(),a.$nextArrow.show()),a.options.dots===!0&&a.slideCount>a.options.slidesToShow&&a.$dots.show(),a.options.autoplay===!0&&a.autoPlay()},b.prototype.keyHandler=function(a){var b=this;37===a.keyCode&&b.options.accessibility===!0?b.changeSlide({data:{message:"previous"}}):39===a.keyCode&&b.options.accessibility===!0&&b.changeSlide({data:{message:"next"}})},b.prototype.lazyLoad=function(){function g(b){a("img[data-lazy]",b).each(function(){var b=a(this),c=a(this).attr("data-lazy"),d=document.createElement("img");d.onload=function(){b.animate({opacity:1},200)},d.src=c,b.css({opacity:0}).attr("src",c).removeAttr("data-lazy").removeClass("slick-loading")})}var c,d,e,f,b=this;b.options.centerMode===!0?b.options.infinite===!0?(e=b.currentSlide+(b.options.slidesToShow/2+1),f=e+b.options.slidesToShow+2):(e=Math.max(0,b.currentSlide-(b.options.slidesToShow/2+1)),f=2+(b.options.slidesToShow/2+1)+b.currentSlide):(e=b.options.infinite?b.options.slidesToShow+b.currentSlide:b.currentSlide,f=e+b.options.slidesToShow,b.options.fade===!0&&(e>0&&e--,f<=b.slideCount&&f++)),c=b.$slider.find(".slick-slide").slice(e,f),g(c),b.slideCount<=b.options.slidesToShow?(d=b.$slider.find(".slick-slide"),g(d)):b.currentSlide>=b.slideCount-b.options.slidesToShow?(d=b.$slider.find(".slick-cloned").slice(0,b.options.slidesToShow),g(d)):0===b.currentSlide&&(d=b.$slider.find(".slick-cloned").slice(-1*b.options.slidesToShow),g(d))},b.prototype.loadSlider=function(){var a=this;a.setPosition(),a.$slideTrack.css({opacity:1}),a.$slider.removeClass("slick-loading"),a.initUI(),"progressive"===a.options.lazyLoad&&a.progressiveLazyLoad()},b.prototype.next=b.prototype.slickNext=function(){var a=this;a.changeSlide({data:{message:"next"}})},b.prototype.orientationChange=function(){var a=this;a.checkResponsive(),a.setPosition()},b.prototype.pause=b.prototype.slickPause=function(){var a=this;a.autoPlayClear(),a.paused=!0},b.prototype.play=b.prototype.slickPlay=function(){var a=this;a.paused=!1,a.autoPlay()},b.prototype.postSlide=function(a){var b=this;b.$slider.trigger("afterChange",[b,a]),b.animating=!1,b.setPosition(),b.swipeLeft=null,b.options.autoplay===!0&&b.paused===!1&&b.autoPlay()},b.prototype.prev=b.prototype.slickPrev=function(){var a=this;a.changeSlide({data:{message:"previous"}})},b.prototype.preventDefault=function(a){a.preventDefault()},b.prototype.progressiveLazyLoad=function(){var c,d,b=this;c=a("img[data-lazy]",b.$slider).length,c>0&&(d=a("img[data-lazy]",b.$slider).first(),d.attr("src",d.attr("data-lazy")).removeClass("slick-loading").load(function(){d.removeAttr("data-lazy"),b.progressiveLazyLoad(),b.options.adaptiveHeight===!0&&b.setPosition()}).error(function(){d.removeAttr("data-lazy"),b.progressiveLazyLoad()}))},b.prototype.refresh=function(){var b=this,c=b.currentSlide;b.destroy(),a.extend(b,b.initials),b.init(),b.changeSlide({data:{message:"index",index:c}},!1)},b.prototype.reinit=function(){var b=this;b.$slides=b.$slideTrack.children(b.options.slide).addClass("slick-slide"),b.slideCount=b.$slides.length,b.currentSlide>=b.slideCount&&0!==b.currentSlide&&(b.currentSlide=b.currentSlide-b.options.slidesToScroll),b.slideCount<=b.options.slidesToShow&&(b.currentSlide=0),b.setProps(),b.setupInfinite(),b.buildArrows(),b.updateArrows(),b.initArrowEvents(),b.buildDots(),b.updateDots(),b.initDotEvents(),b.options.focusOnSelect===!0&&a(b.$slideTrack).children().on("click.slick",b.selectHandler),b.setSlideClasses(0),b.setPosition(),b.$slider.trigger("reInit",[b])},b.prototype.resize=function(){var b=this;a(window).width()!==b.windowWidth&&(clearTimeout(b.windowDelay),b.windowDelay=window.setTimeout(function(){b.windowWidth=a(window).width(),b.checkResponsive(),b.setPosition()},50))},b.prototype.removeSlide=b.prototype.slickRemove=function(a,b,c){var d=this;return"boolean"==typeof a?(b=a,a=b===!0?0:d.slideCount-1):a=b===!0?--a:a,d.slideCount<1||0>a||a>d.slideCount-1?!1:(d.unload(),c===!0?d.$slideTrack.children().remove():d.$slideTrack.children(this.options.slide).eq(a).remove(),d.$slides=d.$slideTrack.children(this.options.slide),d.$slideTrack.children(this.options.slide).detach(),d.$slideTrack.append(d.$slides),d.$slidesCache=d.$slides,d.reinit(),void 0)},b.prototype.setCSS=function(a){var d,e,b=this,c={};b.options.rtl===!0&&(a=-a),d="left"==b.positionProp?Math.ceil(a)+"px":"0px",e="top"==b.positionProp?Math.ceil(a)+"px":"0px",c[b.positionProp]=a,b.transformsEnabled===!1?b.$slideTrack.css(c):(c={},b.cssTransitions===!1?(c[b.animType]="translate("+d+", "+e+")",b.$slideTrack.css(c)):(c[b.animType]="translate3d("+d+", "+e+", 0px)",b.$slideTrack.css(c)))},b.prototype.setDimensions=function(){var a=this;a.options.vertical===!1?a.options.centerMode===!0&&a.$list.css({padding:"0px "+a.options.centerPadding}):(a.$list.height(a.$slides.first().outerHeight(!0)*a.options.slidesToShow),a.options.centerMode===!0&&a.$list.css({padding:a.options.centerPadding+" 0px"})),a.listWidth=a.$list.width(),a.listHeight=a.$list.height(),a.options.vertical===!1&&a.options.variableWidth===!1?(a.slideWidth=Math.ceil(a.listWidth/a.options.slidesToShow),a.$slideTrack.width(Math.ceil(a.slideWidth*a.$slideTrack.children(".slick-slide").length))):a.options.variableWidth===!0?a.$slideTrack.width(5e3*a.slideCount):(a.slideWidth=Math.ceil(a.listWidth),a.$slideTrack.height(Math.ceil(a.$slides.first().outerHeight(!0)*a.$slideTrack.children(".slick-slide").length)));var b=a.$slides.first().outerWidth(!0)-a.$slides.first().width();a.options.variableWidth===!1&&a.$slideTrack.children(".slick-slide").width(a.slideWidth-b)},b.prototype.setFade=function(){var c,b=this;b.$slides.each(function(d,e){c=-1*b.slideWidth*d,b.options.rtl===!0?a(e).css({position:"relative",right:c,top:0,zIndex:800,opacity:0}):a(e).css({position:"relative",left:c,top:0,zIndex:800,opacity:0})}),b.$slides.eq(b.currentSlide).css({zIndex:900,opacity:1})},b.prototype.setHeight=function(){var a=this;if(1===a.options.slidesToShow&&a.options.adaptiveHeight===!0&&a.options.vertical===!1){var b=a.$slides.eq(a.currentSlide).outerHeight(!0);a.$list.css("height",b)}},b.prototype.setOption=b.prototype.slickSetOption=function(a,b,c){var d=this;d.options[a]=b,c===!0&&(d.unload(),d.reinit())},b.prototype.setPosition=function(){var a=this;a.setDimensions(),a.setHeight(),a.options.fade===!1?a.setCSS(a.getLeft(a.currentSlide)):a.setFade(),a.$slider.trigger("setPosition",[a])},b.prototype.setProps=function(){var a=this,b=document.body.style;a.positionProp=a.options.vertical===!0?"top":"left","top"===a.positionProp?a.$slider.addClass("slick-vertical"):a.$slider.removeClass("slick-vertical"),(void 0!==b.WebkitTransition||void 0!==b.MozTransition||void 0!==b.msTransition)&&a.options.useCSS===!0&&(a.cssTransitions=!0),void 0!==b.OTransform&&(a.animType="OTransform",a.transformType="-o-transform",a.transitionType="OTransition",void 0===b.perspectiveProperty&&void 0===b.webkitPerspective&&(a.animType=!1)),void 0!==b.MozTransform&&(a.animType="MozTransform",a.transformType="-moz-transform",a.transitionType="MozTransition",void 0===b.perspectiveProperty&&void 0===b.MozPerspective&&(a.animType=!1)),void 0!==b.webkitTransform&&(a.animType="webkitTransform",a.transformType="-webkit-transform",a.transitionType="webkitTransition",void 0===b.perspectiveProperty&&void 0===b.webkitPerspective&&(a.animType=!1)),void 0!==b.msTransform&&(a.animType="msTransform",a.transformType="-ms-transform",a.transitionType="msTransition",void 0===b.msTransform&&(a.animType=!1)),void 0!==b.transform&&a.animType!==!1&&(a.animType="transform",a.transformType="transform",a.transitionType="transition"),a.transformsEnabled=null!==a.animType&&a.animType!==!1},b.prototype.setSlideClasses=function(a){var c,d,e,f,b=this;b.$slider.find(".slick-slide").removeClass("slick-active").attr("aria-hidden","true").removeClass("slick-center"),d=b.$slider.find(".slick-slide"),b.options.centerMode===!0?(c=Math.floor(b.options.slidesToShow/2),b.options.infinite===!0&&(a>=c&&a<=b.slideCount-1-c?b.$slides.slice(a-c,a+c+1).addClass("slick-active").attr("aria-hidden","false"):(e=b.options.slidesToShow+a,d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a?d.eq(d.length-1-b.options.slidesToShow).addClass("slick-center"):a===b.slideCount-1&&d.eq(b.options.slidesToShow).addClass("slick-center")),b.$slides.eq(a).addClass("slick-center")):a>=0&&a<=b.slideCount-b.options.slidesToShow?b.$slides.slice(a,a+b.options.slidesToShow).addClass("slick-active").attr("aria-hidden","false"):d.length<=b.options.slidesToShow?d.addClass("slick-active").attr("aria-hidden","false"):(f=b.slideCount%b.options.slidesToShow,e=b.options.infinite===!0?b.options.slidesToShow+a:a,b.options.slidesToShow==b.options.slidesToScroll&&b.slideCount-a<b.options.slidesToShow?d.slice(e-(b.options.slidesToShow-f),e+f).addClass("slick-active").attr("aria-hidden","false"):d.slice(e,e+b.options.slidesToShow).addClass("slick-active").attr("aria-hidden","false")),"ondemand"===b.options.lazyLoad&&b.lazyLoad()},b.prototype.setupInfinite=function(){var c,d,e,b=this;if(b.options.fade===!0&&(b.options.centerMode=!1),b.options.infinite===!0&&b.options.fade===!1&&(d=null,b.slideCount>b.options.slidesToShow)){for(e=b.options.centerMode===!0?b.options.slidesToShow+1:b.options.slidesToShow,c=b.slideCount;c>b.slideCount-e;c-=1)d=c-1,a(b.$slides[d]).clone(!0).attr("id","").attr("data-slick-index",d-b.slideCount).prependTo(b.$slideTrack).addClass("slick-cloned");for(c=0;e>c;c+=1)d=c,a(b.$slides[d]).clone(!0).attr("id","").attr("data-slick-index",d+b.slideCount).appendTo(b.$slideTrack).addClass("slick-cloned");b.$slideTrack.find(".slick-cloned").find("[id]").each(function(){a(this).attr("id","")})}},b.prototype.setPaused=function(a){var b=this;b.options.autoplay===!0&&b.options.pauseOnHover===!0&&(b.paused=a,b.autoPlayClear())},b.prototype.selectHandler=function(b){var c=this,d=a(b.target).is(".slick-slide")?a(b.target):a(b.target).parents(".slick-slide"),e=parseInt(d.attr("data-slick-index"));return e||(e=0),c.slideCount<=c.options.slidesToShow?(c.$slider.find(".slick-slide").removeClass("slick-active").attr("aria-hidden","true"),c.$slides.eq(e).addClass("slick-active").attr("aria-hidden","false"),c.options.centerMode===!0&&(c.$slider.find(".slick-slide").removeClass("slick-center"),c.$slides.eq(e).addClass("slick-center")),c.asNavFor(e),void 0):(c.slideHandler(e),void 0)},b.prototype.slideHandler=function(a,b,c){var d,e,f,g,h=null,i=this;return b=b||!1,i.animating===!0&&i.options.waitForAnimate===!0||i.options.fade===!0&&i.currentSlide===a||i.slideCount<=i.options.slidesToShow?void 0:(b===!1&&i.asNavFor(a),d=a,h=i.getLeft(d),g=i.getLeft(i.currentSlide),i.currentLeft=null===i.swipeLeft?g:i.swipeLeft,i.options.infinite===!1&&i.options.centerMode===!1&&(0>a||a>i.getDotCount()*i.options.slidesToScroll)?(i.options.fade===!1&&(d=i.currentSlide,c!==!0?i.animateSlide(g,function(){i.postSlide(d)}):i.postSlide(d)),void 0):i.options.infinite===!1&&i.options.centerMode===!0&&(0>a||a>i.slideCount-i.options.slidesToScroll)?(i.options.fade===!1&&(d=i.currentSlide,c!==!0?i.animateSlide(g,function(){i.postSlide(d)}):i.postSlide(d)),void 0):(i.options.autoplay===!0&&clearInterval(i.autoPlayTimer),e=0>d?0!==i.slideCount%i.options.slidesToScroll?i.slideCount-i.slideCount%i.options.slidesToScroll:i.slideCount+d:d>=i.slideCount?0!==i.slideCount%i.options.slidesToScroll?0:d-i.slideCount:d,i.animating=!0,i.$slider.trigger("beforeChange",[i,i.currentSlide,e]),f=i.currentSlide,i.currentSlide=e,i.setSlideClasses(i.currentSlide),i.updateDots(),i.updateArrows(),i.options.fade===!0?(c!==!0?i.fadeSlide(e,function(){i.postSlide(e)}):i.postSlide(e),i.animateHeight(),void 0):(c!==!0?i.animateSlide(h,function(){i.postSlide(e)}):i.postSlide(e),void 0)))},b.prototype.startLoad=function(){var a=this;a.options.arrows===!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.hide(),a.$nextArrow.hide()),a.options.dots===!0&&a.slideCount>a.options.slidesToShow&&a.$dots.hide(),a.$slider.addClass("slick-loading")},b.prototype.swipeDirection=function(){var a,b,c,d,e=this;return a=e.touchObject.startX-e.touchObject.curX,b=e.touchObject.startY-e.touchObject.curY,c=Math.atan2(b,a),d=Math.round(180*c/Math.PI),0>d&&(d=360-Math.abs(d)),45>=d&&d>=0?e.options.rtl===!1?"left":"right":360>=d&&d>=315?e.options.rtl===!1?"left":"right":d>=135&&225>=d?e.options.rtl===!1?"right":"left":e.options.verticalSwiping===!0?d>=35&&135>=d?"left":"right":"vertical"},b.prototype.swipeEnd=function(){var c,b=this;if(b.dragging=!1,b.shouldClick=b.touchObject.swipeLength>10?!1:!0,void 0===b.touchObject.curX)return!1;if(b.touchObject.edgeHit===!0&&b.$slider.trigger("edge",[b,b.swipeDirection()]),b.touchObject.swipeLength>=b.touchObject.minSwipe)switch(b.swipeDirection()){case"left":c=b.options.swipeToSlide?b.checkNavigable(b.currentSlide+b.getSlideCount()):b.currentSlide+b.getSlideCount(),b.slideHandler(c),b.currentDirection=0,b.touchObject={},b.$slider.trigger("swipe",[b,"left"]);break;case"right":c=b.options.swipeToSlide?b.checkNavigable(b.currentSlide-b.getSlideCount()):b.currentSlide-b.getSlideCount(),b.slideHandler(c),b.currentDirection=1,b.touchObject={},b.$slider.trigger("swipe",[b,"right"])}else b.touchObject.startX!==b.touchObject.curX&&(b.slideHandler(b.currentSlide),b.touchObject={})},b.prototype.swipeHandler=function(a){var b=this;
+if(!(b.options.swipe===!1||"ontouchend"in document&&b.options.swipe===!1||b.options.draggable===!1&&-1!==a.type.indexOf("mouse")))switch(b.touchObject.fingerCount=a.originalEvent&&void 0!==a.originalEvent.touches?a.originalEvent.touches.length:1,b.touchObject.minSwipe=b.listWidth/b.options.touchThreshold,b.options.verticalSwiping===!0&&(b.touchObject.minSwipe=b.listHeight/b.options.touchThreshold),a.data.action){case"start":b.swipeStart(a);break;case"move":b.swipeMove(a);break;case"end":b.swipeEnd(a)}},b.prototype.swipeMove=function(a){var d,e,f,g,h,b=this;return h=void 0!==a.originalEvent?a.originalEvent.touches:null,!b.dragging||h&&1!==h.length?!1:(d=b.getLeft(b.currentSlide),b.touchObject.curX=void 0!==h?h[0].pageX:a.clientX,b.touchObject.curY=void 0!==h?h[0].pageY:a.clientY,b.touchObject.swipeLength=Math.round(Math.sqrt(Math.pow(b.touchObject.curX-b.touchObject.startX,2))),b.options.verticalSwiping===!0&&(b.touchObject.swipeLength=Math.round(Math.sqrt(Math.pow(b.touchObject.curY-b.touchObject.startY,2)))),e=b.swipeDirection(),"vertical"!==e?(void 0!==a.originalEvent&&b.touchObject.swipeLength>4&&a.preventDefault(),g=(b.options.rtl===!1?1:-1)*(b.touchObject.curX>b.touchObject.startX?1:-1),b.options.verticalSwiping===!0&&(g=b.touchObject.curY>b.touchObject.startY?1:-1),f=b.touchObject.swipeLength,b.touchObject.edgeHit=!1,b.options.infinite===!1&&(0===b.currentSlide&&"right"===e||b.currentSlide>=b.getDotCount()&&"left"===e)&&(f=b.touchObject.swipeLength*b.options.edgeFriction,b.touchObject.edgeHit=!0),b.swipeLeft=b.options.vertical===!1?d+f*g:d+f*(b.$list.height()/b.listWidth)*g,b.options.verticalSwiping===!0&&(b.swipeLeft=d+f*g),b.options.fade===!0||b.options.touchMove===!1?!1:b.animating===!0?(b.swipeLeft=null,!1):(b.setCSS(b.swipeLeft),void 0)):void 0)},b.prototype.swipeStart=function(a){var c,b=this;return 1!==b.touchObject.fingerCount||b.slideCount<=b.options.slidesToShow?(b.touchObject={},!1):(void 0!==a.originalEvent&&void 0!==a.originalEvent.touches&&(c=a.originalEvent.touches[0]),b.touchObject.startX=b.touchObject.curX=void 0!==c?c.pageX:a.clientX,b.touchObject.startY=b.touchObject.curY=void 0!==c?c.pageY:a.clientY,b.dragging=!0,void 0)},b.prototype.unfilterSlides=b.prototype.slickUnfilter=function(){var a=this;null!==a.$slidesCache&&(a.unload(),a.$slideTrack.children(this.options.slide).detach(),a.$slidesCache.appendTo(a.$slideTrack),a.reinit())},b.prototype.unload=function(){var b=this;a(".slick-cloned",b.$slider).remove(),b.$dots&&b.$dots.remove(),b.$prevArrow&&"object"!=typeof b.options.prevArrow&&b.$prevArrow.remove(),b.$nextArrow&&"object"!=typeof b.options.nextArrow&&b.$nextArrow.remove(),b.$slides.removeClass("slick-slide slick-active slick-visible").attr("aria-hidden","true").css("width","")},b.prototype.unslick=function(){var a=this;a.destroy()},b.prototype.updateArrows=function(){var b,a=this;b=Math.floor(a.options.slidesToShow/2),a.options.arrows===!0&&a.options.infinite!==!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.removeClass("slick-disabled"),a.$nextArrow.removeClass("slick-disabled"),0===a.currentSlide?(a.$prevArrow.addClass("slick-disabled"),a.$nextArrow.removeClass("slick-disabled")):a.currentSlide>=a.slideCount-a.options.slidesToShow&&a.options.centerMode===!1?(a.$nextArrow.addClass("slick-disabled"),a.$prevArrow.removeClass("slick-disabled")):a.currentSlide>=a.slideCount-1&&a.options.centerMode===!0&&(a.$nextArrow.addClass("slick-disabled"),a.$prevArrow.removeClass("slick-disabled")))},b.prototype.updateDots=function(){var a=this;null!==a.$dots&&(a.$dots.find("li").removeClass("slick-active").attr("aria-hidden","true"),a.$dots.find("li").eq(Math.floor(a.currentSlide/a.options.slidesToScroll)).addClass("slick-active").attr("aria-hidden","false"))},b.prototype.visibility=function(){var a=this;document[a.hidden]?(a.paused=!0,a.autoPlayClear()):(a.paused=!1,a.autoPlay())},a.fn.slick=function(){var g,a=this,c=arguments[0],d=Array.prototype.slice.call(arguments,1),e=a.length,f=0;for(f;e>f;f++)if("object"==typeof c||"undefined"==typeof c?a[f].slick=new b(a[f],c):g=a[f].slick[c].apply(a[f].slick,d),"undefined"!=typeof g)return g;return a}});

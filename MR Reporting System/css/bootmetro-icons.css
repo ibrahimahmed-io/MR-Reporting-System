@@ -1179,7 +1179,7 @@ you can use the generic selector below, but it's slower:
 .icon-cloud-upload-2,
 .icon-fork,
 .icon-paperclip-3 {
-  font-family: 'icomoon';
+  font-family: FontAwesome;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
   font-weight: normal;
