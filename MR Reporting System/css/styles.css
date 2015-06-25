@@ -47154,7 +47154,7 @@ button.btn.dropdown-toggle.selectpicker.btn-default {
 }
 
 .jqx-grid-cell-bootstrap {
-    text-align: center !important;
+    /*text-align: center !important;*/
     font-size: 12px;
     font-family: 'Helvetica';
 }
@@ -47259,7 +47259,7 @@ nav ul span.menu-item-parent {
 
     .rowIndex span {
         display: inline-block;
-        margin-top: 20px !important;
+        margin-top: 14px !important;
     }
 
 .jqx-grid-cell-filter-row div {
@@ -47290,8 +47290,17 @@ nav ul span.menu-item-parent {
 }
 
 div[role="gridcell"] label {
-    margin-top: 20px;
+    margin-top: 5px;
     display: inline-block;
+}
+
+.jqx-grid-cell.jqx-grid-cell-bootstrap.jqx-item.jqx-item-bootstrap > div {
+    margin-left: 15px !important;
+}
+
+.jqx-grid-cell.jqx-grid-cell-bootstrap.jqx-item.jqx-item-bootstrap .editable-click {
+    margin-left: 15px !important;
+    line-height: 45px !important;
 }
 
 .smart-style-2 #header {
@@ -49452,9 +49461,9 @@ body::-webkit-scrollbar {
     width: 100% !important;
 }
 
-.kgHeaderScroller > div {
-    width: 100% !important;
-}
+    .kgHeaderScroller > div {
+        width: 100% !important;
+    }
 
 .kgHeaderSortColumn {
     position: relative;
@@ -50231,6 +50240,21 @@ h1, h2, h3, h4, h5, h6, span, label, div, article, header, nav, aside, section, 
     content: "\e8a1";
 }
 
+.smart-form .toggle.material i {
+    top: 0 !important;
+    right: inherit !important;
+    height: 30px !important;
+    border-radius: 0 !important;
+}
+
+    .smart-form .toggle.material i:before {
+        border-radius: 0 !important;
+        top: 10px !important;
+    }
+
+    .smart-form .toggle.material i:after {
+        top: !important;
+    }
 [class*="cal-cell"] {
   float: left;
   margin-left: 0;

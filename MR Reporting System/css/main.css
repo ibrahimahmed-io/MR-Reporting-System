@@ -4015,3 +4015,19 @@ h1, h2, h3, h4, h5, h6, span, label, div, article, header, nav, aside, section, 
 .mdi-navigation-menu:before {
     content: "\e8a1";
 }
+
+.smart-form .toggle.material i {
+    top: 0 !important;
+    right: inherit !important;
+    height: 30px !important;
+    border-radius: 0 !important;
+}
+
+    .smart-form .toggle.material i:before {
+        border-radius: 0 !important;
+        top: 10px !important;
+    }
+
+    .smart-form .toggle.material i:after {
+        top: !important;
+    }
