@@ -77,6 +77,18 @@
         title: 'distributer Add',
         nav: true,
         settings: { admin: false }
+    }, {
+        route: 'permissionsGroups',
+        moduleId: 'admin/permissionsGroups',
+        title: 'permissions Groups ',
+        nav: true,
+        settings: { admin: true }
+    },{
+        route: 'permissionsGroupsPermissions/:param1*detail',
+        moduleId: 'admin/permissionsGroupsPermissions',
+        title: 'permissions Groups permissions',
+        nav: true,
+        settings: { admin: false }
     }];
 
     var isPageSetup = ko.observable(false);
