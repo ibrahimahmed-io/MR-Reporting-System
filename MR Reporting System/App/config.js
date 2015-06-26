@@ -89,6 +89,12 @@
         title: 'permissions Groups permissions',
         nav: true,
         settings: { admin: false }
+    },{
+        route: 'visitCost',
+        moduleId: 'reports/visitCost',
+        title: 'visits Cost ',
+        nav: true,
+        settings: { reports: true }
     }];
 
     var isPageSetup = ko.observable(false);

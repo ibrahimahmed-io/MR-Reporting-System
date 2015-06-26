@@ -139,6 +139,7 @@
     <Content Include="App\viewmodels\daily\doctors.js" />
     <Content Include="App\viewmodels\dashboard.js" />
     <Content Include="App\viewmodels\login.js" />
+    <Content Include="App\viewmodels\reports\visitCost.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\views\admin\accounts.html" />
     <Content Include="App\views\admin\accountsAdd.html" />
@@ -156,6 +157,7 @@
     <Content Include="App\views\daily\doctors.html" />
     <Content Include="App\views\dashboard.html" />
     <Content Include="App\views\login.html" />
+    <Content Include="App\views\reports\visitCost.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="css\bootmetro-icons.css" />
     <Content Include="css\bootstrap-datetimepicker.css" />
@@ -7724,8 +7726,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\viewmodels\reports\" />
-    <Folder Include="App\views\reports\" />
     <Folder Include="node_modules\gulp-concat\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-header\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-jshint\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />

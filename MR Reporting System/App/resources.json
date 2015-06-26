@@ -3583,9 +3583,9 @@
 		"en": "Balance",
 		"ar": "الفرق "
 	},
-	"budgetVariance": {
-		"en": "Budget Variance",
-		"ar": "موازنة التغير "
+	"visitCost": {
+		"en": "visit Cost Report",
+		"ar": "تقرير تكلفة الزيارة "
 	}, 
 	"expensesTotal": {
 		"en": "Expenses Total",

@@ -92,7 +92,7 @@
 
 
     var getAgantdrugs = function (documnetObservable, agentId) {
-      return  $.getJSON(config.remoteServerName + "/GetAgentDrug", { agentId: agentId }).done(function (data) {
+        return $.getJSON(config.remoteServerName + "/GetAgentDrug", { agentId: agentId }).done(function (data) {
             if (documnetObservable) {
 
                 documnetObservable.data(data);
@@ -226,9 +226,12 @@
         return $.getJSON(config.remoteServerName + "/DeleteHospitalsById", { id: id });
     };
 
+    var visitsCost = function (observableObj) {
+        return $.getJSON(config.remoteServerName + "/VisitsCost", observableObj);
+    };
 
     var getDistributers = function (documnetObservable) {
-       return $.getJSON(config.remoteServerName + "/GetDistributers").done(function (data) {
+        return $.getJSON(config.remoteServerName + "/GetDistributers").done(function (data) {
             if (documnetObservable) {
                 documnetObservable(data);
             }
@@ -265,6 +268,7 @@
     };
 
     var dataservice = {
+        visitsCost: visitsCost,
 
         getDistributers: getDistributers,
         getDistributersById: getDistributersById,

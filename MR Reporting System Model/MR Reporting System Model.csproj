@@ -56,7 +56,9 @@
     <Compile Include="DataTransferObjectModel\DtoHospitals.cs" />
     <Compile Include="DataTransferObjectModel\DtoLocations.cs" />
     <Compile Include="DataTransferObjectModel\DtoPharmacies.cs" />
+    <Compile Include="DataTransferObjectModel\DtoVisitCost.cs" />
     <Compile Include="DataTransferObjectModel\DtoVisits.cs" />
+    <Compile Include="DataTransferObjectModel\reportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityModel\JWTHeader.cs" />
     <Compile Include="SecurityModel\JwtPayload.cs" />

@@ -3,6 +3,7 @@ using System.Linq;
 using MR_Reporting_System_Data_Context.Context;
 using MR_Reporting_System_Interface.IDataService;
 using MR_Reporting_System_Model.DataTransferObjectModel;
+using System;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
@@ -16,6 +17,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Visits
                         select new DtoVisits
                         {
+                            Id = q.Id,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
                             TypeId = q.TypeId,
@@ -27,7 +29,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Notes = q.Notes,
                             LastEditBy = q.LastEditBy,
                             LastEditDate = q.LastEditDate,
-                            CreationDate = q.CreationDate,
+                            CreationDate = q.CreationDate
                         }).ToList();
             }
             else
@@ -35,6 +37,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Visits
                         select new DtoVisits
                         {
+                            Id = q.Id,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
                             TypeId = q.TypeId,
@@ -46,12 +49,10 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Notes = q.Notes,
                             LastEditBy = q.LastEditBy,
                             LastEditDate = q.LastEditDate,
-                            CreationDate = q.CreationDate,
+                            CreationDate = q.CreationDate
                         }).ToList();
             } return list;
         }
-
-        //WriteMethode4
 
         public DtoVisits SelectById(int id, string lang)
         {
@@ -62,6 +63,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoVisits
                         {
+                            Id = q.Id,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
                             TypeId = q.TypeId,
@@ -73,7 +75,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Notes = q.Notes,
                             LastEditBy = q.LastEditBy,
                             LastEditDate = q.LastEditDate,
-                            CreationDate = q.CreationDate,
+                            CreationDate = q.CreationDate
                         }).FirstOrDefault();
             }
             else
@@ -82,6 +84,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoVisits
                         {
+                            Id = q.Id,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
                             TypeId = q.TypeId,
@@ -93,11 +96,46 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Notes = q.Notes,
                             LastEditBy = q.LastEditBy,
                             LastEditDate = q.LastEditDate,
-                            CreationDate = q.CreationDate,
+                            CreationDate = q.CreationDate
                         }).FirstOrDefault();
             } return list;
         }
 
+        public List<DtoVisitCost> visitsCostByAgent(int? AgentId, DateTime? stratDate, DateTime? finishDate)
+        {
+            List<DtoVisitCost> list;
+
+
+            if (AgentId != null)
+            {
+                list = (from agent in Context.Agents.Where(x => x.id == AgentId)
+                        select new DtoVisitCost
+                        {
+                            actualVisits = Context.Visits.Where(x => x.AgentId == AgentId).ToList().Count,
+                            EstimateVisits = agent.NoOfVisits,
+                            actualCost = ((Context.Visits.Where(x => x.AgentId == AgentId).ToList().Count) / agent.Salary ?? 0),
+                            estimateCost = (double)((agent.NoOfVisits) / (agent.Salary)),
+                            agentName = agent.ContactName
+                        }).ToList();
+            }
+            else
+            {
+                list = (from agent in Context.Agents
+                        select new DtoVisitCost
+                        {
+                            actualVisits = Context.Visits.Where(x => x.AgentId == agent.id).ToList().Count,
+                            EstimateVisits = agent.NoOfVisits,
+                            actualCost = ((Context.Visits.Where(x => x.AgentId == agent.id).ToList().Count) / agent.Salary ?? 0),
+                            estimateCost = (double)((agent.NoOfVisits) / (agent.Salary)),
+                            agentName = agent.ContactName
+                        }).ToList();
+            }
+
+            return list;
+        }
+
+
     }
+   
 }
 

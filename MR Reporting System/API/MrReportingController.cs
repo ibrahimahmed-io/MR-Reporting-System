@@ -1085,7 +1085,7 @@ namespace MR_Reporting_System.API
             };
 
             _distributers.Add(documentNew);
-            _distributers.Save(); 
+            _distributers.Save();
 
             return Ok();
         }
@@ -1105,7 +1105,7 @@ namespace MR_Reporting_System.API
             obj.NoOfVisits = dtoDocument.NoOfVisits;
 
             _distributers.Edit(obj);
-            _distributers.Save(); 
+            _distributers.Save();
 
             return Ok();
         }
@@ -1133,6 +1133,17 @@ namespace MR_Reporting_System.API
             return Ok(result);
         }
 
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("VisitsCost")]
+        public IHttpActionResult VisitsCost(reportDto obj)
+        {
+            var result = new List<DtoVisitCost>();
+
+            result = _visits.visitsCostByAgent(obj.agentId, obj.startDate, obj.finishDate);
+
+            return Ok(result);
+        }
         [AuthorizeUser]
         [HttpGet]
         [Route("GetDocotorsById")]
