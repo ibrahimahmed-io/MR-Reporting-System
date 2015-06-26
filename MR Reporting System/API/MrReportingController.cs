@@ -1325,8 +1325,20 @@ namespace MR_Reporting_System.API
         [Route("GetHospitals")]
         public IHttpActionResult GetHospitals()
         {
-            var result = _hospitals.SelectAll(_language).ToList();
+            var result = new List<DtoHospitals>();
 
+            if (_userType.Equals("User"))
+            {
+                var areas = _agentsArea.FindBy(x => x.AgentId == _accountId).Select(x => x.AreaId).ToList();
+
+                result = _hospitals.SelectAll(_language).ToList().Where(x => areas.Contains(x.AreaId)).ToList();
+
+            }
+            else if (_userType.Equals("Company") || _userType.Equals("admin"))
+            {
+                result = _hospitals.SelectAll(_language).ToList();
+
+            }
             return Ok(result);
         }
 
@@ -1346,7 +1358,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult DeleteHospitalsById(int id)
         {
             var result = _hospitals.FindBy(x => x.Id == id).SingleOrDefault();
-
+            result.DeletedBy = _accountId;
             _hospitals.Edit(result);
             _hospitals.Save();
 
@@ -1355,7 +1367,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddHospitalss")]
+        [Route("AddHospitals")]
         public IHttpActionResult AddHospitals(DtoHospitals dtoDocument)
         {
             var documentNew = new Hospital
@@ -1370,10 +1382,31 @@ namespace MR_Reporting_System.API
             };
 
             _hospitals.Add(documentNew);
-            _hospitals.Save();
-            _hospitals.Reload(documentNew);
+            _hospitals.Save(); 
 
             return Ok(documentNew);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("editHospitals")]
+        public IHttpActionResult editHospitals(DtoHospitals dtoDocument)
+        {
+            var obj = _hospitals.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.Name = dtoDocument.Name;
+                obj.AreaId = dtoDocument.AreaId;
+                obj.Address = dtoDocument.Address;
+                obj.Phone = dtoDocument.Phone;
+                obj.Email = dtoDocument.Email;
+                obj.Type = dtoDocument.Type;
+                obj.Code = dtoDocument.Code;
+
+                _hospitals.Edit(obj);
+                _hospitals.Save();
+            }
+            return Ok();
         }
 
         [AuthorizeUser]

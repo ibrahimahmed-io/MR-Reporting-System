@@ -194,6 +194,34 @@
     };
 
 
+    var getHospitals = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetHospitals").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable.data(data);
+            }
+        });
+    };
+
+    var getHospitalsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetHospitalsById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editHospitals = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditHospitals", documnetObservable);
+    };
+
+    var addHospitals = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddHospitals", documnetObservable);
+    };
+
+    var deleteHospitals = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteHospitalsById", { id: id });
+    };
+
+
+
     var login = function (userName, userPassword) {
         var user = {
             userName: userName,
@@ -209,6 +237,12 @@
     };
 
     var dataservice = {
+        getHospitals: getHospitals,
+        getHospitalsById: getHospitalsById,
+        editHospitals: editHospitals,
+        addHospitals: addHospitals,
+        deleteHospitals: deleteHospitals,
+
         getPharmacies: getPharmacies,
         getPharmaciesById: getPharmaciesById,
         editPharmacies: editPharmacies,

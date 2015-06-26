@@ -16,6 +16,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Hospitals
                         select new DtoHospitals
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
@@ -31,6 +32,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Hospitals
                         select new DtoHospitals
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
@@ -54,6 +56,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoHospitals
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
@@ -70,6 +73,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoHospitals
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,

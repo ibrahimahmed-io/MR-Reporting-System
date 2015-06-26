@@ -1,25 +1,29 @@
 ﻿define(['plugins/router', 'services/dataservice', 'config', 'services/tokenstore'], function (router, dataservice, config, tokenStore) {
 
-    var pharmcyDto = function () {
+    var hospitalDto = function () {
         var self = this;
         self.id = ko.observable();
         self.name = ko.observable();
-        self.ownerName = ko.observable();
-        self.ownerPhone = ko.observable();
-        self.address = ko.observable(); 
+        self.areaId = ko.observable();
+        self.type = ko.observable();
+        self.address = ko.observable();
         self.phone = ko.observable();
         self.email = ko.observable();
-       // self.noOfVisits = ko.observable();
-       // self.code = ko.observable();
+        // self.noOfVisits = ko.observable();
+        self.code = ko.observable();
     };
 
-    var pharmcy = ko.observable(new pharmcyDto());
+    var hospital = ko.observable(new hospitalDto());
 
-    var specializeId = ko.observable();
-
-    var classTypeId = ko.observable();
+    var areas = ko.observable([]);
 
     var areaId = ko.observable();
+
+    areaId.subscribe(function () {
+        if (areaId()) {
+            hospital().areaId(areaId());
+        }
+    });
 
     var resetWarning = ko.computed(function () {
         return "<i class='text-warning fa fa-warning'></i> " + config.language.resetWarning[config.currentLanguage()];
@@ -29,7 +33,7 @@
         $(".jarviswidget-toggle-btn").attr("data-original-title", config.language.collapse[config.currentLanguage()]);
         $(".jarviswidget-fullscreen-btn").attr("data-original-title", config.language.fullscreen[config.currentLanguage()]);
     });
-     
+
     function attached() {
         $('#widget-grid').jarvisWidgets({
             grid: 'article',
@@ -119,27 +123,32 @@
 
     function activate(id) {
 
-        pharmcy(new pharmcyDto());
- 
+        hospital(new hospitalDto());
+
+        dataservice.getArea(undefined).done(function (data) {
+            areas(data);
+        });
+
         if (id > 0) {
-             
+
             changeStatus(true);
 
-            dataservice.getDocotorsById(pharmcy, id).done(function (data) {
-               
+            dataservice.getDocotorsById(hospital, id).done(function (data) {
+
             });
 
         } else {
-           
+
             changeStatus(false);
         }
     };
 
-    function addpharmcy(obj, event) {
+    function addhospital(obj, event) {
         var isValid = $('#AccountEditForm').valid();
         if (isValid) {
             if (changeStatus() === true) {
-                dataservice.editDocotors(pharmcy()).done(function (data) {
+                dataservice.editHospitals(hospital()).done(function (data) {
+
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
@@ -147,9 +156,9 @@
                         iconSmall: "fa fa-check fa-2x fadeInRight animated",
                         timeout: 2000
                     });
-                    router.navigate("pharmcys");
+
                 }).fail(function () {
-                    $('#accountsDefaultListModal').modal('hide');
+
                     $.smallBox({
                         title: "Operation was canceled",
                         content: "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
@@ -157,9 +166,10 @@
                         iconSmall: "fa fa-times fa-2x fadeInRight animated",
                         timeout: 2000
                     });
+
                 });
             } else {
-                dataservice.addDocotors(pharmcy()).done(function (data) {
+                dataservice.addHospitals(hospital()).done(function (data) {
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
@@ -167,7 +177,7 @@
                         iconSmall: "fa fa-check fa-2x fadeInRight animated",
                         timeout: 2000
                     });
-                    router.navigate("pharmcys");
+                    router.navigate("hospitals");
                 }).fail(function () {
                     $('#accountsDefaultListModal').modal('hide');
                     $.smallBox({
@@ -180,7 +190,7 @@
                 });
             }
 
-            router.navigate("pharmcys");
+            router.navigate("hospitals");
         } else {
 
             $('#AccountEditForm').validate();
@@ -189,14 +199,16 @@
     };
 
     var vm = {
-        title: config.language.pharmcys[config.currentLanguage()],
+        title: config.language.hospital[config.currentLanguage()],
         attached: attached,
         activate: activate,
-        pharmcy: pharmcy,
+        hospital: hospital,
         language: config.language,
         currentLanguage: config.currentLanguage,
         resetWarning: resetWarning,
-        addpharmcy: addpharmcy 
+        addhospital: addhospital,
+        areas: areas,
+        areaId: areaId
 
     };
     return vm;

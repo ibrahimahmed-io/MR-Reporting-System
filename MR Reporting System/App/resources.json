@@ -690,9 +690,9 @@
 		"en": " phamcy",
 		"ar": "صيدلية "
 	},
-	"useAVG": {
-		"en": "use AVG",
-		"ar": "سياسه سجل الحضور "
+	"hospital": {
+		"en": "Hospitals",
+		"ar": "مشتشفيات"
 	},
 	"useTransferToCompany": {
 		"en": "use Transfer To Company",
@@ -1258,9 +1258,9 @@
 		"en": "Projects NO",
 		"ar": "رقم المشروع"
 	},
-	"projectType": {
-		"en": "Projects Type",
-		"ar": "نوع المشروع"
+	"hospitalType": {
+		"en": "Hospital Type",
+		"ar": "نوع المستشفى"
 	},
 	"pleaseSelectProjectType": {
 		"en": "Please Select a Project Type",
