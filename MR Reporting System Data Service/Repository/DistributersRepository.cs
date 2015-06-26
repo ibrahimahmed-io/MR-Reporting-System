@@ -16,9 +16,11 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Distributers
                         select new DtoDistributers
                         {
+                            Id=q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
+                            AreaName = q.Area.Title,
                             Phone = q.Phone,
                             Code = q.Code,
                             NoOfVisits = q.NoOfVisits,
@@ -30,9 +32,11 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Distributers
                         select new DtoDistributers
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
+                            AreaName = q.Area.Title,
                             Phone = q.Phone,
                             Code = q.Code,
                             NoOfVisits = q.NoOfVisits,
@@ -52,6 +56,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoDistributers
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
@@ -67,6 +72,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoDistributers
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,

@@ -8,25 +8,31 @@ namespace MR_Reporting_System_Data_Service.Repository
 {
     public class AgentDrugsRepository : GenericRepository<MedicalTechnoEntities, AgentDrug>, IAgentDrugsRepository
     {
-        public List<DtoAgentDrugs> SelectAll(string lang)
+        public List<DtoAgentDrugs> SelectAll(string lang, int agentId)
         {
             List<DtoAgentDrugs> list;
             if (lang == "en")
             {
                 list = (from q in Context.AgentDrugs
+                        where q.AgentId == agentId
                         select new DtoAgentDrugs
                         {
+                            Id = (int)q.DrugsId,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
+                            DrugsName = q.Drug.Name
                         }).ToList();
             }
             else
             {
                 list = (from q in Context.AgentDrugs
+                        where q.AgentId == agentId
                         select new DtoAgentDrugs
                         {
+                            Id = (int)q.DrugsId,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
+                            DrugsName = q.Drug.Name
                         }).ToList();
             } return list;
         }

@@ -21,63 +21,6 @@
 </header>
 <!-- END HEADER -->
 
-<nav>
-    <ul>
-        <li>
-            <a href="javaScript:void(0);">
-                <i class="fa fa-lg fa-fw fa-desktop"></i>
-                <span class="menu-item-parent" data-bind="text: 'Admin'"></span>
-            </a>
-            <ul data-bind="foreach: router.navigationModel">
-                <!-- ko if: !!($data.settings) && !!(settings.admin) -->
-                <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }">
-                        <span data-bind="text: title"></span>
-                    </a>
-                </li>
-                <!-- /ko -->
-            </ul>
-        </li>
-
-        <li>
-            <a href="#panelLog">
-                <i class="fa fa-lg fa-fw fa-desktop"></i>
-                <span class="menu-item-parent" data-bind="text: 'Daily'"></span>
-
-            </a>
-            <ul>
-                
-                <!-- ko foreach: router.navigationModel -->
-                <!-- ko if: !!($data.settings) && !!(settings.daily) -->
-                <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }">
-                        <span data-bind="text: title"></span>
-                    </a>
-                </li>
-                <!-- /ko -->
-                <!-- /ko -->
-            </ul>
-
-        </li>
-
-        <li>
-            <a href="javaScript:void(0);">
-                <i class="fa fa-lg fa-fw fa-desktop"></i>
-                <span class="menu-item-parent" data-bind="text: 'Reports'"></span>
-            </a>
-            <ul data-bind="foreach: router.navigationModel">
-                <!-- ko if: !!($data.settings) && !!(settings.reports) -->
-                <li data-bind="css: { active: isActive }">
-                    <a data-bind="attr: { href: hash }">
-                        <span data-bind="text: title"></span>
-                    </a>
-                </li>
-                <!-- /ko -->
-            </ul>
-        </li>
-         
-    </ul>
-</nav>
 <!-- Left panel : Navigation area -->
 <aside id="left-panel" class="hidden-print clearfix">
 
@@ -89,7 +32,7 @@
             <a href="javaScript:void(0);" id="show-shortcut" data-action="toggleShortcut">
                 <img src="img/avatars/sunny.png" alt="me" class="online" />
                 <span>
-                    Ibrahim Amin
+                    Medical
                 </span>
                 <i class="fa fa-angle-down"></i>
             </a>
@@ -98,9 +41,65 @@
     </div>
     <!-- end user info -->
 
+
     <nav>
-        <ul></ul>
+        <ul>
+            <li>
+                <a href="javaScript:void(0);">
+                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                    <span class="menu-item-parent" data-bind="text: 'Admin'"></span>
+                </a>
+                <ul data-bind="foreach: router.navigationModel">
+                    <!-- ko if: !!($data.settings) && !!(settings.admin) -->
+                    <li data-bind="css: { active: isActive }">
+                        <a data-bind="attr: { href: hash }">
+                            <span data-bind="text: title"></span>
+                        </a>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+            </li>
+
+            <li>
+                <a href="javaScript:void(0);">
+                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                    <span class="menu-item-parent" data-bind="text: 'Daily'"></span>
+
+                </a>
+                <ul>
+
+                    <!-- ko foreach: router.navigationModel -->
+                    <!-- ko if: !!($data.settings) && !!(settings.daily) -->
+                    <li data-bind="css: { active: isActive }">
+                        <a data-bind="attr: { href: hash }">
+                            <span data-bind="text: title"></span>
+                        </a>
+                    </li>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </ul>
+
+            </li>
+
+            <li>
+                <a href="javaScript:void(0);">
+                    <i class="fa fa-lg fa-fw fa-desktop"></i>
+                    <span class="menu-item-parent" data-bind="text: 'Reports'"></span>
+                </a>
+                <ul data-bind="foreach: router.navigationModel">
+                    <!-- ko if: !!($data.settings) && !!(settings.reports) -->
+                    <li data-bind="css: { active: isActive }">
+                        <a data-bind="attr: { href: hash }">
+                            <span data-bind="text: title"></span>
+                        </a>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+            </li>
+
+        </ul>
     </nav>
+
 
     <span class="minifyme" data-action="minifyMenu">
         <i class="fa fa-arrow-circle-left hit"></i>

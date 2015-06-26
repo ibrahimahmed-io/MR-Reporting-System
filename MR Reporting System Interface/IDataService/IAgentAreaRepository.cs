@@ -6,7 +6,7 @@ namespace MR_Reporting_System_Interface.IDataService
 {
     public interface IAgentAreaRepository : IGenericRepository<AgentArea>
     {
-        List<DtoAgentArea> SelectAll(string lang);
+        List<DtoAgentArea> SelectAll(string lang, int agentId);
         DtoAgentArea SelectById(int id, string lang);
     }
 }

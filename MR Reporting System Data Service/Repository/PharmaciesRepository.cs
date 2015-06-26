@@ -14,6 +14,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Pharmacies
+                        //where q.DeletedBy == null
                         select new DtoPharmacies
                         {
                             Id=q.Id,
@@ -21,6 +22,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             AreaId = q.AreaId,
                             Address = q.Address,
                             Phone = q.Phone,
+                            AreaName = q.Area.Title,
                             Email = q.Email,
                             OwnerName = q.OwnerName,
                             OwnerPhone = q.OwnerPhone,
@@ -29,11 +31,13 @@ namespace MR_Reporting_System_Data_Service.Repository
             else
             {
                 list = (from q in Context.Pharmacies
+                        //where q.DeletedBy == null
                         select new DtoPharmacies
                         {
                             Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
+                            AreaName = q.Area.Title,
                             Address = q.Address,
                             Phone = q.Phone,
                             Email = q.Email,

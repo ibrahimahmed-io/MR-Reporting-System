@@ -65,7 +65,7 @@
 
                                 <div class="gridStyle" id="accounts" data-bind="koGrid: gridOptions()"></div>
 
-                                <div class="modal fade" id="addArea" tabindex="-1" role="dialog" aria-labelledby="EpsTree" aria-hidden="true" style="display: none;">
+                                <div class="modal fade" id="addArea" tabindex="-1" role="dialog" aria-labelledby="addArea" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -82,7 +82,7 @@
                                                             <section class="col col-6  col-xs-12">
                                                                 <label class="label" data-bind="text: 'Area'"></label>
                                                                 <label class="select">
-                                                                    <select style="width: 100%;" multiple="multiple" data-bind="options: $parent.areas, optionsValue: 'Id', optionsText: 'title', selectedOptions: agentAreas, select2: { placeholder: 'Select a area', allowClear: true }"></select>
+                                                                    <select style="width: 100%;" multiple="multiple" data-bind="options: $parent.areas, optionsValue: 'id', optionsText: 'title', selectedOptions: agentAreas, select2: { placeholder: 'Select a area', allowClear: true }"></select>
                                                                 </label>
                                                             </section>
                                                         </div>
@@ -99,7 +99,7 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="addDrugs" tabindex="-1" role="dialog" aria-labelledby="EpsTree" aria-hidden="true" style="display: none;">
+                                <div class="modal fade" id="addDrugs" tabindex="-1" role="dialog" aria-labelledby="addDrugs" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -114,7 +114,7 @@
                                                             <section class="col col-6  col-xs-12">
                                                                 <label class="label" data-bind="text: 'Drugs'"></label>
                                                                 <label class="select">
-                                                                    <select style="width: 100%;" multiple="multiple" data-bind="options: $parent.drugs, optionsValue: 'Id', optionsText: 'title', selectedOptions: agentDrugs, select2: { placeholder: 'Select a area', allowClear: true }"></select>
+                                                                    <select style="width: 100%;" multiple="multiple" data-bind="options: $parent.drugs, optionsValue: 'id', optionsText: 'name', selectedOptions: agentDrugs, select2: { placeholder: 'Select a area', allowClear: true }"></select>
                                                                 </label>
                                                             </section>
                                                         </div>

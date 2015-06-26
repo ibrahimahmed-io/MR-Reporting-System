@@ -20,31 +20,67 @@
 
     var areas = ko.observableArray([]);
 
+    var agentAreas = ko.observableArray([]);
+
+    var agentDrugs = ko.observableArray([]);
+
     var addArea = function (obj, e) {
+
         var id = ko.contextFor(e.target).$parent.entity.id;
+
         accountId(id);
+
         dataSetArea().AgentId(id);
+
+        dataservice.getAgantarea(undefined, accountId()).done(function (data) {
+
+            ko.utils.arrayForEach(ko.toJS(data), function (item) {
+                dataSetArea().agentAreas.push(item.id);
+            });
+             
+        });
+
+        dataservice.getArea(undefined).done(function (data) {
+            areas(data);
+        });
+         
         $('#addArea').modal("show");
+
     };
 
     var addDrugs = function (obj, e) {
+
         var id = ko.contextFor(e.target).$parent.entity.id;
+
         accountId(id);
+
         dataSetDrugs().AgentId(id);
+         
+        dataservice.getAgantdrugs(undefined, accountId()).done(function (data) {
+
+            ko.utils.arrayForEach(ko.toJS(data), function (item) {
+                dataSetDrugs().agentDrugs.push(item.id);
+            });
+
+        });
+
+        dataservice.getArea(undefined).done(function (data) {
+            areas(data);
+        });
         $('#addDrugs').modal("show");
     };
 
     function saveArea(obj, event) {
-        if (agentArea().lenth > 0) {
-            dataservice.AddAgentAreas(agentArea).success(function () {
+        if (dataSetArea()) {
+            dataservice.addAgantarea(ko.toJS(dataSetArea)).success(function () {
                 $("#addArea").modal('hide');
             });
         }
     };
 
     function saveDrugs(obj, event) {
-        if (agentDrugs().lenth > 0) {
-            dataservice.addAgantdrugs(agentDrugs).success(function () {
+        if (dataSetDrugs()) {
+            dataservice.addAgantdrugs(ko.toJS(dataSetDrugs)).success(function () {
                 $("#addDrugs").modal('hide');
             });
         }
@@ -126,19 +162,22 @@
         exportColumns = [
             new config.ExportColumn(config.language.UserName[config.currentLanguage()], 'userName', 's'),
             new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'contactName', 's'),
-            new config.ExportColumn(config.language.employeeCode[config.currentLanguage()], 'empCode', 'n'),
+            new config.ExportColumn(config.language.employeeCode[config.currentLanguage()], 'code', 'n'),
             new config.ExportColumn(config.language.Supervisor[config.currentLanguage()], 'supervisorName', 's'),
-            new config.ExportColumn(config.language.CompanyName[config.currentLanguage()], 'companyName', 's'),
+            new config.ExportColumn(config.language.Position[config.currentLanguage()], 'PositionName', 's'),
             new config.ExportColumn(config.language.GroupName[config.currentLanguage()], 'groupName', 's'),
             new config.ExportColumn(config.language.userType[config.currentLanguage()], 'userType', 's')];
 
 
         knockoutGrid.columnDefs([
             knockoutGrid.createColumnDefinition('Id', '', 85, '10%', undefined, undefined,
-                      '<div class="btn-group" role="group" style="margin-top: 15px;"><button type="button" data-bind="click: $parent.$userViewModel.addArea" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Add Area"><i class="fa fa-tasks"></i><button type="button" data-bind="click: $parent.$userViewModel.addDrugs" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Add Drugs"><i class="fa fa-file-o"></i></button></div>'),
+                      '<div class="btn-group" role="group" style="margin-top: 15px;">' +
+                      '<button type="button" data-bind="click: $parent.$userViewModel.addArea" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Add Area"><i class="fa fa-tasks"></i></button>' +
+                      '<button type="button" data-bind="click: $parent.$userViewModel.addDrugs" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Add Drugs"><i class="fa fa-file-o"></i></button></div>'),
                   knockoutGrid.createColumnDefinition('userName', config.language.UserName[config.currentLanguage()], 65, '10%', 'string'),
                   knockoutGrid.createColumnDefinition('contactName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('positionName', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('positionName', config.language.Position[config.currentLanguage()], 200, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('code', config.language.employeeCode[config.currentLanguage()], 200, '10%', 'string'),
                   knockoutGrid.createColumnDefinition('supervisorName', config.language.Supervisor[config.currentLanguage()], 150, '20%', 'string'),
                   knockoutGrid.createColumnDefinition('salary', config.language.salaryValue[config.currentLanguage()], 50, '5%', 'int'),
                   knockoutGrid.createColumnDefinition('noOfVisits', 'No Of Visits', 150, '5%', 'int'),
@@ -204,7 +243,9 @@
         dataSetDrugs: dataSetDrugs,
         dataSetArea: dataSetArea,
         drugs: drugs,
-        areas: areas
+        areas: areas,
+        addDrugs: addDrugs,
+        addArea: addArea
     };
 
     return vm;

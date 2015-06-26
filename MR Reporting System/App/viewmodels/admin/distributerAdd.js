@@ -1,6 +1,6 @@
 ﻿define(['plugins/router', 'services/dataservice', 'config', 'services/tokenstore'], function (router, dataservice, config, tokenStore) {
 
-    var hospitalDto = function () {
+    var distributerDto = function () {
         var self = this;
         self.id = ko.observable();
         self.name = ko.observable();
@@ -13,7 +13,7 @@
         self.code = ko.observable();
     };
 
-    var hospital = ko.observable(new hospitalDto());
+    var distributer = ko.observable(new distributerDto());
 
     var areas = ko.observable([]);
 
@@ -21,14 +21,10 @@
 
     areaId.subscribe(function () {
         if (areaId()) {
-            hospital().areaId(areaId());
+            distributer().areaId(areaId());
         }
     });
 
-    hospital().type.subscribe(function () {
-        if (hospital().type()) { 
-        }
-    });
 
     var resetWarning = ko.computed(function () {
         return "<i class='text-warning fa fa-warning'></i> " + config.language.resetWarning[config.currentLanguage()];
@@ -82,12 +78,6 @@
                 Name: {
                     required: true
                 },
-                OwnerPhone: {
-                    required: true
-                },
-                OwnerName: {
-                    required: true
-                },
                 NoOfVisits: {
                     required: true,
                     digits: true
@@ -104,12 +94,6 @@
                 Name: {
                     required: 'Please enter a User Name',
                     minlength: 'user name '
-                },
-                OwnerPhone: {
-                    required: 'Please Enter a valid Owner Phone '
-                },
-                OwnerName: {
-                    required: 'Please enter OwnerName'
                 },
                 NoOfVisits: {
                     required: 'Please  a No Of Visits',
@@ -128,7 +112,7 @@
 
     function activate(id) {
 
-        hospital(new hospitalDto());
+        distributer(new distributerDto());
 
         dataservice.getArea(undefined).done(function (data) {
             areas(data);
@@ -138,9 +122,7 @@
 
             changeStatus(true);
 
-            dataservice.getDocotorsById(hospital, id).done(function (data) {
-
-            });
+            dataservice.getDistributersById(distributer, id) ;
 
         } else {
 
@@ -148,11 +130,11 @@
         }
     };
 
-    function addhospital(obj, event) {
+    function adddistributer(obj, event) {
         var isValid = $('#AccountEditForm').valid();
         if (isValid) {
             if (changeStatus() === true) {
-                dataservice.editHospitals(hospital()).done(function (data) {
+                dataservice.editDistributers(distributer()).done(function (data) {
 
                     $.smallBox({
                         title: "Operation completed successfuly",
@@ -174,7 +156,7 @@
 
                 });
             } else {
-                dataservice.addHospitals(hospital()).done(function (data) {
+                dataservice.addDistributers(distributer()).done(function (data) {
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
@@ -182,7 +164,7 @@
                         iconSmall: "fa fa-check fa-2x fadeInRight animated",
                         timeout: 2000
                     });
-                    router.navigate("hospitals");
+                    router.navigate("distributer");
                 }).fail(function () {
                     $('#accountsDefaultListModal').modal('hide');
                     $.smallBox({
@@ -195,7 +177,7 @@
                 });
             }
 
-            router.navigate("hospitals");
+            router.navigate("distributer");
         } else {
 
             $('#AccountEditForm').validate();
@@ -204,14 +186,14 @@
     };
 
     var vm = {
-        title: config.language.hospital[config.currentLanguage()],
+        title: config.language.distributer[config.currentLanguage()],
         attached: attached,
         activate: activate,
-        hospital: hospital,
+        distributer: distributer,
         language: config.language,
         currentLanguage: config.currentLanguage,
         resetWarning: resetWarning,
-        addhospital: addhospital,
+        adddistributer: adddistributer,
         areas: areas,
         areaId: areaId
 

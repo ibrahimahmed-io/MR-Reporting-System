@@ -20,7 +20,7 @@
     }, {
         route: 'accountsDefaultList',
         moduleId: 'admin/accountsDefaultList',
-        title: 'agents',
+        title: ' Default List',
         nav: true,
         settings: { admin: true }
     }, {
@@ -54,11 +54,29 @@
         nav: true,
         settings: { daily: true }
     }, {
+        route: 'pharmacies',
+        moduleId: 'daily/pharmacies',
+        title: 'pharmacies',
+        nav: true,
+        settings: { daily: true }
+    }, {
         route: 'pharmacyAdd/:param1*detail',
         moduleId: 'daily/pharmacyAdd',
         title: 'pharmacy Add',
         nav: true,
         settings: { daily: false }
+    }, {
+        route: 'distributer',
+        moduleId: 'admin/distributer',
+        title: 'distributers',
+        nav: true,
+        settings: { admin: true }
+    }, {
+        route: 'distributerAdd/:param1*detail',
+        moduleId: 'admin/distributerAdd',
+        title: 'distributer Add',
+        nav: true,
+        settings: { admin: false }
     }];
 
     var isPageSetup = ko.observable(false);

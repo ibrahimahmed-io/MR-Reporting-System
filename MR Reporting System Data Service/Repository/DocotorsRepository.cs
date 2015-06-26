@@ -14,6 +14,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Docotors
+                        where q.DeletedBy == null
                         select new DtoDocotors
                         {
                             Id = q.Id,
@@ -24,16 +25,17 @@ namespace MR_Reporting_System_Data_Service.Repository
                             AreaId = q.AreaId,
                             ClassTypeId = q.ClassTypeId,
                             NoOfVisits = q.NoOfVisits,
+                            AreaName = q.Area.Title,
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
-                            Code = q.Code,
-                            DeletedBy = q.DeletedBy,
+                            Code = q.Code
                         }).ToList();
             }
             else
             {
                 list = (from q in Context.Docotors
+                        where q.DeletedBy == null
                         select new DtoDocotors
                         {
                             Id = q.Id,
@@ -44,11 +46,11 @@ namespace MR_Reporting_System_Data_Service.Repository
                             AreaId = q.AreaId,
                             ClassTypeId = q.ClassTypeId,
                             NoOfVisits = q.NoOfVisits,
+                            AreaName = q.Area.Title,
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
-                            Code = q.Code,
-                            DeletedBy = q.DeletedBy,
+                            Code = q.Code
                         }).ToList();
             } return list;
         }
@@ -75,7 +77,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
-                            Code = q.Code 
+                            Code = q.Code
                         }).FirstOrDefault();
             }
             else
@@ -95,7 +97,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
-                            Code = q.Code 
+                            Code = q.Code
                         }).FirstOrDefault();
             } return list;
         }

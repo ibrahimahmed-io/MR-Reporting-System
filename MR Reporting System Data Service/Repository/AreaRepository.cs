@@ -16,6 +16,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Areas
                         select new DtoArea
                         {
+
+                            Id=q.Id,
                             LocationId = q.LocationId,
                             Title = q.Title,
                             DeletedBy = q.DeletedBy,
@@ -26,6 +28,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Areas
                         select new DtoArea
                         {
+                            Id = q.Id,
                             LocationId = q.LocationId,
                             Title = q.Title,
                             DeletedBy = q.DeletedBy,

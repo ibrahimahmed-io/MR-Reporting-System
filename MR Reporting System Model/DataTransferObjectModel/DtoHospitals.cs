@@ -68,6 +68,7 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             get;
             set;
         }
+        public string typeName { get; set; }
     }
 
 }

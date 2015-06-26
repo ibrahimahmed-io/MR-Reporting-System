@@ -11,23 +11,23 @@
     var exportToExcel = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'excel', 'Hospitals');
+        config.exportJson(exportData, exportColumns, 'excel', 'distributers');
     };
 
     var exportToWord = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'word', 'Hospitals');
+        config.exportJson(exportData, exportColumns, 'word', 'distributers');
     };
 
     var exportToPdf = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'pdf', 'Hospitals');
+        config.exportJson(exportData, exportColumns, 'pdf', 'distributers');
     };
 
     var add = function (obj, e) {
-        router.navigate("hospitalAdd/" + 0);
+        router.navigate("distributerAdd/" + 0);
     };
 
     var deleteAccount = function () {
@@ -38,7 +38,7 @@
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
 
-                dataservice.deleteHospitals(selectedRowId()).success(function () {
+                dataservice.deleteDistributers(selectedRowId()).success(function () {
                     //  $("#accounts").jqxGrid('deleterow', selectedRowId());
                     $.smallBox({
                         title: "Operation completed successfuly",
@@ -70,29 +70,27 @@
 
     };
 
-    var hospitals = ko.observableArray();
+    var distributers = ko.observableArray();
 
     function activate() {
 
         knockoutGrid = new config.KoGridInstanceCreator();
 
         exportColumns = [
-            new config.ExportColumn(config.language.hospitalName[config.currentLanguage()], 'name', 's'),
-            new config.ExportColumn(config.language.type[config.currentLanguage()], 'typeName', 's'),
+            new config.ExportColumn(config.language.name[config.currentLanguage()], 'name', 's'), 
             new config.ExportColumn(config.language.Address[config.currentLanguage()], 'address', 'n'),
             new config.ExportColumn(config.language.area[config.currentLanguage()], 'areaName', 's'),
             new config.ExportColumn(config.language.Telephone[config.currentLanguage()], 'phone', 's'),
-            new config.ExportColumn(config.language.email[config.currentLanguage()], 'email', 's'),
-            new config.ExportColumn(config.language.code[config.currentLanguage()], 'code', 's')];
+            new config.ExportColumn(config.language.code[config.currentLanguage()], 'code', 's'),
+            new config.ExportColumn(config.language.noOfVisits[config.currentLanguage()], 'noOfVisits', 's')];
 
 
         knockoutGrid.columnDefs([
-               knockoutGrid.createColumnDefinition('name', config.language.hospitalName[config.currentLanguage()], 65, '20%', 'string'), 
-                  knockoutGrid.createColumnDefinition('typeName', config.language.type[config.currentLanguage()], 200, '10%', 'string'),
+               knockoutGrid.createColumnDefinition('name', config.language.name[config.currentLanguage()], 65, '20%', 'string'), 
                   knockoutGrid.createColumnDefinition('address', config.language.Address[config.currentLanguage()], 150, '20%', 'string'),
-                  knockoutGrid.createColumnDefinition('areaName', config.language.area[config.currentLanguage()], 50, '15%', 'string'), 
-                  knockoutGrid.createColumnDefinition('phone', config.language.Telephone[config.currentLanguage()], 150, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('email', config.language.email[config.currentLanguage()], 150, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('areaName', config.language.area[config.currentLanguage()], 50, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('noOfVisits', 'No Of Visits', 150, '5%', 'int'),
+                  knockoutGrid.createColumnDefinition('phone', config.language.Telephone[config.currentLanguage()], 150, '15%', 'string'), 
                   knockoutGrid.createColumnDefinition('code', config.language.code[config.currentLanguage()], 150, '5%', 'string')
         ]);
 
@@ -110,14 +108,14 @@
                 if (event.target.type) {
                     if (event.target.type !== 'button') {
 
-                        router.navigate("hospitalAdd/" + rowItem.entity.id);
+                        router.navigate("distributerAdd/" + rowItem.entity.id);
                     }
                 } else if (event.target.parentElement.type) {
                     if (event.target.parentElement.type !== 'button') {
-                        router.navigate("hospitalAdd/" + rowItem.entity.id);
+                        router.navigate("distributerAdd/" + rowItem.entity.id);
                     }
                 } else {
-                    router.navigate("hospitalAdd/" + rowItem.entity.id);
+                    router.navigate("distributerAdd/" + rowItem.entity.id);
                 }
             }
         });
@@ -126,11 +124,11 @@
         gridOptions(knockoutGrid.getGridOptions()());
 
 
-        dataservice.getHospitals().done(function (data) {
+        dataservice.getDistributers().done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
-            hospitals(data);
+            distributers(data);
 
             $(".loading-data").addClass("hidden");
         });
@@ -145,7 +143,7 @@
         currentLanguage: config.currentLanguage,
         add: add,
         deleteAccount: deleteAccount,
-        hospitals: hospitals,
+        distributers: distributers,
         selectedRowId: selectedRowId,
         exportToExcel: exportToExcel,
         exportToWord: exportToWord,

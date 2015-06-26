@@ -517,9 +517,9 @@ namespace MR_Reporting_System.API
         [AuthorizeUser]
         [HttpGet]
         [Route("GetAgentArea")]
-        public IHttpActionResult GetAgentArea()
+        public IHttpActionResult GetAgentArea(int agentId)
         {
-            var result = _agentsArea.SelectAll(_language).ToList();
+            var result = _agentsArea.SelectAll(_language, agentId).ToList();
 
             return Ok(result);
         }
@@ -551,19 +551,23 @@ namespace MR_Reporting_System.API
         [Route("AddAgentAreas")]
         public IHttpActionResult AddAgentAreas(DtoAgentArea dtoDocument)
         {
-            foreach (int item in dtoDocument.agentAreas)
+            if (dtoDocument != null)
             {
-                var obj = new AgentArea
+                foreach (int item in dtoDocument.agentAreas)
                 {
-                    AgentId = dtoDocument.AgentId,
-                    AreaId = item
-                };
-                var counter = _agentsArea.FindBy(x => x.AgentId == dtoDocument.AgentId && x.AreaId == item).ToList();
-                if (counter.Count < 0)
-                {
-                    _agentsArea.Add(obj);
+                    var obj = new AgentArea
+                    {
+                        AgentId = dtoDocument.AgentId,
+                        AreaId = item
+                    };
+                    var counter = _agentsArea.FindBy(x => x.AgentId == dtoDocument.AgentId && x.AreaId == item).ToList();
+                    if (counter.Count() < 1)
+                    {
+                        _agentsArea.Add(obj);
+                    }
                 }
             }
+
 
             _agentsArea.Save();
 
@@ -624,9 +628,9 @@ namespace MR_Reporting_System.API
         [AuthorizeUser]
         [HttpGet]
         [Route("GetAgentDrug")]
-        public IHttpActionResult GetAgentDrug()
+        public IHttpActionResult GetAgentDrug(int agentId)
         {
-            var result = _agentsDrugs.SelectAll(_language).ToList();
+            var result = _agentsDrugs.SelectAll(_language, agentId).ToList();
 
             return Ok(result);
         }
@@ -667,7 +671,7 @@ namespace MR_Reporting_System.API
                     DrugsId = item
                 };
                 var counter = _agentsDrugs.FindBy(x => x.AgentId == dtoDocument.AgentId && x.DrugsId == item).ToList();
-                if (counter.Count < 0)
+                if (counter.Count() < 1)
                 {
                     _agentsDrugs.Add(obj);
                 }
@@ -1066,7 +1070,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddDistributerss")]
+        [Route("AddDistributers")]
         public IHttpActionResult AddDistributers(DtoDistributers dtoDocument)
         {
             var documentNew = new Distributer
@@ -1081,10 +1085,29 @@ namespace MR_Reporting_System.API
             };
 
             _distributers.Add(documentNew);
-            _distributers.Save();
-            _distributers.Reload(documentNew);
+            _distributers.Save(); 
 
-            return Ok(documentNew);
+            return Ok();
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("editDistributers")]
+        public IHttpActionResult editDistributers(DtoDistributers dtoDocument)
+        {
+            var obj = _distributers.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+
+            obj.Name = dtoDocument.Name;
+            obj.AreaId = dtoDocument.AreaId;
+            obj.Address = dtoDocument.Address;
+            obj.Phone = dtoDocument.Phone;
+            obj.Code = dtoDocument.Code;
+            obj.NoOfVisits = dtoDocument.NoOfVisits;
+
+            _distributers.Edit(obj);
+            _distributers.Save(); 
+
+            return Ok();
         }
 
         [AuthorizeUser]
@@ -1382,7 +1405,7 @@ namespace MR_Reporting_System.API
             };
 
             _hospitals.Add(documentNew);
-            _hospitals.Save(); 
+            _hospitals.Save();
 
             return Ok(documentNew);
         }
@@ -1543,7 +1566,7 @@ namespace MR_Reporting_System.API
         {
             var obj = _pharmacies.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
             if (obj != null)
-            { 
+            {
                 obj.Name = dtoDocument.Name;
                 obj.AreaId = dtoDocument.AreaId;
                 obj.Address = dtoDocument.Address;

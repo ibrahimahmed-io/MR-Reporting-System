@@ -64,13 +64,16 @@
 
 
     var getAgantarea = function (documnetObservable, agentId) {
-        return $.getJSON(config.remoteServerName + "/GetAgantarea", { agentId: agentId }).done(function (data) {
-            documnetObservable.data(data);
+        return $.getJSON(config.remoteServerName + "/GetAgentarea", { agentId: agentId }).done(function (data) {
+            if (documnetObservable) {
+
+                documnetObservable.data(data);
+            }
         });
     };
 
     var getAgantareaById = function (documnetObservable, id) {
-        return $.getJSON(config.remoteServerName + "/GetAgantareaById", { id: id }).done(function (data) {
+        return $.getJSON(config.remoteServerName + "/GetAgentareaById", { id: id }).done(function (data) {
             documnetObservable(data);
         });
     };
@@ -89,8 +92,11 @@
 
 
     var getAgantdrugs = function (documnetObservable, agentId) {
-        $.getJSON(config.remoteServerName + "/GetAgantdrugs", { agentId: agentId }).done(function (data) {
-            documnetObservable.data(data);
+      return  $.getJSON(config.remoteServerName + "/GetAgentDrug", { agentId: agentId }).done(function (data) {
+            if (documnetObservable) {
+
+                documnetObservable.data(data);
+            }
         });
     };
 
@@ -221,6 +227,28 @@
     };
 
 
+    var getDistributers = function (documnetObservable) {
+       return $.getJSON(config.remoteServerName + "/GetDistributers").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var getDistributersById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetDistributersById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+    var editDistributers = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditDistributers", documnetObservable);
+    };
+    var addDistributers = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddDistributers", documnetObservable);
+    };
+    var deleteDistributers = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteDistributersById", { id: id });
+    };
 
     var login = function (userName, userPassword) {
         var user = {
@@ -237,6 +265,13 @@
     };
 
     var dataservice = {
+
+        getDistributers: getDistributers,
+        getDistributersById: getDistributersById,
+        editDistributers: editDistributers,
+        addDistributers: addDistributers,
+        deleteDistributers: deleteDistributers,
+
         getHospitals: getHospitals,
         getHospitalsById: getHospitalsById,
         editHospitals: editHospitals,

@@ -694,13 +694,13 @@
 		"en": "Hospitals",
 		"ar": "مشتشفيات"
 	},
-	"useTransferToCompany": {
-		"en": "use Transfer To Company",
-		"ar": "سياسه سجل الحضور "
+	"hospitalName": {
+		"en": "Hhospital Name",
+		"ar": "اسم المستشفى "
 	},
-	"usePermissionsOnLogs": {
-		"en": "use Permissions On Logs",
-		"ar": "سياسه سجل الحضور "
+	"distributer": {
+		"en": "Distributers",
+		"ar": "موزعين "
 	},
 	"GeneralConfig": {
 		"en": "General Configuration",
@@ -946,9 +946,9 @@
 		"en": "Address",
 		"ar": "العنوان"
 	},
-	"Grade": {
-		"en": "Grade",
-		"ar": "الرجة"
+	"code": {
+		"en": "code",
+		"ar": "الكود"
 	},
 	"Notes": {
 		"en": "Notes",
@@ -958,13 +958,13 @@
 		"en": "Please insert the Notes",
 		"ar": "من فضلك ادخل الملاحظات"
 	},
-	"EnglishPosition": {
-		"en": "English Position",
-		"ar": "اسم المنصب بالعربية"
+	"Position": {
+		"en": " Position",
+		"ar": "اسم المنصب "
 	},
-	"ArabicPosition": {
-		"en": "Arabic Position",
-		"ar": "اسم المنصب بالانجليزية"
+	"noOfVisits": {
+		"en": "no Of Visits",
+		"ar": "عدد الزيارات"
 	},
 	"enteredBy": {
 		"en": "Entered By",
@@ -3586,11 +3586,7 @@
 	"budgetVariance": {
 		"en": "Budget Variance",
 		"ar": "موازنة التغير "
-	},
-	"code": {
-		"en": "Code",
-		"ar": "الكود "
-	},
+	}, 
 	"expensesTotal": {
 		"en": "Expenses Total",
 		"ar": "الميزانية الأصلية "

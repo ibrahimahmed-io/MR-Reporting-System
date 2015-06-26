@@ -14,33 +14,38 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Hospitals
+                        where q.DeletedBy == null
                         select new DtoHospitals
                         {
                             Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
+                            AreaName = q.Area.Title,
                             Address = q.Address,
                             Phone = q.Phone,
                             Email = q.Email,
+                            typeName = q.Type == 1 ? "public" : "private",
                             Type = q.Type,
-                            Code = q.Code,
-                            DeletedBy = q.DeletedBy,
+                            Code = q.Code 
                         }).ToList();
             }
             else
             {
                 list = (from q in Context.Hospitals
+                        where q.DeletedBy == null
                         select new DtoHospitals
                         {
                             Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
                             Address = q.Address,
+                            AreaName = q.Area.Title,
+                            typeName = q.Type == 1 ? "public" : "private",
                             Phone = q.Phone,
                             Email = q.Email,
                             Type = q.Type,
-                            Code = q.Code,
-                            DeletedBy = q.DeletedBy,
+
+                            Code = q.Code 
                         }).ToList();
             } return list;
         }

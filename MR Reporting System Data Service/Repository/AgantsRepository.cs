@@ -15,18 +15,22 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Agents
+                        //where q.DeletedBy == null
                         select new DtoAgents
                         {
-                            Id=q.id,
+                            Id = q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
+                            AreaName = q.Area.Title,
                             ContactName = q.ContactName,
                             PositionId = q.PostionId,
+                            PositionName = (Context.DefaultLists.FirstOrDefault(x => x.Id == q.PostionId).Title),
                             AreaId = q.AreaId,
                             Address = q.Address,
                             Phone = q.Phone,
                             Email = q.Email,
                             GroupId = q.GroupId,
+                            SupervisorName = q.Agent2.ContactName,
                             Salary = q.Salary,
                             NoOfVisits = q.NoOfVisits,
                             SupervisorId = q.SupervisorId,
@@ -37,12 +41,16 @@ namespace MR_Reporting_System_Data_Service.Repository
             else
             {
                 list = (from q in Context.Agents
+                        //where q.DeletedBy == null
                         select new DtoAgents
                         {
                             Id = q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
                             ContactName = q.ContactName,
+                            AreaName = q.Area.Title,
+                            PositionName = (Context.DefaultLists.FirstOrDefault(x => x.Id == q.PostionId).Title),
+                            SupervisorName = q.Agent2.ContactName,
                             PositionId = q.PostionId,
                             AreaId = q.AreaId,
                             Address = q.Address,
