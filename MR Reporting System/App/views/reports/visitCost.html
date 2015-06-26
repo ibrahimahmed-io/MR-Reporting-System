@@ -43,7 +43,7 @@
                                             <section>
                                                 <label class="label" data-bind="text: $root.language.ContactName[$root.currentLanguage()]"></label>
                                                 <label class="select">
-                                                    <select id="agentId" name="agentId" data-bind="value: $root.agentId, options: $root.agents, optionsText: function(item) { return item.contactName; }, optionsValue: function(item) { return item.id; },  optionsCaption: $root.language.employeeSelection[$root.currentLanguage()], attr: { dir: $root.language.dir[$root.currentLanguage()]}"></select>
+                                                    <select id="agentId" name="agentId" data-bind="value: $root.agentId, options: $root.agents, optionsText: function(item) { return item.contactName; }, optionsValue: function(item) { return item.id; },  optionsCaption: $root.language.supervisorSelection[$root.currentLanguage()], attr: { dir: $root.language.dir[$root.currentLanguage()]}"></select>
                                                     <i></i>
                                                 </label>
                                             </section>
@@ -63,7 +63,7 @@
                                             </div>
                                         </fieldset>
                                         <footer>
-                                            <button type="button" class="btn btn-primary" id="showDetail" data-bind="click: showDetail ,  text: $root.language.view[$root.currentLanguage()], style: { float: $root.language.btnFloat[$root.currentLanguage()] }"></button>
+                                            <button type="button" class="btn btn-primary" id="showDetail" data-bind="click: showDetail ,  text: $root.language.search[$root.currentLanguage()], style: { float: $root.language.btnFloat[$root.currentLanguage()] }"></button>
                                         </footer>
                                     </form>
                                 </div>

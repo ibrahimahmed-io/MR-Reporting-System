@@ -155,13 +155,15 @@
 
         gridOptions(knockoutGrid.getGridOptions()());
 
+        if (visitDto().startDate) {
+            dataservice.visitsCost(visitDto()).done(function (data) {
 
-        dataservice.visitsCost(visitDto()).done(function (data) {
+                knockoutGrid.setInitialData(data);
 
-            knockoutGrid.setInitialData(data);
-
-            $(".loading-data").addClass("hidden");
-        });
+                $(".loading-data").addClass("hidden");
+            });
+        }
+        
     };
 
     //function canActivate() {
@@ -194,7 +196,8 @@
         exportToPdf: exportToPdf,
         visitDto: visitDto,
         agentId: agentId,
-        agents: agents
+        agents: agents,
+        showDetail: showDetail
     };
 
     return vm;

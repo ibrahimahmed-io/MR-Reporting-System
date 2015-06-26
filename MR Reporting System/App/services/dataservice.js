@@ -227,7 +227,7 @@
     };
 
     var visitsCost = function (observableObj) {
-        return $.getJSON(config.remoteServerName + "/VisitsCost", observableObj);
+        return $.post(config.remoteServerName + "/VisitsCost", observableObj);
     };
 
     var getDistributers = function (documnetObservable) {

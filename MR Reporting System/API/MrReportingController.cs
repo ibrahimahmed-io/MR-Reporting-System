@@ -1134,7 +1134,7 @@ namespace MR_Reporting_System.API
         }
 
         [AuthorizeUser]
-        [HttpGet]
+        [HttpPost]
         [Route("VisitsCost")]
         public IHttpActionResult VisitsCost(reportDto obj)
         {

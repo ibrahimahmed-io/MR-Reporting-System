@@ -435,8 +435,8 @@
 		"ar": "-- اختر المشروع --"
 	},
 	"supervisorSelection": {
-		"en": "-- Please Select a Supervisor --",
-		"ar": "-- اختر المشرف --"
+		"en": "-- Please Select a Agent --",
+		"ar": "-- اختر المندوب --"
 	},
 	"groupSelection": {
 		"en": "-- Please Select a Group --",
