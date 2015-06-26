@@ -126,10 +126,10 @@
 
         knockoutGrid.columnDefs([
                   knockoutGrid.createColumnDefinition('agentName', config.language.ContactName[config.currentLanguage()], 155, '30%', 'string'),
-                  knockoutGrid.createColumnDefinition('actualCost', config.language.Position[config.currentLanguage()], 200, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('EstimateVisits', config.language.employeeCode[config.currentLanguage()], 200, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('actualCost', config.language.Supervisor[config.currentLanguage()], 150, '25%', 'string'),
-                  knockoutGrid.createColumnDefinition('estimateCost', config.language.salaryValue[config.currentLanguage()], 50, '25%', 'int')
+                  knockoutGrid.createColumnDefinition('actualCost', config.language.actualCost[config.currentLanguage()], 200, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('estimateVisits', config.language.estimateVisits[config.currentLanguage()], 200, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('actualVisits', config.language.actualVisits[config.currentLanguage()], 150, '25%', 'string'),
+                  knockoutGrid.createColumnDefinition('estimateCost', config.language.estimatedCost[config.currentLanguage()], 50, '25%', 'int')
         ]);
 
         knockoutGrid.gridSelectionChange(function (rowItem, event) {

@@ -3111,13 +3111,13 @@
 		"en": "Estimate Cost",
 		"ar": "التكلفة المحددة  "
 	},
-	"addDrawingList": {
-		"en": "Add Drawing List",
-		"ar": "اضافة قاءمة الرسم "
+	"actualVisits": {
+		"en": "actual Visits",
+		"ar": "عدد الزيارات الفعلى "
 	},
-	"siteCoordination": {
-		"en": "Site Coordination",
-		"ar": "متابعة الموقع"
+	"estimateVisits": {
+		"en": "estimate Visits ",
+		"ar": "عدد الزيارات المتوقع"
 	},
 	"addDrawingListItems": {
 		"en": "Add Drawing List Items",

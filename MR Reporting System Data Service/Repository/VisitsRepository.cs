@@ -111,10 +111,10 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from agent in Context.Agents.Where(x => x.id == AgentId)
                         select new DtoVisitCost
                         {
-                            actualVisits = Context.Visits.Where(x => x.AgentId == AgentId).ToList().Count,
-                            EstimateVisits = agent.NoOfVisits,
-                            actualCost = ((Context.Visits.Where(x => x.AgentId == AgentId).ToList().Count) / agent.Salary ?? 0),
-                            estimateCost = (double)((agent.NoOfVisits) / (agent.Salary)),
+                            actualVisits = Context.Visits.Where(x => x.AgentId == AgentId && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count(),
+                            estimateVisits = agent.NoOfVisits ?? 0,
+                            actualCost = ((agent.Salary ?? 0) / (Context.Visits.Where(x => x.AgentId == AgentId && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count())),
+                            estimateCost = (double)((agent.Salary) ?? 0) / ((agent.NoOfVisits) ?? 1),
                             agentName = agent.ContactName
                         }).ToList();
             }
@@ -123,10 +123,10 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from agent in Context.Agents
                         select new DtoVisitCost
                         {
-                            actualVisits = Context.Visits.Where(x => x.AgentId == agent.id).ToList().Count,
-                            EstimateVisits = agent.NoOfVisits,
-                            actualCost = ((Context.Visits.Where(x => x.AgentId == agent.id).ToList().Count) / agent.Salary ?? 0),
-                            estimateCost = (double)((agent.NoOfVisits) / (agent.Salary)),
+                            actualVisits = Context.Visits.Where(x => x.AgentId == agent.id && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count == 0 ? 1 : Context.Visits.Where(x => x.AgentId == agent.id && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count,
+                            estimateVisits = agent.NoOfVisits ?? 0,
+                            actualCost = ((agent.Salary ?? 0) / (Context.Visits.Where(x => x.AgentId == agent.id && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count==0?1: Context.Visits.Where(x => x.AgentId == agent.id && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count)),
+                            estimateCost = (double)((agent.Salary) ?? 0) / ((agent.NoOfVisits) ?? 1),
                             agentName = agent.ContactName
                         }).ToList();
             }
@@ -136,6 +136,6 @@ namespace MR_Reporting_System_Data_Service.Repository
 
 
     }
-   
+
 }
 
