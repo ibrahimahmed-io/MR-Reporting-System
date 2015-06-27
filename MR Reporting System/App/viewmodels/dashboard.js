@@ -140,68 +140,32 @@
 
     vm.widgets = ko.observableArray([
         {
-            //    widgetsCategory: "summary",
-            //    widgets: [{
-            //        moduleTitle: "Alerting Quantity Summary",
-            //        moduleId: "viewmodels/summary/alertingQuantitySummary",
-            //        canView: config.isAllow(1362)
-            //    }, {
-            //        moduleTitle: "Alert Summary",
-            //        moduleId: "viewmodels/summary/alertSummary",
-            //        canView: config.isAllow(1363)
-            //    }, {
-            //        moduleTitle: "Assessment Summary",
-            //        moduleId: "viewmodels/summary/assessmentSummary",
-            //        canView: config.isAllow(1364)
-            //    }, {
-            //        moduleTitle: "Closed Summary",
-            //        moduleId: "viewmodels/summary/closedSummary",
-            //        canView: config.isAllow(1365)
-            //    }, {
-            //        moduleTitle: "Distribution Inbox Summary",
-            //        moduleId: "viewmodels/summary/distributionInboxSummary",
-            //        canView: config.isAllow(1366)
-            //    }, {
-            //        moduleTitle: "Inbox Summary",
-            //        moduleId: "viewmodels/summary/inboxSummary",
-            //        canView: config.isAllow(1367)
-            //    }, {
-            //        moduleTitle: "Not Coded Expenes Summary",
-            //        moduleId: "viewmodels/summary/notCodedExpenesSummary",
-            //        canView: config.isAllow(1368)
-            //    }, {
-            //        moduleTitle: "Not Coded Invoices Summary",
-            //        moduleId: "viewmodels/summary/notCodedInvoicesSummary",
-            //        canView: config.isAllow(1369)
-            //    }, {
-            //        moduleTitle: "Not Coded Payment Summary",
-            //        moduleId: "viewmodels/summary/notCodedPaymentSummary",
-            //        canView: config.isAllow(1370)
-            //    }, {
-            //        moduleTitle: "Not Coded Payment Summary",
-            //        moduleId: "viewmodels/summary/actionBySummary",
-            //        canView: config.isAllow(1371)
-            //    }]
-            //}, {
-            //    widgetsCategory: "widgetsCharts",
-            //    widgets: [{
-            //        moduleTitle: "Project Status",
-            //        moduleId: "viewmodels/widgetsCharts/projectStatusChart",
-            //        canView: config.isAllow(1377)
-            //    }]
-            //}]
+            widgetsCategory: "summary",
+            widgets: [{
+                moduleTitle: "Alerting Summary on Visits ",
+                moduleId: "viewmodels/summaries/alerts"
+                // ,canView: config.isAllow(1362)
+            
+            }]
+        }, {
+            widgetsCategory: "widgetsCharts",
+            widgets: [{
+                moduleTitle: "Project Status",
+                moduleId: "viewmodels/widgetsCharts/projectStatusChart"
+                //,canView: config.isAllow(1377)
+            }]
+
 
         }]);
 
     vm.activate = function () {
-        config.currentModuleMenu(undefined);
-
+        
         if (window.localStorage.getItem("Plugin_position__widget-grid")) {
             window.localStorage.removeItem("Plugin_position__widget-grid");
         }
 
         if (!(!!window.localStorage.getItem("SelectedWidgets"))) {
-            //window.localStorage.setItem("SelectedWidgets", JSON.stringify([{ "moduleId": "viewmodels/summary/distributionInboxSummary", "column": "left" }, { "moduleId": "viewmodels/summary/inboxSummary", "column": "right" }, { "moduleId": "viewmodels/summary/openedSummary", "column": "left" }, { "moduleId": "viewmodels/summary/closedSummary", "column": "right" }]));
+            window.localStorage.setItem("SelectedWidgets", JSON.stringify([{ "moduleId": "viewmodels/summaries/alerts", "column": "left" }]));
         }
 
         var selectedWidgets = JSON.parse(window.localStorage.getItem("SelectedWidgets")) || [];
@@ -219,9 +183,13 @@
         });
 
         vm.leftSelectedWidgets(leftSelectedWidgets);
+
         vm.rightSelectedWidgets(rightSelectedWidgets);
+
         vm.centerSelectedWidgets(centerSelectedWidgets);
+
         vm.selectedWidgets(selectedWidgets);
+
     };
 
     vm.compositionComplete = function () {

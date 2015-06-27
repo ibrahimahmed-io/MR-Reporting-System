@@ -198,6 +198,112 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list;
         }
 
+        public List<DtoSummaryWords> alertsCount()
+        {
+            List<DtoSummaryWords> list = new List<DtoSummaryWords>();
+
+            DateTime? currentDate = DateTime.Now.Date;
+
+
+            var listWeek = (from agent in Context.Visits
+
+                            select new DtoVisits
+                            {
+                                Id = agent.Id,
+                                VisitDate = agent.VisitDate
+                            }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-7)).ToList();
+
+            var list2Week = (from agent in Context.Visits
+                             
+                             select new DtoVisits
+                             {
+                                 Id = agent.Id,
+                                 VisitDate = agent.VisitDate
+                             }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-14)).ToList();
+
+            var listMoreWeek = (from agent in Context.Visits
+                                 
+                                select new DtoVisits
+                                {
+                                    Id = agent.Id,
+                                    VisitDate = agent.VisitDate
+                                }).ToList().Where(x => x.VisitDate <= currentDate.Value.AddDays(-14)).ToList();
+
+            list.Add(new DtoSummaryWords { item = "This Week", total = list.Count() });
+            list.Add(new DtoSummaryWords { item = "Two Week", total = list2Week.Count() });
+            list.Add(new DtoSummaryWords { item = "More Two Week", total = listMoreWeek.Count() });
+
+            return list;
+        }
+
+        public List<DtoVisits> alertsCountDetail(string listType)
+        {
+            List<DtoVisits> list = new List<DtoVisits>();
+
+            DateTime? currentDate = DateTime.Now.Date;
+            switch (listType)
+            {
+                case "This Week":
+                    list = (from visit in Context.Visits
+                            select new DtoVisits
+                            {
+                                AgentName = visit.Agent.ContactName,
+                                TypeName = visit.DefaultList.Title,
+                                VisitTo = visit.VisitTo,
+                                TypeId = visit.TypeId,
+                                CreationDate = visit.CreationDate,
+                                Notes = visit.Notes,
+                                VisitDate = visit.VisitDate,
+                                Duration = visit.Duration,
+                                Description = visit.Description,
+                                DrugsName = visit.Drug.Name,
+                                status = (bool)visit.IsMorning ? "Morning" : "Night"
+                            }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-7)).ToList();
+                    break;
+
+                case "Two Week":
+                    list = (from visit in Context.Visits
+                            select new DtoVisits
+                            {
+                                AgentName = visit.Agent.ContactName,
+                                TypeName = visit.DefaultList.Title,
+                                VisitTo = visit.VisitTo,
+                                TypeId = visit.TypeId,
+                                CreationDate = visit.CreationDate,
+                                Notes = visit.Notes,
+                                VisitDate = visit.VisitDate,
+                                Duration = visit.Duration,
+                                Description = visit.Description,
+                                DrugsName = visit.Drug.Name,
+                                status = (bool)visit.IsMorning ? "Morning" : "Night"
+                            }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-14)).ToList();
+                    break;
+
+                case "More Two Week":
+                    list = (from visit in Context.Visits
+                            select new DtoVisits
+                            {
+                                AgentName = visit.Agent.ContactName,
+                                TypeName = visit.DefaultList.Title,
+                                VisitTo = visit.VisitTo,
+                                TypeId = visit.TypeId,
+                                CreationDate = visit.CreationDate,
+                                Notes = visit.Notes,
+                                VisitDate = visit.VisitDate,
+                                Duration = visit.Duration,
+                                Description = visit.Description,
+                                DrugsName = visit.Drug.Name,
+                                status = (bool)visit.IsMorning ? "Morning" : "Night"
+                            }).ToList().Where(x => x.VisitDate <= currentDate.Value.AddDays(-14)).ToList();
+                    break;
+            }
+
+           
+          
+
+            return list;
+        }
+
     }
 
 }

@@ -1126,6 +1126,27 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpGet]
+        [Route("GetAlertVisits")]
+        public IHttpActionResult GetAlertVisits()
+        {
+            var result = new List<DtoSummaryWords>();
+            result = _visits.alertsCount();
+
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetAlertVisitsDetail")]
+        public IHttpActionResult GetAlertVisitsDetail(string listType)
+        {
+            var result = new List<DtoVisits>();
+            result = _visits.alertsCountDetail(listType);
+
+            return Ok(result);
+        }
+        [AuthorizeUser]
+        [HttpGet]
         [Route("GetDocotors")]
         public IHttpActionResult GetDocotors()
         {

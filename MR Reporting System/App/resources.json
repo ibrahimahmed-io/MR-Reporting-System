@@ -3607,9 +3607,9 @@
         "en": "actual Visits",
         "ar": "عدد الفعلى "
     },
-    "budgetComplete": {
-        "en": "Budgeted At Complete",
-        "ar": "الميزانية عند الإنتهاء "
+    "alertVisits": {
+        "en": "Alerts On Visits",
+        "ar": "تنبيهات على الزيارات "
     },
     "forcastBudgetVariance": {
         "en": "Forecast Budget Variance",

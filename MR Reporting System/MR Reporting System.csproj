@@ -144,6 +144,8 @@
     <Content Include="App\viewmodels\reports\visitsByAgent.js" />
     <Content Include="App\viewmodels\reports\visitCost.js" />
     <Content Include="App\viewmodels\shell.js" />
+    <Content Include="App\viewmodels\summaries\notAssign.js" />
+    <Content Include="App\viewmodels\summaries\alerts.js" />
     <Content Include="App\views\admin\accounts.html" />
     <Content Include="App\views\admin\accountsAdd.html" />
     <Content Include="App\views\admin\accountsDefaultList.html" />
@@ -165,6 +167,8 @@
     <Content Include="App\views\reports\visitsByAgent.html" />
     <Content Include="App\views\reports\visitCost.html" />
     <Content Include="App\views\shell.html" />
+    <Content Include="App\views\summaries\notAssign.html" />
+    <Content Include="App\views\summaries\alerts.html" />
     <Content Include="css\bootmetro-icons.css" />
     <Content Include="css\bootstrap-datetimepicker.css" />
     <Content Include="css\bootstrap-editable.css" />
@@ -7735,8 +7739,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\viewmodels\summaries\" />
-    <Folder Include="App\views\summaries\" />
     <Folder Include="node_modules\gulp-concat\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-header\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-jshint\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />

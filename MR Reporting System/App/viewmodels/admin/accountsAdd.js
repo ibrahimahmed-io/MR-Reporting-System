@@ -12,8 +12,8 @@
         self.phone = ko.observable();
         self.email = ko.observable();
         self.groupId = ko.observable();
-        self.noOfVisits = ko.observable();
-        self.salary = ko.observable();
+        self.noOfVisits = ko.observable(10);
+        self.salary = ko.observable(1000);
         self.code = ko.observable();
         self.supervisorId = ko.observable();
         self.userType = ko.observable();

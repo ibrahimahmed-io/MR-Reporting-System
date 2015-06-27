@@ -1,0 +1,49 @@
+﻿<div class="jarviswidget" id="viewmodels-summary-notCodedExpenesSummary">
+
+    <header>
+        <h2 data-bind="text: title"></h2>
+        <div class="widget-toolbar widget-toolbar-custom" role="menu">
+            <a class="button-icon" href="javascript:void(0);" data-action="expandWidget">
+                <i class="fa fa-arrows-h"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="summary-widget">
+        <div class="jarviswidget-editbox">
+            <input class="form-control" type="text">
+        </div>
+        <div class="widget-body">
+            <table class="table">
+                <tbody data-bind="foreach: summary" class="myClass">
+                    <tr>
+                        <td data-bind="css: { 'no-cell-border': item == $root.language.low[$root.currentLanguage()] }">
+                            <label data-bind="text: item"></label>
+                            <a style="cursor: pointer" class="txt-color-redish-orange pull-right" href="javascript:void(0);" data-bind="style: { 'pointer-events': (total == 0) ? 'None' : 'Auto', 'cursor': (total == 0) ? 'default' : 'default' }, click: $parent.showModal">
+                                <span data-bind="text: total"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="ExpensesModal" tabindex="-1" role="dialog" data-bind="attr: { dir: language.dir[currentLanguage()]}" aria-labelledby="ExpensesModal" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-bind="style: { float: language.btnFloat[currentLanguage()] }" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" data-bind="text: language.notCodedExpensesSummary[currentLanguage()]">Expenses Without Code</h4>
+
+                        </div>
+                        <div class="modal-body">
+                            <div id="dataTable" data-bind="jqxGridDataSource: dataSource, jqxGridColumns: columns,  jqxGrid: dataTable"></div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

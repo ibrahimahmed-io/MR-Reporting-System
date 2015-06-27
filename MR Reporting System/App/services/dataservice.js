@@ -285,6 +285,17 @@
         return $.getJSON(config.remoteServerName + "/DeleteDistributersById", { id: id });
     };
 
+    var getAlertVisits = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetAlertVisits").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var getAlertVisitsDetail = function ( listType) {
+        return $.getJSON(config.remoteServerName + "/GetAlertVisitsDetail", { listType: listType }) ;
+    };
 
     var getGroups = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetGroups").done(function (data) {
@@ -329,6 +340,8 @@
     var dataservice = {
         visitsCost: visitsCost,
         visitsByAgent: visitsByAgent,
+        getAlertVisits: getAlertVisits,
+        getAlertVisitsDetail: getAlertVisitsDetail,
 
         getGroups: getGroups,
         getGroupsById: getGroupsById,

@@ -13,5 +13,6 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
         public double actualCost { get; set; }
         public double estimateCost { get; set; }
         public string agentName { get; set; }
+        public int id { get; set; }
     }
 }
