@@ -83,18 +83,30 @@
         title: 'permissions Groups ',
         nav: true,
         settings: { admin: true }
-    },{
+    }, {
         route: 'permissionsGroupsPermissions/:param1*detail',
         moduleId: 'admin/permissionsGroupsPermissions',
         title: 'permissions Groups permissions',
         nav: true,
         settings: { admin: false }
-    },{
+    }, {
         route: 'visitCost',
         moduleId: 'reports/visitCost',
         title: 'visits Cost ',
         nav: true,
         settings: { reports: true }
+    }, {
+        route: 'drugs',
+        moduleId: 'daily/drugs',
+        title: 'Drugs ',
+        nav: true,
+        settings: { daily: true }
+    }, {
+        route: 'DrugsAddEdit/(:id)',
+        moduleId: 'daily/drugsAddEdit',
+        title: 'Drugs ',
+        nav: false,
+        settings: { daily: true }
     }];
 
     var isPageSetup = ko.observable(false);
@@ -821,6 +833,95 @@
                 $(element).code(value());
             }
         };
+    };
+
+    ko.bindingHandlers.dropdown = new function () {
+        this.init = function (element, valueAccessor, allBindingsAccessor) {
+            if ($(element).is('select')) {
+                if (ko.isObservable(valueAccessor())) {
+                    ko.bindingHandlers.value.init(element, valueAccessor, allBindingsAccessor);
+                }
+                $(element).selectpicker();
+            }
+        };
+
+        this.update = function (element, valueAccessor, allBindingsAccessor) {
+            if ($(element).is('select')) {
+                var dropdownOptions = allBindingsAccessor().selectPickerOptions;
+                if (typeof dropdownOptions !== 'undefined' && dropdownOptions !== null) {
+                    var options = dropdownOptions.options,
+                        optionsText = dropdownOptions.optionsText,
+                        optionsValue = dropdownOptions.optionsValue,
+                        optionsCaption = dropdownOptions.optionsCaption,
+                        isDisabled = dropdownOptions.disabledCondition || false,
+                        resetOnDisabled = dropdownOptions.resetOnDisabled || false;
+                    if (ko.utils.unwrapObservable(options).length > 0) {
+                        // call the default Knockout options binding
+                        ko.bindingHandlers.options.update(element, options, ko.observable({ optionsText: optionsText, optionsValue: optionsValue, optionsCaption: optionsCaption }));
+                    }
+                    if (isDisabled && resetOnDisabled) {
+                        // the dropdown is disabled and we need to reset it to its first option
+                        $(element).selectpicker('val', $(element).children('option:first').val());
+                    }
+                    $(element).prop('disabled', isDisabled);
+                }
+                if (ko.isObservable(valueAccessor())) {
+                    if ($(element).prop('multiple') && $.isArray(ko.utils.unwrapObservable(valueAccessor()))) {
+                        // in the case of a multiple select where the valueAccessor() is an observableArray, call the default Knockout selectedOptions binding
+                        ko.bindingHandlers.selectedOptions.update(element, valueAccessor);
+                    } else {
+                        // call the default Knockout value binding
+                        ko.bindingHandlers.value.update(element, valueAccessor);
+                    }
+                }
+
+                $(element).selectpicker('refresh');
+            }
+        };
+    };
+
+    ko.bindingHandlers.bootstrapSwitch = new function () {
+        this.init = function (element, valueAccessor, allBindingsAccessor) {
+            //initialize bootstrapSwitch
+            $(element).bootstrapSwitch();
+
+            // setting initial value
+            $(element).bootstrapSwitch('state', valueAccessor()());
+
+            //handle the field changing
+            $(element).on('switchChange.bootstrapSwitch', function (event, state) {
+                var observable = valueAccessor();
+                observable(state);
+            });
+
+            // Adding component options
+            var options = allBindingsAccessor().bootstrapSwitchOptions || {};
+            for (var property in options) {
+                if (options.hasOwnProperty(property)) {
+                    $(element).bootstrapSwitch(property, ko.utils.unwrapObservable(options[property]));
+                }
+            }
+
+            //handle disposal (if KO removes by the template binding)
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+                $(element).bootstrapSwitch("destroy");
+            });
+
+        },
+        //update the control when the view model changes
+        this.update = function (element, valueAccessor, allBindingsAccessor) {
+            var value = ko.utils.unwrapObservable(valueAccessor());
+
+            // Adding component options
+            var options = allBindingsAccessor().bootstrapSwitchOptions || {};
+            for (var property in options) {
+                if (options.hasOwnProperty(property)) {
+                    $(element).bootstrapSwitch(property, ko.utils.unwrapObservable(options[property]));
+                }
+            }
+
+            $(element).bootstrapSwitch("state", value);
+        }
     };
 
     var remoteServerName = 'api/MrReporting';

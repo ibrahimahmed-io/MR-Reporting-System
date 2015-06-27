@@ -10,39 +10,21 @@ namespace MR_Reporting_System_Data_Service.Repository
     {
         public List<DtoDrugs> SelectAll(string lang)
         {
-            List<DtoDrugs> list;
-            if (lang == "en")
-            {
-                list = (from q in Context.Drugs
-                        where q.DeletedBy == null
-                        select new DtoDrugs
-                        {
-                            Id = q.Id,
-                            Name = q.Name,
-                            Description = q.Description,
-                            Code = q.Code,
-                            Price = q.Price,
-                            SectionId = q.SectionId,
-                            Notes = q.Notes,
-                            CompanyId = q.CompanyId 
-                        }).ToList();
-            }
-            else
-            {
-                list = (from q in Context.Drugs
-                        where q.DeletedBy == null
-                        select new DtoDrugs
-                        {
-                            Id = q.Id,
-                            Name = q.Name,
-                            Description = q.Description,
-                            Code = q.Code,
-                            Price = q.Price,
-                            SectionId = q.SectionId,
-                            Notes = q.Notes,
-                            CompanyId = q.CompanyId 
-                        }).ToList();
-            } return list;
+            var list = (from q in Context.Drugs.Include("DefaultList")
+                where q.DeletedBy == null
+                select new DtoDrugs
+                {
+                    Id = q.Id,
+                    Name = q.Name,
+                    Description = q.Description,
+                    Code = q.Code,
+                    Price = q.Price,
+                    SectionName = q.DefaultList.Title,
+                    Notes = q.Notes,
+                    CompanyName = q.Company.Name
+                }).ToList();
+
+            return list;
         }
 
         //WriteMethode4

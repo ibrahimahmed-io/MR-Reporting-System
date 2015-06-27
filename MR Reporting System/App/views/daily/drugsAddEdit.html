@@ -1,0 +1,68 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <h4 class="modal-title" id="drugsAddEditLabel" data-bind="text: drugsAddEditLabel"></h4>
+    </div>
+    <div class="modal-body" data-bind="with: drugObject">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="name" data-bind="text: $parent.language.name[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="name" data-bind="value: name, attr: { placeholder: $parent.language.name[$parent.currentLanguage()] }">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="description" data-bind="text: $parent.language.description[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="description" data-bind="value: description, attr: { placeholder: $parent.language.description[$parent.currentLanguage()] }">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="code" data-bind="text: $parent.language.code[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="code" data-bind="value: code, attr: { placeholder: $parent.language.code[$parent.currentLanguage()] }">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="price" data-bind="text: $parent.language.price[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="price" data-bind="value: price, attr: { placeholder: $parent.language.price[$parent.currentLanguage()] }">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="section" data-bind="text: $parent.language.section[$parent.currentLanguage()]"></label>
+                    <select id="section" class="form-control" data-bind="value: sectionId, options: $parent.sections, optionsValue: 'id', optionsText: 'title', optionsCaption: $parent.language.selectValue[$parent.currentLanguage()]"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="notes" data-bind="text: $parent.language.notes[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="notes" data-bind="value: notes, attr: { placeholder: $parent.language.notes[$parent.currentLanguage()] }">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="company" data-bind="text: $parent.language.company[$parent.currentLanguage()]"></label>
+                    <select id="company" class="form-control" data-bind="value: companyId, options: $parent.companies, optionsValue: 'id', optionsText: 'name', optionsCaption: $parent.language.selectValue[$parent.currentLanguage()]"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- ko ifnot: isEdit -->
+            <button type="button" class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: addDrug"></button>
+        <!-- /ko -->
+        <!-- ko if: isEdit -->
+            <button type="button" class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: editDrug"></button>
+        <!-- /ko -->
+    </div>
+</div>

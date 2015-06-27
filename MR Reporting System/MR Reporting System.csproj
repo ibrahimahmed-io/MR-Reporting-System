@@ -131,12 +131,14 @@
     <Content Include="App\viewmodels\admin\distributer.js" />
     <Content Include="App\viewmodels\admin\permissionsGroups.js" />
     <Content Include="App\viewmodels\admin\permissionsGroupsPermissions.js" />
+    <Content Include="App\viewmodels\daily\drugsAddEdit.js" />
     <Content Include="App\viewmodels\daily\pharmacyAdd.js" />
     <Content Include="App\viewmodels\daily\pharmacies.js" />
     <Content Include="App\viewmodels\daily\hospitals.js" />
     <Content Include="App\viewmodels\daily\hospitalAdd.js" />
     <Content Include="App\viewmodels\daily\doctorsAdd.js" />
     <Content Include="App\viewmodels\daily\doctors.js" />
+    <Content Include="App\viewmodels\daily\drugs.js" />
     <Content Include="App\viewmodels\dashboard.js" />
     <Content Include="App\viewmodels\login.js" />
     <Content Include="App\viewmodels\reports\visitCost.js" />
@@ -149,6 +151,8 @@
     <Content Include="App\views\admin\distributer.html" />
     <Content Include="App\views\admin\permissionsGroups.html" />
     <Content Include="App\views\admin\permissionsGroupsPermissions.html" />
+    <Content Include="App\views\daily\drugs.html" />
+    <Content Include="App\views\daily\drugsAddEdit.html" />
     <Content Include="App\views\daily\pharmacyAdd.html" />
     <Content Include="App\views\daily\pharmacies.html" />
     <Content Include="App\views\daily\hospitals.html" />
@@ -163,7 +167,9 @@
     <Content Include="css\bootstrap-datetimepicker.css" />
     <Content Include="css\bootstrap-editable.css" />
     <Content Include="css\bootstrap-select.css" />
+    <Content Include="css\bootstrap-select.min.css" />
     <Content Include="css\bootstrap-sortable.css" />
+    <Content Include="css\bootstrap-switch.min.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\calendar.css" />
@@ -1301,9 +1307,10 @@
     <Content Include="lib\bootstrap-enhancement.js" />
     <Content Include="lib\bootstrap-progressbar.js" />
     <Content Include="lib\bootstrap-progressbar.min.js" />
-    <Content Include="lib\bootstrap-select.js" />
+    <Content Include="lib\bootstrap-select.min.js" />
     <Content Include="lib\bootstrap-slider.js" />
     <Content Include="lib\bootstrap-sortable.js" />
+    <Content Include="lib\bootstrap-switch.min.js" />
     <Content Include="lib\bootstrap-timepicker.js" />
     <Content Include="lib\bootstrap-timepicker.min.js" />
     <Content Include="lib\bootstrap.js" />

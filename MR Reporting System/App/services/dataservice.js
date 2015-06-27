@@ -7,6 +7,14 @@
         return $.post(config.remoteServerName + "/AddAgents", newAccount).success(function (data) { });
     };
 
+    var getCompanies = function () {
+        return $.getJSON(config.remoteServerName + "/GetCompanies");
+    }
+
+    var getSections = function () {
+        return $.getJSON(config.remoteServerName + "/GetDefaultListByListType", { listType: 'medicenType' });
+    }
+
     var editAccount = function (editAccountObservable) {
         return $.post(config.remoteServerName + "/EditAccount", editAccountObservable);
     };
@@ -62,7 +70,6 @@
         return $.getJSON(config.remoteServerName + "/DeleteDefaultlistById", { id: id });
     };
 
-
     var getAgantarea = function (documnetObservable, agentId) {
         return $.getJSON(config.remoteServerName + "/GetAgentarea", { agentId: agentId }).done(function (data) {
             if (documnetObservable) {
@@ -90,34 +97,55 @@
         return $.getJSON(config.remoteServerName + "/DeleteAgantareaById", { id: id });
     };
 
-
-    var getAgantdrugs = function (documnetObservable, agentId) {
+    var getAgentDrugs = function (documnetObservable, agentId) {
         return $.getJSON(config.remoteServerName + "/GetAgentDrug", { agentId: agentId }).done(function (data) {
             if (documnetObservable) {
-
-                documnetObservable.data(data);
+                documnetObservable(data);
             }
         });
     };
 
-    var getAgantdrugsById = function (documnetObservable, id) {
-        return $.getJSON(config.remoteServerName + "/GetAgantdrugsById", { id: id }).done(function (data) {
+    var getAgentDrugById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetAgentDrugById", { id: id }).done(function (data) {
             documnetObservable(data);
         });
     };
 
-    var editAgantdrugs = function (documnetObservable) {
-        return $.post(config.remoteServerName + "/EditAgantdrugs", documnetObservable);
+    var editAgentdDrug = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditAgentDrug", documnetObservable);
     };
 
-    var addAgantdrugs = function (documnetObservable) {
-        return $.post(config.remoteServerName + "/AddAgentDrugs", documnetObservable);
+    var addAgentDrug = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddAgentDrug", documnetObservable);
     };
 
-    var deleteAgantdrugs = function (id) {
-        return $.getJSON(config.remoteServerName + "/DeleteAgantdrugsById", { id: id });
+    var deleteAgentDrug = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteAgentDrugById", { id: id });
     };
 
+    var getDrugs = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetDrugs").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var getDrugsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetDrugsById", { id: id }).done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var addDrugs = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddDrugs", documnetObservable);
+    };
+
+    var deleteDrugsById = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteDrugsById", { id: id });
+    };
 
     var getDocotors = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetDocotors").done(function (data) {
@@ -145,7 +173,6 @@
         return $.getJSON(config.remoteServerName + "/DeleteDocotorsById", { id: id });
     };
 
-
     var getArea = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetArea").done(function (data) {
             if (documnetObservable) {
@@ -172,7 +199,6 @@
         return $.getJSON(config.remoteServerName + "/DeleteAreaById", { id: id });
     };
 
-
     var getPharmacies = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetPharmacies").done(function (data) {
             if (documnetObservable) {
@@ -198,7 +224,6 @@
     var deletePharmacies = function (id) {
         return $.getJSON(config.remoteServerName + "/DeletePharmaciesById", { id: id });
     };
-
 
     var getHospitals = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetHospitals").done(function (data) {
@@ -243,12 +268,15 @@
             documnetObservable(data);
         });
     };
+
     var editDistributers = function (documnetObservable) {
         return $.post(config.remoteServerName + "/EditDistributers", documnetObservable);
     };
+
     var addDistributers = function (documnetObservable) {
         return $.post(config.remoteServerName + "/AddDistributers", documnetObservable);
     };
+
     var deleteDistributers = function (id) {
         return $.getJSON(config.remoteServerName + "/DeleteDistributersById", { id: id });
     };
@@ -296,7 +324,6 @@
         getAccounts: getAccounts,
         checkTokenValidity: checkTokenValidity,
         login: login,
-        getAccounts: getAccounts,
         addAccount: addAccount,
         editAccount: editAccount,
         getAccountForedit: getAccountForedit,
@@ -311,13 +338,23 @@
         editAgantarea: editAgantarea,
         addAgantarea: addAgantarea,
         deleteAgantarea: deleteAgantarea,
-        getAgantdrugs: getAgantdrugs,
-        addAgantdrugs: addAgantdrugs,
+        getAgentDrugs: getAgentDrugs,
+        getAgentDrugById: getAgentDrugById,
+        editAgentdDrug: editAgentdDrug,
+        addAgentDrug: addAgentDrug,
+        deleteAgentDrug: deleteAgentDrug,
         getDocotors: getDocotors,
         getDocotorsById: getDocotorsById,
         editDocotors: editDocotors,
         addDocotors: addDocotors,
-        deleteDocotors: deleteDocotors
+        deleteDocotors: deleteDocotors,
+        getDrugs: getDrugs,
+        getDrugsById: getDrugsById,
+        addDrugs: addDrugs,
+        deleteDrugsById: deleteDrugsById,
+
+        getCompanies: getCompanies,
+        getSections: getSections
     };
 
     return dataservice;

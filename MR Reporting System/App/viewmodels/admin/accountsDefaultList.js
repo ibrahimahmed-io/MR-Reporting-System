@@ -275,7 +275,7 @@
         deleteDefault: deleteDefault,
         gridOptions: gridOptions,
         pageNumber: pageNumber,
-        knockoutGrid: knockoutGrid,
+        drugsGridknockoutGrid: knockoutGrid,
         canActivate: canActivate
     };
 
