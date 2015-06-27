@@ -38,6 +38,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoDrugs
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             Description = q.Description,
                             Code = q.Code,
@@ -54,6 +55,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         where q.Id == id
                         select new DtoDrugs
                         {
+                            Id = q.Id,
                             Name = q.Name,
                             Description = q.Description,
                             Code = q.Code,

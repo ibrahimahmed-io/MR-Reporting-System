@@ -22,6 +22,11 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             get;
             set;
         }
+        public string status
+        {
+            get;
+            set;
+        }
 
         public int? DrugsId
         {
@@ -48,6 +53,12 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
         }
 
         public int? VisitTo
+        {
+            get;
+            set;
+        }
+
+        public string VisitToName
         {
             get;
             set;

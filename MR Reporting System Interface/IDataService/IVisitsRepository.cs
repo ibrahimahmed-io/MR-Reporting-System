@@ -11,6 +11,7 @@ namespace MR_Reporting_System_Interface.IDataService
         DtoVisits SelectById(int id, string lang);
 
         List<DtoVisitCost> visitsCostByAgent(int? AgentId, DateTime? stratDate, DateTime? finishDate);
+        List<DtoVisits> visitsByAgent(int? AgentId, DateTime? stratDate, DateTime? finishDate);
     }
 }
 

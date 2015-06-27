@@ -1,8 +1,8 @@
 ﻿define(['plugins/router', 'services/dataservice', 'config'], function (router, dataservice, config) {
 
-    var accountsPermissionsGroups = new config.GridModel();
+    var knockoutGrid = {};
 
-    accountsPermissionsGroups.data([]);
+    var gridOptions = ko.observable();
 
     var permissionGroup = ko.observable();
 
@@ -10,30 +10,23 @@
 
     var selectedRowId = ko.observable();
 
-    var dataSource = new config.JqxGridDataSource();
-
-    var columns = new config.JqxGridColumns();
-
     var exportColumns = [];
 
     var exportToExcel = function () {
-        var exportData = $('#accountsPermssionGrid').jqxGrid('getrows');
-
+        var exportData = ko.toJS(knockoutGrid.getFilteredData()());
         config.exportJson(ko.toJS(exportData), exportColumns, 'excel', 'accountsPermssion');
     };
 
     var exportToWord = function () {
-        var exportData = $('#accountsPermssionGrid').jqxGrid('getrows');
-
+        var exportData = ko.toJS(knockoutGrid.getFilteredData()());
         config.exportJson(ko.toJS(exportData), exportColumns, 'word', 'accountsPermssion');
     };
 
     var exportToPdf = function () {
-        var exportData = $('#accountsPermssionGrid').jqxGrid('getrows');
+        var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
         config.exportJson(ko.toJS(exportData), exportColumns, 'pdf', 'accountsPermssion');
     };
-
 
     var permissionGroupDto = function () {
         var self = this;
@@ -52,8 +45,7 @@
         var isValid = $('#accountsPermissionGroupForm').valid();
 
         if (isValid) {
-            dataservice.accountsPermissionsGroupsEdit(permissionGroup()).done(function (result) {
-                $('#accountsPermssionGrid').jqxGrid('updaterow', result["id"], result);
+            dataservice.permissionsGroupsEdit(permissionGroup()).done(function (result) {
 
                 permissionGroup(null);
 
@@ -68,8 +60,7 @@
         var isValid = $('#accountsPermissionGroupForm').valid();
 
         if (isValid) {
-            dataservice.accountsPermissionsGroupsAdd(permissionGroup()).done(function (data) {
-                $('#accountsPermssionGrid').jqxGrid('addrow', data["id"], data);
+            dataservice.addGroups(permissionGroup()).done(function (data) {
 
                 permissionGroup(null);
 
@@ -105,130 +96,69 @@
             }
         });
 
-        $('#accountsPermssionGrid').on('click', '.jqx-grid-content div div[role="row"]', function (e) {
-            var element = $(e.target)[0];
 
-            var isRadio = false;
+    };
+    var addPeremissionGroup = function (obj, e) {
 
-            if (element.tagName === "I") {
-                isRadio = true;
-            } else if (element.tagName === "INPUT") {
-                if (element.type === "radio") {
-                    isRadio = true;
-                }
-            } else if (element.tagName === "A") {
-                isRadio = true;
-            } else if (element.tagName === "BUTTON") {
-                isRadio = true;
-            }
+        var id = ko.contextFor(e.target).$parent.entity.id;
 
-            var rowId = $(this).find('input[type="radio"]').attr("id");
+        router.navigate("permissionsGroupsPermissions/" + id);
 
-            if (!isRadio) {
-                changeStatus(true);
 
-                dataservice.accountsPermissionsGroupsGetById(permissionGroup, rowId);
+    };
 
-                $("#AccountsPermssionGroupModal").modal("show");
-            } else {
-                selectedRowId(rowId);
-            }
-        });
+    var editMe = function (obj, e) {
 
-        $('#accountsPermssionGrid').on('mouseover', '.rowIndex', function (event) {
-            $(this).children("span").css("display", "none");
+        var id = ko.contextFor(e.target).$parent.entity.id;
 
-            var style = $(this).children(".radio").attr("style");
+        dataservice.getGroupsById(permissionGroup, id);
 
-            style = style.replace("display: none;", "");
+        changeStatus(true);
 
-            $(this).children(".radio").attr("style", style);
-        });
-
-        $('#accountsPermssionGrid').on('mouseleave', '.rowIndex', function (event) {
-            var deleteRadioElement = $(this).children(".radio").children("input");
-
-            var isChecked = deleteRadioElement[0].checked;
-
-            if (!isChecked) {
-                $(this).children("span").removeAttr("style");
-                $(this).children(".radio").css("display", "none");
-            } else {
-                $('#accountsPermssionGrid').find(".radio").children("input:not(:checked)").parent().css("display", "none");
-                $('#accountsPermssionGrid').find(".radio").children("input:not(:checked)").parent().parent().children("span").removeAttr("style");
-            }
-        });
-
-        $(".fixed-action-btn").tooltip({ container: 'body' });
-
-        /* END COLUMN FILTER */
-
-        $('#accountsPermssionGrid').on('click', '.accounts', function (event) {
-            var id = $(event.currentTarget).data("id");
-            router.navigate("accountsGroup/" + id);
-        });
-
-        $('#accountsPermssionGrid').on('click', '.permissionsGroup', function (event) {
-            var id = $(event.currentTarget).data("id");
-            router.navigate("permissionsGroupsPermissions/" + id);
-        });
+        $('#AccountsPermssionGroupModal').modal("show");
     };
 
     function activate() {
-        dataSource.datafields = [{
-            name: 'id', type: 'int'
-        }, {
-            name: 'groupName', type: 'string'
-        }];
+
+        knockoutGrid = new config.KoGridInstanceCreator();
 
         exportColumns = [
-          new config.ExportColumn(config.language.GroupName[config.currentLanguage()], 'groupName', 's')
+            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'groupName', 's')];
 
-        ];
 
-        columns.gridColumns([{
-            text: "Reference",
-            datafield: 'RowNumber',
-            cellsrenderer: function (row) {
-                var id = $('#accountsPermssionGrid').jqxGrid('getrowid', row);
+        knockoutGrid.columnDefs([
+            knockoutGrid.createColumnDefinition('Id', '', 85, '10%', undefined, undefined,
+                      '<div class="btn-group" role="group" style="margin-top: 15px;">' +
+                      '<button type="button" data-bind="click: $parent.$userViewModel.editMe" class="btn btn-xs btn-default taskadmin actiontooltip" rel="tooltip" data-placement="top" title="Edit Group"><i class="fa fa-tasks"></i></button>' +
+                      '<button type="button" data-bind="click: $parent.$userViewModel.addPeremissionGroup" class="btn btn-xs btn-default Projects actiontooltip" rel="tooltip" data-placement="top" title="Edit peremissions"><i class="fa fa-file-o"></i></button></div>'),
 
-                return '<div class="rowIndex smart-form">' +
-                           '<span>' + row + '</span>' +
-                           '<label class="radio grid-checkbox" style="display: none; margin-left: 28px !important; margin-top: 15px !important;">' +
-                               '<input type="radio" name="deletegrid" id="' + id + '" />' +
-                               '<i></i>&nbsp;' +
-                           '</label>' +
-                       '</div>';
-            },
-            filterable: false,
-            width: '79px'
-        }, {
-            text: config.language.LogControls[config.currentLanguage()],
-            datafield: 'LogControls',
-            cellsrenderer: function (row) {
-                var id = $('#accountsPermssionGrid').jqxGrid('getrowid', row);
-                var content = '<div class="btn-group" role="group"><button class="accounts btn btn-xs btn-default" style="margin: 10px;" rel="tooltip" data-placement="top" title="Accounts Group" data-id="' + id + '"><i class="ibrahimicon ibrahimicon-permission"></i></button>' +
-                  '<button class="permissionsGroup btn btn-xs btn-default" style="margin: 10px;" rel="tooltip" data-placement="top" title="Permissions Group" data-id="' + id + '"><i class="ibrahimicon ibrahimicon-view"></i></button></div>';
-                return content;
-            },
-            filterable: false,
-            groupable: false,
-            sortable: false,
-            columnsreorder: false,
-            width: '15%',
-            resizable: false,
-            draggable: false,
-            hidden: false
-        }, {
-            text: config.language.GroupName[config.currentLanguage()],
-            datafield: 'groupName',
-            columntype: 'textbox',
-            filtertype: 'input',
-            width: '80%',
-            hidden: false
-        }]);
+                  knockoutGrid.createColumnDefinition('groupName', config.language.GroupName[config.currentLanguage()], 155, '95%', 'string')
+        ]);
 
-        dataservice.accountsPermissionsGroupsGet(accountsPermissionsGroups);
+        knockoutGrid.gridSelectionChange(function (rowItem, event) {
+            if (event.target.type && (event.target.type.toLowerCase() === 'checkbox')) {
+                if (rowItem.selected()) {
+                    selectedRowId(rowItem.entity.id);
+                    return true;
+                } else {
+                    selectedRowId(undefined);
+                    return true;
+                }
+            } else {
+
+            }
+        });
+
+
+        gridOptions(knockoutGrid.getGridOptions()());
+
+
+        dataservice.getGroups(undefined).done(function (data) {
+
+            knockoutGrid.setInitialData(data);
+
+            $(".loading-data").addClass("hidden");
+        });
     };
 
     var deletePermission = function () {
@@ -239,7 +169,7 @@
             buttons: '[No][Yes]'
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
-                dataservice.accountsPermissionsGroupsDelete(selectedRowId()).complete(function () {
+                dataservice.deleteGroupsById(selectedRowId()).complete(function () {
                     $("#accountsPermssionGrid").jqxGrid('deleterow', selectedRowId());
                 });
                 $.smallBox({
@@ -262,12 +192,11 @@
             }
         });
 
-        
+
     };
 
     var vm = {
         title: config.language.groupsPermissions[config.currentLanguage()],
-        accountsPermissionsGroups: accountsPermissionsGroups,
         attached: attached,
         editPermissionGroup: editPermissionGroup,
         addPermissionGroup: addPermissionGroup,
@@ -276,14 +205,15 @@
         activate: activate,
         language: config.language,
         currentLanguage: config.currentLanguage,
-        dataSource: dataSource,
-        columns: columns,
         add: add,
         exportToExcel: exportToExcel,
         exportToWord: exportToWord,
         exportToPdf: exportToPdf,
         selectedRowId: selectedRowId,
-        deletePermission: deletePermission
+        deletePermission: deletePermission,
+        addPeremissionGroup: addPeremissionGroup,
+        editMe: editMe,
+        gridOptions: gridOptions
     };
 
     return vm;

@@ -58,8 +58,9 @@
                                         <i style="font-size: 1.6em; margin-right: 5px;" class="fa fa-trash-o"></i>
                                     </a>
                                 </div>
-                                <div id="accountsPermssionGrid" data-bind="jqxGridDataSource: dataSource, jqxGridColumns: columns,  jqxGrid: accountsPermissionsGroups">
-                                </div>
+                         
+                                <div class="gridStyle" id="accountsPermssionGrid" data-bind="koGrid: gridOptions()"></div>
+
                                 <div class="modal fade" id="AccountsPermssionGroupModal" tabindex="-1" role="dialog" data-bind="attr: { dir: language.dir[currentLanguage()]}" aria-labelledby="AccountsPermssionGroupModal" aria-hidden="true" style="display: none;">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

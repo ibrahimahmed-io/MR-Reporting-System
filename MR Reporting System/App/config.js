@@ -95,6 +95,12 @@
         title: 'visits Cost ',
         nav: true,
         settings: { reports: true }
+    },{
+        route: 'visitsByAgent',
+        moduleId: 'reports/visitsByAgent',
+        title: 'visits By Agent ',
+        nav: true,
+        settings: { reports: true }
     }, {
         route: 'drugs',
         moduleId: 'daily/drugs',

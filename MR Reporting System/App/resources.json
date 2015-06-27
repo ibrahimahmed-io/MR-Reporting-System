@@ -250,13 +250,13 @@
         "en": "Add Design Discipline",
         "ar": "اضافه مجال تصميم"
     },
-    "dwgNoRequired": {
-        "en": "Please Enter Dgwno",
-        "ar": "برجاء ادخال رقم الوحده"
+    "VisitDate": {
+        "en": "Visit Date",
+        "ar": "تاريخ الزيارة"
     },
-    "dwgNo": {
-        "en": "dwgNo",
-        "ar": "رقم اللوحه"
+    "drugName": {
+        "en": "product Name",
+        "ar": "اسم المنتج"
     },
     "description": {
         "en": "Description",
@@ -3147,9 +3147,9 @@
         "en": "Variance Release",
         "ar": "فرق امر الصرف"
     },
-    "totalRelease": {
-        "en": "Total Release",
-        "ar": "مجموع امر الصرف"
+    "visitTo": {
+        "en": "visit To",
+        "ar": "زيارة الى"
     },
     "drawingNumber": {
         "en": "Drawing Number",
@@ -4131,9 +4131,9 @@
         "en": "multiApproval",
         "ar": "تعددية الاعتماد"
     },
-    "estimationItemTypeName": {
-        "en": "estimation Item Type Name",
-        "ar": "اسم تقييم نوع العنصر"
+    "typeName": {
+        "en": "type Name",
+        "ar": "نوع الزيارة"
     },
     "parentName": {
         "en": "parentName",

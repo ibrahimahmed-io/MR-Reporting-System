@@ -343,8 +343,13 @@ namespace MR_Reporting_System.API
                 SupervisorId = newaccount.SupervisorId,
                 GroupId = newaccount.GroupId,
                 Salary = newaccount.Salary,
+                ContactName = newaccount.ContactName,
                 NoOfVisits = newaccount.NoOfVisits,
-                UserType = "User"
+                UserType = newaccount.UserType,
+                Address = newaccount.Address,
+                Phone = newaccount.Phone,
+                Email = newaccount.Email,
+                Code = newaccount.Code
             };
 
             _agents.Add(accounts);
@@ -363,12 +368,21 @@ namespace MR_Reporting_System.API
 
             if (accounts != null)
             {
+                if (editaccount.PassWord != null)
+                {
+                    accounts.PassWord = PasswordHash.CreateHash(editaccount.PassWord);
+                }
                 accounts.UserName = editaccount.UserName;
                 accounts.SupervisorId = editaccount.SupervisorId;
                 accounts.GroupId = editaccount.GroupId;
                 accounts.Salary = editaccount.Salary;
                 accounts.NoOfVisits = editaccount.NoOfVisits;
-
+                accounts.ContactName = editaccount.ContactName;
+                accounts.Address = editaccount.Address;
+                accounts.Phone = editaccount.Phone;
+                accounts.Email = editaccount.Email;
+                accounts.Code = editaccount.Code;
+                accounts.UserType = editaccount.UserType;
                 _agents.Edit(accounts);
             }
 
@@ -1144,6 +1158,19 @@ namespace MR_Reporting_System.API
 
             return Ok(result);
         }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("VisitsByAgent")]
+        public IHttpActionResult VisitsByAgent(reportDto obj)
+        {
+            var result = new List<DtoVisits>();
+
+            result = _visits.visitsByAgent(obj.agentId, obj.startDate, obj.finishDate);
+
+            return Ok(result);
+        }
+
         [AuthorizeUser]
         [HttpGet]
         [Route("GetDocotorsById")]
@@ -1285,7 +1312,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddGroupPermissionss")]
+        [Route("AddGroupPermissions")]
         public IHttpActionResult AddGroupPermissions(DtoGroupPermissions dtoDocument)
         {
             var documentNew = new GroupPermission
@@ -1302,6 +1329,27 @@ namespace MR_Reporting_System.API
 
             return Ok(documentNew);
         }
+
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditGroupPermissions")]
+        public IHttpActionResult EditGroupPermissions(DtoGroupPermissions dtoDocument)
+        {
+            var obj = _permissionGroup.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.PermissionCode = dtoDocument.PermissionCode;
+                obj.Value = dtoDocument.Value;
+
+            }
+
+            _permissionGroup.Add(obj);
+            _permissionGroup.Save();
+
+            return Ok();
+        }
+
 
         [AuthorizeUser]
         [HttpGet]
@@ -1353,7 +1401,21 @@ namespace MR_Reporting_System.API
 
             return Ok(documentNew);
         }
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditGroups")]
+        public IHttpActionResult EditGroups(DtoGroups dtoDocument)
+        {
+            var obj = _groups.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.GroupName = dtoDocument.GroupName;
+                _groups.Edit(obj);
+            }
+            _groups.Save();
 
+            return Ok();
+        }
         [AuthorizeUser]
         [HttpGet]
         [Route("GetHospitals")]

@@ -255,6 +255,10 @@
         return $.post(config.remoteServerName + "/VisitsCost", observableObj);
     };
 
+    var visitsByAgent = function (observableObj) {
+        return $.post(config.remoteServerName + "/VisitsByAgent", observableObj);
+    };
+
     var getDistributers = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetDistributers").done(function (data) {
             if (documnetObservable) {
@@ -281,6 +285,33 @@
         return $.getJSON(config.remoteServerName + "/DeleteDistributersById", { id: id });
     };
 
+
+    var getGroups = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetGroups").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var getGroupsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetGroupsById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var permissionsGroupsEdit = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditGroups", documnetObservable);
+    };
+
+    var addGroups = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddGroups", documnetObservable);
+    };
+
+    var deleteGroupsById = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteGroupsById", { id: id });
+    };
+
     var login = function (userName, userPassword) {
         var user = {
             userName: userName,
@@ -297,6 +328,13 @@
 
     var dataservice = {
         visitsCost: visitsCost,
+        visitsByAgent: visitsByAgent,
+
+        getGroups: getGroups,
+        getGroupsById: getGroupsById,
+        permissionsGroupsEdit: permissionsGroupsEdit,
+        addGroups: addGroups,
+        deleteGroupsById: deleteGroupsById,
 
         getDistributers: getDistributers,
         getDistributersById: getDistributersById,

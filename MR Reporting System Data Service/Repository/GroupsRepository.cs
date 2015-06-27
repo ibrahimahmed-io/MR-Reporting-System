@@ -16,6 +16,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Groups
                         select new DtoGroups
                         {
+                            Id = q.Id,
                             GroupName = q.GroupName,
                         }).ToList();
             }
@@ -24,6 +25,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from q in Context.Groups
                         select new DtoGroups
                         {
+                            Id = q.Id,
                             GroupName = q.GroupName,
                         }).ToList();
             } return list;

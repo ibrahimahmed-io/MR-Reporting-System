@@ -24,7 +24,7 @@
     var exportToExcel = function () {
         var exportData = ko.toJS(knockoutGrid.getFilteredData()());
 
-        config.exportJson(exportData, exportColumns, 'excel', 'visits Cost');
+        config.exportJson(exportData, exportColumns, 'excel', 'visits By Agent');
     };
 
     var exportToWord = function () {
@@ -40,26 +40,19 @@
     };
 
     var showDetail = function (obj, event) {
-        //var isValid = $('#netSalaryForm').valid();
-        //if (isValid) {
-        dataservice.visitsCost(visitDto()).done(function (data) {
+ 
+        dataservice.visitsByAgent(visitDto()).done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
             $(".loading-data").addClass("hidden");
         });
-            //showSalaryStatus(true);
-        //}
-        //else {
-        //    $('#netSalaryForm').validate();
-        //}
-
-
+        
     };
 
     function compositionComplete() {
         $(".fixed-action-btn").tooltip({ container: 'body' });
-     
+      
     };
 
     function activate() {
@@ -71,28 +64,30 @@
         knockoutGrid = new config.KoGridInstanceCreator();
 
         exportColumns = [
-            new config.ExportColumn(config.language.UserName[config.currentLanguage()], 'agentName', 's'),
-            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'EstimateVisits', 's'),
-            new config.ExportColumn(config.language.employeeCode[config.currentLanguage()], 'EstimateVisits', 'n'),
-            new config.ExportColumn(config.language.Supervisor[config.currentLanguage()], 'actualCost', 's'),
-            new config.ExportColumn(config.language.Position[config.currentLanguage()], 'estimateCost', 's')];
-
-
+            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'agentName', 's'),
+            new config.ExportColumn(config.language.visitTo[config.currentLanguage()], 'VisitToName', 's'),
+            new config.ExportColumn(config.language.VisitDate[config.currentLanguage()], 'VisitDate', 'n'),
+            new config.ExportColumn(config.language.description[config.currentLanguage()], 'Description', 's'),
+            new config.ExportColumn(config.language.drugName[config.currentLanguage()], 'DrugsName', 's'),
+            new config.ExportColumn(config.language.status[config.currentLanguage()], 'status', 's')];
+         
         knockoutGrid.columnDefs([
-                  knockoutGrid.createColumnDefinition('agentName', config.language.ContactName[config.currentLanguage()], 155, '30%', 'string'),
-                  knockoutGrid.createColumnDefinition('actualCost', config.language.Position[config.currentLanguage()], 200, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('EstimateVisits', config.language.employeeCode[config.currentLanguage()], 200, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('actualCost', config.language.Supervisor[config.currentLanguage()], 150, '25%', 'string'),
-                  knockoutGrid.createColumnDefinition('estimateCost', config.language.salaryValue[config.currentLanguage()], 50, '25%', 'int')
+                  knockoutGrid.createColumnDefinition('agentName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('typeName', config.language.typeName[config.currentLanguage()], 200, '5%', 'string'),
+                  knockoutGrid.createColumnDefinition('visitToName', config.language.visitTo[config.currentLanguage()], 200, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('visitDate', config.language.VisitDate[config.currentLanguage()], 150, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('description', config.language.description[config.currentLanguage()], 50, '10%', 'int'),
+                  knockoutGrid.createColumnDefinition('drugsName', config.language.drugName[config.currentLanguage()], 200, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('status', config.language.status[config.currentLanguage()], 150, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('notes', config.language.notes[config.currentLanguage()], 50, '10%', 'int')
         ]);
 
         knockoutGrid.displaySelectionCheckbox(false);
 
-        
         gridOptions(knockoutGrid.getGridOptions()());
 
         if (visitDto().startDate) {
-            dataservice.visitsCost(visitDto()).done(function (data) {
+            dataservice.visitsByAgent(visitDto()).done(function (data) {
 
                 knockoutGrid.setInitialData(data);
 
@@ -121,7 +116,7 @@
     //};
 
     var vm = {
-        title: 'Agents',
+        title: 'Visits By Agent',
         activate: activate,
         gridOptions: gridOptions,
         compositionComplete: compositionComplete,

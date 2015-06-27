@@ -112,9 +112,9 @@ namespace MR_Reporting_System_Data_Service.Repository
                         select new DtoVisitCost
                         {
                             actualVisits = Context.Visits.Where(x => x.AgentId == AgentId).ToList().Count,
-                            EstimateVisits = agent.NoOfVisits,
-                            actualCost = ((Context.Visits.Where(x => x.AgentId == AgentId).ToList().Count) / agent.Salary ?? 0),
-                            estimateCost = (double)((agent.NoOfVisits) / (agent.Salary)),
+                            EstimateVisits = agent.NoOfVisits ?? 0,
+                            actualCost = ((Context.Visits.Where(x => x.AgentId == AgentId && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count) / agent.Salary ?? 0),
+                            estimateCost = (double)((agent.Salary) / (agent.NoOfVisits ?? 1)),
                             agentName = agent.ContactName
                         }).ToList();
             }
@@ -124,9 +124,9 @@ namespace MR_Reporting_System_Data_Service.Repository
                         select new DtoVisitCost
                         {
                             actualVisits = Context.Visits.Where(x => x.AgentId == agent.id).ToList().Count,
-                            EstimateVisits = agent.NoOfVisits,
-                            actualCost = ((Context.Visits.Where(x => x.AgentId == agent.id).ToList().Count) / agent.Salary ?? 0),
-                            estimateCost = (double)((agent.NoOfVisits) / (agent.Salary)),
+                            EstimateVisits = agent.NoOfVisits ?? 0,
+                            actualCost = ((agent.Salary ?? 0) / (Context.Visits.Where(x => x.AgentId == agent.id && x.VisitDate >= stratDate && x.VisitDate <= finishDate).ToList().Count)),
+                            estimateCost = (double)((agent.Salary) / (agent.NoOfVisits ?? 1)),
                             agentName = agent.ContactName
                         }).ToList();
             }
@@ -134,8 +134,71 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list;
         }
 
+        public List<DtoVisits> visitsByAgent(int? AgentId, DateTime? stratDate, DateTime? finishDate)
+        {
+            List<DtoVisits> list;
+
+
+            if (AgentId != null)
+            {
+                list = (from visit in Context.Visits.Where(x => x.AgentId == AgentId && x.VisitDate >= stratDate && x.VisitDate <= finishDate)
+                        select new DtoVisits
+                        {
+                            AgentName = visit.Agent.ContactName,
+                            TypeName = visit.DefaultList.Title,
+                            VisitTo = visit.VisitTo,
+                            TypeId = visit.TypeId,
+                            CreationDate = visit.CreationDate,
+                            Notes = visit.Notes,
+                            VisitDate = visit.VisitDate,
+                            Duration = visit.Duration,
+                            Description = visit.Description,
+                            DrugsName = visit.Drug.Name,
+                            status = (bool)visit.IsMorning ? "Morning" : "Night"
+                        }).ToList();
+            }
+            else
+            {
+                list = (from visit in Context.Visits.Where(x => x.VisitDate >= stratDate && x.VisitDate <= finishDate)
+                        select new DtoVisits
+                        {
+                            AgentName = visit.Agent.ContactName,
+                            TypeName = visit.DefaultList.Title,
+                            VisitTo = visit.VisitTo,
+                            TypeId = visit.TypeId,
+                            CreationDate = visit.CreationDate,
+                            Notes = visit.Notes,
+                            VisitDate = visit.VisitDate,
+                            Duration = visit.Duration,
+                            Description = visit.Description,
+                            DrugsName = visit.Drug.Name,
+                            status = (bool)visit.IsMorning ? "Morning" : "Night"
+                        }).ToList();
+            }
+            foreach (DtoVisits item in list)
+            {
+                var obj = Context.DefaultLists.FirstOrDefault(x => x.Id == item.TypeId).Action;
+
+                switch (obj)
+                {
+                    case 1:
+                        item.VisitToName = Context.Docotors.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                        break;
+                    case 2:
+                        item.VisitToName = Context.Pharmacies.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                        break;
+                    case 3:
+                        item.VisitToName = Context.Hospitals.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                        break;
+                    //case 4:
+                    //    item.VisitToName = Context.Docotors.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                    //    break;
+                }
+            }
+            return list;
+        }
 
     }
-   
+
 }
 

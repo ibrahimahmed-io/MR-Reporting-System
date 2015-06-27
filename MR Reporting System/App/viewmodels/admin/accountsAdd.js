@@ -104,11 +104,11 @@
                 },
                 userName: {
                     required: true,
-                    minlength: 6
+                    minlength: 4
                 },
-                userPassword: {
+                NoOfVisits: {
                     required: true,
-                    minlength: 6
+                    digits: true
                 },
                 salary: {
                     required: true,
@@ -127,11 +127,12 @@
                     required: 'Please enter a User Name',
                     minlength: 'user name '
                 },
-                userPassword: {
-                    required: 'Please Enter a valid User Name'
+                NoOfVisits: {
+                    required: 'Please Enter a valid User Name',
+                    digits: 'Only digits accepted'
                 },
                 salary: {
-                    required: 'Please enter a Hour  Per Day',
+                    required: 'Please enter a salary  Per Month',
                     digits: 'Only digits accepted'
                 }
             },

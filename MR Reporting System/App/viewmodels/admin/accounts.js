@@ -202,13 +202,13 @@
                         router.navigate("accountsAdd/" + rowItem.entity.id);
                     }
                 }
-                //else if (event.target.parentElement.type) {
-                //    if (event.target.parentElement.type !== 'button') {
-                //        router.navigate("accountsAdd/" + rowItem.entity.id);
-                //    }
-                //} else {
-                //    router.navigate("accountsAdd/" + rowItem.entity.id);
-                //}
+                else if (event.target.parentElement.type) {
+                    if (event.target.parentElement.type !== 'button') {
+                        router.navigate("accountsAdd/" + rowItem.entity.id);
+                    }
+                } else {
+                    router.navigate("accountsAdd/" + rowItem.entity.id);
+                }
             }
         });
 
