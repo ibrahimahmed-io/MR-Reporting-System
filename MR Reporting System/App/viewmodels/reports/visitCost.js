@@ -71,19 +71,19 @@
         knockoutGrid = new config.KoGridInstanceCreator();
 
         exportColumns = [
-            new config.ExportColumn(config.language.UserName[config.currentLanguage()], 'agentName', 's'),
-            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'EstimateVisits', 's'),
-            new config.ExportColumn(config.language.employeeCode[config.currentLanguage()], 'EstimateVisits', 'n'),
-            new config.ExportColumn(config.language.Supervisor[config.currentLanguage()], 'actualCost', 's'),
-            new config.ExportColumn(config.language.Position[config.currentLanguage()], 'estimateCost', 's')];
+            new config.ExportColumn(config.language.ContactName[config.currentLanguage()], 'agentName', 's'),
+            new config.ExportColumn(config.language.actualVisits[config.currentLanguage()], 'actualVisits', 's'),
+            new config.ExportColumn(config.language.actualCost[config.currentLanguage()], 'actualCost', 'n'),
+            new config.ExportColumn(config.language.estimateVisits[config.currentLanguage()], 'estimateVisits', 's'),
+            new config.ExportColumn(config.language.estimateCost[config.currentLanguage()], 'estimateCost', 's')];
 
 
         knockoutGrid.columnDefs([
-                  knockoutGrid.createColumnDefinition('agentName', config.language.ContactName[config.currentLanguage()], 155, '30%', 'string'),
-                  knockoutGrid.createColumnDefinition('actualCost', config.language.Position[config.currentLanguage()], 200, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('EstimateVisits', config.language.employeeCode[config.currentLanguage()], 200, '15%', 'string'),
-                  knockoutGrid.createColumnDefinition('actualCost', config.language.Supervisor[config.currentLanguage()], 150, '25%', 'string'),
-                  knockoutGrid.createColumnDefinition('estimateCost', config.language.salaryValue[config.currentLanguage()], 50, '25%', 'int')
+                  knockoutGrid.createColumnDefinition('agentName', config.language.ContactName[config.currentLanguage()], 155, '25%', 'string'),
+                  knockoutGrid.createColumnDefinition('estimateVisits', config.language.estimateVisits[config.currentLanguage()], 200, '15%', 'string'),
+                  knockoutGrid.createColumnDefinition('actualVisits', config.language.actualVisits[config.currentLanguage()], 150, '20%', 'string'),
+                  knockoutGrid.createColumnDefinition('estimateCost', config.language.estimateCost[config.currentLanguage()], 50, '25%', 'int'),
+                  knockoutGrid.createColumnDefinition('actualCost', config.language.actualCost[config.currentLanguage()], 200, '15%', 'string'),
         ]);
 
         knockoutGrid.displaySelectionCheckbox(false);

@@ -3603,9 +3603,9 @@
         "en": "Actual Cost",
         "ar": "التكاليف الفعلية "
     },
-    "paymentTotal": {
-        "en": "Payment Requisitions Total",
-        "ar": "إجمالي المستخلصات "
+    "actualVisits": {
+        "en": "actual Visits",
+        "ar": "عدد الفعلى "
     },
     "budgetComplete": {
         "en": "Budgeted At Complete",
@@ -4139,13 +4139,13 @@
         "en": "parentName",
         "ar": "الاب"
     },
-    "originalEstimatedTime": {
-        "en": "Original Estimated Time",
-        "ar": "تقييم الوقت الاصلي"
+    "estimateVisits": {
+        "en": "estimate Visits",
+        "ar": "عدد الزيارات المتوقع"
     },
-    "estimatedTime": {
-        "en": "Estimated Time",
-        "ar": "تقييم الوقت "
+    "estimateCost": {
+        "en": "estimate Cost",
+        "ar": "التكلفة المتوقعة "
     },
     "taskTree": {
         "en": " Task Tree",

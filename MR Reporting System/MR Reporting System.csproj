@@ -7735,6 +7735,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App\viewmodels\summaries\" />
+    <Folder Include="App\views\summaries\" />
     <Folder Include="node_modules\gulp-concat\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-header\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-jshint\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
