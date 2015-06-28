@@ -92,13 +92,19 @@
     }, {
         route: 'visitCost',
         moduleId: 'reports/visitCost',
-        title: 'visits Cost ',
+        title: 'Visits Cost ',
         nav: true,
         settings: { reports: true }
     }, {
         route: 'visitsByAgent',
         moduleId: 'reports/visitsByAgent',
-        title: 'visits By Agent ',
+        title: 'Visits By Agent ',
+        nav: true,
+        settings: { reports: true }
+    }, {
+        route: 'visitsByArea',
+        moduleId: 'reports/visitsByArea',
+        title: 'Visits By Area ',
         nav: true,
         settings: { reports: true }
     }, {

@@ -3619,9 +3619,9 @@
         "en": "%Complete",
         "ar": "نسبة الإنجاز "
     },
-    "budgetForPeroid": {
-        "en": "Budget This Period",
-        "ar": "ميزانية عن الفترة "
+    "visitsArea": {
+        "en": "Visits In Area",
+        "ar": "زيارات على المناطق "
     },
     "viewReport": {
         "en": "View Report",
