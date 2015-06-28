@@ -1195,7 +1195,7 @@ namespace MR_Reporting_System.API
         }
 
         [AuthorizeUser]
-        [HttpGet]
+        [HttpPost]
         [Route("VisitsByArea")]
         public IHttpActionResult VisitsByArea(reportDto obj)
         {

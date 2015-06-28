@@ -298,7 +298,9 @@
     var visitsByAgent = function (observableObj) {
         return $.post(config.remoteServerName + "/VisitsByAgent", observableObj);
     };
-
+    var visitsByArea = function (observableObj) {
+     return $.post(config.remoteServerName + "/VisitsByArea", observableObj);
+    };
     var getDistributers = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetDistributers").done(function (data) {
             if (documnetObservable) {
@@ -380,6 +382,7 @@
     var dataservice = {
         visitsCost: visitsCost,
         visitsByAgent: visitsByAgent,
+        visitsByArea: visitsByArea,
 
         getAlertVisits: getAlertVisits,
         getAlertVisitsDetail: getAlertVisitsDetail,
