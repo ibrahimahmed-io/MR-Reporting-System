@@ -1,0 +1,78 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            ×
+        </button>
+        <h4 class="modal-title" id="visitsAddEditLabel" data-bind="text: visitsAddEditLabel"></h4>
+    </div>
+    <div class="modal-body" data-bind="with: visitObject">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="agents" data-bind="text: $parent.language.agent[$parent.currentLanguage()]"></label>
+                    <select id="agents" style="width: 100%" data-bind="options: $parent.agents, optionsText: 'contactName', optionsValue: 'id', value: agentId, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="drugs" data-bind="text: $parent.language.drugs[$parent.currentLanguage()]"></label>
+                    <select id="drugs" style="width: 100%" data-bind="options: $parent.drugs, optionsText: 'name', optionsValue: 'id', value: drugsId, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="types" data-bind="text: $parent.language.type[$parent.currentLanguage()]"></label>
+                    <select id="types" style="width: 100%" data-bind="options: $parent.types, optionsText: 'title', optionsValue: 'id', value: typeId, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="visitees" data-bind="text: $parent.language.visitee[$parent.currentLanguage()]"></label>
+                    <select id="visitees" style="width: 100%" data-bind="options: $parent.visitees, optionsText: 'name', optionsValue: 'id', value: visitTo, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="visitDate" data-bind="text: $parent.language.visitDate[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="visitDate" data-bind="datepicker: visitDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="duration" data-bind="text: $parent.language.duration[$parent.currentLanguage()]"></label>
+                    <div class="bootstrap-timepicker">
+                        <input type="text" class="form-control" id="duration" data-bind="timePicker: duration, timePickerOptions: { minuteStep: 1, showSeconds: false, showMeridian: false }">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="description" data-bind="text: $parent.language.description[$parent.currentLanguage()]"></label>
+                    <input type="text" class="form-control" id="description" data-bind="value: description, attr: { placeholder: $parent.language.description[$parent.currentLanguage()] }">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="isMorning" data-bind="text: $parent.language.isMorning[$parent.currentLanguage()]"></label>
+                    <div>
+                        <input type="checkbox" class="form-control" id="isMorning" data-bind="bootstrapSwitch: isMorning, bootstrapSwitchOptions: { onText: 'Yes', offText: 'No' }">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- ko ifnot: isEdit -->
+        <button type="button" data-loading-text="Saving..." class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: addVisit"></button>
+        <!-- /ko -->
+        <!-- ko if: isEdit -->
+        <button type="button" data-loading-text="Saving..." class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: editVisit"></button>
+        <!-- /ko -->
+    </div>
+</div>

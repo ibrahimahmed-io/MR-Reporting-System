@@ -15,6 +15,10 @@
         return $.getJSON(config.remoteServerName + "/GetDefaultListByListType", { listType: 'medicenType' });
     }
 
+    var getTypesForVisits = function () {
+        return $.getJSON(config.remoteServerName + "/GetDefaultListByListType", { listType: 'locationType' });
+    }
+
     var editAccount = function (editAccountObservable) {
         return $.post(config.remoteServerName + "/EditAccount", editAccountObservable);
     };
@@ -123,6 +127,7 @@
         return $.getJSON(config.remoteServerName + "/DeleteAgentDrugById", { id: id });
     };
 
+    //#region Drugs API
     var getDrugs = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetDrugs").done(function (data) {
             if (documnetObservable) {
@@ -146,6 +151,11 @@
     var deleteDrugsById = function (id) {
         return $.getJSON(config.remoteServerName + "/DeleteDrugsById", { id: id });
     };
+
+    var editDrugs = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditDrugs", documnetObservable);
+    };
+    //#endregion Drugs API
 
     var getDocotors = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetDocotors").done(function (data) {
@@ -228,7 +238,7 @@
     var getHospitals = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetHospitals").done(function (data) {
             if (documnetObservable) {
-                documnetObservable.data(data);
+                documnetObservable(data);
             }
         });
     };
@@ -250,6 +260,36 @@
     var deleteHospitals = function (id) {
         return $.getJSON(config.remoteServerName + "/DeleteHospitalsById", { id: id });
     };
+
+    //#region Visits API
+    var getVisits = function (documnetObservable) {
+        return $.getJSON(config.remoteServerName + "/GetVisits").done(function (data) {
+            if (documnetObservable) {
+                documnetObservable.data(data);
+            }
+        });
+    };
+
+    var getVisitsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetVisitsById", { id: id }).done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var editVisits = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditVisits", documnetObservable);
+    };
+
+    var addVisits = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddVisits", documnetObservable);
+    };
+
+    var deleteVisits = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteVisitsById", { id: id });
+    };
+    //#endregion Visits API
 
     var visitsCost = function (observableObj) {
         return $.post(config.remoteServerName + "/VisitsCost", observableObj);
@@ -340,6 +380,7 @@
     var dataservice = {
         visitsCost: visitsCost,
         visitsByAgent: visitsByAgent,
+
         getAlertVisits: getAlertVisits,
         getAlertVisitsDetail: getAlertVisitsDetail,
 
@@ -372,40 +413,62 @@
         editArea: editArea,
         addArea: addArea,
         deleteArea: deleteArea,
+
         getAccounts: getAccounts,
+
         checkTokenValidity: checkTokenValidity,
+
         login: login,
+
         addAccount: addAccount,
         editAccount: editAccount,
         getAccountForedit: getAccountForedit,
+
         getGroup: getGroup,
+
         getAccountsDefaultListType: getAccountsDefaultListType,
         getAccountsDefaultList: getAccountsDefaultList,
         editDefaultlist: editDefaultlist,
         addDefaultlist: addDefaultlist,
         deleteDefaultlist: deleteDefaultlist,
+
         getAgantarea: getAgantarea,
         getAgantareaById: getAgantareaById,
         editAgantarea: editAgantarea,
         addAgantarea: addAgantarea,
         deleteAgantarea: deleteAgantarea,
+
         getAgentDrugs: getAgentDrugs,
         getAgentDrugById: getAgentDrugById,
         editAgentdDrug: editAgentdDrug,
         addAgentDrug: addAgentDrug,
         deleteAgentDrug: deleteAgentDrug,
+
         getDocotors: getDocotors,
         getDocotorsById: getDocotorsById,
         editDocotors: editDocotors,
         addDocotors: addDocotors,
         deleteDocotors: deleteDocotors,
+
+        //#region Drugs API
         getDrugs: getDrugs,
         getDrugsById: getDrugsById,
         addDrugs: addDrugs,
+        editDrugs: editDrugs,
         deleteDrugsById: deleteDrugsById,
+        //#endregion
 
         getCompanies: getCompanies,
-        getSections: getSections
+        getSections: getSections,
+
+        //#region Visits API
+        getVisits: getVisits,
+        getVisitsById: getVisitsById,
+        editVisits: editVisits,
+        addVisits: addVisits,
+        deleteVisits: deleteVisits,
+        getTypesForVisits: getTypesForVisits
+        //#endregion
     };
 
     return dataservice;

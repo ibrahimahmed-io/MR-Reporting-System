@@ -11,47 +11,33 @@ namespace MR_Reporting_System_Data_Service.Repository
     {
         public List<DtoVisits> SelectAll(string lang)
         {
-            List<DtoVisits> list;
-            if (lang == "en")
-            {
-                list = (from q in Context.Visits
-                        select new DtoVisits
-                        {
-                            Id = q.Id,
-                            AgentId = q.AgentId,
-                            DrugsId = q.DrugsId,
-                            TypeId = q.TypeId,
-                            VisitTo = q.VisitTo,
-                            VisitDate = q.VisitDate,
-                            Duration = q.Duration,
-                            Description = q.Description,
-                            IsMorning = q.IsMorning,
-                            Notes = q.Notes,
-                            LastEditBy = q.LastEditBy,
-                            LastEditDate = q.LastEditDate,
-                            CreationDate = q.CreationDate
-                        }).ToList();
-            }
-            else
-            {
-                list = (from q in Context.Visits
-                        select new DtoVisits
-                        {
-                            Id = q.Id,
-                            AgentId = q.AgentId,
-                            DrugsId = q.DrugsId,
-                            TypeId = q.TypeId,
-                            VisitTo = q.VisitTo,
-                            VisitDate = q.VisitDate,
-                            Duration = q.Duration,
-                            Description = q.Description,
-                            IsMorning = q.IsMorning,
-                            Notes = q.Notes,
-                            LastEditBy = q.LastEditBy,
-                            LastEditDate = q.LastEditDate,
-                            CreationDate = q.CreationDate
-                        }).ToList();
-            } return list;
+            var list = (from q in
+                Context.Visits.Include("Agent.ContactName").Include("Drug.Name").Include("DefaultList.Title")
+                let type = q.DefaultList.Action
+                let visitee =
+                    (type == 1)
+                        ? Context.Docotors.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
+                        : (type == 2)
+                            ? Context.Pharmacies.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
+                            : Context.Hospitals.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
+                select new DtoVisits
+                {
+                    Id = q.Id,
+                    AgentName = q.Agent.ContactName,
+                    DrugsName = q.Drug.Name,
+                    TypeName = q.DefaultList.Title,
+                    VisitToName = visitee,
+                    VisitDate = q.VisitDate,
+                    Duration = q.Duration,
+                    Description = q.Description,
+                    IsMorning = q.IsMorning,
+                    Notes = q.Notes,
+                    LastEditBy = q.LastEditBy,
+                    LastEditDate = q.LastEditDate,
+                    CreationDate = q.CreationDate
+                }).ToList();
+
+            return list;
         }
 
         public DtoVisits SelectById(int id, string lang)
@@ -214,7 +200,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-7)).ToList();
 
             var list2Week = (from agent in Context.Visits
-                             
+
                              select new DtoVisits
                              {
                                  Id = agent.Id,
@@ -222,7 +208,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                              }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-14)).ToList();
 
             var listMoreWeek = (from agent in Context.Visits
-                                 
+
                                 select new DtoVisits
                                 {
                                     Id = agent.Id,
@@ -298,8 +284,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                     break;
             }
 
-           
-          
+
+
 
             return list;
         }

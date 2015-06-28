@@ -982,7 +982,7 @@
         "en": "Closed By",
         "ar": "تم الإغلاق بواسطة"
     },
-    "lastEdit": {
+    "lastEditBy": {
         "en": "Last Edit By",
         "ar": "اخر تعيل بواسطة"
     },
@@ -4524,11 +4524,47 @@
         "ar": "حذف بواسطة"
     },
     "section": {
-        "en": "ٍSection",
+        "en": "Section",
         "ar": "قسم"
     },
     "drugs": {
-        "en": "ٍDrugs",
+        "en": "Drugs",
         "ar": "الادوية"
+    },
+    "visits": {
+        "en": "Visits",
+        "ar": "الزيارات"
+    },
+    "daily": {
+        "en": "Daily",
+        "ar": "يومي"
+    },
+    "agent": {
+        "en": "Agent",
+        "ar": "المندوب"
+    },
+    "drug": {
+        "en": "Drug",
+        "ar": "الدواء"
+    },
+    "visitee": {
+        "en": "Visitee",
+        "ar": "صاحب الزيارة"
+    },
+    "visitDate": {
+        "en": "Visit Date",
+        "ar": "تاريخ الزيارة"
+    },
+    "isMorning": {
+        "en": "Is Morning",
+        "ar": "صباحي"
+    },
+    "duration": {
+        "en": "Duration",
+        "ar": "المدة"
+    },
+    "creationDate": {
+        "en": "Creation Date",
+        "ar": "تاريخ الانشاء"
     }
 }

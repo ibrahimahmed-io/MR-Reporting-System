@@ -1951,7 +1951,7 @@ hr {
     }
 
 .fixed-ribbon #content {
-    padding-top: 5px;
+    padding-top: 50px;
 }
 
 .dash-nav {
@@ -2833,10 +2833,6 @@ li#myToolbar_settings.jqx-fill-state-hover {
     -webkit-box-shadow: 0 0 0 9px #eee;
     -ms-box-shadow: 0 0 0 9px #eee;
     box-shadow: 0 0 0 9px #eee;
-}
-
-#ribbon {
-    display: none !important;
 }
 
 .inbox-download {
@@ -3996,4 +3992,8 @@ h1, h2, h3, h4, h5, h6, span, label, div, article, header, nav, aside, section, 
     font-weight: bold;
     color: #FFF;
     font-size: 15px;
+}
+
+.disabled {
+    color: #FFF;
 }

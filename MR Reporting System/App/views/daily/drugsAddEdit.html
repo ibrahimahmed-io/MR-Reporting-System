@@ -59,10 +59,10 @@
     </div>
     <div class="modal-footer">
         <!-- ko ifnot: isEdit -->
-            <button type="button" class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: addDrug"></button>
+            <button type="button" data-loading-text="Saving..." class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: addDrug"></button>
         <!-- /ko -->
         <!-- ko if: isEdit -->
-            <button type="button" class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: editDrug"></button>
+            <button type="button" data-loading-text="Saving..." class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: editDrug"></button>
         <!-- /ko -->
     </div>
 </div>

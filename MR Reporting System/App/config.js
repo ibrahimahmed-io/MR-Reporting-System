@@ -102,7 +102,7 @@
         nav: true,
         settings: { reports: true }
     }, {
-        route: 'drugs',
+        route: 'Drugs',
         moduleId: 'daily/drugs',
         title: 'Drugs ',
         nav: true,
@@ -111,6 +111,18 @@
         route: 'DrugsAddEdit/(:id)',
         moduleId: 'daily/drugsAddEdit',
         title: 'Drugs ',
+        nav: false,
+        settings: { daily: true }
+    }, {
+        route: 'Visits',
+        moduleId: 'daily/visits',
+        title: 'Visits ',
+        nav: true,
+        settings: { daily: true }
+    }, {
+        route: 'VisitsAddEdit/(:id)',
+        moduleId: 'daily/visitsAddEdit',
+        title: 'Visits ',
         nav: false,
         settings: { daily: true }
     }];
@@ -902,6 +914,7 @@
 
             // Adding component options
             var options = allBindingsAccessor().bootstrapSwitchOptions || {};
+
             for (var property in options) {
                 if (options.hasOwnProperty(property)) {
                     $(element).bootstrapSwitch(property, ko.utils.unwrapObservable(options[property]));
@@ -913,7 +926,7 @@
                 $(element).bootstrapSwitch("destroy");
             });
 
-        },
+        }
         //update the control when the view model changes
         this.update = function (element, valueAccessor, allBindingsAccessor) {
             var value = ko.utils.unwrapObservable(valueAccessor());
@@ -929,6 +942,65 @@
             $(element).bootstrapSwitch("state", value);
         }
     };
+
+    ko.bindingHandlers.timePicker = new function () {
+        this.init = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var options = allBindingsAccessor().timePickerOptions || {};
+
+            var tpicker = $(element).timepicker(options);
+
+            tpicker.on('changeTime.timepicker', function(e) {
+
+                var value = valueAccessor();
+
+                if (!value) {
+                    throw new Error('timeValue binding observable not found');
+                }
+
+                var date = ko.unwrap(value);
+
+                var mdate = moment(date || new Date());
+
+                var hours24;
+
+                if (e.time.meridian === "AM") {
+                    if (e.time.hours === 12)
+                        hours24 = 0;
+                    else
+                        hours24 = e.time.hours;
+                } else {
+                    if (e.time.hours === 12) {
+                        hours24 = 12;
+                    } else {
+                        hours24 = e.time.hours + 12;
+                    }
+                }
+
+                mdate.hours(hours24);
+
+                mdate.minutes(e.time.minutes);
+
+                $(element).data('updating', true);
+
+                value(mdate.toDate());
+
+                $(element).data('updating', false);
+            });
+        }
+
+        this.update = function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+            if ($(element).data('updating')) {
+                return;
+            }
+
+            var date = ko.unwrap(valueAccessor());
+
+            if (date) {
+                var time = moment(date).format("hh:mm a");
+                $(element).timepicker('setTime', time);
+            }
+        }
+    }
 
     var remoteServerName = 'api/MrReporting';
 

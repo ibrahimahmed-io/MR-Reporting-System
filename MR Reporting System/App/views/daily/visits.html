@@ -1,0 +1,67 @@
+﻿<div id="content">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li data-bind="text: language.daily[currentLanguage()]"></li>
+            <li data-bind="text: language.visits[currentLanguage()]"></li>
+        </ol>
+        <!-- end breadcrumb -->
+
+    </div>
+    <!-- END RIBBON -->
+
+    <div class="fixed-action-btn" data-toggle="tooltip" data-placement="left" data-bind="attr: { title: language.addNew[currentLanguage()] }, click: add">
+        <a class="btn btn-floating btn-large waves-effect red">
+            <i class="mdi-content-add"></i>
+        </a>
+    </div>
+
+    <section id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- SINGLE GRID -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" data-widget-sortable="false" id="visits-grid">
+                    <header>
+                        <h2 data-bind="text: language.visits[currentLanguage()]"></h2>
+                        <div class="widget-toolbar">
+                            <a class="button-icon" id="exportDropdownMenu" data-toggle="dropdown">
+                                <i class="fa fa-gear"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right" style="right: 15px;" role="menu" aria-labelledby="exportDropdownMenu">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" data-bind="click: exportToExcel" href="javascript:void(0);">Excel</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" data-bind="click: exportToWord" href="javascript:void(0);">Word</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" data-bind="click: exportToPdf" href="javascript:void(0);">PDF</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </header>
+                    <div>
+                        <div class="widget-body" data-bind="css: { rtlTable: language.rtl[currentLanguage()] }" style="overflow-x: hidden">
+                            <div data-bind="style: { visibility: !!(selectedRowId()) ? 'visible' : 'hidden' }">
+                                <a href="javascript:void(0);" class="pull-right" data-bind="click: deleteVisit">
+                                    <i style="font-size: 1.6em; margin-right: 5px;" class="fa fa-trash-o"></i>
+                                </a>
+                            </div>
+
+                            <div class="gridStyle" id="visits" data-bind="koGrid: visitsGridOptions()"></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <div class="modal" id="visitsAddEdit" tabindex="-1" role="dialog" aria-labelledby="visitsAddEditLabel">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog">
+            <!-- ko compose: { model: 'viewmodels/daily/visitsAddEdit', activationData: visitId() } --><!--/ko-->
+        </div>
+    </div>
+</div>

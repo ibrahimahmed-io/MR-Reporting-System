@@ -131,6 +131,8 @@
     <Content Include="App\viewmodels\admin\distributer.js" />
     <Content Include="App\viewmodels\admin\permissionsGroups.js" />
     <Content Include="App\viewmodels\admin\permissionsGroupsPermissions.js" />
+    <Content Include="App\viewmodels\daily\visits.js" />
+    <Content Include="App\viewmodels\daily\visitsAddEdit.js" />
     <Content Include="App\viewmodels\daily\drugsAddEdit.js" />
     <Content Include="App\viewmodels\daily\pharmacyAdd.js" />
     <Content Include="App\viewmodels\daily\pharmacies.js" />
@@ -154,7 +156,9 @@
     <Content Include="App\views\admin\distributer.html" />
     <Content Include="App\views\admin\permissionsGroups.html" />
     <Content Include="App\views\admin\permissionsGroupsPermissions.html" />
+    <Content Include="App\views\daily\visits.html" />
     <Content Include="App\views\daily\drugs.html" />
+    <Content Include="App\views\daily\visitsAddEdit.html" />
     <Content Include="App\views\daily\drugsAddEdit.html" />
     <Content Include="App\views\daily\pharmacyAdd.html" />
     <Content Include="App\views\daily\pharmacies.html" />

@@ -1268,7 +1268,31 @@ namespace MR_Reporting_System.API
         {
             var result = _drugs.FindBy(x => x.Id == id).SingleOrDefault();
 
-            _drugs.Edit(result);
+            _drugs.Delete(result);
+            _drugs.Save();
+
+            return Ok(id);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditDrugs")]
+        public IHttpActionResult EditDrugs(DtoDrugs dtoDocument)
+        {
+            var obj = _drugs.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+
+            if (obj != null)
+            {
+                obj.Name = dtoDocument.Name;
+                obj.Description = dtoDocument.Description;
+                obj.Code = dtoDocument.Code;
+                obj.Price = dtoDocument.Price;
+                obj.SectionId = dtoDocument.SectionId;
+                obj.Notes = dtoDocument.Notes;
+                obj.CompanyId = dtoDocument.CompanyId;
+            }
+
+            _drugs.Edit(obj);
             _drugs.Save();
 
             return Ok();
@@ -1712,7 +1736,7 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpPost]
-        [Route("AddVisitss")]
+        [Route("AddVisits")]
         public IHttpActionResult AddVisits(DtoVisits dtoDocument)
         {
             var documentNew = new Visit
@@ -1726,15 +1750,42 @@ namespace MR_Reporting_System.API
                 Description = dtoDocument.Description,
                 IsMorning = dtoDocument.IsMorning,
                 Notes = dtoDocument.Notes,
-                CreationDate = dtoDocument.CreationDate,
-
+                CreationDate = dtoDocument.CreationDate
             };
 
             _visits.Add(documentNew);
+
             _visits.Save();
             _visits.Reload(documentNew);
 
             return Ok(documentNew);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditVisits")]
+        public IHttpActionResult EditVisits(DtoVisits dtoDocument)
+        {
+            var obj = _visits.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+
+            if (obj != null)
+            {
+                obj.AgentId = dtoDocument.AgentId;
+                obj.DrugsId = dtoDocument.DrugsId;
+                obj.TypeId = dtoDocument.TypeId;
+                obj.VisitTo = dtoDocument.VisitTo;
+                obj.Duration = dtoDocument.Duration;
+                obj.Description = dtoDocument.Description;
+                obj.IsMorning = dtoDocument.IsMorning;
+                obj.Notes = dtoDocument.Notes;
+                obj.LastEditBy = _accountId;
+                obj.LastEditDate = DateTime.Now;
+            }
+
+            _visits.Edit(obj);
+            _visits.Save();
+
+            return Ok();
         }
     }
 }

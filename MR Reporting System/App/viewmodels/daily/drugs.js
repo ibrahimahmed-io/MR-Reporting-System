@@ -36,18 +36,19 @@
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
 
-                dataservice.deleteDrugsById(selectedRowId()).success(function () {
-                });
+                dataservice.deleteDrugsById(selectedRowId()).done(function (data) {
+                    $.smallBox({
+                        title: "Operation completed successfuly",
+                        content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
+                        color: "#659265",
+                        iconSmall: "fa fa-check fa-2x fadeInRight animated",
+                        timeout: 2000
+                    });
 
-                $.smallBox({
-                    title: "Operation completed successfuly",
-                    content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",
-                    color: "#659265",
-                    iconSmall: "fa fa-check fa-2x fadeInRight animated",
-                    timeout: 2000
-                });
+                    drugsGrid.deleteRow(data);
 
-                selectedRowId(undefined);
+                    selectedRowId(undefined);
+                });
             }
             if (buttonPressed === "No") {
                 $.smallBox({
@@ -77,8 +78,7 @@
             new config.ExportColumn(config.language.price[config.currentLanguage()], 'price', 's'),
             new config.ExportColumn(config.language.section[config.currentLanguage()], 'sectionName', 's'),
             new config.ExportColumn(config.language.notes[config.currentLanguage()], 'notes', 's'),
-            new config.ExportColumn(config.language.company[config.currentLanguage()], 'companyName', 's'),
-            new config.ExportColumn(config.language.deletedBy[config.currentLanguage()], 'deletedBy', 's')];
+            new config.ExportColumn(config.language.company[config.currentLanguage()], 'companyName', 's')];
 
 
         drugsGrid.columnDefs([
@@ -88,8 +88,7 @@
             drugsGrid.createColumnDefinition('price', config.language.price[config.currentLanguage()], 150, '20%', 'int'),
             drugsGrid.createColumnDefinition('notes', config.language.notes[config.currentLanguage()], 150, '20%', 'string'),
             drugsGrid.createColumnDefinition('sectionName', config.language.section[config.currentLanguage()], 150, '20%', 'string'),
-            drugsGrid.createColumnDefinition('companyName', config.language.company[config.currentLanguage()], 150, '20%', 'string'),
-            drugsGrid.createColumnDefinition('deletedBy', config.language.deletedBy[config.currentLanguage()], 150, '20%', 'string')
+            drugsGrid.createColumnDefinition('companyName', config.language.company[config.currentLanguage()], 150, '20%', 'string')
         ]);
 
         drugsGrid.gridSelectionChange(function (rowItem, event) {
@@ -102,11 +101,8 @@
                     return true;
                 }
             } else {
-                if (event.target.type) {
-                    if (event.target.type !== 'button') {
-                        router.navigate("drugsAddEdit/" + rowItem.entity.id);
-                    }
-                }
+                drugId(rowItem.entity.id);
+                $('#drugsAddEdit').modal('show');
             }
         });
 
@@ -140,6 +136,11 @@
             placeholderClass: 'jarviswidget-placeholder'
         });
 
+        $('#drugsAddEdit').on('hide.bs.modal', function (e) {
+            dataservice.getDrugs().done(function (data) {
+                drugsGrid.setInitialData(data);
+            });
+        });
     }
 
     var vm = {

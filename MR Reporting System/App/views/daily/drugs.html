@@ -3,8 +3,8 @@
     <div id="ribbon">
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-
-            <li data-bind="text: language.titleAccounts[currentLanguage()]"></li>
+            <li data-bind="text: language.daily[currentLanguage()]"></li>
+            <li data-bind="text: language.drugs[currentLanguage()]"></li>
         </ol>
         <!-- end breadcrumb -->
 
@@ -45,7 +45,7 @@
                         </header>
                         <div>
                             <div class="widget-body" data-bind="css: { rtlTable: language.rtl[currentLanguage()] }" style="overflow-x: hidden">
-                                <div data-bind="style: { visibility: !!(selectedRowId()) ? 'visible' : 'hidden' }">
+                                <div style="height: 25px;" data-bind="style: { visibility: !!(selectedRowId()) ? 'visible' : 'hidden' }">
                                     <a href="javascript:void(0);" class="pull-right" data-bind="click: deleteDrug">
                                         <i style="font-size: 1.6em; margin-right: 5px;" class="fa fa-trash-o"></i>
                                     </a>

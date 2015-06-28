@@ -2,6 +2,7 @@
     var drug = function () {
         var self = this;
 
+        self.id = ko.observable();
         self.name = ko.observable();
         self.description = ko.observable();
         self.code = ko.observable();
@@ -13,6 +14,7 @@
 
     drug.prototype = {
         initialize: function () {
+            this.id(0);
             this.name("");
             this.description("");
             this.code("");
@@ -22,6 +24,7 @@
             this.companyId(0);
         },
         fill: function (data) {
+            this.id(data.id);
             this.name(data.name);
             this.description(data.description);
             this.code(data.code);
@@ -32,6 +35,7 @@
         },
         getServerObject: function () {
             return {
+                id: this.id,
                 name: this.name,
                 description: this.description,
                 code: this.code,
@@ -64,7 +68,7 @@
 
         if (isEdit()) {
             dataservice.getDrugsById(undefined, parseInt(drugId)).success(function (data) {
-                drugObject.fill(data);
+                drugObject().fill(data);
             });
             drugsAddEditLabel(config.language.drugs[config.currentLanguage()] + ' - ' + config.language.goEdit[config.currentLanguage()]);
         }
@@ -79,14 +83,16 @@
     };
 
     var addDrug = function (obj, e) {
+        $(e.target).button('loading');
         dataservice.addDrugs(drugObject().getServerObject()).success(function() {
-            
+            $(e.target).button('reset');
         });
     }
 
     var editDrug = function (obj, e) {
+        $(e.target).button('loading');
         dataservice.editDrugs(drugObject().getServerObject()).success(function () {
-
+            $(e.target).button('reset');
         });
     }
 
