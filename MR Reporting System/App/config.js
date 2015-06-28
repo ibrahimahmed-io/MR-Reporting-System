@@ -1,4 +1,4 @@
-﻿define(['text!resources.json', 'services/tokenstore', 'services/export'], function (resources, tokenStore, exportService) {
+﻿define(['text!resources.json', 'text!permissions.json', 'services/tokenstore', 'services/export'], function (resources, permissions, tokenStore, exportService) {
     var routes = [{
         route: '',
         moduleId: 'dashboard',
@@ -95,7 +95,7 @@
         title: 'visits Cost ',
         nav: true,
         settings: { reports: true }
-    },{
+    }, {
         route: 'visitsByAgent',
         moduleId: 'reports/visitsByAgent',
         title: 'visits By Agent ',
@@ -183,6 +183,11 @@
     })(jQuery);
 
     var language = JSON.parse(resources);
+
+    var userPermissions = ko.observableArray([]);
+
+    //var permission = ko.mapping.fromJS(JSON.parse(permissions)).authorization;
+
 
     var currentLanguage = ko.observable();
 
@@ -949,7 +954,7 @@
 
             var tpicker = $(element).timepicker(options);
 
-            tpicker.on('changeTime.timepicker', function(e) {
+            tpicker.on('changeTime.timepicker', function (e) {
 
                 var value = valueAccessor();
 
@@ -1009,10 +1014,12 @@
         remoteServerName: remoteServerName,
         language: language,
         postJson: postJson,
+       // permission: permission,
         isPageSetup: isPageSetup,
         getAuthenticationHeader: getAuthenticationHeader,
         isAllow: isAllow,
         ExportColumn: exportColumn,
+        userPermissions: userPermissions,
         exportJson: exportJson,
         pageSize: pageSize,
         KoGridInstanceCreator: koGridInstanceCreator,
