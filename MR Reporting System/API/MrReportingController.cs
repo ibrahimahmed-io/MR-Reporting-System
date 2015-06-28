@@ -1145,6 +1145,8 @@ namespace MR_Reporting_System.API
 
             return Ok(result);
         }
+
+
         [AuthorizeUser]
         [HttpGet]
         [Route("GetDocotors")]
@@ -1188,6 +1190,17 @@ namespace MR_Reporting_System.API
             var result = new List<DtoVisits>();
 
             result = _visits.visitsByAgent(obj.agentId, obj.startDate, obj.finishDate);
+
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("VisitsByArea")]
+        public IHttpActionResult VisitsByArea(reportDto obj)
+        {
+            var result = new List<DtoVisits>();
+            result = _visits.visitsByArea(obj.areaId, obj.startDate, obj.finishDate);
 
             return Ok(result);
         }
@@ -1706,7 +1719,17 @@ namespace MR_Reporting_System.API
         [Route("GetVisits")]
         public IHttpActionResult GetVisits()
         {
-            var result = _visits.SelectAll(_language).ToList();
+            var result = new List<DtoVisits>();
+
+            if (_userType.Equals("Company"))
+            {
+                result = _visits.SelectAll(_language).ToList();
+            }
+            else
+            {
+                result = _visits.SelectAll(_language).ToList().Where(x => x.AgentId == _accountId).ToList();
+            }
+
 
             return Ok(result);
         }

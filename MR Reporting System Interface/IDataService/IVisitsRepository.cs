@@ -14,6 +14,8 @@ namespace MR_Reporting_System_Interface.IDataService
         List<DtoVisits> visitsByAgent(int? AgentId, DateTime? stratDate, DateTime? finishDate);
         List<DtoSummaryWords> alertsCount();
         List<DtoVisits> alertsCountDetail(string listType);
+
+        List<DtoVisits> visitsByArea(int? AreaId, DateTime? stratDate, DateTime? finishDate);
     }
 }
 
