@@ -39,13 +39,14 @@
         config.exportJson(exportData, exportColumns, 'pdf', 'visits Cost');
     };
 
-    var showDetail = function (obj, event) {
+    var showDetail = function (obj, e) {
         //var isValid = $('#netSalaryForm').valid();
         //if (isValid) {
+        $(e.target).button('loading');
         dataservice.visitsCost(visitDto()).done(function (data) {
 
             knockoutGrid.setInitialData(data);
-
+            $(e.target).button('reset');
             $(".loading-data").addClass("hidden");
         });
             //showSalaryStatus(true);

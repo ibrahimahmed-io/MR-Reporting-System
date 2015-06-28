@@ -26,7 +26,7 @@
     });
 
     hospital().type.subscribe(function () {
-        if (hospital().type()) { 
+        if (hospital().type()) {
         }
     });
 
@@ -148,12 +148,16 @@
         }
     };
 
-    function addhospital(obj, event) {
+    var addhospital = function (obj, e) {
         var isValid = $('#AccountEditForm').valid();
         if (isValid) {
+
+            $(e.target).button('loading');
             if (changeStatus() === true) {
+
                 dataservice.editHospitals(hospital()).done(function (data) {
 
+                    $(e.target).button('reset');
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
@@ -175,6 +179,8 @@
                 });
             } else {
                 dataservice.addHospitals(hospital()).done(function (data) {
+
+                    $(e.target).button('reset');
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",

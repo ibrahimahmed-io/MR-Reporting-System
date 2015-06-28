@@ -39,12 +39,14 @@
         config.exportJson(exportData, exportColumns, 'pdf', 'visits Cost');
     };
 
-    var showDetail = function (obj, event) {
- 
+    var showDetail = function (obj, e) {
+
+        $(e.target).button('loading');
         dataservice.visitsByAgent(visitDto()).done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
+            $(e.target).button('reset');
             $(".loading-data").addClass("hidden");
         });
         
@@ -87,10 +89,13 @@
         gridOptions(knockoutGrid.getGridOptions()());
 
         if (visitDto().startDate) {
+
+           // $(e.target).button('loading');
             dataservice.visitsByAgent(visitDto()).done(function (data) {
 
                 knockoutGrid.setInitialData(data);
 
+               // $(e.target).button('reset');
                 $(".loading-data").addClass("hidden");
             });
         }

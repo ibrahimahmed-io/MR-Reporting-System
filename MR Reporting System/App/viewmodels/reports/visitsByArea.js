@@ -39,12 +39,14 @@
         config.exportJson(exportData, exportColumns, 'pdf', 'visits By Area');
     };
 
-    var showDetail = function (obj, event) {
- 
+    var showDetail = function (obj, e) {
+
+        $(e.target).button('loading');
         dataservice.visitsByAgent(visitDto()).done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
+            $(e.target).button('reset');
             $(".loading-data").addClass("hidden");
         });
         
@@ -57,9 +59,10 @@
 
     function activate() {
 
-        dataservice.getAccounts().done(function (data) {
+        dataservice.getArea(undefined).done(function (data) {
             areas(data);
         });
+
 
         knockoutGrid = new config.KoGridInstanceCreator();
 
@@ -87,10 +90,12 @@
         gridOptions(knockoutGrid.getGridOptions()());
 
         if (visitDto().startDate) {
+
+             
             dataservice.visitsByAgent(visitDto()).done(function (data) {
 
                 knockoutGrid.setInitialData(data);
-
+                
                 $(".loading-data").addClass("hidden");
             });
         }
