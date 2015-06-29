@@ -8,31 +8,31 @@
     }, {
         route: 'accounts',
         moduleId: 'admin/accounts',
-        title: 'agents',
+        title: 'Agents',
         nav: true,
         settings: { admin: true }
     }, {
         route: 'accountsAdd/:param1*detail',
         moduleId: 'admin/accountsAdd',
-        title: 'agents',
+        title: 'Agents Add',
         nav: true,
         settings: { admin: false }
     }, {
         route: 'accountsDefaultList',
         moduleId: 'admin/accountsDefaultList',
-        title: ' Default List',
+        title: 'Default List',
         nav: true,
         settings: { admin: true }
     }, {
         route: 'doctors',
         moduleId: 'daily/doctors',
-        title: 'doctors',
+        title: 'Doctors',
         nav: true,
         settings: { daily: true }
     }, {
         route: 'doctorsAdd/:param1*detail',
         moduleId: 'daily/doctorsAdd',
-        title: 'doctors',
+        title: 'Doctors Add',
         nav: true,
         settings: { daily: false }
     }, {
@@ -50,61 +50,55 @@
     }, {
         route: 'pharmacies',
         moduleId: 'daily/pharmacies',
-        title: 'pharmacies',
-        nav: true,
-        settings: { daily: true }
-    }, {
-        route: 'pharmacies',
-        moduleId: 'daily/pharmacies',
-        title: 'pharmacies',
+        title: 'Pharmacies',
         nav: true,
         settings: { daily: true }
     }, {
         route: 'pharmacyAdd/:param1*detail',
         moduleId: 'daily/pharmacyAdd',
-        title: 'pharmacy Add',
+        title: 'Pharmacy Add',
         nav: true,
         settings: { daily: false }
     }, {
         route: 'distributer',
         moduleId: 'admin/distributer',
-        title: 'distributers',
+        title: 'Distributers',
         nav: true,
         settings: { admin: true }
     }, {
         route: 'distributerAdd/:param1*detail',
         moduleId: 'admin/distributerAdd',
-        title: 'distributer Add',
+        title: 'Distributer Add',
         nav: true,
         settings: { admin: false }
     }, {
         route: 'permissionsGroups',
         moduleId: 'admin/permissionsGroups',
-        title: 'permissions Groups ',
+        title: 'Permissions Groups ',
         nav: true,
         settings: { admin: true }
     }, {
         route: 'permissionsGroupsPermissions/:param1*detail',
         moduleId: 'admin/permissionsGroupsPermissions',
-        title: 'permissions Groups permissions',
+        title: 'Permissions Groups Permissions',
         nav: true,
         settings: { admin: false }
     }, {
         route: 'visitCost',
         moduleId: 'reports/visitCost',
-        title: 'Visits Cost ',
+        title: 'Visits Cost',
         nav: true,
         settings: { reports: true }
     }, {
         route: 'visitsByAgent',
         moduleId: 'reports/visitsByAgent',
-        title: 'Visits By Agent ',
+        title: 'Visits by Agent',
         nav: true,
         settings: { reports: true }
     }, {
         route: 'visitsByArea',
         moduleId: 'reports/visitsByArea',
-        title: 'Visits By Area ',
+        title: 'Visits by Area',
         nav: true,
         settings: { reports: true }
     }, {
@@ -116,19 +110,19 @@
     }, {
         route: 'DrugsAddEdit/(:id)',
         moduleId: 'daily/drugsAddEdit',
-        title: 'Drugs ',
+        title: 'Drugs',
         nav: false,
         settings: { daily: true }
     }, {
         route: 'Visits',
         moduleId: 'daily/visits',
-        title: 'Visits ',
+        title: 'Visits',
         nav: true,
         settings: { daily: true }
     }, {
         route: 'VisitsAddEdit/(:id)',
         moduleId: 'daily/visitsAddEdit',
-        title: 'Visits ',
+        title: 'Visits',
         nav: false,
         settings: { daily: true }
     }];
