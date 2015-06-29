@@ -41,7 +41,7 @@
                                     <form class="smart-form" id="netSalaryForm">
                                         <fieldset data-bind="with: visitDto">
                                             <section>
-                                                <label class="label" data-bind="text: $root.language.ContactName[$root.currentLanguage()]"></label>
+                                                <label class="label" data-bind="text: $root.language.area[$root.currentLanguage()]"></label>
                                                 <label class="select">
                                                     <select id="areaId" name="areaId" data-bind="value: $root.areaId, options: $root.areas, optionsText: function(item) { return item.title; }, optionsValue: function(item) { return item.id; },  optionsCaption: $root.language.supervisorSelection[$root.currentLanguage()], attr: { dir: $root.language.dir[$root.currentLanguage()]}"></select>
                                                     <i></i>
@@ -51,19 +51,19 @@
                                                 <section class="col col-6">
                                                     <label class="label" data-bind="text: $root.language.startDate[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
                                                     <label class="input">
-                                                        <input id="startDate" type="text" data-bind="datepicker: startDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
+                                                        <input id="startDate" type="text" data-bind="datepicker: $root.startDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
                                                     <label class="label" data-bind="text: $root.language.finishDate[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
                                                     <label class="input">
-                                                        <input id="finishDate" type="text" data-bind="datepicker: finishDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
+                                                        <input id="finishDate" type="text" data-bind="datepicker: $root.finishDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
                                                     </label>
                                                 </section>
                                             </div>
                                         </fieldset>
                                         <footer>
-                                            <button type="button" class="btn btn-primary" id="showDetail" data-bind="click: showDetail ,  text: $root.language.search[$root.currentLanguage()], style: { float: $root.language.btnFloat[$root.currentLanguage()] }"></button>
+                                            <button type="button" data-loading-text="Searching..." class="btn btn-primary" id="showDetail" data-bind="click: showDetail ,  text: $root.language.search[$root.currentLanguage()], style: { float: $root.language.btnFloat[$root.currentLanguage()] }"></button>
                                         </footer>
                                     </form>
                                 </div>

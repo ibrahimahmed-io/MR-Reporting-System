@@ -10,11 +10,23 @@
 
     var agentId = ko.observable();
 
+    var startDate = ko.observable(moment().format("MM/DD/YYYY"));
+
+    var finishDate = ko.observable(moment().format("MM/DD/YYYY"));
+
     var visitDto = ko.observable({
 
         agentId: ko.observable(),
         startDate: ko.observable(moment().format("MM/DD/YYYY")),
         finishDate: ko.observable(moment().format("MM/DD/YYYY"))
+    });
+
+    startDate.subscribe(function () {
+        visitDto().startDate(moment(startDate(), 'DD/MM/YYYY').format());
+    });
+
+    finishDate.subscribe(function () {
+        visitDto().finishDate(moment(finishDate(), 'DD/MM/YYYY').format());
     });
 
     agentId.subscribe(function () {
@@ -39,13 +51,14 @@
         config.exportJson(exportData, exportColumns, 'pdf', 'visits Cost');
     };
 
-    var showDetail = function (obj, event) {
+    var showDetail = function (obj, e) {
         //var isValid = $('#netSalaryForm').valid();
         //if (isValid) {
+        $(e.target).button('loading');
         dataservice.visitsCost(visitDto()).done(function (data) {
 
             knockoutGrid.setInitialData(data);
-
+            $(e.target).button('reset');
             $(".loading-data").addClass("hidden");
         });
             //showSalaryStatus(true);
@@ -132,6 +145,8 @@
         exportToPdf: exportToPdf,
         visitDto: visitDto,
         agentId: agentId,
+        startDate: startDate,
+        finishDate: finishDate,
         agents: agents,
         showDetail: showDetail
     };

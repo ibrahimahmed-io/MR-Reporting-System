@@ -17,7 +17,7 @@
     var pharmcy = ko.observable(new pharmcyDto());
 
     var areas = ko.observable([]);
-     
+
     var areaId = ko.observable();
 
     areaId.subscribe(function () {
@@ -25,6 +25,7 @@
             pharmcy().areaId(areaId());
         }
     });
+
     var resetWarning = ko.computed(function () {
         return "<i class='text-warning fa fa-warning'></i> " + config.language.resetWarning[config.currentLanguage()];
     });
@@ -121,7 +122,7 @@
 
     var changeStatus = ko.observable(false);
 
-  
+
     function activate(id) {
 
         pharmcy(new pharmcyDto());
@@ -146,11 +147,15 @@
         }
     };
 
-    function addpharmcy(obj, event) {
+    var addpharmcy = function (obj, e) {
         var isValid = $('#AccountEditForm').valid();
         if (isValid) {
+
+            $(e.target).button('loading');
             if (changeStatus() === true) {
                 dataservice.editPharmacies(pharmcy()).done(function (data) {
+
+                    $(e.target).button('reset');
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record Updated successfuly...</i>",
@@ -158,7 +163,9 @@
                         iconSmall: "fa fa-check fa-2x fadeInRight animated",
                         timeout: 2000
                     });
-                }).fail(function () { 
+                }).fail(function () {
+
+                    $(e.target).button('reset');
                     $.smallBox({
                         title: "Operation was canceled",
                         content: "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",
@@ -177,7 +184,7 @@
                         timeout: 2000
                     });
 
-                }).fail(function () { 
+                }).fail(function () {
                     $.smallBox({
                         title: "Operation was canceled",
                         content: "<i class='fa fa-clock-o'></i> <i>Canceled delete...</i>",

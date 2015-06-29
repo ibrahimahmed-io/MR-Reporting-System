@@ -10,7 +10,7 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
   {
       public int? agentId { get; set; }
       public int? areaId { get; set; }
-        public DateTime? startDate { get; set; }
+      public DateTime? startDate { get; set; }
         public DateTime? finishDate { get; set; }
     }
 }

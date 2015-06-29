@@ -184,6 +184,77 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list;
         }
 
+        public List<DtoVisits> visitsByArea(int? AreaId, DateTime? stratDate, DateTime? finishDate)
+        {
+            List<DtoVisits> list;
+
+
+            if (AreaId == null)
+            {
+                list = (from visit in Context.Visits.Where(x => x.VisitDate >= stratDate && x.VisitDate <= finishDate)
+                        select new DtoVisits
+                        {
+                            AgentName = visit.Agent.ContactName,
+                            TypeName = visit.DefaultList.Title,
+                            VisitTo = visit.VisitTo,
+                            TypeId = visit.TypeId,
+                            CreationDate = visit.CreationDate,
+                            Notes = visit.Notes,
+                            VisitDate = visit.VisitDate,
+                            Duration = visit.Duration,
+                            Description = visit.Description,
+                            DrugsName = visit.Drug.Name,
+                            status = (bool)visit.IsMorning ? "Morning" : "Night"
+                        }).ToList();
+            }
+            else
+            {
+                var result = (from area in Context.AgentAreas.Where(x => x.AreaId == AreaId)
+
+                              select area.AgentId).FirstOrDefault();
+
+                list = (from visit in Context.Visits.Where(x => x.VisitDate >= stratDate && x.VisitDate <= finishDate && result == x.AgentId)
+                        let areaName = Context.AgentAreas.Where(x => x.AreaId == AreaId).Select(x => x.Area.Title).FirstOrDefault()
+                        select new DtoVisits
+                        {
+                            AgentName = visit.Agent.ContactName,
+                            areaName = areaName,
+                            TypeName = visit.DefaultList.Title,
+                            VisitTo = visit.VisitTo,
+                            TypeId = visit.TypeId,
+                            CreationDate = visit.CreationDate,
+                            Notes = visit.Notes,
+                            VisitDate = visit.VisitDate,
+                            Duration = visit.Duration,
+                            Description = visit.Description,
+                            DrugsName = visit.Drug.Name,
+                            status = (bool)visit.IsMorning ? "Morning" : "Night"
+                        }).ToList();
+            }
+            foreach (DtoVisits item in list)
+            {
+                var obj = Context.DefaultLists.FirstOrDefault(x => x.Id == item.TypeId).Action;
+
+                switch (obj)
+                {
+                    case 1:
+                        item.VisitToName = Context.Docotors.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                        break;
+                    case 2:
+                        item.VisitToName = Context.Pharmacies.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                        break;
+                    case 3:
+                        item.VisitToName = Context.Hospitals.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                        break;
+                    //case 4:
+                    //    item.VisitToName = Context.Docotors.FirstOrDefault(x => x.Id == item.VisitTo).Name;
+                    //    break;
+                }
+            }
+            return list;
+        }
+
+
         public List<DtoSummaryWords> alertsCount()
         {
             List<DtoSummaryWords> list = new List<DtoSummaryWords>();

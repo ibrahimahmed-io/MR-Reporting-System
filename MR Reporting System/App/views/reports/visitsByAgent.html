@@ -51,19 +51,19 @@
                                                 <section class="col col-6">
                                                     <label class="label" data-bind="text: $root.language.startDate[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
                                                     <label class="input">
-                                                        <input id="startDate" type="text" data-bind="datepicker: startDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
+                                                        <input id="startDate" type="text" data-bind="datepicker: $root.startDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
                                                     </label>
                                                 </section>
                                                 <section class="col col-6">
                                                     <label class="label" data-bind="text: $root.language.finishDate[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
                                                     <label class="input">
-                                                        <input id="finishDate" type="text" data-bind="datepicker: finishDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
+                                                        <input id="finishDate" type="text" data-bind="datepicker: $root.finishDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }" required />
                                                     </label>
                                                 </section>
                                             </div>
                                         </fieldset>
                                         <footer>
-                                            <button type="button" class="btn btn-primary" id="showDetail" data-bind="click: showDetail ,  text: $root.language.search[$root.currentLanguage()], style: { float: $root.language.btnFloat[$root.currentLanguage()] }"></button>
+                                            <button type="button" data-loading-text="Searching..." class="btn btn-primary" id="showDetail" data-bind="click: showDetail ,  text: $root.language.search[$root.currentLanguage()], style: { float: $root.language.btnFloat[$root.currentLanguage()] }"></button>
                                         </footer>
                                     </form>
                                 </div>

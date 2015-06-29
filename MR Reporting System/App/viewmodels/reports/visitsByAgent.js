@@ -10,11 +10,24 @@
 
     var agentId = ko.observable();
 
+    var startDate = ko.observable(moment().format("MM/DD/YYYY"));
+    
+    var finishDate = ko.observable(moment().format("MM/DD/YYYY"));
+
+
     var visitDto = ko.observable({
 
         agentId: ko.observable(),
         startDate: ko.observable(moment().format("MM/DD/YYYY")),
         finishDate: ko.observable(moment().format("MM/DD/YYYY"))
+    });
+
+    startDate.subscribe(function () {
+        visitDto().startDate(moment(startDate(), 'DD/MM/YYYY').format());
+    });
+
+    finishDate.subscribe(function () {
+        visitDto().finishDate(moment(finishDate(), 'DD/MM/YYYY').format());
     });
 
     agentId.subscribe(function () {
@@ -39,12 +52,14 @@
         config.exportJson(exportData, exportColumns, 'pdf', 'visits Cost');
     };
 
-    var showDetail = function (obj, event) {
- 
+    var showDetail = function (obj, e) {
+
+        $(e.target).button('loading');
         dataservice.visitsByAgent(visitDto()).done(function (data) {
 
             knockoutGrid.setInitialData(data);
 
+            $(e.target).button('reset');
             $(".loading-data").addClass("hidden");
         });
         
@@ -75,7 +90,7 @@
                   knockoutGrid.createColumnDefinition('agentName', config.language.ContactName[config.currentLanguage()], 155, '15%', 'string'),
                   knockoutGrid.createColumnDefinition('typeName', config.language.typeName[config.currentLanguage()], 200, '5%', 'string'),
                   knockoutGrid.createColumnDefinition('visitToName', config.language.visitTo[config.currentLanguage()], 200, '10%', 'string'),
-                  knockoutGrid.createColumnDefinition('visitDate', config.language.VisitDate[config.currentLanguage()], 150, '10%', 'string'),
+                  knockoutGrid.createColumnDefinition('visitDate', config.language.VisitDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
                   knockoutGrid.createColumnDefinition('description', config.language.description[config.currentLanguage()], 50, '10%', 'int'),
                   knockoutGrid.createColumnDefinition('drugsName', config.language.drugName[config.currentLanguage()], 200, '15%', 'string'),
                   knockoutGrid.createColumnDefinition('status', config.language.status[config.currentLanguage()], 150, '10%', 'string'),
@@ -87,10 +102,13 @@
         gridOptions(knockoutGrid.getGridOptions()());
 
         if (visitDto().startDate) {
+
+           // $(e.target).button('loading');
             dataservice.visitsByAgent(visitDto()).done(function (data) {
 
                 knockoutGrid.setInitialData(data);
 
+               // $(e.target).button('reset');
                 $(".loading-data").addClass("hidden");
             });
         }
@@ -128,6 +146,8 @@
         visitDto: visitDto,
         agentId: agentId,
         agents: agents,
+        startDate: startDate,
+        finishDate: finishDate,
         showDetail: showDetail
     };
 

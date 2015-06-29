@@ -110,7 +110,7 @@
     }, {
         route: 'Drugs',
         moduleId: 'daily/drugs',
-        title: 'Drugs ',
+        title: 'Drugs & Tools',
         nav: true,
         settings: { daily: true }
     }, {
