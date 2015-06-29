@@ -12,32 +12,78 @@ namespace MR_Reporting_System_Data_Service.Repository
         public List<DtoVisits> SelectAll(string lang)
         {
             var list = (from q in
-                Context.Visits.Include("Agent.ContactName").Include("Drug.Name").Include("DefaultList.Title")
-                let type = q.DefaultList.Action
-                let visitee =
-                    (type == 1)
-                        ? Context.Docotors.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
-                        : (type == 2)
-                            ? Context.Pharmacies.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
-                            : Context.Hospitals.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
-                select new DtoVisits
-                {
-                    Id = q.Id,
-                    AgentName = q.Agent.ContactName,
-                    DrugsName = q.Drug.Name,
-                    TypeName = q.DefaultList.Title,
-                    VisitToName = visitee,
-                    VisitDate = q.VisitDate,
-                    Duration = q.Duration,
-                    Description = q.Description,
-                    IsMorning = q.IsMorning,
-                    Notes = q.Notes,
-                    LastEditByName = q.Agent1.ContactName,
-                    LastEditDate = q.LastEditDate,
-                    CreationDate = q.CreationDate
-                }).ToList();
+                            Context.Visits.Include("Agent.ContactName").Include("Drug.Name").Include("DefaultList.Title")
+                        let type = q.DefaultList.Action
+                        let visitee =
+                            (type == 1)
+                                ? Context.Docotors.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
+                                : (type == 2)
+                                    ? Context.Pharmacies.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
+                                    : Context.Hospitals.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
+                        select new DtoVisits
+                        {
+                            Id = q.Id,
+                            AgentName = q.Agent.ContactName,
+                            DrugsName = q.Drug.Name,
+                            TypeName = q.DefaultList.Title,
+                            VisitToName = visitee,
+                            VisitDate = q.VisitDate,
+                            Duration = q.Duration,
+                            Description = q.Description,
+                            IsMorning = q.IsMorning,
+                            Notes = q.Notes,
+                            LastEditByName = q.Agent1.ContactName,
+                            LastEditDate = q.LastEditDate,
+                            CreationDate = q.CreationDate
+                        }).ToList();
 
             return list;
+        }
+
+        public DtoVisitCountForDrugReport SelectVisitsForDrugReport(int drugId)
+        {
+            var doctorsVisitCount = (from q in Context.Visits
+                                     let type = q.DefaultList.Action
+                                     where type == 1 && q.DrugsId == drugId
+                                     select q.Id).Count();
+
+            var pharmaciesVisitCount = (from q in Context.Visits
+                                        let type = q.DefaultList.Action
+                                        where type == 2 && q.DrugsId == drugId
+                                        select q.Id).Count();
+
+            var hospitalsVisitCount = (from q in Context.Visits
+                                       let type = q.DefaultList.Action
+                                       where type == 3 && q.DrugsId == drugId
+                                       select q.Id).Count();
+
+            var result = new DtoVisitCountForDrugReport
+            {
+                Doctors = doctorsVisitCount,
+                Hospitals = hospitalsVisitCount,
+                Pharmacies = pharmaciesVisitCount
+            };
+
+            return result;
+        }
+
+        public DtoMorningLateVisitCountForDrugReport SelectVisitsMorningCountForDrugReport(int drugId)
+        {
+            var isMorning = (from q in Context.Visits
+                             where q.DrugsId == drugId && q.IsMorning == true
+                             select q.Id).Count();
+
+            var isLate = (from q in Context.Visits
+                          where q.DrugsId == drugId && q.IsMorning == false
+                          select q.Id).Count();
+
+            var result = new DtoMorningLateVisitCountForDrugReport
+            {
+                Morning = isMorning,
+                Late = isLate
+            };
+
+            return result;
         }
 
         public DtoVisits SelectById(int id, string lang)
@@ -360,7 +406,6 @@ namespace MR_Reporting_System_Data_Service.Repository
 
             return list;
         }
-
     }
 
 }

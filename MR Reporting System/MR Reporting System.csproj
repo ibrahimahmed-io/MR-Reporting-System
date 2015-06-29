@@ -146,6 +146,7 @@
     <Content Include="App\viewmodels\reports\visitsByArea.js" />
     <Content Include="App\viewmodels\reports\visitsByAgent.js" />
     <Content Include="App\viewmodels\reports\visitCost.js" />
+    <Content Include="App\viewmodels\reports\visitsOnDrug.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\summaries\notAssign.js" />
     <Content Include="App\viewmodels\summaries\alerts.js" />
@@ -172,6 +173,7 @@
     <Content Include="App\views\reports\visitsByArea.html" />
     <Content Include="App\views\reports\visitsByAgent.html" />
     <Content Include="App\views\reports\visitCost.html" />
+    <Content Include="App\views\reports\visitsOnDrug.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="App\views\summaries\notAssign.html" />
     <Content Include="App\views\summaries\alerts.html" />

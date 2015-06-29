@@ -125,6 +125,12 @@
         title: 'Visits',
         nav: false,
         settings: { daily: true }
+    }, {
+        route: 'VisitsOnDrug',
+        moduleId: 'reports/visitsOnDrug',
+        title: 'Visits On Drug',
+        nav: true,
+        settings: { reports: true }
     }];
 
     var isPageSetup = ko.observable(false);
@@ -381,7 +387,7 @@
 
             var valueUnwrapped = ko.unwrap(value);
 
-            if (valueUnwrapped.length > 0) {
+            if ((valueUnwrapped instanceof Array) ? (valueUnwrapped.length > 0) : !!valueUnwrapped) {
                 if ($(element).data('highcharts-chart')) {
                     $(element).highcharts().destroy();
                 }

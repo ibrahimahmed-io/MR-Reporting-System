@@ -1,0 +1,45 @@
+﻿<div id="content">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li data-bind="text: language.Reports[currentLanguage()]"></li>
+            <li data-bind="text: language.visitsOnDrugs[currentLanguage()]"></li>
+        </ol>
+        <!-- end breadcrumb -->
+
+    </div>
+    <!-- END RIBBON -->
+
+    <section id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- SINGLE GRID -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" data-widget-sortable="false" id="visits-grid">
+                    <header>
+                        <h2 data-bind="text: language.visits[currentLanguage()]"></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body" data-bind="css: { rtlTable: language.rtl[currentLanguage()] }" style="overflow-x: hidden">
+                            <form class="smart-form" id="netSalaryForm">
+                                <fieldset>
+                                    <section>
+                                        <label class="label" for="drugs" data-bind="text: language.drugs[currentLanguage()]"></label>
+                                        <label class="select">
+                                            <select id="drugs" style="width: 100%" data-bind="options: drugs, optionsText: 'name', optionsValue: 'id', value: selectedDrugId, optionsCaption: '', select2: { placeholder: language.selectValue[currentLanguage()], allowClear: true }"></select>
+                                        </label>
+                                    </section>
+                                </fieldset>
+                            </form>
+
+                            <section class="col col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                <div id="visitsOnDrugchart" class="chart" data-bind="chart: chartData, chartOptions: chartOptions"></div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>

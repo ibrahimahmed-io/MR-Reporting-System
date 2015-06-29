@@ -1811,6 +1811,26 @@ namespace MR_Reporting_System.API
 
             return Ok();
         }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetVisitsForDrugReport")]
+        public IHttpActionResult GetVisitsForDrugReport(int drugId)
+        {
+            var result = _visits.SelectVisitsForDrugReport(drugId);
+
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetVisitsMorningCountForDrugReport")]
+        public IHttpActionResult GetVisitsMorningCountForDrugReport(int drugId)
+        {
+            var result = _visits.SelectVisitsMorningCountForDrugReport(drugId);
+
+            return Ok(result);
+        }
     }
 }
 

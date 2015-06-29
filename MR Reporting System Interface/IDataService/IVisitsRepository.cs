@@ -16,6 +16,10 @@ namespace MR_Reporting_System_Interface.IDataService
         List<DtoVisits> alertsCountDetail(string listType);
 
         List<DtoVisits> visitsByArea(int? AreaId, DateTime? stratDate, DateTime? finishDate);
+
+        DtoVisitCountForDrugReport SelectVisitsForDrugReport(int drugId);
+
+        DtoMorningLateVisitCountForDrugReport SelectVisitsMorningCountForDrugReport(int drugId);
     }
 }
 

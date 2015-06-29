@@ -4566,5 +4566,9 @@
     "creationDate": {
         "en": "Creation Date",
         "ar": "تاريخ الانشاء"
+    },
+    "visitsOnDrugs": {
+        "en": "Visits On Drugs",
+        "ar": "زيارات تمت علي دواء معين"
     }
 }

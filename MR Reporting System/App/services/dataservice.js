@@ -289,6 +289,22 @@
     var deleteVisits = function (id) {
         return $.getJSON(config.remoteServerName + "/DeleteVisitsById", { id: id });
     };
+
+    var getVisitsForDrugReport = function (documnetObservable, drugId) {
+        return $.getJSON(config.remoteServerName + "/GetVisitsForDrugReport", { drugId: drugId }).done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
+
+    var getVisitsMorningCountForDrugReport = function (documnetObservable, drugId) {
+        return $.getJSON(config.remoteServerName + "/GetVisitsMorningCountForDrugReport", { drugId: drugId }).done(function (data) {
+            if (documnetObservable) {
+                documnetObservable(data);
+            }
+        });
+    };
     //#endregion Visits API
 
     var visitsCost = function (observableObj) {
@@ -470,7 +486,9 @@
         editVisits: editVisits,
         addVisits: addVisits,
         deleteVisits: deleteVisits,
-        getTypesForVisits: getTypesForVisits
+        getTypesForVisits: getTypesForVisits,
+        getVisitsForDrugReport: getVisitsForDrugReport,
+        getVisitsMorningCountForDrugReport: getVisitsMorningCountForDrugReport
         //#endregion
     };
 
