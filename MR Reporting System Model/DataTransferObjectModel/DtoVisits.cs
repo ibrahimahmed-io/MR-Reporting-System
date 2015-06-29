@@ -100,6 +100,12 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             set;
         }
 
+        public string LastEditByName
+        {
+            get;
+            set;
+        }
+
         public DateTime? LastEditDate
         {
             get;

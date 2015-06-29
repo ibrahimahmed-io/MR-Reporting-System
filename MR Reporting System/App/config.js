@@ -265,20 +265,36 @@
             var obj = valueAccessor(),
                 allBindings = allBindingsAccessor(),
                 lookupKey = allBindings.lookupKey;
+
             $(element).select2(obj);
+
             if (lookupKey) {
                 var value = ko.utils.unwrapObservable(allBindings.value);
+
                 $(element).select2('data', ko.utils.arrayFirst(obj.data.results, function (item) {
                     return item[lookupKey] === value;
                 }));
             }
 
+            allBindings.options.subscribe(function (v) {
+                if (v.length > 0) {
+                    $(element).trigger('change');
+                }
+            });
+
             ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
                 $(element).select2('destroy');
             });
         },
-        update: function (element) {
-            $(element).trigger('change');
+        update: function (element, valueAccessor, allBindingsAccessor) {
+            var allBindings = allBindingsAccessor(),
+            value = ko.utils.unwrapObservable(allBindings.value || allBindings.selectedOptions);
+
+            if (value) {
+                if (allBindings.options().length > 0) {
+                    $(element).select2('val', value);
+                }
+            }
         }
     };
 
@@ -993,7 +1009,7 @@
 
                 $(element).data('updating', true);
 
-                value(mdate.toDate());
+                value(hours24 + ':' + e.time.minutes);
 
                 $(element).data('updating', false);
             });
@@ -1007,7 +1023,7 @@
             var date = ko.unwrap(valueAccessor());
 
             if (date) {
-                var time = moment(date).format("hh:mm a");
+                var time = date;
                 $(element).timepicker('setTime', time);
             }
         }
@@ -1020,7 +1036,7 @@
         remoteServerName: remoteServerName,
         language: language,
         postJson: postJson,
-       // permission: permission,
+        // permission: permission,
         isPageSetup: isPageSetup,
         getAuthenticationHeader: getAuthenticationHeader,
         isAllow: isAllow,

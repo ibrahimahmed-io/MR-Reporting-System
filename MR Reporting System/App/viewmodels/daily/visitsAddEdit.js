@@ -8,6 +8,7 @@
         self.typeId = ko.observable();
         self.visitTo = ko.observable();
         self.visitDate = ko.observable();
+        self.description = ko.observable();
         self.duration = ko.observable();
         self.isMorning = ko.observable();
         self.notes = ko.observable();
@@ -21,6 +22,7 @@
             this.typeId(0);
             this.visitTo(0);
             this.visitDate(moment().format('DD/MM/YYYY'));
+            this.description('');
             this.duration('00:00');
             this.isMorning(false);
             this.notes('');
@@ -31,22 +33,24 @@
             this.drugsId(data.drugsId);
             this.typeId(data.typeId);
             this.visitTo(data.visitTo);
-            this.visitDate(data.visitDate);
+            this.visitDate(moment(data.visitDate).format('DD/MM/YYYY'));
+            this.description(data.description);
             this.duration(data.duration);
             this.isMorning(data.isMorning);
             this.notes(data.notes);
         },
         getServerObject: function () {
             return {
-                id: this.id,
-                agentId: this.agentId,
-                drugsId: this.drugsId,
-                typeId: this.typeId,
-                visitTo: this.visitTo,
-                visitDate: this.visitDate,
-                duration: this.duration,
-                isMorning: this.isMorning,
-                notes: this.notes
+                id: this.id(),
+                agentId: this.agentId(),
+                drugsId: this.drugsId(),
+                typeId: this.typeId(),
+                visitTo: this.visitTo(),
+                visitDate: moment(this.visitDate(), 'DD/MM/YYYY').format(),
+                description: this.description(),
+                duration: this.duration(),
+                isMorning: this.isMorning(),
+                notes: this.notes()
             }
         }
     }
@@ -58,26 +62,6 @@
     var types = ko.observableArray([]);
     var visitees = ko.observableArray([]);
 
-    types.subscribe(function (value) {
-        var typeAction = ko.utils.arrayFirst(types(), function (item) {
-            return item.id === value;
-        });
-
-        if (typeAction === 1) {
-            dataservice.getDoctors().success(function (data) {
-                visitees(data);
-            });
-        } else if (typeAction === 2) {
-            dataservice.getPharmacies().success(function (data) {
-                visitees(data);
-            });
-        } else {
-            dataservice.getHospitals().success(function (data) {
-                visitees(data);
-            });
-        }
-    });
-
     var isEdit = ko.observable();
 
     var visitsAddEditLabel = ko.observable();
@@ -88,6 +72,28 @@
         visitObject(new visit());
 
         visitObject().initialize();
+
+        visitObject().typeId.subscribe(function (value) {
+            var type = ko.utils.arrayFirst(types(), function (item) {
+                return item.id === value;
+            });
+
+            if (type) {
+                if (type.action === 1) {
+                    dataservice.getDocotors().success(function(data) {
+                        visitees(data);
+                    });
+                } else if (type.action === 2) {
+                    dataservice.getPharmacies().success(function(data) {
+                        visitees(data);
+                    });
+                } else {
+                    dataservice.getHospitals().success(function(data) {
+                        visitees(data);
+                    });
+                }
+            }
+        });
 
         isEdit((visitId !== 0) ? true : false);
 
@@ -115,7 +121,7 @@
 
     var addVisit = function (obj, e) {
         $(e.target).button('loading');
-        dataservice.addDrugs(visitObject().getServerObject()).success(function () {
+        dataservice.addVisits(visitObject().getServerObject()).success(function () {
             $(e.target).button('reset');
         });
     }

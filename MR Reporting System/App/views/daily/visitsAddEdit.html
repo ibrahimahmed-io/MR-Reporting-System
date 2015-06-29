@@ -10,13 +10,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="agents" data-bind="text: $parent.language.agent[$parent.currentLanguage()]"></label>
-                    <select id="agents" style="width: 100%" data-bind="options: $parent.agents, optionsText: 'contactName', optionsValue: 'id', value: agentId, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                    <select id="agents" style="width: 100%" data-bind="options: $parent.agents, optionsText: 'contactName', optionsValue: 'id', value: agentId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="drugs" data-bind="text: $parent.language.drugs[$parent.currentLanguage()]"></label>
-                    <select id="drugs" style="width: 100%" data-bind="options: $parent.drugs, optionsText: 'name', optionsValue: 'id', value: drugsId, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                    <select id="drugs" style="width: 100%" data-bind="options: $parent.drugs, optionsText: 'name', optionsValue: 'id', value: drugsId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
                 </div>
             </div>
         </div>
@@ -24,13 +24,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="types" data-bind="text: $parent.language.type[$parent.currentLanguage()]"></label>
-                    <select id="types" style="width: 100%" data-bind="options: $parent.types, optionsText: 'title', optionsValue: 'id', value: typeId, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                    <select id="types" style="width: 100%" data-bind="options: $parent.types, optionsText: 'title', optionsValue: 'id', value: typeId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="visitees" data-bind="text: $parent.language.visitee[$parent.currentLanguage()]"></label>
-                    <select id="visitees" style="width: 100%" data-bind="options: $parent.visitees, optionsText: 'name', optionsValue: 'id', value: visitTo, select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                    <select id="visitees" style="width: 100%" data-bind="options: $parent.visitees, optionsText: 'name', optionsValue: 'id', value: visitTo, valueAllowUnset: true, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
                 </div>
             </div>
         </div>

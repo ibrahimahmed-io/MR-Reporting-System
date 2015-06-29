@@ -32,7 +32,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                     Description = q.Description,
                     IsMorning = q.IsMorning,
                     Notes = q.Notes,
-                    LastEditBy = q.LastEditBy,
+                    LastEditByName = q.Agent1.ContactName,
                     LastEditDate = q.LastEditDate,
                     CreationDate = q.CreationDate
                 }).ToList();

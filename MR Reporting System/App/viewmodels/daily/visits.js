@@ -63,7 +63,7 @@
     };
 
     var add = function (obj, e) {
-        drugId(0);
+        visitId(0);
         $('#visitsAddEdit').modal('show');
     };
 
@@ -80,7 +80,7 @@
             new config.ExportColumn(config.language.description[config.currentLanguage()], 'description', 's'),
             new config.ExportColumn(config.language.isMorning[config.currentLanguage()], 'isMorning', 's'),
             new config.ExportColumn(config.language.notes[config.currentLanguage()], 'notes', 's'),
-            new config.ExportColumn(config.language.lastEditBy[config.currentLanguage()], 'lastEditBy', 's'),
+            new config.ExportColumn(config.language.lastEditBy[config.currentLanguage()], 'lastEditByName', 's'),
             new config.ExportColumn(config.language.lastEditDate[config.currentLanguage()], 'lastEditDate', 'd'),
             new config.ExportColumn(config.language.creationDate[config.currentLanguage()], 'creationDate', 'd')];
 
@@ -95,7 +95,7 @@
             visitsGrid.createColumnDefinition('description', config.language.description[config.currentLanguage()], 150, '20%', 'string'),
             visitsGrid.createColumnDefinition('isMorning', config.language.isMorning[config.currentLanguage()], 150, '20%', 'string'),
             visitsGrid.createColumnDefinition('notes', config.language.notes[config.currentLanguage()], 150, '20%', 'string'),
-            visitsGrid.createColumnDefinition('lastEditBy', config.language.lastEditBy[config.currentLanguage()], 150, '20%', 'string'),
+            visitsGrid.createColumnDefinition('lastEditByName', config.language.lastEditBy[config.currentLanguage()], 150, '20%', 'string'),
             visitsGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '20%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
             visitsGrid.createColumnDefinition('creationDate', config.language.creationDate[config.currentLanguage()], 150, '20%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
         ]);

@@ -1750,7 +1750,7 @@ namespace MR_Reporting_System.API
                 Description = dtoDocument.Description,
                 IsMorning = dtoDocument.IsMorning,
                 Notes = dtoDocument.Notes,
-                CreationDate = dtoDocument.CreationDate
+                CreationDate = DateTime.Now
             };
 
             _visits.Add(documentNew);
@@ -1774,6 +1774,7 @@ namespace MR_Reporting_System.API
                 obj.DrugsId = dtoDocument.DrugsId;
                 obj.TypeId = dtoDocument.TypeId;
                 obj.VisitTo = dtoDocument.VisitTo;
+                obj.VisitDate = dtoDocument.VisitDate;
                 obj.Duration = dtoDocument.Duration;
                 obj.Description = dtoDocument.Description;
                 obj.IsMorning = dtoDocument.IsMorning;
