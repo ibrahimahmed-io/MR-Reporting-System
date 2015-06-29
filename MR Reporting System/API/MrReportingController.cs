@@ -1253,6 +1253,33 @@ namespace MR_Reporting_System.API
 
             return Ok(documentNew);
         }
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditDocotors")]
+        public IHttpActionResult EditDocotors(DtoDocotors dtoDocument)
+        {
+            var obj = _docotors.FindBy(x => x.Id == dtoDocument.Id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.Name = dtoDocument.Name;
+                obj.SpecializeId = dtoDocument.SpecializeId;
+                obj.IsMorning = dtoDocument.IsMorning;
+                obj.Address = dtoDocument.Address;
+                obj.AreaId = dtoDocument.AreaId;
+                obj.ClassTypeId = dtoDocument.ClassTypeId;
+                obj.NoOfVisits = dtoDocument.NoOfVisits;
+                obj.Phone = dtoDocument.Phone;
+                obj.Telephone = dtoDocument.Telephone;
+                obj.Email = dtoDocument.Email;
+                obj.Code = dtoDocument.Code;
+
+
+                _docotors.Edit(obj);
+            }
+            _docotors.Save();
+
+            return Ok();
+        }
 
         [AuthorizeUser]
         [HttpGet]
