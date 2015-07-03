@@ -12,7 +12,7 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class AgentPharmacy
+    public partial class AgentPharmacie
     {
         public int Id { get; set; }
         public Nullable<int> AgentId { get; set; }

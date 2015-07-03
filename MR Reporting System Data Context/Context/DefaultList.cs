@@ -21,6 +21,7 @@ namespace MR_Reporting_System_Data_Context.Context
             this.Docotors1 = new HashSet<Docotor>();
             this.Drugs = new HashSet<Drug>();
             this.Hospitals = new HashSet<Hospital>();
+            this.Orders = new HashSet<Order>();
             this.Visits = new HashSet<Visit>();
         }
     
@@ -34,6 +35,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public virtual ICollection<Docotor> Docotors1 { get; set; }
         public virtual ICollection<Drug> Drugs { get; set; }
         public virtual ICollection<Hospital> Hospitals { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Visit> Visits { get; set; }
     }
 }

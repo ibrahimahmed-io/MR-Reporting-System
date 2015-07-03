@@ -49,96 +49,101 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\Agent.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\AgentArea.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\AgentDistributer.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\AgentDrug.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\AgentHospital.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\AgentPharmacy.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    <Compile Include="Context\AgentPharmacie.cs">
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Area.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Company.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\DefaultList.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Distributer.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Docotor.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Drug.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Group.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\GroupPermission.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Hospital.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Location.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\MrReportingDb.Context.cs">
-      <DependentUpon>MrReportingDb.Context.tt</DependentUpon>
+    <Compile Include="Context\MedicalTechnoEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MedicalTechnoEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\MrReportingDb.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+    <Compile Include="Context\MedicalTechnoEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\MrReportingDb.Designer.cs">
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
+    <Compile Include="Context\MedicalTechnoEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MedicalTechnoEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Context\MedicalTechnoEntities.Views.cs" />
+    <Compile Include="Context\Order.cs">
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Context\ordersItem.cs">
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Pharmacy.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\Visit.cs">
-      <DependentUpon>MrReportingDb.tt</DependentUpon>
+      <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Context\MrReportingDb.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MrReportingDb.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
-    <None Include="Context\MrReportingDb.Context.tt">
+    <EntityDeploy Include="Context\MedicalTechnoEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MedicalTechnoEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Context\MedicalTechnoEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
-      <LastGenOutput>MrReportingDb.Context.cs</LastGenOutput>
+      <DependentUpon>MedicalTechnoEntities.edmx</DependentUpon>
+      <LastGenOutput>MedicalTechnoEntities.Context.cs</LastGenOutput>
     </None>
-    <None Include="Context\MrReportingDb.edmx.diagram">
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
+    <None Include="Context\MedicalTechnoEntities.edmx.diagram">
+      <DependentUpon>MedicalTechnoEntities.edmx</DependentUpon>
     </None>
-    <None Include="Context\MrReportingDb.tt">
+    <None Include="Context\MedicalTechnoEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MrReportingDb.edmx</DependentUpon>
-      <LastGenOutput>MrReportingDb.cs</LastGenOutput>
+      <DependentUpon>MedicalTechnoEntities.edmx</DependentUpon>
+      <LastGenOutput>MedicalTechnoEntities.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

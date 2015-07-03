@@ -12,21 +12,16 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Company
+    public partial class ordersItem
     {
-        public Company()
-        {
-            this.Drugs = new HashSet<Drug>();
-        }
+        public int id { get; set; }
+        public string description { get; set; }
+        public string itemCode { get; set; }
+        public Nullable<double> unitPrice { get; set; }
+        public Nullable<int> quantity { get; set; }
+        public Nullable<double> total { get; set; }
+        public Nullable<int> drugsId { get; set; }
     
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Notes { get; set; }
-        public string code { get; set; }
-    
-        public virtual ICollection<Drug> Drugs { get; set; }
+        public virtual Drug Drug { get; set; }
     }
 }

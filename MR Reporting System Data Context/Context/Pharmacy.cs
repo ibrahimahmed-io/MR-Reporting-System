@@ -16,7 +16,7 @@ namespace MR_Reporting_System_Data_Context.Context
     {
         public Pharmacy()
         {
-            this.AgentPharmacies = new HashSet<AgentPharmacy>();
+            this.AgentPharmacies = new HashSet<AgentPharmacie>();
         }
     
         public int Id { get; set; }
@@ -27,8 +27,9 @@ namespace MR_Reporting_System_Data_Context.Context
         public string Email { get; set; }
         public string OwnerName { get; set; }
         public string OwnerPhone { get; set; }
+        public string code { get; set; }
     
-        public virtual ICollection<AgentPharmacy> AgentPharmacies { get; set; }
+        public virtual ICollection<AgentPharmacie> AgentPharmacies { get; set; }
         public virtual Area Area { get; set; }
     }
 }

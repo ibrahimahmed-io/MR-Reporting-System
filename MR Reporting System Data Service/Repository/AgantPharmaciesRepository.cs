@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class AgentpharmaciesRepository : GenericRepository<MedicalTechnoEntities, AgentPharmacy>, IAgentPharmaciesRepository
+    public class AgentpharmaciesRepository : GenericRepository<MedicalTechnoEntities, AgentPharmacie>, IAgentPharmaciesRepository
     {
         public List<DtoAgentPharmacies> SelectAll(string lang)
         {

@@ -56,6 +56,8 @@
     <Compile Include="DataTransferObjectModel\DtoHospitals.cs" />
     <Compile Include="DataTransferObjectModel\DtoLocations.cs" />
     <Compile Include="DataTransferObjectModel\DtoMorningLateVisitCountForDrugReport.cs" />
+    <Compile Include="DataTransferObjectModel\DtoOrders.cs" />
+    <Compile Include="DataTransferObjectModel\DtoOrdersItems.cs" />
     <Compile Include="DataTransferObjectModel\DtoPharmacies.cs" />
     <Compile Include="DataTransferObjectModel\DtoSummaryWords.cs" />
     <Compile Include="DataTransferObjectModel\DtoVisitCost.cs" />

@@ -36,6 +36,8 @@ namespace MR_Reporting_System.API
         private readonly ILocationsRepository _locations;
         private readonly IPharmaciesRepository _pharmacies;
         private readonly IVisitsRepository _visits;
+        private readonly IOrdersRepository _order;
+        private readonly IOrderItemsRepository _orderItems;
 
 
         private readonly string _language;
@@ -44,17 +46,22 @@ namespace MR_Reporting_System.API
         private readonly int _groupId;
 
         public MrReportingController(
+                    IOrdersRepository order,
+                    IOrderItemsRepository orderItems,
                   IAreaRepository area, IDistributersRepository distributers, IDrugsRepository drugs,
                   IDocotorsRepository docotors,
                   IHospitalsRepository hospitals, ILocationsRepository locations,
                   IPharmaciesRepository pharmacies, IVisitsRepository visits,
                   IAgentDrugsRepository agentDrug, IAgentHospitalRepository agentHospital,
-                  IAgentPharmaciesRepository agentPharmacies, IAgentsRepository agents,
+                  IAgentPharmaciesRepository agentPharmacies,
+            IAgentsRepository agents,
                   ICompaniesRepository companies,
                   IDefaultListRepository defaultList,
                   IAgentAreaRepository agentArea, IAgentDistributerRepository agentDistributer,
                   IGroupPermissionsRepository groupPermissions, IGroupsRepository groups)
         {
+            _order = order;
+            _orderItems = _orderItems;
             _groups = groups;
             _agents = agents;
             _permissionGroup = groupPermissions;
@@ -785,7 +792,7 @@ namespace MR_Reporting_System.API
         [Route("AddAgentPharmaciess")]
         public IHttpActionResult AddAgentPharmacies(DtoAgentPharmacies dtoDocument)
         {
-            var documentNew = new AgentPharmacy
+            var documentNew = new AgentPharmacie
             {
                 AgentId = dtoDocument.AgentId,
                 PharmacyId = dtoDocument.PharmacyId

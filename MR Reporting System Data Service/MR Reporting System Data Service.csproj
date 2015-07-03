@@ -98,6 +98,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repository\LocationsRepository.cs" />
+    <Compile Include="Repository\OrdersItemsRepository.cs" />
+    <Compile Include="Repository\OrdersRepository.cs" />
     <Compile Include="Repository\PharmaciesRepository.cs">
       <SubType>Code</SubType>
     </Compile>

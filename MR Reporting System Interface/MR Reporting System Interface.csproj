@@ -45,6 +45,8 @@
     <Compile Include="IDataService\IAgentHospitalRepository.cs" />
     <Compile Include="IDataService\IAgentPharmaciesRepository.cs" />
     <Compile Include="IDataService\IAgentsRepository.cs" />
+    <Compile Include="IDataService\IOrdersRepository.cs" />
+    <Compile Include="IDataService\IOrderItemsRepository.cs" />
     <Compile Include="IDataService\IAreaRepository.cs" />
     <Compile Include="IDataService\ICompaniesRepository.cs" />
     <Compile Include="IDataService\IDefaultListRepository.cs">

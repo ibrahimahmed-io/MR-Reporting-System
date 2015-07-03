@@ -16,20 +16,23 @@ namespace MR_Reporting_System_Data_Context.Context
     {
         public Agent()
         {
-            this.Distributers = new HashSet<Distributer>();
-            this.Docotors = new HashSet<Docotor>();
-            this.Drugs = new HashSet<Drug>();
             this.AgentDistributers = new HashSet<AgentDistributer>();
             this.AgentAreas = new HashSet<AgentArea>();
             this.AgentDrugs = new HashSet<AgentDrug>();
             this.AgentHospitals = new HashSet<AgentHospital>();
-            this.AgentPharmacies = new HashSet<AgentPharmacy>();
+            this.AgentPharmacies = new HashSet<AgentPharmacie>();
             this.Agent1 = new HashSet<Agent>();
             this.Areas = new HashSet<Area>();
-            this.Visits = new HashSet<Visit>();
-            this.Visits1 = new HashSet<Visit>();
+            this.Distributers = new HashSet<Distributer>();
+            this.Docotors = new HashSet<Docotor>();
+            this.Drugs = new HashSet<Drug>();
             this.Hospitals = new HashSet<Hospital>();
             this.Locations = new HashSet<Location>();
+            this.Orders = new HashSet<Order>();
+            this.Orders1 = new HashSet<Order>();
+            this.Orders2 = new HashSet<Order>();
+            this.Visits = new HashSet<Visit>();
+            this.Visits1 = new HashSet<Visit>();
         }
     
         public int id { get; set; }
@@ -48,23 +51,26 @@ namespace MR_Reporting_System_Data_Context.Context
         public string Code { get; set; }
         public string UserType { get; set; }
     
-        public virtual ICollection<Distributer> Distributers { get; set; }
-        public virtual ICollection<Docotor> Docotors { get; set; }
-        public virtual ICollection<Drug> Drugs { get; set; }
         public virtual ICollection<AgentDistributer> AgentDistributers { get; set; }
         public virtual ICollection<AgentArea> AgentAreas { get; set; }
         public virtual ICollection<AgentDrug> AgentDrugs { get; set; }
         public virtual ICollection<AgentHospital> AgentHospitals { get; set; }
-        public virtual ICollection<AgentPharmacy> AgentPharmacies { get; set; }
+        public virtual ICollection<AgentPharmacie> AgentPharmacies { get; set; }
         public virtual ICollection<Agent> Agent1 { get; set; }
         public virtual Agent Agent2 { get; set; }
         public virtual Area Area { get; set; }
         public virtual DefaultList DefaultList { get; set; }
         public virtual Group Group { get; set; }
         public virtual ICollection<Area> Areas { get; set; }
-        public virtual ICollection<Visit> Visits { get; set; }
-        public virtual ICollection<Visit> Visits1 { get; set; }
+        public virtual ICollection<Distributer> Distributers { get; set; }
+        public virtual ICollection<Docotor> Docotors { get; set; }
+        public virtual ICollection<Drug> Drugs { get; set; }
         public virtual ICollection<Hospital> Hospitals { get; set; }
         public virtual ICollection<Location> Locations { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders1 { get; set; }
+        public virtual ICollection<Order> Orders2 { get; set; }
+        public virtual ICollection<Visit> Visits { get; set; }
+        public virtual ICollection<Visit> Visits1 { get; set; }
     }
 }

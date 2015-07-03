@@ -70,6 +70,8 @@ namespace MR_Reporting_System
             kernel.Bind<ILocationsRepository>().To<LocationsRepository>().InRequestScope();
             kernel.Bind<IPharmaciesRepository>().To<PharmaciesRepository>().InRequestScope();
             kernel.Bind<IVisitsRepository>().To<VisitsRepository>().InRequestScope();
+            kernel.Bind<IOrdersRepository>().To<OrdersRepository>().InRequestScope();
+            kernel.Bind<IOrderItemsRepository>().To<OrdersItemsRepository>().InRequestScope();
 
             return kernel;
         }

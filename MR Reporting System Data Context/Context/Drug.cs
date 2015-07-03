@@ -17,6 +17,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public Drug()
         {
             this.AgentDrugs = new HashSet<AgentDrug>();
+            this.ordersItems = new HashSet<ordersItem>();
             this.Visits = new HashSet<Visit>();
         }
     
@@ -34,6 +35,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public virtual ICollection<AgentDrug> AgentDrugs { get; set; }
         public virtual Company Company { get; set; }
         public virtual DefaultList DefaultList { get; set; }
+        public virtual ICollection<ordersItem> ordersItems { get; set; }
         public virtual ICollection<Visit> Visits { get; set; }
     }
 }

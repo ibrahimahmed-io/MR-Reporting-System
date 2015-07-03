@@ -18,6 +18,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public MedicalTechnoEntities()
             : base("name=MedicalTechnoEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -30,7 +31,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public virtual DbSet<AgentDistributer> AgentDistributers { get; set; }
         public virtual DbSet<AgentDrug> AgentDrugs { get; set; }
         public virtual DbSet<AgentHospital> AgentHospitals { get; set; }
-        public virtual DbSet<AgentPharmacy> AgentPharmacies { get; set; }
+        public virtual DbSet<AgentPharmacie> AgentPharmacies { get; set; }
         public virtual DbSet<Area> Areas { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<DefaultList> DefaultLists { get; set; }
@@ -41,6 +42,8 @@ namespace MR_Reporting_System_Data_Context.Context
         public virtual DbSet<GroupPermission> GroupPermissions { get; set; }
         public virtual DbSet<Hospital> Hospitals { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<ordersItem> ordersItems { get; set; }
         public virtual DbSet<Pharmacy> Pharmacies { get; set; }
         public virtual DbSet<Visit> Visits { get; set; }
     }
