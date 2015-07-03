@@ -111,7 +111,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MedicalTechnoEntities.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Context\MedicalTechnoEntities.Views.cs" />
+    <Compile Include="Context\MedicalTechnoEntities.Views.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Context\Order.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>

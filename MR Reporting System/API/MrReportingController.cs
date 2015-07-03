@@ -61,7 +61,7 @@ namespace MR_Reporting_System.API
                   IGroupPermissionsRepository groupPermissions, IGroupsRepository groups)
         {
             _order = order;
-            _orderItems = _orderItems;
+            _orderItems = orderItems;
             _groups = groups;
             _agents = agents;
             _permissionGroup = groupPermissions;
