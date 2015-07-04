@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(MR_Reporting_System_Data_Context.Context.MedicalTechnoEntities),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsf21851b96fa8fdd6072eb4dda235f631f8bad47c9ca58175fab42ede3e385964))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets7df4d989393a551437322f330c6ee8a53e68ef1b440deb5b7795699fe6f003ca))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySetsf21851b96fa8fdd6072eb4dda235f631f8bad47c9ca58175fab42ede3e385964 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets7df4d989393a551437322f330c6ee8a53e68ef1b440deb5b7795699fe6f003ca : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "f21851b96fa8fdd6072eb4dda235f631f8bad47c9ca58175fab42ede3e385964"; }
+            get { return "7df4d989393a551437322f330c6ee8a53e68ef1b440deb5b7795699fe6f003ca"; }
         }
 
         /// <summary>
@@ -640,7 +640,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ordersItems
-        [MedicalTechnoModel.Store.ordersItems](T1.ordersItems_id, T1.ordersItems_description, T1.ordersItems_itemCode, T1.ordersItems_unitPrice, T1.ordersItems_quantity, T1.ordersItems_total, T1.ordersItems_drugsId)
+        [MedicalTechnoModel.Store.ordersItems](T1.ordersItems_id, T1.ordersItems_description, T1.ordersItems_itemCode, T1.ordersItems_unitPrice, T1.ordersItems_quantity, T1.ordersItems_total, T1.ordersItems_drugsId, T1.ordersItems_orderId)
     FROM (
         SELECT 
             T.id AS ordersItems_id, 
@@ -650,6 +650,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.quantity AS ordersItems_quantity, 
             T.total AS ordersItems_total, 
             T.drugsId AS ordersItems_drugsId, 
+            T.orderId AS ordersItems_orderId, 
             True AS _from0
         FROM Entities.ordersItems AS T
     ) AS T1");
@@ -1099,7 +1100,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ordersItems
-        [MedicalTechnoModel.ordersItem](T1.ordersItem_id, T1.ordersItem_description, T1.ordersItem_itemCode, T1.ordersItem_unitPrice, T1.ordersItem_quantity, T1.ordersItem_total, T1.ordersItem_drugsId)
+        [MedicalTechnoModel.ordersItem](T1.ordersItem_id, T1.ordersItem_description, T1.ordersItem_itemCode, T1.ordersItem_unitPrice, T1.ordersItem_quantity, T1.ordersItem_total, T1.ordersItem_drugsId, T1.ordersItem_orderId)
     FROM (
         SELECT 
             T.id AS ordersItem_id, 
@@ -1109,6 +1110,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.quantity AS ordersItem_quantity, 
             T.total AS ordersItem_total, 
             T.drugsId AS ordersItem_drugsId, 
+            T.orderId AS ordersItem_orderId, 
             True AS _from0
         FROM MedicalTechnoModelStoreContainer.ordersItems AS T
     ) AS T1");

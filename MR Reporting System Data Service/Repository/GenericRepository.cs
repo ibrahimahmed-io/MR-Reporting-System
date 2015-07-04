@@ -6,8 +6,7 @@ using MR_Reporting_System_Interface.IDataService;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public abstract class GenericRepository<TC, T> :
-        IGenericRepository<T>
+    public abstract class GenericRepository<TC, T> : IGenericRepository<T>
         where T : class
         where TC : DbContext, new()
     {

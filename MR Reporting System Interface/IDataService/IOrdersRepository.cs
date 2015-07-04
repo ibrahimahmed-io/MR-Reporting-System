@@ -7,10 +7,12 @@ namespace MR_Reporting_System_Interface.IDataService
 {
     public interface IOrdersRepository : IGenericRepository<Order>
     {
-        IQueryable<DtoOrders> selectAll(int agentId, string lang);
-
-        //WriteMethod2
-
+        List<DtoOrders> selectAll(string lang);
+        List<DtoOrders> getOrdersByClient(int clientId, string lang);
+        List<DtoOrders> getOrdersByAgentId(int agentId, string lang);
+        List<DtoSummaryWords> AlertsByOrders();
+        List<DtoSummaryWords> AlertsApproved();
+        List<DtoSummaryWords> AlertsOrdersandApprvoved();
         DtoOrders selectById(int id, string lang); 
     }
 }

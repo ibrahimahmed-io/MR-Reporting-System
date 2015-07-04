@@ -21,7 +21,9 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<int> quantity { get; set; }
         public Nullable<double> total { get; set; }
         public Nullable<int> drugsId { get; set; }
+        public Nullable<int> orderId { get; set; }
     
         public virtual Drug Drug { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

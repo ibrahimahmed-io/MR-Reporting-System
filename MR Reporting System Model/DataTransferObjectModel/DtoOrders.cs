@@ -70,12 +70,15 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             set;
         }
 
+
+        public string supervisorStatus { get; set; }
         public bool? isDeliverd
         {
             get;
             set;
         }
 
+        public string deliverdStatus { get; set; }
         public DateTime? supervisorDate
         {
             get;

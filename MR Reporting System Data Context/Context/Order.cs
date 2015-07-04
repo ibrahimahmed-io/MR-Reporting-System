@@ -14,6 +14,11 @@ namespace MR_Reporting_System_Data_Context.Context
     
     public partial class Order
     {
+        public Order()
+        {
+            this.ordersItems = new HashSet<ordersItem>();
+        }
+    
         public int id { get; set; }
         public Nullable<int> orderTo { get; set; }
         public Nullable<int> orderTypeId { get; set; }
@@ -23,7 +28,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<System.DateTime> estimateDate { get; set; }
         public Nullable<System.DateTime> deliverdDate { get; set; }
         public Nullable<bool> supervisorApprove { get; set; }
-        public Nullable<long> isDeliverd { get; set; }
+        public Nullable<bool> isDeliverd { get; set; }
         public Nullable<System.DateTime> supervisorDate { get; set; }
         public Nullable<int> noOfItems { get; set; }
         public Nullable<double> total { get; set; }
@@ -36,5 +41,6 @@ namespace MR_Reporting_System_Data_Context.Context
         public virtual Agent Agent1 { get; set; }
         public virtual Agent Agent2 { get; set; }
         public virtual DefaultList DefaultList { get; set; }
+        public virtual ICollection<ordersItem> ordersItems { get; set; }
     }
 }

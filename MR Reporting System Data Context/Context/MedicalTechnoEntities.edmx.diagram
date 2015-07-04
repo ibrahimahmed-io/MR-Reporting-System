@@ -65,6 +65,7 @@
         <AssociationConnector Association="MedicalTechnoModel.FK_ordersItems_Drug" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalTechnoModel.FK_visits_drugs" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalTechnoModel.FK_groupPermissions_groupPermissions" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalTechnoModel.fk_ordersItems_orderId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MedicalTechnoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MedicalTechnoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="id" />
@@ -191,7 +191,7 @@
           <Property Name="estimateDate" Type="date" />
           <Property Name="deliverdDate" Type="date" />
           <Property Name="supervisorApprove" Type="bit" />
-          <Property Name="isDeliverd" Type="bigint" />
+          <Property Name="isDeliverd" Type="bit" />
           <Property Name="supervisorDate" Type="date" />
           <Property Name="noOfItems" Type="int" />
           <Property Name="total" Type="float" />
@@ -211,6 +211,7 @@
           <Property Name="quantity" Type="int" />
           <Property Name="total" Type="float" StoreGeneratedPattern="Computed" />
           <Property Name="drugsId" Type="int" />
+          <Property Name="orderId" Type="int" />
         </EntityType>
         <EntityType Name="Pharmacy">
           <Key>
@@ -664,6 +665,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_ordersItems_orderId">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="ordersItems" Type="Self.ordersItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ordersItems">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_pharmacies_Area">
           <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
           <End Role="Pharmacy" Type="Self.Pharmacy" Multiplicity="*" />
@@ -885,6 +898,10 @@
             <End Role="Drug" EntitySet="Drug" />
             <End Role="ordersItems" EntitySet="ordersItems" />
           </AssociationSet>
+          <AssociationSet Name="fk_ordersItems_orderId" Association="Self.fk_ordersItems_orderId">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="ordersItems" EntitySet="ordersItems" />
+          </AssociationSet>
           <AssociationSet Name="FK_pharmacies_Area" Association="Self.FK_pharmacies_Area">
             <End Role="Area" EntitySet="Area" />
             <End Role="Pharmacy" EntitySet="Pharmacy" />
@@ -906,8 +923,7 @@
             <End Role="Visit" EntitySet="Visit" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MedicalTechnoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1166,7 +1182,7 @@
           <Property Name="estimateDate" Type="DateTime" Precision="0" />
           <Property Name="deliverdDate" Type="DateTime" Precision="0" />
           <Property Name="supervisorApprove" Type="Boolean" />
-          <Property Name="isDeliverd" Type="Int64" />
+          <Property Name="isDeliverd" Type="Boolean" />
           <Property Name="supervisorDate" Type="DateTime" Precision="0" />
           <Property Name="noOfItems" Type="Int32" />
           <Property Name="total" Type="Double" />
@@ -1178,6 +1194,7 @@
           <NavigationProperty Name="Agent1" Relationship="Self.FK_Orders_Agent1" FromRole="Orders" ToRole="Agent" />
           <NavigationProperty Name="Agent2" Relationship="Self.FK_Orders_Orders" FromRole="Orders" ToRole="Agent" />
           <NavigationProperty Name="DefaultList" Relationship="Self.FK_Orders_DefaultList" FromRole="Orders" ToRole="DefaultList" />
+          <NavigationProperty Name="ordersItems" Relationship="MedicalTechnoModel.fk_ordersItems_orderId" FromRole="Order" ToRole="ordersItem" />
         </EntityType>
         <EntityType Name="ordersItem">
           <Key>
@@ -1191,6 +1208,8 @@
           <Property Name="total" Type="Double" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="drugsId" Type="Int32" />
           <NavigationProperty Name="Drug" Relationship="Self.FK_ordersItems_Drug" FromRole="ordersItems" ToRole="Drug" />
+          <Property Name="orderId" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="MedicalTechnoModel.fk_ordersItems_orderId" FromRole="ordersItem" ToRole="Order" />
         </EntityType>
         <EntityType Name="Pharmacy">
           <Key>
@@ -1891,7 +1910,23 @@
             <End Role="Group" EntitySet="Groups" />
             <End Role="GroupPermission" EntitySet="GroupPermissions" />
           </AssociationSet>
+          <AssociationSet Name="fk_ordersItems_orderId" Association="MedicalTechnoModel.fk_ordersItems_orderId">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="ordersItem" EntitySet="ordersItems" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="fk_ordersItems_orderId">
+          <End Type="MedicalTechnoModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="MedicalTechnoModel.ordersItem" Role="ordersItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ordersItem">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2113,6 +2148,7 @@
           <EntitySetMapping Name="ordersItems">
             <EntityTypeMapping TypeName="MedicalTechnoModel.ordersItem">
               <MappingFragment StoreEntitySet="ordersItems">
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="itemCode" ColumnName="itemCode" />
