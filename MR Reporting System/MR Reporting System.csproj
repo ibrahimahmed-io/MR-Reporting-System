@@ -150,6 +150,9 @@
     <Content Include="App\viewmodels\reports\visitCost.js" />
     <Content Include="App\viewmodels\reports\visitsOnDrug.js" />
     <Content Include="App\viewmodels\shell.js" />
+    <Content Include="App\viewmodels\summaries\orderApproved.js" />
+    <Content Include="App\viewmodels\summaries\alertOrdersCompleted.js" />
+    <Content Include="App\viewmodels\summaries\alertOrders.js" />
     <Content Include="App\viewmodels\summaries\notAssign.js" />
     <Content Include="App\viewmodels\summaries\alerts.js" />
     <Content Include="App\views\admin\accounts.html" />
@@ -179,6 +182,9 @@
     <Content Include="App\views\reports\visitCost.html" />
     <Content Include="App\views\reports\visitsOnDrug.html" />
     <Content Include="App\views\shell.html" />
+    <Content Include="App\views\summaries\alertOrdersCompleted.html" />
+    <Content Include="App\views\summaries\orderApproved.html" />
+    <Content Include="App\views\summaries\alertOrders.html" />
     <Content Include="App\views\summaries\notAssign.html" />
     <Content Include="App\views\summaries\alerts.html" />
     <Content Include="css\bootmetro-icons.css" />

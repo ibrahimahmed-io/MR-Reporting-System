@@ -1885,7 +1885,7 @@ namespace MR_Reporting_System.API
             return Ok(result);
         }
 
-        #region Orders and all operations 
+        #region Orders and all operations
 
         [AuthorizeUser]
         [HttpGet]
@@ -1949,7 +1949,14 @@ namespace MR_Reporting_System.API
             var result = _order.AlertsOrdersandApprvoved();
             return Ok(result);
         }
-
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("AlertsOrdersandApprvovedDetail")]
+        public IHttpActionResult AlertsOrdersandApprvovedDetail(string type)
+        {
+            var result = _order.AlertsOrdersandApprvovedDetail(type);
+            return Ok(result);
+        }
         [AuthorizeUser]
         [HttpGet]
         [Route("DeleteOrdersById")]
@@ -2033,7 +2040,7 @@ namespace MR_Reporting_System.API
             };
             _order.Add(DocumentNew);
             _order.Save();
-            _order.Reload(DocumentNew); 
+            _order.Reload(DocumentNew);
             return Ok(DocumentNew);
         }
 

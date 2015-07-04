@@ -400,6 +400,16 @@
 
 
 
+
+    var getAlertsOnOrdersApprovedToOrders = function () {
+        return $.getJSON(config.remoteServerName + "/GetAlertsOnOrdersApprovedToOrders");
+
+    };
+    var alertsOrdersandApprvovedDetail = function (type) {
+        return $.getJSON(config.remoteServerName + "/AlertsOrdersandApprvovedDetail", { type: type });
+
+    };
+
     var getOrders = function () {
         return $.getJSON(config.remoteServerName + "/GetOrders");
 
@@ -421,7 +431,7 @@
     var addOrders = function (documnetObservable) {
         return $.post(config.remoteServerName + "/AddOrders", documnetObservable);
     };
-     
+
     var deleteOrders = function (id) {
         return $.getJSON(config.remoteServerName + "/DeleteOrdersById", { id: id });
     };
@@ -451,6 +461,8 @@
 
 
     var dataservice = {
+        getAlertsOnOrdersApprovedToOrders: getAlertsOnOrdersApprovedToOrders,
+        alertsOrdersandApprvovedDetail: alertsOrdersandApprvovedDetail,
 
         getOrders: getOrders,
         getOrdersById: getOrdersById,

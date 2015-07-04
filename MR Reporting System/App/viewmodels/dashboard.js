@@ -145,7 +145,11 @@
                 moduleTitle: "Alerting Summary on Visits ",
                 moduleId: "viewmodels/summaries/alerts"
                 // ,canView: config.isAllow(1362)
-            
+
+            }, {
+
+                moduleTitle: "Alerting Summary on All Orders ",
+                moduleId: "viewmodels/summaries/alertOrders"
             }]
         }, {
             widgetsCategory: "widgetsCharts",
@@ -159,13 +163,13 @@
         }]);
 
     vm.activate = function () {
-        
+
         if (window.localStorage.getItem("Plugin_position__widget-grid")) {
             window.localStorage.removeItem("Plugin_position__widget-grid");
         }
 
         if (!(!!window.localStorage.getItem("SelectedWidgets"))) {
-            window.localStorage.setItem("SelectedWidgets", JSON.stringify([{ "moduleId": "viewmodels/summaries/alerts", "column": "left" }]));
+            window.localStorage.setItem("SelectedWidgets", JSON.stringify([{ "moduleId": "viewmodels/summaries/alerts", "column": "left" }, { "moduleId": "viewmodels/summaries/alertOrders", "column": "right" }]));
         }
 
         var selectedWidgets = JSON.parse(window.localStorage.getItem("SelectedWidgets")) || [];
