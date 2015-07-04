@@ -35,7 +35,7 @@
             buttons: '[No][Yes]'
         }, function (buttonPressed) {
             if (buttonPressed === "Yes") {
-                dataservice.deleteVisitsById(selectedRowId()).success(function (data) {
+                dataservice.deleteVisits(selectedRowId()).success(function (data) {
                     $.smallBox({
                         title: "Operation completed successfuly",
                         content: "<i class='fa fa-clock-o'></i> <i>Record deleted successfuly...</i>",

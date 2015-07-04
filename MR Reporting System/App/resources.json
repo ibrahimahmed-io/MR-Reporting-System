@@ -16,9 +16,9 @@
         "en": "Configuration Name",
         "ar": "اسم الاعداد"
     },
-    "workspace": {
-        "en": "Workspace",
-        "ar": "مساحة العمل"
+    "orders": {
+        "en": "Orders",
+        "ar": "امر شراء"
     },
     "discussionPanel": {
         "en": "Discussion Panel",
@@ -458,16 +458,16 @@
         "en": "day1",
         "ar": "اليوم الاول"
     },
-    "day2": {
-        "en": "day2",
-        "ar": "day2"
+    "supervisorStatus": {
+        "en": "supervisor Status",
+        "ar": "حالة المدير"
     },
-    "day3": {
-        "en": "day3",
-        "ar": "day3"
+    "supervisorDate": {
+        "en": "supervisor Date",
+        "ar": "تاريخ الاعتماد"
     },
-    "day4": {
-        "en": "day4",
+    "deliverdStatus": {
+        "en": "deliverd Status",
         "ar": "عدد الساعات"
     },
     "day5": {
@@ -1622,13 +1622,13 @@
         "en": "Please Enter Subject",
         "ar": "برجاء ادخال العنوان"
     },
-    "addProjectsForms": {
-        "en": "Add Project Form",
-        "ar": "اضافة النماذج"
+    "estimateDate": {
+        "en": "estimate Date",
+        "ar": "التاريخ المتوقع"
     },
-    "projectsForms": {
-        "en": "Projects Forms",
-        "ar": "النماذج العامة"
+    "orderDate": {
+        "en": "order Date ",
+        "ar": "تاريخ امر الشراء"
     },
     "docClosedate": {
         "en": "Doc Close Date",

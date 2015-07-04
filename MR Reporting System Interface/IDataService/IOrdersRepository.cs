@@ -8,6 +8,7 @@ namespace MR_Reporting_System_Interface.IDataService
     public interface IOrdersRepository : IGenericRepository<Order>
     {
         List<DtoOrders> selectAll(string lang);
+        List<DtoOrders> selectBySupervisor(int supervisorId);
         List<DtoOrders> getOrdersByClient(int clientId, string lang);
         List<DtoOrders> getOrdersByAgentId(int agentId, string lang);
         List<DtoSummaryWords> AlertsByOrders();

@@ -139,7 +139,6 @@ namespace MR_Reporting_System.API
                         {
                             iss = SecurityConstants.TokenIssuer,
                             sub = agent.id.ToString(),
-
                             iat = currentTime,
                             exp = currentTime + 604800,
                             uty = agent.UserType,
@@ -1865,6 +1864,289 @@ namespace MR_Reporting_System.API
 
             return Ok(result);
         }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersByClient")]
+        public IHttpActionResult GetOrdersByClient(int clientId)
+        {
+            var result = new List<DtoOrders>();
+            result = _order.getOrdersByClient(clientId, _language).ToList();
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersByAgentId")]
+        public IHttpActionResult GetOrdersByAgentId()
+        {
+            var result = new List<DtoOrders>();
+            result = _order.getOrdersByAgentId(_accountId, _language).ToList();
+            return Ok(result);
+        }
+
+        #region Orders and all operations 
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrders")]
+        public IHttpActionResult GetOrders()
+        {
+            var result = new List<DtoOrders>();
+            if (_userType.Equals("Company"))
+            {
+                result = _order.selectAll(_language).ToList();
+
+            }
+            else
+            {
+                result = _order.getOrdersByAgentId(_accountId, _language).ToList();
+            }
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersById")]
+        public IHttpActionResult GetOrdersById(int id)
+        {
+            var result = _order.selectById(id, _language);
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersSupervisorApproval")]
+        public IHttpActionResult GetOrdersSupervisorApproval()
+        {
+            var result = _order.selectBySupervisor(_accountId);
+            return Ok();
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetAlertsOnOrders")]
+        public IHttpActionResult GetAlertsOnOrders()
+        {
+            var result = _order.AlertsByOrders();
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetAlertsOnOrdersApproved")]
+        public IHttpActionResult GetAlertsOnOrdersApproved()
+        {
+            var result = _order.AlertsApproved();
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetAlertsOnOrdersApprovedToOrders")]
+        public IHttpActionResult GetAlertsOnOrdersApprovedToOrders()
+        {
+            var result = _order.AlertsOrdersandApprvoved();
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("DeleteOrdersById")]
+        public IHttpActionResult DeleteOrdersById(int id)
+        {
+            var result = _order.FindBy(x => x.id == id).SingleOrDefault();
+            result.deletedBy = _accountId;
+            _order.Edit(result);
+            _order.Save();
+            var list = new List<DtoOrders>();
+
+            if (_userType.Equals("Company"))
+            {
+
+                list = _order.selectAll(_language);
+            }
+            else
+            {
+                list = _order.getOrdersByAgentId(_accountId, _language);
+            }
+
+            return Ok(list);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("updateOrdersBySupervisor")]
+        public IHttpActionResult updateOrdersBySupervisor(List<int> ids, bool status)
+        {
+            foreach (int item in ids)
+            {
+                var order = _order.FindBy(x => x.id == item).FirstOrDefault();
+                order.supervisorDate = DateTime.Now.Date;
+                order.supervisorApprove = status;
+                _order.Edit(order);
+                _order.Save();
+            }
+
+            return Ok();
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("updateOrdersByAgent")]
+        public IHttpActionResult updateOrdersByAgent(List<int> ids, bool status)
+        {
+            foreach (int item in ids)
+            {
+                var order = _order.FindBy(x => x.id == item).FirstOrDefault();
+                order.isDeliverd = status;
+                order.lastEditBy = _accountId;
+                order.lastEditDate = DateTime.Now.Date;
+                _order.Edit(order);
+                _order.Save();
+            }
+
+            return Ok();
+        }
+
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("AddOrders")]
+        public IHttpActionResult AddOrders(DtoOrders dtoDocument)
+        {
+            var DocumentNew = new Order
+            {
+                orderTo = dtoDocument.orderTo,
+                orderTypeId = dtoDocument.orderTypeId,
+                agentId = dtoDocument.agentId,
+                subject = dtoDocument.subject,
+                orderDate = dtoDocument.orderDate,
+                estimateDate = dtoDocument.estimateDate,
+                deliverdDate = dtoDocument.deliverdDate,
+                supervisorApprove = dtoDocument.supervisorApprove,
+                isDeliverd = dtoDocument.isDeliverd,
+                supervisorDate = dtoDocument.supervisorDate,
+                noOfItems = dtoDocument.noOfItems,
+                total = dtoDocument.total,
+                netTotal = dtoDocument.netTotal
+            };
+            _order.Add(DocumentNew);
+            _order.Save();
+            _order.Reload(DocumentNew); 
+            return Ok(DocumentNew);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("EditOrders")]
+        public IHttpActionResult EditOrders(DtoOrders dtoDocument)
+        {
+
+            var order = _order.FindBy(x => x.id == dtoDocument.id).FirstOrDefault();
+            if (order != null)
+            {
+                order.orderTo = dtoDocument.orderTo;
+                order.orderTypeId = dtoDocument.orderTypeId;
+                order.agentId = dtoDocument.agentId;
+                order.subject = dtoDocument.subject;
+                order.orderDate = dtoDocument.orderDate;
+                order.estimateDate = dtoDocument.estimateDate;
+                order.deliverdDate = dtoDocument.deliverdDate;
+                order.supervisorApprove = dtoDocument.supervisorApprove;
+                order.isDeliverd = dtoDocument.isDeliverd;
+                order.supervisorDate = dtoDocument.supervisorDate;
+                order.noOfItems = dtoDocument.noOfItems;
+                order.total = dtoDocument.total;
+                order.netTotal = dtoDocument.netTotal;
+                order.lastEditDate = DateTime.Now.Date;
+                order.lastEditBy = _accountId;
+
+                _order.Edit(order);
+            };
+            _order.Save();
+
+            return Ok(order);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersItems")]
+        public IHttpActionResult GetOrdersItems(int orderId)
+        {
+            var result = new List<DtoOrdersItems>();
+            result = _orderItems.selectAll(orderId, _language).ToList();
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersItemsById")]
+        public IHttpActionResult GetOrdersItemsById(int id)
+        {
+            var result = _orderItems.selectById(id, _language);
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("DeleteOrdersItemsById")]
+        public IHttpActionResult DeleteOrdersItemsById(int id)
+        {
+            var result = _orderItems.FindBy(x => x.id == id).SingleOrDefault();
+            if (result != null)
+            {
+
+                _orderItems.Delete(result);
+                _orderItems.Save();
+
+                var order = _order.FindBy(x => x.id == result.orderId).FirstOrDefault();
+                order.noOfItems = order.noOfItems - 1;
+                order.total = order.total ?? 0 - result.total ?? 0;
+                order.netTotal = order.netTotal ?? 0 - result.total ?? 0;
+                order.lastEditBy = _accountId;
+                order.lastEditDate = DateTime.Now.Date;
+                _order.Edit(order);
+                _order.Save();
+
+            }
+
+            return Ok();
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("AddOrdersItems")]
+        public IHttpActionResult AddOrdersItems(DtoOrdersItems dtoDocument)
+        {
+            var DocumentNew = new ordersItem
+            {
+                description = dtoDocument.description,
+                itemCode = dtoDocument.itemCode,
+                unitPrice = dtoDocument.unitPrice,
+                quantity = dtoDocument.quantity,
+                total = dtoDocument.total,
+                drugsId = dtoDocument.drugsId
+
+            };
+            _orderItems.Add(DocumentNew);
+            _orderItems.Save();
+
+            #region edit on orders
+            var sumItem = _orderItems.FindBy(x => x.orderId == dtoDocument.orderId).ToList().Select(x => x.total).Sum();
+            var order = _order.FindBy(x => x.id == dtoDocument.orderId).FirstOrDefault();
+            order.total = sumItem;
+            order.noOfItems = order.noOfItems ?? 0 + 1;
+            _order.Edit(order);
+            _order.Save();
+
+            #endregion
+            var list = _orderItems.selectAll((int)dtoDocument.orderId, _language).ToList();
+
+            return Ok(list);
+        }
+
+        #endregion
     }
 }
 

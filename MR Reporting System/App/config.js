@@ -126,6 +126,18 @@
         nav: false,
         settings: { daily: true }
     }, {
+        route: 'orders',
+        moduleId: 'daily/orders',
+        title: 'orders',
+        nav: true,
+        settings: { daily: true }
+    }, {
+        route: 'ordersAddEdit/(:id)',
+        moduleId: 'daily/ordersAddEdit',
+        title: 'orders Add Edit',
+        nav: false,
+        settings: { daily: true }
+    }, {
         route: 'VisitsOnDrug',
         moduleId: 'reports/visitsOnDrug',
         title: 'Visits On Drug',

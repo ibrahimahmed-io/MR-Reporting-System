@@ -322,7 +322,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                              {
                                  Id = agent.Id,
                                  VisitDate = agent.VisitDate
-                             }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-14)).ToList();
+                             }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-14) && x.VisitDate <= currentDate.Value.AddDays(-7)
+                             ).ToList();
 
             var listMoreWeek = (from agent in Context.Visits
 
@@ -333,7 +334,9 @@ namespace MR_Reporting_System_Data_Service.Repository
                                 }).ToList().Where(x => x.VisitDate <= currentDate.Value.AddDays(-14)).ToList();
 
             list.Add(new DtoSummaryWords { item = "This Week", total = list.Count() });
+
             list.Add(new DtoSummaryWords { item = "Two Week", total = list2Week.Count() });
+
             list.Add(new DtoSummaryWords { item = "More Two Week", total = listMoreWeek.Count() });
 
             return list;

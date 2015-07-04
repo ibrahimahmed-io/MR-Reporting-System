@@ -1,4 +1,5 @@
 ﻿define(['durandal/system', 'config'], function (system, config) {
+
     var getAccounts = function () {
         return $.getJSON(config.remoteServerName + "/GetAgents");
     };
@@ -314,9 +315,11 @@
     var visitsByAgent = function (observableObj) {
         return $.post(config.remoteServerName + "/VisitsByAgent", observableObj);
     };
+
     var visitsByArea = function (observableObj) {
-     return $.post(config.remoteServerName + "/VisitsByArea", observableObj);
+        return $.post(config.remoteServerName + "/VisitsByArea", observableObj);
     };
+
     var getDistributers = function (documnetObservable) {
         return $.getJSON(config.remoteServerName + "/GetDistributers").done(function (data) {
             if (documnetObservable) {
@@ -351,8 +354,8 @@
         });
     };
 
-    var getAlertVisitsDetail = function ( listType) {
-        return $.getJSON(config.remoteServerName + "/GetAlertVisitsDetail", { listType: listType }) ;
+    var getAlertVisitsDetail = function (listType) {
+        return $.getJSON(config.remoteServerName + "/GetAlertVisitsDetail", { listType: listType });
     };
 
     var getGroups = function (documnetObservable) {
@@ -395,7 +398,69 @@
         });
     };
 
+
+
+    var getOrders = function () {
+        return $.getJSON(config.remoteServerName + "/GetOrders");
+
+    };
+
+    var getOrdersById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetOrdersById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editOrders = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditOrders", documnetObservable);
+    };
+
+    var addOrders = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddOrders", documnetObservable);
+    };
+     
+    var deleteOrders = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteOrdersById", { id: id });
+    };
+
+    var getOrdersItems = function (orderId) {
+        return $.getJSON(config.remoteServerName + "/GetOrdersItems", { orderId: orderId });
+    };
+
+    var getOrdersItemsById = function (documnetObservable, id) {
+        return $.getJSON(config.remoteServerName + "/GetOrdersItemsById", { id: id }).done(function (data) {
+            documnetObservable(data);
+        });
+    };
+
+    var editOrdersItems = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/EditOrdersItems", documnetObservable);
+    };
+
+    var addOrdersItems = function (documnetObservable) {
+        return $.post(config.remoteServerName + "/AddOrdersItems", documnetObservable);
+    };
+
+    var deleteOrdersItems = function (id) {
+        return $.getJSON(config.remoteServerName + "/DeleteOrdersItemsById", { id: id });
+    };
+
+
+
     var dataservice = {
+
+        getOrders: getOrders,
+        getOrdersById: getOrdersById,
+        editOrders: editOrders,
+        addOrders: addOrders,
+        deleteOrders: deleteOrders,
+        getOrdersItems: getOrdersItems,
+        getOrdersItemsById: getOrdersItemsById,
+        editOrdersItems: editOrdersItems,
+        addOrdersItems: addOrdersItems,
+        deleteOrdersItems: deleteOrdersItems,
+
+
         visitsCost: visitsCost,
         visitsByAgent: visitsByAgent,
         visitsByArea: visitsByArea,

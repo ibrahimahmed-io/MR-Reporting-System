@@ -44,6 +44,11 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             get;
             set;
         }
+        public int? orderId
+        {
+            get;
+            set;
+        }
 
         public string drugsName
         {

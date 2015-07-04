@@ -45,6 +45,11 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             get;
             set;
         }
+        public string clientName
+        {
+            get;
+            set;
+        }
 
         public DateTime? orderDate
         {
@@ -109,6 +114,7 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             set;
         }
 
+        public string lastEditName { get; set; }
         public DateTime? lastEditDate
         {
             get;
