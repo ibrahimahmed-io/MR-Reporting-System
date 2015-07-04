@@ -407,7 +407,10 @@
 
     var getOrdersById = function (documnetObservable, id) {
         return $.getJSON(config.remoteServerName + "/GetOrdersById", { id: id }).done(function (data) {
-            documnetObservable(data);
+            if (documnetObservable) {
+
+                documnetObservable(data);
+            }
         });
     };
 

@@ -1,67 +1,159 @@
-﻿<div class="modal-content">
+﻿<div class="modal-content" style="overflow-x: hidden">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             ×
         </button>
         <h4 class="modal-title" id="visitsAddEditLabel" data-bind="text: visitsAddEditLabel"></h4>
-    </div>
-    <div class="modal-body" data-bind="with: orderObject">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="agents" data-bind="text: $parent.language.agent[$parent.currentLanguage()]"></label>
-                    <select id="agents" style="width: 100%" data-bind="options: $parent.agents, optionsText: 'contactName', optionsValue: 'id', value: agentId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
-                </div>
-            </div>
+        <div id="rootwizard">
+            <ul class="nav nav-tabs pull-right">
+                <li class="active" data-target="#step1">
+                    <a href="#tab1" data-toggle="tab"><span class="hidden-mobile hidden-tablet" data-bind="text: language.distributionList[currentLanguage()]"></span> </a>
+                </li>
+                <li data-target="#step2">
+                    <a href="#tab2" data-toggle="tab"><span class="hidden-mobile hidden-tablet" data-bind="text: language.items[currentLanguage()]"></span> </a>
+                </li>
 
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="types" data-bind="text: $parent.language.type[$parent.currentLanguage()]"></label>
-                    <select id="types" style="width: 100%" data-bind="options: $parent.types, optionsText: 'title', optionsValue: 'id', value: orderTypeId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="visitees" data-bind="text: $parent.language.visitee[$parent.currentLanguage()]"></label>
-                    <select id="visitees" style="width: 100%" data-bind="options: $parent.visitees, optionsText: 'name', optionsValue: 'id', value: orderTo, valueAllowUnset: true, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="orderDate" data-bind="text: $parent.language.orderDate[$parent.currentLanguage()]"></label>
-                    <input type="text" class="form-control" id="orderDate" data-bind="datepicker: orderDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="estimateDate" data-bind="text: $parent.language.estimateDate[$parent.currentLanguage()]"></label>
-                    <input type="text" class="form-control" id="estimateDate" data-bind="datepicker: estimateDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }">
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="description" data-bind="text: $parent.language.subject[$parent.currentLanguage()]"></label>
-                    <input type="text" class="form-control" id="subject" data-bind="value: subject, attr: { placeholder: $parent.language.subject[$parent.currentLanguage()] }">
-                </div>
-            </div>
-            <div class="col-md-6">
-
-            </div>
+            </ul>
         </div>
     </div>
-    <div class="modal-footer">
-        <!-- ko ifnot: isEdit -->
-        <button type="button" data-loading-text="Saving..." class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: addVisit"></button>
-        <!-- /ko -->
-        <!-- ko if: isEdit -->
-        <button type="button" data-loading-text="Saving..." class="btn btn-primary" data-bind="text: language.save[currentLanguage()], click: editVisit"></button>
-        <!-- /ko -->
+    <div class="tab-content col col-sm-12 col-md-12 col-xs-12 col-lg-12">
+        <div class="tab-pane active " id="tab1">
+            <section class="col col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+                <div class="modal-body" data-bind="with: orderObject">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="agents" data-bind="text: $parent.language.agent[$parent.currentLanguage()]"></label>
+                                <select id="agents" style="width: 100%" data-bind="options: $parent.agents, optionsText: 'contactName', optionsValue: 'id', value: agentId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="types" data-bind="text: $parent.language.type[$parent.currentLanguage()]"></label>
+                                <select id="types" style="width: 100%" data-bind="options: $parent.types, optionsText: 'title', optionsValue: 'id', value: orderTypeId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="visitees" data-bind="text: $parent.language.visitee[$parent.currentLanguage()]"></label>
+                                <select id="visitees" style="width: 100%" data-bind="options: $parent.visitees, optionsText: 'name', optionsValue: 'id', value: orderTo, valueAllowUnset: true, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="orderDate" data-bind="text: $parent.language.orderDate[$parent.currentLanguage()]"></label>
+                                <input type="text" class="form-control" id="orderDate" data-bind="datepicker: orderDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="estimateDate" data-bind="text: $parent.language.estimateDate[$parent.currentLanguage()]"></label>
+                                <input type="text" class="form-control" id="estimateDate" data-bind="datepicker: estimateDate, datepickerOptions: { format: 'dd/mm/yyyy', todayBtn: 'linked', autoclose: true }">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="description" data-bind="text: $parent.language.subject[$parent.currentLanguage()]"></label>
+                                <input type="text" class="form-control" id="subject" data-bind="value: subject, attr: { placeholder: $parent.language.subject[$parent.currentLanguage()] }">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
+                </div>
+
+                <footer>
+                    <ul class="pager wizard">
+                        <li class="previous"><a href="javascript:;" data-loading-text="Saving..." data-bind="click: $root.previousTab">Previous</a></li>
+                        <li class="next"><a href="javascript:;" data-loading-text="Saving..." data-bind="click: $root.nextTab">Next</a></li>
+                    </ul>
+                </footer>
+            </section>
+        </div>
+        <div class="tab-pane" id="tab2">
+            <section class="col col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+                <div class="modal-body" data-bind="with: orderItem" style="overflow-x: hidden">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="label" data-bind="text: $root.language.description[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
+
+                                <input type="text" class="form-control" name="description" data-bind="value: description, attr: { placeholder: $root.language.description[$root.currentLanguage()] }" required>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="label" data-bind="text: $root.language.drug[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
+
+                                <select id="drugsId" style="width: 100%" data-bind="options: $parent.drugs, optionsText: 'name', optionsValue: 'id', value: drugsId, optionsCaption: '', select2: { placeholder: $parent.language.selectValue[$parent.currentLanguage()], allowClear: true }"></select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="label" data-bind="text: $root.language.quantity[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
+
+                                <input type="text" class="form-control" name="quantity" data-bind="value: quantity, attr: { placeholder: $root.language.quantity[$root.currentLanguage()] }" required>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="label" data-bind="text: $root.language.unitPrice[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
+
+                                <input type="text" class="form-control" name="unitPrice" data-bind="value: unitPrice, attr: { placeholder: $root.language.unitPrice[$root.currentLanguage()] }" required>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="label" data-bind="text: $root.language.itemCode[$root.currentLanguage()], style: { 'text-align': $root.language.direction[$root.currentLanguage()] }"></label>
+
+                                <input type="text" class="form-control" name="itemCode" data-bind="value: itemCode, attr: { placeholder: $root.language.itemCode[$root.currentLanguage()] }">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="modal-footer">
+                            <button type="button" data-loading-text="Saving..." class="btn btn-primary" id="add" data-bind="text: $parent.language.save[$parent.currentLanguage()],click: $root.addItem"></button>
+                        </div>
+                    </div>
+
+                    <footer>
+                        <ul class="pager wizard">
+                            <li class="previous"><a href="javascript:;" data-bind="click: $root.previousTab">Previous</a></li>
+                            <li class="next"><a href="javascript:;" data-bind="click: $root.nextTab">Next</a></li>
+                        </ul>
+                    </footer>
+
+                    <div class="gridStyle" id="items" data-bind="koGrid: $parent.orderItemsGridOptions()"></div>
+
+
+
+                </div>
+
+
+            </section>
+        </div>
+
     </div>
 </div>

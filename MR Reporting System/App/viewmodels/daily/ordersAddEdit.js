@@ -1,4 +1,8 @@
 ﻿define(['services/dataservice', 'config'], function (dataservice, config) {
+    var knockoutGrid = {};
+
+    var orderItemsGridOptions = ko.observable();
+
     var visit = function () {
         var self = this;
 
@@ -77,11 +81,16 @@
 
     var isEdit = ko.observable();
 
+    var selectedRowId = ko.observable();
+
     var drugs = ko.observableArray([]);
 
     var orderItemId = ko.observable();
 
     function attached() {
+
+        $(".fixed-action-btn").tooltip({ container: 'body' });
+
         $("#rootwizard").bootstrapWizard({
             'tabClass': 'nav nav-tabs pull-right',
             'onTabClick': function (tab, navigation, index) {
@@ -95,7 +104,7 @@
         var activatedTab = $("#rootwizard").find("ul li:has([data-toggle='tab']).active");
         var tabToActivateIndex = $("#rootwizard").find("ul li:has([data-toggle='tab'])").index(activatedTab) + 1;
 
-        var isValid = $("#eForm").valid();
+        //var isValid = $("#orderEditForm").valid();
 
         if (tabToActivateIndex == 1) {
             if (isEdit()) {
@@ -151,13 +160,51 @@
 
     var activate = function (orderId) {
 
+        orderItemId(orderId);
+
+        knockoutGrid = new config.KoGridInstanceCreator();
+
+        knockoutGrid.columnDefs([
+               knockoutGrid.createColumnDefinition('description', config.language.description[config.currentLanguage()], 65, '15%', 'string'),
+               knockoutGrid.createColumnDefinition('quantity', config.language.quantity[config.currentLanguage()], 155, '15%', 'int'),
+               knockoutGrid.createColumnDefinition('unitPrice', config.language.unitPrice[config.currentLanguage()], 200, '10%', 'int'),
+               knockoutGrid.createColumnDefinition('total', config.language.total[config.currentLanguage()], 150, '15%', 'int'),
+               knockoutGrid.createColumnDefinition('itemCode', config.language.itemCode[config.currentLanguage()], 50, '10%', 'string'),
+               knockoutGrid.createColumnDefinition('drugsName', 'No Of Visits', 150, '15%', 'string')
+        ]);
+
+        knockoutGrid.gridSelectionChange(function (rowItem, event) {
+            if (event.target.type && (event.target.type.toLowerCase() === 'checkbox')) {
+                if (rowItem.selected()) {
+                    selectedRowId(rowItem.entity.id);
+                    return true;
+                } else {
+                    selectedRowId(undefined);
+                    return true;
+                }
+
+            }
+        });
+
+
+        orderItemsGridOptions(knockoutGrid.getGridOptions()());
+
+        if (orderItemId()) {
+
+            dataservice.getOrdersItems(orderItemId()).done(function (data) {
+
+                knockoutGrid.setInitialData(data);
+
+                $(".loading-data").addClass("hidden");
+            });
+
+        }
         visitees([]);
 
         orderObject(new visit());
 
         orderObject().initialize();
 
-        orderItemId(orderId);
 
         orderObject().orderTypeId.subscribe(function (value) {
             var type = ko.utils.arrayFirst(types(), function (item) {
@@ -194,15 +241,17 @@
 
         });
 
-
         isEdit((orderId !== 0) ? true : false);
 
         visitsAddEditLabel(config.language.orders[config.currentLanguage()] + ' - ' + config.language.goAdd[config.currentLanguage()]);
 
         if (isEdit()) {
-            dataservice.getOrdersById(undefined, parseInt(orderId)).success(function (data) {
-                orderObject().fill(data);
-            });
+            if (orderItemId()) {
+
+                dataservice.getOrdersById(undefined, parseInt(orderId)).success(function (data) {
+                    orderObject().fill(data);
+                });
+            }
             visitsAddEditLabel(config.language.orders[config.currentLanguage()] + ' - ' + config.language.goEdit[config.currentLanguage()]);
         }
 
@@ -212,6 +261,10 @@
 
         dataservice.getTypesForVisits().success(function (data) {
             types(data);
+        });
+
+        dataservice.getDrugs().success(function (data) {
+            drugs(data);
         });
     };
 
@@ -235,9 +288,15 @@
     var addItem = function (obj, e) {
         $(e.target).button('loading');
 
-        dataservice.addOrdersItems(orderItem()).success(function () {
+        orderItem().orderId(orderItemId());
+
+        dataservice.addOrdersItems(orderItem()).success(function (data) {
 
             $(e.target).button('reset');
+
+            knockoutGrid.setInitialData(data);
+
+            $(".loading-data").addClass("hidden");
 
             orderItem(new orderItemModel());
 
@@ -261,7 +320,9 @@
         addItem: addItem,
         previousTab: previousTab,
         nextTab: nextTab,
-        orderItem: orderItem
+        orderItemsGridOptions: orderItemsGridOptions,
+        orderItem: orderItem,
+        selectedRowId: selectedRowId
 
     }
 
