@@ -28,12 +28,12 @@
                             <button type="button" class="close" data-bind="style: { float: language.btnFloat[currentLanguage()] }" data-dismiss="modal" aria-hidden="true">
                                 ×
                             </button>
-                            <h4 class="modal-title" data-bind="text: language.alertVisits[currentLanguage()]"></h4>
+                            <h4 class="modal-title" data-bind="text: title"></h4>
 
                         </div>
 
                         <div class="modal-body">
-                            <div class="gridStyle" id="dataTableOppenedDocuments" data-bind="koGrid: gridOptions()"></div>
+                            <div class="gridStyle" id="gridComplete" data-bind="koGrid: gridOptions()"></div>
                            
                         </div>
                         <div class="modal-footer">

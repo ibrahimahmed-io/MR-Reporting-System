@@ -1949,6 +1949,7 @@ namespace MR_Reporting_System.API
             var result = _order.AlertsOrdersandApprvoved();
             return Ok(result);
         }
+
         [AuthorizeUser]
         [HttpGet]
         [Route("AlertsOrdersandApprvovedDetail")]
@@ -1957,6 +1958,15 @@ namespace MR_Reporting_System.API
             var result = _order.AlertsOrdersandApprvovedDetail(type);
             return Ok(result);
         }
+   [AuthorizeUser]
+        [HttpGet]
+        [Route("AlertsByOrdersCompleteDetail")]
+        public IHttpActionResult AlertsByOrdersCompleteDetail(string type)
+        {
+            var result = _order.AlertsByOrdersCompleteDetail(type);
+            return Ok(result);
+        }
+
         [AuthorizeUser]
         [HttpGet]
         [Route("DeleteOrdersById")]

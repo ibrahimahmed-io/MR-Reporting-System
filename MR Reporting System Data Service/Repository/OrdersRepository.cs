@@ -361,22 +361,151 @@ namespace MR_Reporting_System_Data_Service.Repository
             DateTime? currentDate = DateTime.Now.Date;
 
             var week = (from o in Context.Orders
-                        where o.deletedBy == null
+                        where o.deletedBy == null && o.isDeliverd == true
                         select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
 
             var week2 = (from o in Context.Orders
-                         where o.deletedBy == null
+                         where o.deletedBy == null && o.isDeliverd == true
 
                          select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).Count();
 
             var moreWeeks = (from o in Context.Orders
-                             where o.deletedBy == null
+                             where o.deletedBy == null && o.isDeliverd == true
 
                              select o).ToList().Where(o => o.orderDate <= currentDate.Value.AddDays(-14)).Count();
 
             list.Add(new DtoSummaryWords { item = "This Week", total = week });
             list.Add(new DtoSummaryWords { item = "Two Week", total = week2 });
             list.Add(new DtoSummaryWords { item = "More Two Week", total = moreWeeks });
+            return list;
+        }
+
+        public List<DtoOrders> AlertsByOrdersCompleteDetail(string type)
+        {
+
+            var list = new List<DtoOrders>();
+
+            DateTime? currentDate = DateTime.Now.Date;
+            if (type == "This Week")
+            {
+
+                #region orders that superVisor was approved
+
+                list = (from q in Context.Orders.Include("agent")
+                        where q.isDeliverd == true && q.deletedBy == null
+                        select new DtoOrders
+                        {
+                            id = q.id,
+                            orderTo = q.orderTo,
+                            orderTypeId = q.orderTypeId,
+                            agentName = q.Agent.ContactName,
+                            agentId = q.agentId,
+                            subject = q.subject,
+                            orderDate = q.orderDate,
+                            estimateDate = q.estimateDate,
+                            deliverdDate = q.deliverdDate,
+                            supervisorApprove = q.supervisorApprove,
+                            deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
+                            supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending",
+                            isDeliverd = q.isDeliverd,
+                            supervisorDate = q.supervisorDate,
+                            noOfItems = q.noOfItems,
+                            total = q.total,
+                            netTotal = q.netTotal,
+                            lastEditBy = q.lastEditBy,
+                            lastEditName = q.Agent2.ContactName,
+                            lastEditDate = q.lastEditDate
+                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
+
+                foreach (DtoOrders item in list)
+                {
+                    var obj = Context.DefaultLists.FirstOrDefault(x => x.Id == item.orderTypeId).Action;
+
+                    switch (obj)
+                    {
+                        case 1:
+
+                            item.orderTypeName = "Doctors";
+                            item.clientName = Context.Docotors.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                        case 2:
+                            item.orderTypeName = "Pharmacies";
+                            item.clientName = Context.Pharmacies.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                        case 3:
+                            item.orderTypeName = "Hospitals";
+                            item.clientName = Context.Hospitals.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                        case 4:
+                            item.orderTypeName = "Distributers";
+                            item.clientName = Context.Distributers.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                    }
+                }
+                #endregion
+            }
+            else if (type == "Two Week")
+            {
+
+
+                #region orders that superVisor was approved
+                list = (from q in Context.Orders.Include("agent")
+                        where q.isDeliverd == true && q.deletedBy == null
+                        select new DtoOrders
+                        {
+                            id = q.id,
+                            orderTo = q.orderTo,
+                            orderTypeId = q.orderTypeId,
+                            agentName = q.Agent.ContactName,
+                            agentId = q.agentId,
+                            subject = q.subject,
+                            orderDate = q.orderDate,
+                            estimateDate = q.estimateDate,
+                            deliverdDate = q.deliverdDate,
+                            supervisorApprove = q.supervisorApprove,
+                            deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
+                            supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending",
+                            isDeliverd = q.isDeliverd,
+                            supervisorDate = q.supervisorDate,
+                            noOfItems = q.noOfItems,
+                            total = q.total,
+                            netTotal = q.netTotal,
+                            lastEditBy = q.lastEditBy,
+                            lastEditName = q.Agent2.ContactName,
+                            lastEditDate = q.lastEditDate
+                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).ToList();
+
+                foreach (DtoOrders item in list)
+                {
+                    var obj = Context.DefaultLists.FirstOrDefault(x => x.Id == item.orderTypeId).Action;
+
+                    switch (obj)
+                    {
+                        case 1:
+
+                            item.orderTypeName = "Doctors";
+                            item.clientName = Context.Docotors.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                        case 2:
+                            item.orderTypeName = "Pharmacies";
+                            item.clientName = Context.Pharmacies.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                        case 3:
+                            item.orderTypeName = "Hospitals";
+                            item.clientName = Context.Hospitals.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                        case 4:
+                            item.orderTypeName = "Distributers";
+                            item.clientName = Context.Distributers.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                            break;
+                    }
+                }
+                #endregion
+            }
+
+            //list.Add(new DtoSummaryWords { item = "This Week", total = week });
+            //list.Add(new DtoSummaryWords { item = "Two Week", total = week2 });
+            //list.Add(new DtoSummaryWords { item = "More Two Week", total = moreWeeks });
             return list;
         }
 

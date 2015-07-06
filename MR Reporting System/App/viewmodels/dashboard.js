@@ -150,6 +150,10 @@
 
                 moduleTitle: "Alerting Summary on All Orders ",
                 moduleId: "viewmodels/summaries/alertOrders"
+            }, {
+
+                moduleTitle: "Alerting Summary on Orders Completed",
+                moduleId: "viewmodels/summaries/alertOrdersCompleted"
             }]
         }, {
             widgetsCategory: "widgetsCharts",
@@ -169,7 +173,7 @@
         }
 
         if (!(!!window.localStorage.getItem("SelectedWidgets"))) {
-            window.localStorage.setItem("SelectedWidgets", JSON.stringify([{ "moduleId": "viewmodels/summaries/alerts", "column": "left" }, { "moduleId": "viewmodels/summaries/alertOrders", "column": "right" }]));
+            window.localStorage.setItem("SelectedWidgets", JSON.stringify([{ "moduleId": "viewmodels/summaries/alerts", "column": "left" }, { "moduleId": "viewmodels/summaries/alertOrders", "column": "right" }, { "moduleId": "viewmodels/summaries/alertOrdersCompleted", "column": "left" }]));
         }
 
         var selectedWidgets = JSON.parse(window.localStorage.getItem("SelectedWidgets")) || [];

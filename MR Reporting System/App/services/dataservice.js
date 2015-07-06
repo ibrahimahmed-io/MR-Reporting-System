@@ -405,11 +405,23 @@
         return $.getJSON(config.remoteServerName + "/GetAlertsOnOrdersApprovedToOrders");
 
     };
+    var getAlertsOnOrders = function () {
+        return $.getJSON(config.remoteServerName + "/GetAlertsOnOrders");
+
+    };
+    var getAlertsOnOrdersApproved = function () {
+        return $.getJSON(config.remoteServerName + "/GetAlertsOnOrdersApproved");
+
+    };
+
     var alertsOrdersandApprvovedDetail = function (type) {
         return $.getJSON(config.remoteServerName + "/AlertsOrdersandApprvovedDetail", { type: type });
 
     };
+    var alertsByOrdersCompleteDetail = function (type) {
+        return $.getJSON(config.remoteServerName + "/AlertsByOrdersCompleteDetail", { type: type });
 
+    };
     var getOrders = function () {
         return $.getJSON(config.remoteServerName + "/GetOrders");
 
@@ -461,8 +473,11 @@
 
 
     var dataservice = {
+        getAlertsOnOrders: getAlertsOnOrders,
+        getAlertsOnOrdersApproved: getAlertsOnOrdersApproved,
         getAlertsOnOrdersApprovedToOrders: getAlertsOnOrdersApprovedToOrders,
         alertsOrdersandApprvovedDetail: alertsOrdersandApprvovedDetail,
+        alertsByOrdersCompleteDetail: alertsByOrdersCompleteDetail,
 
         getOrders: getOrders,
         getOrdersById: getOrdersById,
