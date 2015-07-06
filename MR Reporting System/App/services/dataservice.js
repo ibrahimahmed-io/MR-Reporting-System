@@ -405,6 +405,11 @@
         return $.getJSON(config.remoteServerName + "/GetAlertsOnOrdersApprovedToOrders");
 
     };
+
+    var getOrdersSupervisorApproval = function () {
+        return $.getJSON(config.remoteServerName + "/GetOrdersSupervisorApproval");
+
+    };
     var getAlertsOnOrders = function () {
         return $.getJSON(config.remoteServerName + "/GetAlertsOnOrders");
 
@@ -473,6 +478,7 @@
 
 
     var dataservice = {
+        getOrdersSupervisorApproval: getOrdersSupervisorApproval,
         getAlertsOnOrders: getAlertsOnOrders,
         getAlertsOnOrdersApproved: getAlertsOnOrdersApproved,
         getAlertsOnOrdersApprovedToOrders: getAlertsOnOrdersApprovedToOrders,

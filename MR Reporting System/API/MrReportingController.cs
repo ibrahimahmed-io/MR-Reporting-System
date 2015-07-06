@@ -122,7 +122,7 @@ namespace MR_Reporting_System.API
 
             var response = new HttpResponseMessage();
 
-            Agent agent = _agents.FindBy(x => x.UserName.Equals(user.UserName)).SingleOrDefault();
+            Agent agent = _agents.FindBy(x => x.UserName.Equals(user.UserName)).FirstOrDefault();
 
             if (agent != null)
             {
@@ -161,7 +161,7 @@ namespace MR_Reporting_System.API
                         return ResponseMessage(response);
 
                     }
-                    if (agent.UserType.Equals("User"))
+                    if (agent.UserType.Equals("User")||agent.UserType.Equals("Agent"))
                     {
 
                         string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
@@ -193,38 +193,39 @@ namespace MR_Reporting_System.API
 
                         return ResponseMessage(response);
                     }
-                }
-                else if (agent.UserType.Equals("admin"))
-                {
-                    string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
-
-                    var currentTime =
-                        (long)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalSeconds;
-
-                    var payload = new JwtPayload
+                    else if (agent.UserType.Equals("admin"))
                     {
-                        iss = SecurityConstants.TokenIssuer,
-                        sub = agent.id.ToString(),
-                        iat = currentTime,
-                        exp = currentTime + 604800,
-                        uty = agent.UserType,
-                        gri = agent.GroupId.ToString()
+                        string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
 
-                    };
+                        var currentTime =
+                            (long)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalSeconds;
 
-                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + agent.id));
-                    if (!dir.Exists)
-                    {
-                        dir.Create();
+                        var payload = new JwtPayload
+                        {
+                            iss = SecurityConstants.TokenIssuer,
+                            sub = agent.id.ToString(),
+                            iat = currentTime,
+                            exp = currentTime + 604800,
+                            uty = agent.UserType,
+                            gri = agent.GroupId.ToString()
+
+                        };
+
+                        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/temp/" + agent.id));
+                        if (!dir.Exists)
+                        {
+                            dir.Create();
+                        }
+
+                        string jwt = TokenManager.EncodeToken(payload, secret);
+
+                        response.StatusCode = HttpStatusCode.OK;
+                        response.Headers.Add("Authorization", jwt);
+
+                        return ResponseMessage(response);
                     }
-
-                    string jwt = TokenManager.EncodeToken(payload, secret);
-
-                    response.StatusCode = HttpStatusCode.OK;
-                    response.Headers.Add("Authorization", jwt);
-
-                    return ResponseMessage(response);
                 }
+
 
 
             }
@@ -1920,7 +1921,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult GetOrdersSupervisorApproval()
         {
             var result = _order.selectBySupervisor(_accountId);
-            return Ok();
+            return Ok(result);
         }
 
         [AuthorizeUser]
