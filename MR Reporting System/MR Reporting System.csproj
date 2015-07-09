@@ -7707,6 +7707,7 @@
     <Content Include="node_modules\gulp\node_modules\vinyl-fs\README.md" />
     <Content Include="node_modules\gulp\package.json" />
     <Content Include="node_modules\gulp\README.md" />
+    <None Include="Properties\PublishProfiles\medicalreporting.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
