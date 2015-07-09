@@ -12,7 +12,7 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Visits
+    public partial class Visit
     {
         public int Id { get; set; }
         public Nullable<int> AgentId { get; set; }
@@ -28,9 +28,9 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<System.DateTime> LastEditDate { get; set; }
         public Nullable<System.DateTime> CreationDate { get; set; }
     
-        public virtual Agents Agents { get; set; }
-        public virtual Agents Agents1 { get; set; }
-        public virtual DefaultLists DefaultLists { get; set; }
-        public virtual Drugs Drugs { get; set; }
+        public virtual Agent Agent { get; set; }
+        public virtual Agent Agent1 { get; set; }
+        public virtual DefaultList DefaultList { get; set; }
+        public virtual Drug Drug { get; set; }
     }
 }

@@ -12,25 +12,24 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Docotors
+    public partial class Pharmacy
     {
+        public Pharmacy()
+        {
+            this.AgentPharmacies = new HashSet<AgentPharmacie>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> SpecializeId { get; set; }
-        public Nullable<bool> IsMorning { get; set; }
-        public string Address { get; set; }
         public Nullable<int> AreaId { get; set; }
-        public Nullable<int> ClassTypeId { get; set; }
-        public Nullable<int> NoOfVisits { get; set; }
+        public string Address { get; set; }
         public string Phone { get; set; }
-        public string Telephone { get; set; }
         public string Email { get; set; }
-        public string Code { get; set; }
-        public Nullable<int> DeletedBy { get; set; }
+        public string OwnerName { get; set; }
+        public string OwnerPhone { get; set; }
+        public string code { get; set; }
     
-        public virtual Agents Agents { get; set; }
-        public virtual Areas Areas { get; set; }
-        public virtual DefaultLists DefaultLists { get; set; }
-        public virtual DefaultLists DefaultLists1 { get; set; }
+        public virtual ICollection<AgentPharmacie> AgentPharmacies { get; set; }
+        public virtual Area Area { get; set; }
     }
 }

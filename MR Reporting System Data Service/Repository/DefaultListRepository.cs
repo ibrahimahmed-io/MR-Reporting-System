@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class DefaultListRepository : GenericRepository<MedicalTechnoEntities, DefaultLists>, IDefaultListRepository
+    public class DefaultListRepository : GenericRepository<MedicalTechnoEntities, DefaultList>, IDefaultListRepository
     {
         public List<DtoDefaultList> SelectAll(string lang)
         {
@@ -59,7 +59,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         }).FirstOrDefault();
             } return list;
         }
-        public IEnumerable<DefaultLists> SelectByAccountIdType(int accountOwnerId, string listType)
+        public IEnumerable<DefaultList> SelectByAccountIdType(int accountOwnerId, string listType)
         {
             var list = (from q in Context.DefaultLists
                 where q.Type == listType
@@ -68,7 +68,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list.AsEnumerable();
         }
 
-        public IEnumerable<DefaultLists> SelectByAccountIdTypeAbbreviation(string abbreviation,
+        public IEnumerable<DefaultList> SelectByAccountIdTypeAbbreviation(string abbreviation,
             int accountOwnerId, string listType)
         {
             var list = (from q in Context.DefaultLists
@@ -78,7 +78,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list.AsEnumerable();
         }
 
-        public IEnumerable<DefaultLists> SelectByAccountIdTypeAction(string listType, int action,
+        public IEnumerable<DefaultList> SelectByAccountIdTypeAction(string listType, int action,
             int accountOwnerId)
         {
             var list = (from q in Context.DefaultLists
@@ -88,7 +88,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list.AsEnumerable();
         }
 
-        public DefaultLists SelectByAccountIdTypeActionNotList(string listType, int action, int accountOwnerId)
+        public DefaultList SelectByAccountIdTypeActionNotList(string listType, int action, int accountOwnerId)
         {
             var list = (from q in Context.DefaultLists
                         where q.Type == listType && q.Action == action
@@ -97,7 +97,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list;
         }
 
-        public IEnumerable<DefaultLists> SelectByAccountIdTypeNoAction(string listType, int accountId)
+        public IEnumerable<DefaultList> SelectByAccountIdTypeNoAction(string listType, int accountId)
         {
             var list = (from q in Context.DefaultLists
                 where  q.Type == listType
@@ -106,7 +106,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list.AsEnumerable();
         }
 
-        public DefaultLists SelectById(int id)
+        public DefaultList SelectById(int id)
         {
             var result = (from q in Context.DefaultLists
                           where q.Id == id

@@ -12,13 +12,13 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class AgentAreas
+    public partial class AgentDistributer
     {
         public int Id { get; set; }
         public Nullable<int> AgentId { get; set; }
-        public Nullable<int> AreaId { get; set; }
+        public Nullable<int> DistributerId { get; set; }
     
-        public virtual Areas Areas { get; set; }
-        public virtual Agents Agents { get; set; }
+        public virtual Agent Agent { get; set; }
+        public virtual Distributer Distributer { get; set; }
     }
 }

@@ -12,18 +12,18 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Locations
+    public partial class Location
     {
-        public Locations()
+        public Location()
         {
-            this.Areas = new HashSet<Areas>();
+            this.Areas = new HashSet<Area>();
         }
     
         public int Id { get; set; }
         public string Title { get; set; }
         public Nullable<int> DeletedBy { get; set; }
     
-        public virtual Agents Agents { get; set; }
-        public virtual ICollection<Areas> Areas { get; set; }
+        public virtual Agent Agent { get; set; }
+        public virtual ICollection<Area> Areas { get; set; }
     }
 }

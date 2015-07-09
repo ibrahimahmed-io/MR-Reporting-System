@@ -4,7 +4,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IDrugsRepository:IGenericRepository<Drugs>
+    public interface IDrugsRepository:IGenericRepository<Drug>
     {
         List<DtoDrugs> SelectAll( string lang);
         DtoDrugs SelectById(int id, string lang); 

@@ -122,7 +122,7 @@ namespace MR_Reporting_System.API
 
             var response = new HttpResponseMessage();
 
-            Agents agent = _agents.FindBy(x => x.UserName.Equals(user.UserName)).FirstOrDefault();
+            Agent agent = _agents.FindBy(x => x.UserName.Equals(user.UserName)).FirstOrDefault();
 
             if (agent != null)
             {
@@ -298,7 +298,7 @@ namespace MR_Reporting_System.API
         {
             foreach (var permission in documentPermissions)
             {
-                var permissionEntity = new GroupPermissions()
+                var permissionEntity = new GroupPermission()
                 {
                     PermissionCode = permission.PermissionCode,
                     Value = permission.Value,
@@ -343,7 +343,7 @@ namespace MR_Reporting_System.API
         public IHttpActionResult Addaccount(DtoAgents newaccount)
         {
 
-            var accounts = new Agents
+            var accounts = new Agent
             {
                 UserName = newaccount.UserName,
                 PassWord = PasswordHash.CreateHash(newaccount.PassWord),
@@ -455,7 +455,7 @@ namespace MR_Reporting_System.API
         [Route("AddaccountsDefaultList")]
         public IHttpActionResult AddaccountsDefaultList(DtoDefaultList accountsDefaultList)
         {
-            var accountsDefaultListEntity = new DefaultLists
+            var accountsDefaultListEntity = new DefaultList
             {
                 Title = accountsDefaultList.Title,
                 Type = accountsDefaultList.Type,
@@ -499,7 +499,7 @@ namespace MR_Reporting_System.API
         [Route("AccountsDefaultListDelete")]
         public IHttpActionResult AccountsDefaultListDelete(int id)
         {
-            DefaultLists accountsDefaultList = _defaultList.SelectById(id);
+            DefaultList accountsDefaultList = _defaultList.SelectById(id);
 
             _defaultList.Delete(accountsDefaultList);
             _defaultList.Save();
@@ -512,7 +512,7 @@ namespace MR_Reporting_System.API
         [Route("EditAccountsDefaultList")]
         public IHttpActionResult EditAccountsDefaultList(DtoDefaultList accountDefaultList)
         {
-            var accountDefaultListEntity = new DefaultLists
+            var accountDefaultListEntity = new DefaultList
             {
                 Id = accountDefaultList.Id,
                 Title = accountDefaultList.Title,
@@ -576,7 +576,7 @@ namespace MR_Reporting_System.API
             {
                 foreach (int item in dtoDocument.agentAreas)
                 {
-                    var obj = new AgentAreas
+                    var obj = new AgentArea
                     {
                         AgentId = dtoDocument.AgentId,
                         AreaId = item
@@ -633,7 +633,7 @@ namespace MR_Reporting_System.API
         [Route("AddAgentDistributers")]
         public IHttpActionResult AddAgentDistributer(DtoAgentDistributer dtoDocument)
         {
-            var documentNew = new AgentDistributers
+            var documentNew = new AgentDistributer
             {
                 AgentId = dtoDocument.AgentId,
                 DistributerId = dtoDocument.DistributerId,
@@ -686,7 +686,7 @@ namespace MR_Reporting_System.API
         {
             foreach (int item in dtoDocument.agentDrugs)
             {
-                var obj = new AgentDrugs
+                var obj = new AgentDrug
                 {
                     AgentId = dtoDocument.AgentId,
                     DrugsId = item
@@ -742,7 +742,7 @@ namespace MR_Reporting_System.API
         [Route("AddAgentHospitals")]
         public IHttpActionResult AddAgentHospital(DtoAgentHospital dtoDocument)
         {
-            var documentNew = new AgentHospitals
+            var documentNew = new AgentHospital
             {
                 AgentId = dtoDocument.AgentId,
                 HospitalId = dtoDocument.HospitalId
@@ -792,7 +792,7 @@ namespace MR_Reporting_System.API
         [Route("AddAgentPharmaciess")]
         public IHttpActionResult AddAgentPharmacies(DtoAgentPharmacies dtoDocument)
         {
-            var documentNew = new AgentPharmacies
+            var documentNew = new AgentPharmacie
             {
                 AgentId = dtoDocument.AgentId,
                 PharmacyId = dtoDocument.PharmacyId
@@ -843,7 +843,7 @@ namespace MR_Reporting_System.API
         [Route("AddAgents")]
         public IHttpActionResult AddAgents(DtoAgents dtoDocument)
         {
-            var documentNew = new Agents
+            var documentNew = new Agent
             {
                 UserName = dtoDocument.UserName,
                 PassWord = PasswordHash.CreateHash(dtoDocument.PassWord),
@@ -906,7 +906,7 @@ namespace MR_Reporting_System.API
         [Route("AddAreas")]
         public IHttpActionResult AddArea(DtoArea dtoDocument)
         {
-            var documentNew = new Areas
+            var documentNew = new Area
             {
                 LocationId = dtoDocument.LocationId,
                 Title = dtoDocument.Title
@@ -958,7 +958,7 @@ namespace MR_Reporting_System.API
         [Route("AddCompaniess")]
         public IHttpActionResult AddCompanies(DtoCompanies dtoDocument)
         {
-            var documentNew = new Companies
+            var documentNew = new Company
             {
                 Name = dtoDocument.Name,
                 Description = dtoDocument.Description,
@@ -1023,7 +1023,7 @@ namespace MR_Reporting_System.API
         [Route("AddDefaultList")]
         public IHttpActionResult AddDefaultList(DtoDefaultList dtoDocument)
         {
-            var documentNew = new DefaultLists
+            var documentNew = new DefaultList
             {
                 Title = dtoDocument.Title,
                 Type = dtoDocument.Type
@@ -1094,7 +1094,7 @@ namespace MR_Reporting_System.API
         [Route("AddDistributers")]
         public IHttpActionResult AddDistributers(DtoDistributers dtoDocument)
         {
-            var documentNew = new Distributers
+            var documentNew = new Distributer
             {
                 Name = dtoDocument.Name,
                 AreaId = dtoDocument.AreaId,
@@ -1240,7 +1240,7 @@ namespace MR_Reporting_System.API
         [Route("AddDocotors")]
         public IHttpActionResult AddDocotors(DtoDocotors dtoDocument)
         {
-            var documentNew = new Docotors
+            var documentNew = new Docotor
             {
                 Name = dtoDocument.Name,
                 SpecializeId = dtoDocument.SpecializeId,
@@ -1350,7 +1350,7 @@ namespace MR_Reporting_System.API
         [Route("AddDrugs")]
         public IHttpActionResult AddDrugs(DtoDrugs dtoDocument)
         {
-            var documentNew = new Drugs
+            var documentNew = new Drug
             {
                 Name = dtoDocument.Name,
                 Description = dtoDocument.Description,
@@ -1407,7 +1407,7 @@ namespace MR_Reporting_System.API
         [Route("AddGroupPermissions")]
         public IHttpActionResult AddGroupPermissions(DtoGroupPermissions dtoDocument)
         {
-            var documentNew = new GroupPermissions
+            var documentNew = new GroupPermission
             {
                 GroupId = dtoDocument.GroupId,
                 PermissionCode = dtoDocument.PermissionCode,
@@ -1481,7 +1481,7 @@ namespace MR_Reporting_System.API
         [Route("AddGroups")]
         public IHttpActionResult AddGroups(DtoGroups dtoDocument)
         {
-            var documentNew = new Groups
+            var documentNew = new Group
             {
                 GroupName = dtoDocument.GroupName,
 
@@ -1558,7 +1558,7 @@ namespace MR_Reporting_System.API
         [Route("AddHospitals")]
         public IHttpActionResult AddHospitals(DtoHospitals dtoDocument)
         {
-            var documentNew = new Hospitals
+            var documentNew = new Hospital
             {
                 Name = dtoDocument.Name,
                 AreaId = dtoDocument.AreaId,
@@ -1640,7 +1640,7 @@ namespace MR_Reporting_System.API
         [Route("AddLocationss")]
         public IHttpActionResult AddLocations(DtoLocations dtoDocument)
         {
-            var documentNew = new Locations
+            var documentNew = new Location
             {
                 Title = dtoDocument.Title
 
@@ -1705,7 +1705,7 @@ namespace MR_Reporting_System.API
         [Route("AddPharmacies")]
         public IHttpActionResult AddPharmacies(DtoPharmacies dtoDocument)
         {
-            var documentNew = new Pharmacies
+            var documentNew = new Pharmacy
             {
                 Name = dtoDocument.Name,
                 AreaId = dtoDocument.AreaId,
@@ -1796,7 +1796,7 @@ namespace MR_Reporting_System.API
         [Route("AddVisits")]
         public IHttpActionResult AddVisits(DtoVisits dtoDocument)
         {
-            var documentNew = new Visits
+            var documentNew = new Visit
             {
                 AgentId = dtoDocument.AgentId,
                 DrugsId = dtoDocument.DrugsId,
@@ -2033,7 +2033,7 @@ namespace MR_Reporting_System.API
         [Route("AddOrders")]
         public IHttpActionResult AddOrders(DtoOrders dtoDocument)
         {
-            var DocumentNew = new Orders
+            var DocumentNew = new Order
             {
                 orderTo = dtoDocument.orderTo,
                 orderTypeId = dtoDocument.orderTypeId,
@@ -2137,7 +2137,7 @@ namespace MR_Reporting_System.API
         [Route("AddOrdersItems")]
         public IHttpActionResult AddOrdersItems(DtoOrdersItems dtoDocument)
         {
-            var DocumentNew = new ordersItems
+            var DocumentNew = new ordersItem
             {
                 description = dtoDocument.description,
                 itemCode = dtoDocument.itemCode,

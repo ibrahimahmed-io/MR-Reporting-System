@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class AreaRepository : GenericRepository<MedicalTechnoEntities, Areas>, IAreaRepository
+    public class AreaRepository : GenericRepository<MedicalTechnoEntities, Area>, IAreaRepository
     {
         public List<DtoArea> SelectAll(string lang)
         {

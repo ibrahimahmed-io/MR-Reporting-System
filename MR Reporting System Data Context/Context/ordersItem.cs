@@ -12,7 +12,7 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class ordersItems
+    public partial class ordersItem
     {
         public int id { get; set; }
         public string description { get; set; }
@@ -23,7 +23,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<int> drugsId { get; set; }
         public Nullable<int> orderId { get; set; }
     
-        public virtual Drugs Drugs { get; set; }
-        public virtual Orders Orders { get; set; }
+        public virtual Drug Drug { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

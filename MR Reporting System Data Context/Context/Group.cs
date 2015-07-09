@@ -12,13 +12,18 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class AgentHospitals
+    public partial class Group
     {
-        public int Id { get; set; }
-        public Nullable<int> AgentId { get; set; }
-        public Nullable<int> HospitalId { get; set; }
+        public Group()
+        {
+            this.Agents = new HashSet<Agent>();
+            this.GroupPermissions = new HashSet<GroupPermission>();
+        }
     
-        public virtual Agents Agents { get; set; }
-        public virtual Hospitals Hospitals { get; set; }
+        public int Id { get; set; }
+        public string GroupName { get; set; }
+    
+        public virtual ICollection<Agent> Agents { get; set; }
+        public virtual ICollection<GroupPermission> GroupPermissions { get; set; }
     }
 }

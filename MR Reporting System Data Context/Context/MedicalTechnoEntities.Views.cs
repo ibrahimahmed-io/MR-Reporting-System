@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(MR_Reporting_System_Data_Context.Context.MedicalTechnoEntities),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets39d78f921dc0e6d8e52866d02acea63b440a3ff2e4d42a964d2142817493c244))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsc43fda65f874c2c1ed594eb364cf1c0da638c0412be5b12314c54c14da11d924))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets39d78f921dc0e6d8e52866d02acea63b440a3ff2e4d42a964d2142817493c244 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetsc43fda65f874c2c1ed594eb364cf1c0da638c0412be5b12314c54c14da11d924 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "39d78f921dc0e6d8e52866d02acea63b440a3ff2e4d42a964d2142817493c244"; }
+            get { return "c43fda65f874c2c1ed594eb364cf1c0da638c0412be5b12314c54c14da11d924"; }
         }
 
         /// <summary>
@@ -47,82 +47,82 @@ namespace Edm_EntityMappingGeneratedViews
 
             var extentName = extent.EntityContainer.Name + "." + extent.Name;
 
-            if (extentName == "MedicalTechnoModelStoreContainer.AgentAreas")
+            if (extentName == "MedicalTechnoModelStoreContainer.Agent")
             {
                 return GetView0();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.AgentDistributers")
+            if (extentName == "MedicalTechnoModelStoreContainer.AgentArea")
             {
                 return GetView1();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.AgentDrugs")
+            if (extentName == "MedicalTechnoModelStoreContainer.AgentDistributer")
             {
                 return GetView2();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.AgentHospitals")
+            if (extentName == "MedicalTechnoModelStoreContainer.AgentDrug")
             {
                 return GetView3();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.AgentPharmacies")
+            if (extentName == "MedicalTechnoModelStoreContainer.AgentHospital")
             {
                 return GetView4();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Agents")
+            if (extentName == "MedicalTechnoModelStoreContainer.AgentPharmacie")
             {
                 return GetView5();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Areas")
+            if (extentName == "MedicalTechnoModelStoreContainer.Area")
             {
                 return GetView6();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Companies")
+            if (extentName == "MedicalTechnoModelStoreContainer.Company")
             {
                 return GetView7();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.DefaultLists")
+            if (extentName == "MedicalTechnoModelStoreContainer.DefaultList")
             {
                 return GetView8();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Distributers")
+            if (extentName == "MedicalTechnoModelStoreContainer.Distributer")
             {
                 return GetView9();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Docotors")
+            if (extentName == "MedicalTechnoModelStoreContainer.Docotor")
             {
                 return GetView10();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Drugs")
+            if (extentName == "MedicalTechnoModelStoreContainer.Drug")
             {
                 return GetView11();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.GroupPermissions")
+            if (extentName == "MedicalTechnoModelStoreContainer.Group")
             {
                 return GetView12();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Groups")
+            if (extentName == "MedicalTechnoModelStoreContainer.GroupPermission")
             {
                 return GetView13();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Hospitals")
+            if (extentName == "MedicalTechnoModelStoreContainer.Hospital")
             {
                 return GetView14();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Locations")
+            if (extentName == "MedicalTechnoModelStoreContainer.Location")
             {
                 return GetView15();
             }
@@ -137,42 +137,42 @@ namespace Edm_EntityMappingGeneratedViews
                 return GetView17();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Pharmacies")
+            if (extentName == "MedicalTechnoModelStoreContainer.Pharmacy")
             {
                 return GetView18();
             }
 
-            if (extentName == "MedicalTechnoModelStoreContainer.Visits")
+            if (extentName == "MedicalTechnoModelStoreContainer.Visit")
             {
                 return GetView19();
             }
 
-            if (extentName == "Entities.AgentAreas")
+            if (extentName == "Entities.Agents")
             {
                 return GetView20();
             }
 
-            if (extentName == "Entities.AgentDistributers")
+            if (extentName == "Entities.AgentAreas")
             {
                 return GetView21();
             }
 
-            if (extentName == "Entities.AgentDrugs")
+            if (extentName == "Entities.AgentDistributers")
             {
                 return GetView22();
             }
 
-            if (extentName == "Entities.AgentHospitals")
+            if (extentName == "Entities.AgentDrugs")
             {
                 return GetView23();
             }
 
-            if (extentName == "Entities.AgentPharmacies")
+            if (extentName == "Entities.AgentHospitals")
             {
                 return GetView24();
             }
 
-            if (extentName == "Entities.Agents")
+            if (extentName == "Entities.AgentPharmacies")
             {
                 return GetView25();
             }
@@ -207,12 +207,12 @@ namespace Edm_EntityMappingGeneratedViews
                 return GetView31();
             }
 
-            if (extentName == "Entities.GroupPermissions")
+            if (extentName == "Entities.Groups")
             {
                 return GetView32();
             }
 
-            if (extentName == "Entities.Groups")
+            if (extentName == "Entities.GroupPermissions")
             {
                 return GetView33();
             }
@@ -251,349 +251,349 @@ namespace Edm_EntityMappingGeneratedViews
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.AgentAreas.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Agent.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView0()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentAreas
-        [MedicalTechnoModel.Store.AgentAreas](T1.AgentAreas_Id, T1.AgentAreas_AgentId, T1.AgentAreas_AreaId)
+    SELECT VALUE -- Constructing Agent
+        [MedicalTechnoModel.Store.Agent](T1.Agent_id, T1.Agent_UserName, T1.Agent_PassWord, T1.Agent_ContactName, T1.Agent_PostionId, T1.Agent_AreaId, T1.Agent_Address, T1.Agent_Phone, T1.Agent_Email, T1.Agent_GroupId, T1.Agent_Salary, T1.Agent_NoOfVisits, T1.Agent_SupervisorId, T1.Agent_Code, T1.Agent_UserType)
     FROM (
         SELECT 
-            T.Id AS AgentAreas_Id, 
-            T.AgentId AS AgentAreas_AgentId, 
-            T.AreaId AS AgentAreas_AreaId, 
-            True AS _from0
-        FROM Entities.AgentAreas AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.AgentDistributers.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView1()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentDistributers
-        [MedicalTechnoModel.Store.AgentDistributers](T1.AgentDistributers_Id, T1.AgentDistributers_AgentId, T1.AgentDistributers_DistributerId)
-    FROM (
-        SELECT 
-            T.Id AS AgentDistributers_Id, 
-            T.AgentId AS AgentDistributers_AgentId, 
-            T.DistributerId AS AgentDistributers_DistributerId, 
-            True AS _from0
-        FROM Entities.AgentDistributers AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.AgentDrugs.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView2()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentDrugs
-        [MedicalTechnoModel.Store.AgentDrugs](T1.AgentDrugs_Id, T1.AgentDrugs_AgentId, T1.AgentDrugs_DrugsId)
-    FROM (
-        SELECT 
-            T.Id AS AgentDrugs_Id, 
-            T.AgentId AS AgentDrugs_AgentId, 
-            T.DrugsId AS AgentDrugs_DrugsId, 
-            True AS _from0
-        FROM Entities.AgentDrugs AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.AgentHospitals.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView3()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentHospitals
-        [MedicalTechnoModel.Store.AgentHospitals](T1.AgentHospitals_Id, T1.AgentHospitals_AgentId, T1.AgentHospitals_HospitalId)
-    FROM (
-        SELECT 
-            T.Id AS AgentHospitals_Id, 
-            T.AgentId AS AgentHospitals_AgentId, 
-            T.HospitalId AS AgentHospitals_HospitalId, 
-            True AS _from0
-        FROM Entities.AgentHospitals AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.AgentPharmacies.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView4()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentPharmacies
-        [MedicalTechnoModel.Store.AgentPharmacies](T1.AgentPharmacies_Id, T1.AgentPharmacies_AgentId, T1.AgentPharmacies_PharmacyId)
-    FROM (
-        SELECT 
-            T.Id AS AgentPharmacies_Id, 
-            T.AgentId AS AgentPharmacies_AgentId, 
-            T.PharmacyId AS AgentPharmacies_PharmacyId, 
-            True AS _from0
-        FROM Entities.AgentPharmacies AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Agents.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView5()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing Agents
-        [MedicalTechnoModel.Store.Agents](T1.Agents_id, T1.Agents_UserName, T1.Agents_PassWord, T1.Agents_ContactName, T1.Agents_PostionId, T1.Agents_AreaId, T1.Agents_Address, T1.Agents_Phone, T1.Agents_Email, T1.Agents_GroupId, T1.Agents_Salary, T1.Agents_NoOfVisits, T1.Agents_SupervisorId, T1.Agents_Code, T1.Agents_UserType)
-    FROM (
-        SELECT 
-            T.id AS Agents_id, 
-            T.UserName AS Agents_UserName, 
-            T.PassWord AS Agents_PassWord, 
-            T.ContactName AS Agents_ContactName, 
-            T.PostionId AS Agents_PostionId, 
-            T.AreaId AS Agents_AreaId, 
-            T.Address AS Agents_Address, 
-            T.Phone AS Agents_Phone, 
-            T.Email AS Agents_Email, 
-            T.GroupId AS Agents_GroupId, 
-            T.Salary AS Agents_Salary, 
-            T.NoOfVisits AS Agents_NoOfVisits, 
-            T.SupervisorId AS Agents_SupervisorId, 
-            T.Code AS Agents_Code, 
-            T.UserType AS Agents_UserType, 
+            T.id AS Agent_id, 
+            T.UserName AS Agent_UserName, 
+            T.PassWord AS Agent_PassWord, 
+            T.ContactName AS Agent_ContactName, 
+            T.PostionId AS Agent_PostionId, 
+            T.AreaId AS Agent_AreaId, 
+            T.Address AS Agent_Address, 
+            T.Phone AS Agent_Phone, 
+            T.Email AS Agent_Email, 
+            T.GroupId AS Agent_GroupId, 
+            T.Salary AS Agent_Salary, 
+            T.NoOfVisits AS Agent_NoOfVisits, 
+            T.SupervisorId AS Agent_SupervisorId, 
+            T.Code AS Agent_Code, 
+            T.UserType AS Agent_UserType, 
             True AS _from0
         FROM Entities.Agents AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Areas.
+        /// Gets the view for MedicalTechnoModelStoreContainer.AgentArea.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView1()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentArea
+        [MedicalTechnoModel.Store.AgentArea](T1.AgentArea_Id, T1.AgentArea_AgentId, T1.AgentArea_AreaId)
+    FROM (
+        SELECT 
+            T.Id AS AgentArea_Id, 
+            T.AgentId AS AgentArea_AgentId, 
+            T.AreaId AS AgentArea_AreaId, 
+            True AS _from0
+        FROM Entities.AgentAreas AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for MedicalTechnoModelStoreContainer.AgentDistributer.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView2()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentDistributer
+        [MedicalTechnoModel.Store.AgentDistributer](T1.AgentDistributer_Id, T1.AgentDistributer_AgentId, T1.AgentDistributer_DistributerId)
+    FROM (
+        SELECT 
+            T.Id AS AgentDistributer_Id, 
+            T.AgentId AS AgentDistributer_AgentId, 
+            T.DistributerId AS AgentDistributer_DistributerId, 
+            True AS _from0
+        FROM Entities.AgentDistributers AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for MedicalTechnoModelStoreContainer.AgentDrug.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView3()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentDrug
+        [MedicalTechnoModel.Store.AgentDrug](T1.AgentDrug_Id, T1.AgentDrug_AgentId, T1.AgentDrug_DrugsId)
+    FROM (
+        SELECT 
+            T.Id AS AgentDrug_Id, 
+            T.AgentId AS AgentDrug_AgentId, 
+            T.DrugsId AS AgentDrug_DrugsId, 
+            True AS _from0
+        FROM Entities.AgentDrugs AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for MedicalTechnoModelStoreContainer.AgentHospital.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView4()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentHospital
+        [MedicalTechnoModel.Store.AgentHospital](T1.AgentHospital_Id, T1.AgentHospital_AgentId, T1.AgentHospital_HospitalId)
+    FROM (
+        SELECT 
+            T.Id AS AgentHospital_Id, 
+            T.AgentId AS AgentHospital_AgentId, 
+            T.HospitalId AS AgentHospital_HospitalId, 
+            True AS _from0
+        FROM Entities.AgentHospitals AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for MedicalTechnoModelStoreContainer.AgentPharmacie.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView5()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentPharmacie
+        [MedicalTechnoModel.Store.AgentPharmacie](T1.AgentPharmacie_Id, T1.AgentPharmacie_AgentId, T1.AgentPharmacie_PharmacyId)
+    FROM (
+        SELECT 
+            T.Id AS AgentPharmacie_Id, 
+            T.AgentId AS AgentPharmacie_AgentId, 
+            T.PharmacyId AS AgentPharmacie_PharmacyId, 
+            True AS _from0
+        FROM Entities.AgentPharmacies AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for MedicalTechnoModelStoreContainer.Area.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView6()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Areas
-        [MedicalTechnoModel.Store.Areas](T1.Areas_Id, T1.Areas_LocationId, T1.Areas_Title, T1.Areas_DeletedBy)
+    SELECT VALUE -- Constructing Area
+        [MedicalTechnoModel.Store.Area](T1.Area_Id, T1.Area_LocationId, T1.Area_Title, T1.Area_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Areas_Id, 
-            T.LocationId AS Areas_LocationId, 
-            T.Title AS Areas_Title, 
-            T.DeletedBy AS Areas_DeletedBy, 
+            T.Id AS Area_Id, 
+            T.LocationId AS Area_LocationId, 
+            T.Title AS Area_Title, 
+            T.DeletedBy AS Area_DeletedBy, 
             True AS _from0
         FROM Entities.Areas AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Companies.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Company.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView7()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Companies
-        [MedicalTechnoModel.Store.Companies](T1.Companies_Id, T1.Companies_Name, T1.Companies_Description, T1.Companies_Phone, T1.Companies_Email, T1.Companies_Notes, T1.Companies_code)
+    SELECT VALUE -- Constructing Company
+        [MedicalTechnoModel.Store.Company](T1.Company_Id, T1.Company_Name, T1.Company_Description, T1.Company_Phone, T1.Company_Email, T1.Company_Notes, T1.Company_code)
     FROM (
         SELECT 
-            T.Id AS Companies_Id, 
-            T.Name AS Companies_Name, 
-            T.Description AS Companies_Description, 
-            T.Phone AS Companies_Phone, 
-            T.Email AS Companies_Email, 
-            T.Notes AS Companies_Notes, 
-            T.code AS Companies_code, 
+            T.Id AS Company_Id, 
+            T.Name AS Company_Name, 
+            T.Description AS Company_Description, 
+            T.Phone AS Company_Phone, 
+            T.Email AS Company_Email, 
+            T.Notes AS Company_Notes, 
+            T.code AS Company_code, 
             True AS _from0
         FROM Entities.Companies AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.DefaultLists.
+        /// Gets the view for MedicalTechnoModelStoreContainer.DefaultList.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView8()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing DefaultLists
-        [MedicalTechnoModel.Store.DefaultLists](T1.DefaultLists_Id, T1.DefaultLists_Title, T1.DefaultLists_Type, T1.DefaultLists_Action)
+    SELECT VALUE -- Constructing DefaultList
+        [MedicalTechnoModel.Store.DefaultList](T1.DefaultList_Id, T1.DefaultList_Title, T1.DefaultList_Type, T1.DefaultList_Action)
     FROM (
         SELECT 
-            T.Id AS DefaultLists_Id, 
-            T.Title AS DefaultLists_Title, 
-            T.Type AS DefaultLists_Type, 
-            T.Action AS DefaultLists_Action, 
+            T.Id AS DefaultList_Id, 
+            T.Title AS DefaultList_Title, 
+            T.Type AS DefaultList_Type, 
+            T.Action AS DefaultList_Action, 
             True AS _from0
         FROM Entities.DefaultLists AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Distributers.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Distributer.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView9()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Distributers
-        [MedicalTechnoModel.Store.Distributers](T1.Distributers_Id, T1.Distributers_Name, T1.Distributers_AreaId, T1.Distributers_Address, T1.Distributers_Phone, T1.Distributers_Code, T1.Distributers_NoOfVisits, T1.Distributers_DeletedBy)
+    SELECT VALUE -- Constructing Distributer
+        [MedicalTechnoModel.Store.Distributer](T1.Distributer_Id, T1.Distributer_Name, T1.Distributer_AreaId, T1.Distributer_Address, T1.Distributer_Phone, T1.Distributer_Code, T1.Distributer_NoOfVisits, T1.Distributer_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Distributers_Id, 
-            T.Name AS Distributers_Name, 
-            T.AreaId AS Distributers_AreaId, 
-            T.Address AS Distributers_Address, 
-            T.Phone AS Distributers_Phone, 
-            T.Code AS Distributers_Code, 
-            T.NoOfVisits AS Distributers_NoOfVisits, 
-            T.DeletedBy AS Distributers_DeletedBy, 
+            T.Id AS Distributer_Id, 
+            T.Name AS Distributer_Name, 
+            T.AreaId AS Distributer_AreaId, 
+            T.Address AS Distributer_Address, 
+            T.Phone AS Distributer_Phone, 
+            T.Code AS Distributer_Code, 
+            T.NoOfVisits AS Distributer_NoOfVisits, 
+            T.DeletedBy AS Distributer_DeletedBy, 
             True AS _from0
         FROM Entities.Distributers AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Docotors.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Docotor.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView10()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Docotors
-        [MedicalTechnoModel.Store.Docotors](T1.Docotors_Id, T1.Docotors_Name, T1.Docotors_SpecializeId, T1.Docotors_IsMorning, T1.Docotors_Address, T1.Docotors_AreaId, T1.Docotors_ClassTypeId, T1.Docotors_NoOfVisits, T1.Docotors_Phone, T1.Docotors_Telephone, T1.Docotors_Email, T1.Docotors_Code, T1.Docotors_DeletedBy)
+    SELECT VALUE -- Constructing Docotor
+        [MedicalTechnoModel.Store.Docotor](T1.Docotor_Id, T1.Docotor_Name, T1.Docotor_SpecializeId, T1.Docotor_IsMorning, T1.Docotor_Address, T1.Docotor_AreaId, T1.Docotor_ClassTypeId, T1.Docotor_NoOfVisits, T1.Docotor_Phone, T1.Docotor_Telephone, T1.Docotor_Email, T1.Docotor_Code, T1.Docotor_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Docotors_Id, 
-            T.Name AS Docotors_Name, 
-            T.SpecializeId AS Docotors_SpecializeId, 
-            T.IsMorning AS Docotors_IsMorning, 
-            T.Address AS Docotors_Address, 
-            T.AreaId AS Docotors_AreaId, 
-            T.ClassTypeId AS Docotors_ClassTypeId, 
-            T.NoOfVisits AS Docotors_NoOfVisits, 
-            T.Phone AS Docotors_Phone, 
-            T.Telephone AS Docotors_Telephone, 
-            T.Email AS Docotors_Email, 
-            T.Code AS Docotors_Code, 
-            T.DeletedBy AS Docotors_DeletedBy, 
+            T.Id AS Docotor_Id, 
+            T.Name AS Docotor_Name, 
+            T.SpecializeId AS Docotor_SpecializeId, 
+            T.IsMorning AS Docotor_IsMorning, 
+            T.Address AS Docotor_Address, 
+            T.AreaId AS Docotor_AreaId, 
+            T.ClassTypeId AS Docotor_ClassTypeId, 
+            T.NoOfVisits AS Docotor_NoOfVisits, 
+            T.Phone AS Docotor_Phone, 
+            T.Telephone AS Docotor_Telephone, 
+            T.Email AS Docotor_Email, 
+            T.Code AS Docotor_Code, 
+            T.DeletedBy AS Docotor_DeletedBy, 
             True AS _from0
         FROM Entities.Docotors AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Drugs.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Drug.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView11()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Drugs
-        [MedicalTechnoModel.Store.Drugs](T1.Drugs_Id, T1.Drugs_Name, T1.Drugs_Description, T1.Drugs_Code, T1.Drugs_Price, T1.Drugs_SectionId, T1.Drugs_Notes, T1.Drugs_CompanyId, T1.Drugs_DeletedBy)
+    SELECT VALUE -- Constructing Drug
+        [MedicalTechnoModel.Store.Drug](T1.Drug_Id, T1.Drug_Name, T1.Drug_Description, T1.Drug_Code, T1.Drug_Price, T1.Drug_SectionId, T1.Drug_Notes, T1.Drug_CompanyId, T1.Drug_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Drugs_Id, 
-            T.Name AS Drugs_Name, 
-            T.Description AS Drugs_Description, 
-            T.Code AS Drugs_Code, 
-            T.Price AS Drugs_Price, 
-            T.SectionId AS Drugs_SectionId, 
-            T.Notes AS Drugs_Notes, 
-            T.CompanyId AS Drugs_CompanyId, 
-            T.DeletedBy AS Drugs_DeletedBy, 
+            T.Id AS Drug_Id, 
+            T.Name AS Drug_Name, 
+            T.Description AS Drug_Description, 
+            T.Code AS Drug_Code, 
+            T.Price AS Drug_Price, 
+            T.SectionId AS Drug_SectionId, 
+            T.Notes AS Drug_Notes, 
+            T.CompanyId AS Drug_CompanyId, 
+            T.DeletedBy AS Drug_DeletedBy, 
             True AS _from0
         FROM Entities.Drugs AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.GroupPermissions.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Group.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView12()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing GroupPermissions
-        [MedicalTechnoModel.Store.GroupPermissions](T1.GroupPermissions_Id, T1.GroupPermissions_GroupId, T1.GroupPermissions_PermissionCode, T1.GroupPermissions_Value)
+    SELECT VALUE -- Constructing Group
+        [MedicalTechnoModel.Store.Group](T1.Group_Id, T1.Group_GroupName)
     FROM (
         SELECT 
-            T.Id AS GroupPermissions_Id, 
-            T.GroupId AS GroupPermissions_GroupId, 
-            T.PermissionCode AS GroupPermissions_PermissionCode, 
-            T.[Value] AS GroupPermissions_Value, 
-            True AS _from0
-        FROM Entities.GroupPermissions AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Groups.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView13()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing Groups
-        [MedicalTechnoModel.Store.Groups](T1.Groups_Id, T1.Groups_GroupName)
-    FROM (
-        SELECT 
-            T.Id AS Groups_Id, 
-            T.GroupName AS Groups_GroupName, 
+            T.Id AS Group_Id, 
+            T.GroupName AS Group_GroupName, 
             True AS _from0
         FROM Entities.Groups AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Hospitals.
+        /// Gets the view for MedicalTechnoModelStoreContainer.GroupPermission.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView13()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing GroupPermission
+        [MedicalTechnoModel.Store.GroupPermission](T1.GroupPermission_Id, T1.GroupPermission_GroupId, T1.GroupPermission_PermissionCode, T1.GroupPermission_Value)
+    FROM (
+        SELECT 
+            T.Id AS GroupPermission_Id, 
+            T.GroupId AS GroupPermission_GroupId, 
+            T.PermissionCode AS GroupPermission_PermissionCode, 
+            T.[Value] AS GroupPermission_Value, 
+            True AS _from0
+        FROM Entities.GroupPermissions AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for MedicalTechnoModelStoreContainer.Hospital.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView14()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Hospitals
-        [MedicalTechnoModel.Store.Hospitals](T1.Hospitals_Id, T1.Hospitals_Name, T1.Hospitals_AreaId, T1.Hospitals_Address, T1.Hospitals_Phone, T1.Hospitals_Email, T1.Hospitals_Type, T1.Hospitals_Code, T1.Hospitals_DeletedBy)
+    SELECT VALUE -- Constructing Hospital
+        [MedicalTechnoModel.Store.Hospital](T1.Hospital_Id, T1.Hospital_Name, T1.Hospital_AreaId, T1.Hospital_Address, T1.Hospital_Phone, T1.Hospital_Email, T1.Hospital_Type, T1.Hospital_Code, T1.Hospital_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Hospitals_Id, 
-            T.Name AS Hospitals_Name, 
-            T.AreaId AS Hospitals_AreaId, 
-            T.Address AS Hospitals_Address, 
-            T.Phone AS Hospitals_Phone, 
-            T.Email AS Hospitals_Email, 
-            T.Type AS Hospitals_Type, 
-            T.Code AS Hospitals_Code, 
-            T.DeletedBy AS Hospitals_DeletedBy, 
+            T.Id AS Hospital_Id, 
+            T.Name AS Hospital_Name, 
+            T.AreaId AS Hospital_AreaId, 
+            T.Address AS Hospital_Address, 
+            T.Phone AS Hospital_Phone, 
+            T.Email AS Hospital_Email, 
+            T.Type AS Hospital_Type, 
+            T.Code AS Hospital_Code, 
+            T.DeletedBy AS Hospital_DeletedBy, 
             True AS _from0
         FROM Entities.Hospitals AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Locations.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Location.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView15()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Locations
-        [MedicalTechnoModel.Store.Locations](T1.Locations_Id, T1.Locations_Title, T1.Locations_DeletedBy)
+    SELECT VALUE -- Constructing Location
+        [MedicalTechnoModel.Store.Location](T1.Location_Id, T1.Location_Title, T1.Location_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Locations_Id, 
-            T.Title AS Locations_Title, 
-            T.DeletedBy AS Locations_DeletedBy, 
+            T.Id AS Location_Id, 
+            T.Title AS Location_Title, 
+            T.DeletedBy AS Location_DeletedBy, 
             True AS _from0
         FROM Entities.Locations AS T
     ) AS T1");
@@ -657,151 +657,56 @@ namespace Edm_EntityMappingGeneratedViews
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Pharmacies.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Pharmacy.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView18()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Pharmacies
-        [MedicalTechnoModel.Store.Pharmacies](T1.Pharmacies_Id, T1.Pharmacies_Name, T1.Pharmacies_AreaId, T1.Pharmacies_Address, T1.Pharmacies_Phone, T1.Pharmacies_Email, T1.Pharmacies_OwnerName, T1.Pharmacies_OwnerPhone, T1.Pharmacies_code)
+    SELECT VALUE -- Constructing Pharmacy
+        [MedicalTechnoModel.Store.Pharmacy](T1.Pharmacy_Id, T1.Pharmacy_Name, T1.Pharmacy_AreaId, T1.Pharmacy_Address, T1.Pharmacy_Phone, T1.Pharmacy_Email, T1.Pharmacy_OwnerName, T1.Pharmacy_OwnerPhone, T1.Pharmacy_code)
     FROM (
         SELECT 
-            T.Id AS Pharmacies_Id, 
-            T.Name AS Pharmacies_Name, 
-            T.AreaId AS Pharmacies_AreaId, 
-            T.Address AS Pharmacies_Address, 
-            T.Phone AS Pharmacies_Phone, 
-            T.Email AS Pharmacies_Email, 
-            T.OwnerName AS Pharmacies_OwnerName, 
-            T.OwnerPhone AS Pharmacies_OwnerPhone, 
-            T.code AS Pharmacies_code, 
+            T.Id AS Pharmacy_Id, 
+            T.Name AS Pharmacy_Name, 
+            T.AreaId AS Pharmacy_AreaId, 
+            T.Address AS Pharmacy_Address, 
+            T.Phone AS Pharmacy_Phone, 
+            T.Email AS Pharmacy_Email, 
+            T.OwnerName AS Pharmacy_OwnerName, 
+            T.OwnerPhone AS Pharmacy_OwnerPhone, 
+            T.code AS Pharmacy_code, 
             True AS _from0
         FROM Entities.Pharmacies AS T
     ) AS T1");
         }
 
         /// <summary>
-        /// Gets the view for MedicalTechnoModelStoreContainer.Visits.
+        /// Gets the view for MedicalTechnoModelStoreContainer.Visit.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView19()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing Visits
-        [MedicalTechnoModel.Store.Visits](T1.Visits_Id, T1.Visits_AgentId, T1.Visits_DrugsId, T1.Visits_TypeId, T1.Visits_VisitTo, T1.Visits_VisitDate, T1.Visits_Duration, T1.Visits_Description, T1.Visits_IsMorning, T1.Visits_Notes, T1.Visits_LastEditBy, T1.Visits_LastEditDate, T1.Visits_CreationDate)
+    SELECT VALUE -- Constructing Visit
+        [MedicalTechnoModel.Store.Visit](T1.Visit_Id, T1.Visit_AgentId, T1.Visit_DrugsId, T1.Visit_TypeId, T1.Visit_VisitTo, T1.Visit_VisitDate, T1.Visit_Duration, T1.Visit_Description, T1.Visit_IsMorning, T1.Visit_Notes, T1.Visit_LastEditBy, T1.Visit_LastEditDate, T1.Visit_CreationDate)
     FROM (
         SELECT 
-            T.Id AS Visits_Id, 
-            T.AgentId AS Visits_AgentId, 
-            T.DrugsId AS Visits_DrugsId, 
-            T.TypeId AS Visits_TypeId, 
-            T.VisitTo AS Visits_VisitTo, 
-            T.VisitDate AS Visits_VisitDate, 
-            T.Duration AS Visits_Duration, 
-            T.Description AS Visits_Description, 
-            T.IsMorning AS Visits_IsMorning, 
-            T.Notes AS Visits_Notes, 
-            T.LastEditBy AS Visits_LastEditBy, 
-            T.LastEditDate AS Visits_LastEditDate, 
-            T.CreationDate AS Visits_CreationDate, 
+            T.Id AS Visit_Id, 
+            T.AgentId AS Visit_AgentId, 
+            T.DrugsId AS Visit_DrugsId, 
+            T.TypeId AS Visit_TypeId, 
+            T.VisitTo AS Visit_VisitTo, 
+            T.VisitDate AS Visit_VisitDate, 
+            T.Duration AS Visit_Duration, 
+            T.Description AS Visit_Description, 
+            T.IsMorning AS Visit_IsMorning, 
+            T.Notes AS Visit_Notes, 
+            T.LastEditBy AS Visit_LastEditBy, 
+            T.LastEditDate AS Visit_LastEditDate, 
+            T.CreationDate AS Visit_CreationDate, 
             True AS _from0
         FROM Entities.Visits AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for Entities.AgentAreas.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView20()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentAreas
-        [MedicalTechnoModel.AgentAreas](T1.AgentAreas_Id, T1.AgentAreas_AgentId, T1.AgentAreas_AreaId)
-    FROM (
-        SELECT 
-            T.Id AS AgentAreas_Id, 
-            T.AgentId AS AgentAreas_AgentId, 
-            T.AreaId AS AgentAreas_AreaId, 
-            True AS _from0
-        FROM MedicalTechnoModelStoreContainer.AgentAreas AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for Entities.AgentDistributers.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView21()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentDistributers
-        [MedicalTechnoModel.AgentDistributers](T1.AgentDistributers_Id, T1.AgentDistributers_AgentId, T1.AgentDistributers_DistributerId)
-    FROM (
-        SELECT 
-            T.Id AS AgentDistributers_Id, 
-            T.AgentId AS AgentDistributers_AgentId, 
-            T.DistributerId AS AgentDistributers_DistributerId, 
-            True AS _from0
-        FROM MedicalTechnoModelStoreContainer.AgentDistributers AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for Entities.AgentDrugs.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView22()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentDrugs
-        [MedicalTechnoModel.AgentDrugs](T1.AgentDrugs_Id, T1.AgentDrugs_AgentId, T1.AgentDrugs_DrugsId)
-    FROM (
-        SELECT 
-            T.Id AS AgentDrugs_Id, 
-            T.AgentId AS AgentDrugs_AgentId, 
-            T.DrugsId AS AgentDrugs_DrugsId, 
-            True AS _from0
-        FROM MedicalTechnoModelStoreContainer.AgentDrugs AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for Entities.AgentHospitals.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView23()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentHospitals
-        [MedicalTechnoModel.AgentHospitals](T1.AgentHospitals_Id, T1.AgentHospitals_AgentId, T1.AgentHospitals_HospitalId)
-    FROM (
-        SELECT 
-            T.Id AS AgentHospitals_Id, 
-            T.AgentId AS AgentHospitals_AgentId, 
-            T.HospitalId AS AgentHospitals_HospitalId, 
-            True AS _from0
-        FROM MedicalTechnoModelStoreContainer.AgentHospitals AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for Entities.AgentPharmacies.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView24()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing AgentPharmacies
-        [MedicalTechnoModel.AgentPharmacies](T1.AgentPharmacies_Id, T1.AgentPharmacies_AgentId, T1.AgentPharmacies_PharmacyId)
-    FROM (
-        SELECT 
-            T.Id AS AgentPharmacies_Id, 
-            T.AgentId AS AgentPharmacies_AgentId, 
-            T.PharmacyId AS AgentPharmacies_PharmacyId, 
-            True AS _from0
-        FROM MedicalTechnoModelStoreContainer.AgentPharmacies AS T
     ) AS T1");
         }
 
@@ -809,30 +714,125 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for Entities.Agents.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView25()
+        private static DbMappingView GetView20()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Agents
-        [MedicalTechnoModel.Agents](T1.Agents_id, T1.Agents_UserName, T1.Agents_PassWord, T1.Agents_ContactName, T1.Agents_PostionId, T1.Agents_AreaId, T1.Agents_Address, T1.Agents_Phone, T1.Agents_Email, T1.Agents_GroupId, T1.Agents_Salary, T1.Agents_NoOfVisits, T1.Agents_SupervisorId, T1.Agents_Code, T1.Agents_UserType)
+        [MedicalTechnoModel.Agent](T1.Agent_id, T1.Agent_UserName, T1.Agent_PassWord, T1.Agent_ContactName, T1.Agent_PostionId, T1.Agent_AreaId, T1.Agent_Address, T1.Agent_Phone, T1.Agent_Email, T1.Agent_GroupId, T1.Agent_Salary, T1.Agent_NoOfVisits, T1.Agent_SupervisorId, T1.Agent_Code, T1.Agent_UserType)
     FROM (
         SELECT 
-            T.id AS Agents_id, 
-            T.UserName AS Agents_UserName, 
-            T.PassWord AS Agents_PassWord, 
-            T.ContactName AS Agents_ContactName, 
-            T.PostionId AS Agents_PostionId, 
-            T.AreaId AS Agents_AreaId, 
-            T.Address AS Agents_Address, 
-            T.Phone AS Agents_Phone, 
-            T.Email AS Agents_Email, 
-            T.GroupId AS Agents_GroupId, 
-            T.Salary AS Agents_Salary, 
-            T.NoOfVisits AS Agents_NoOfVisits, 
-            T.SupervisorId AS Agents_SupervisorId, 
-            T.Code AS Agents_Code, 
-            T.UserType AS Agents_UserType, 
+            T.id AS Agent_id, 
+            T.UserName AS Agent_UserName, 
+            T.PassWord AS Agent_PassWord, 
+            T.ContactName AS Agent_ContactName, 
+            T.PostionId AS Agent_PostionId, 
+            T.AreaId AS Agent_AreaId, 
+            T.Address AS Agent_Address, 
+            T.Phone AS Agent_Phone, 
+            T.Email AS Agent_Email, 
+            T.GroupId AS Agent_GroupId, 
+            T.Salary AS Agent_Salary, 
+            T.NoOfVisits AS Agent_NoOfVisits, 
+            T.SupervisorId AS Agent_SupervisorId, 
+            T.Code AS Agent_Code, 
+            T.UserType AS Agent_UserType, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Agents AS T
+        FROM MedicalTechnoModelStoreContainer.Agent AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for Entities.AgentAreas.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView21()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentAreas
+        [MedicalTechnoModel.AgentArea](T1.AgentArea_Id, T1.AgentArea_AgentId, T1.AgentArea_AreaId)
+    FROM (
+        SELECT 
+            T.Id AS AgentArea_Id, 
+            T.AgentId AS AgentArea_AgentId, 
+            T.AreaId AS AgentArea_AreaId, 
+            True AS _from0
+        FROM MedicalTechnoModelStoreContainer.AgentArea AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for Entities.AgentDistributers.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView22()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentDistributers
+        [MedicalTechnoModel.AgentDistributer](T1.AgentDistributer_Id, T1.AgentDistributer_AgentId, T1.AgentDistributer_DistributerId)
+    FROM (
+        SELECT 
+            T.Id AS AgentDistributer_Id, 
+            T.AgentId AS AgentDistributer_AgentId, 
+            T.DistributerId AS AgentDistributer_DistributerId, 
+            True AS _from0
+        FROM MedicalTechnoModelStoreContainer.AgentDistributer AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for Entities.AgentDrugs.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView23()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentDrugs
+        [MedicalTechnoModel.AgentDrug](T1.AgentDrug_Id, T1.AgentDrug_AgentId, T1.AgentDrug_DrugsId)
+    FROM (
+        SELECT 
+            T.Id AS AgentDrug_Id, 
+            T.AgentId AS AgentDrug_AgentId, 
+            T.DrugsId AS AgentDrug_DrugsId, 
+            True AS _from0
+        FROM MedicalTechnoModelStoreContainer.AgentDrug AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for Entities.AgentHospitals.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView24()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentHospitals
+        [MedicalTechnoModel.AgentHospital](T1.AgentHospital_Id, T1.AgentHospital_AgentId, T1.AgentHospital_HospitalId)
+    FROM (
+        SELECT 
+            T.Id AS AgentHospital_Id, 
+            T.AgentId AS AgentHospital_AgentId, 
+            T.HospitalId AS AgentHospital_HospitalId, 
+            True AS _from0
+        FROM MedicalTechnoModelStoreContainer.AgentHospital AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for Entities.AgentPharmacies.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView25()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing AgentPharmacies
+        [MedicalTechnoModel.AgentPharmacie](T1.AgentPharmacie_Id, T1.AgentPharmacie_AgentId, T1.AgentPharmacie_PharmacyId)
+    FROM (
+        SELECT 
+            T.Id AS AgentPharmacie_Id, 
+            T.AgentId AS AgentPharmacie_AgentId, 
+            T.PharmacyId AS AgentPharmacie_PharmacyId, 
+            True AS _from0
+        FROM MedicalTechnoModelStoreContainer.AgentPharmacie AS T
     ) AS T1");
         }
 
@@ -844,15 +844,15 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Areas
-        [MedicalTechnoModel.Areas](T1.Areas_Id, T1.Areas_LocationId, T1.Areas_Title, T1.Areas_DeletedBy)
+        [MedicalTechnoModel.Area](T1.Area_Id, T1.Area_LocationId, T1.Area_Title, T1.Area_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Areas_Id, 
-            T.LocationId AS Areas_LocationId, 
-            T.Title AS Areas_Title, 
-            T.DeletedBy AS Areas_DeletedBy, 
+            T.Id AS Area_Id, 
+            T.LocationId AS Area_LocationId, 
+            T.Title AS Area_Title, 
+            T.DeletedBy AS Area_DeletedBy, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Areas AS T
+        FROM MedicalTechnoModelStoreContainer.Area AS T
     ) AS T1");
         }
 
@@ -864,18 +864,18 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Companies
-        [MedicalTechnoModel.Companies](T1.Companies_Id, T1.Companies_Name, T1.Companies_Description, T1.Companies_Phone, T1.Companies_Email, T1.Companies_Notes, T1.Companies_code)
+        [MedicalTechnoModel.Company](T1.Company_Id, T1.Company_Name, T1.Company_Description, T1.Company_Phone, T1.Company_Email, T1.Company_Notes, T1.Company_code)
     FROM (
         SELECT 
-            T.Id AS Companies_Id, 
-            T.Name AS Companies_Name, 
-            T.Description AS Companies_Description, 
-            T.Phone AS Companies_Phone, 
-            T.Email AS Companies_Email, 
-            T.Notes AS Companies_Notes, 
-            T.code AS Companies_code, 
+            T.Id AS Company_Id, 
+            T.Name AS Company_Name, 
+            T.Description AS Company_Description, 
+            T.Phone AS Company_Phone, 
+            T.Email AS Company_Email, 
+            T.Notes AS Company_Notes, 
+            T.code AS Company_code, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Companies AS T
+        FROM MedicalTechnoModelStoreContainer.Company AS T
     ) AS T1");
         }
 
@@ -887,15 +887,15 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing DefaultLists
-        [MedicalTechnoModel.DefaultLists](T1.DefaultLists_Id, T1.DefaultLists_Title, T1.DefaultLists_Type, T1.DefaultLists_Action)
+        [MedicalTechnoModel.DefaultList](T1.DefaultList_Id, T1.DefaultList_Title, T1.DefaultList_Type, T1.DefaultList_Action)
     FROM (
         SELECT 
-            T.Id AS DefaultLists_Id, 
-            T.Title AS DefaultLists_Title, 
-            T.Type AS DefaultLists_Type, 
-            T.Action AS DefaultLists_Action, 
+            T.Id AS DefaultList_Id, 
+            T.Title AS DefaultList_Title, 
+            T.Type AS DefaultList_Type, 
+            T.Action AS DefaultList_Action, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.DefaultLists AS T
+        FROM MedicalTechnoModelStoreContainer.DefaultList AS T
     ) AS T1");
         }
 
@@ -907,19 +907,19 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Distributers
-        [MedicalTechnoModel.Distributers](T1.Distributers_Id, T1.Distributers_Name, T1.Distributers_AreaId, T1.Distributers_Address, T1.Distributers_Phone, T1.Distributers_Code, T1.Distributers_NoOfVisits, T1.Distributers_DeletedBy)
+        [MedicalTechnoModel.Distributer](T1.Distributer_Id, T1.Distributer_Name, T1.Distributer_AreaId, T1.Distributer_Address, T1.Distributer_Phone, T1.Distributer_Code, T1.Distributer_NoOfVisits, T1.Distributer_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Distributers_Id, 
-            T.Name AS Distributers_Name, 
-            T.AreaId AS Distributers_AreaId, 
-            T.Address AS Distributers_Address, 
-            T.Phone AS Distributers_Phone, 
-            T.Code AS Distributers_Code, 
-            T.NoOfVisits AS Distributers_NoOfVisits, 
-            T.DeletedBy AS Distributers_DeletedBy, 
+            T.Id AS Distributer_Id, 
+            T.Name AS Distributer_Name, 
+            T.AreaId AS Distributer_AreaId, 
+            T.Address AS Distributer_Address, 
+            T.Phone AS Distributer_Phone, 
+            T.Code AS Distributer_Code, 
+            T.NoOfVisits AS Distributer_NoOfVisits, 
+            T.DeletedBy AS Distributer_DeletedBy, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Distributers AS T
+        FROM MedicalTechnoModelStoreContainer.Distributer AS T
     ) AS T1");
         }
 
@@ -931,24 +931,24 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Docotors
-        [MedicalTechnoModel.Docotors](T1.Docotors_Id, T1.Docotors_Name, T1.Docotors_SpecializeId, T1.Docotors_IsMorning, T1.Docotors_Address, T1.Docotors_AreaId, T1.Docotors_ClassTypeId, T1.Docotors_NoOfVisits, T1.Docotors_Phone, T1.Docotors_Telephone, T1.Docotors_Email, T1.Docotors_Code, T1.Docotors_DeletedBy)
+        [MedicalTechnoModel.Docotor](T1.Docotor_Id, T1.Docotor_Name, T1.Docotor_SpecializeId, T1.Docotor_IsMorning, T1.Docotor_Address, T1.Docotor_AreaId, T1.Docotor_ClassTypeId, T1.Docotor_NoOfVisits, T1.Docotor_Phone, T1.Docotor_Telephone, T1.Docotor_Email, T1.Docotor_Code, T1.Docotor_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Docotors_Id, 
-            T.Name AS Docotors_Name, 
-            T.SpecializeId AS Docotors_SpecializeId, 
-            T.IsMorning AS Docotors_IsMorning, 
-            T.Address AS Docotors_Address, 
-            T.AreaId AS Docotors_AreaId, 
-            T.ClassTypeId AS Docotors_ClassTypeId, 
-            T.NoOfVisits AS Docotors_NoOfVisits, 
-            T.Phone AS Docotors_Phone, 
-            T.Telephone AS Docotors_Telephone, 
-            T.Email AS Docotors_Email, 
-            T.Code AS Docotors_Code, 
-            T.DeletedBy AS Docotors_DeletedBy, 
+            T.Id AS Docotor_Id, 
+            T.Name AS Docotor_Name, 
+            T.SpecializeId AS Docotor_SpecializeId, 
+            T.IsMorning AS Docotor_IsMorning, 
+            T.Address AS Docotor_Address, 
+            T.AreaId AS Docotor_AreaId, 
+            T.ClassTypeId AS Docotor_ClassTypeId, 
+            T.NoOfVisits AS Docotor_NoOfVisits, 
+            T.Phone AS Docotor_Phone, 
+            T.Telephone AS Docotor_Telephone, 
+            T.Email AS Docotor_Email, 
+            T.Code AS Docotor_Code, 
+            T.DeletedBy AS Docotor_DeletedBy, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Docotors AS T
+        FROM MedicalTechnoModelStoreContainer.Docotor AS T
     ) AS T1");
         }
 
@@ -960,40 +960,20 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Drugs
-        [MedicalTechnoModel.Drugs](T1.Drugs_Id, T1.Drugs_Name, T1.Drugs_Description, T1.Drugs_Code, T1.Drugs_Price, T1.Drugs_SectionId, T1.Drugs_Notes, T1.Drugs_CompanyId, T1.Drugs_DeletedBy)
+        [MedicalTechnoModel.Drug](T1.Drug_Id, T1.Drug_Name, T1.Drug_Description, T1.Drug_Code, T1.Drug_Price, T1.Drug_SectionId, T1.Drug_Notes, T1.Drug_CompanyId, T1.Drug_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Drugs_Id, 
-            T.Name AS Drugs_Name, 
-            T.Description AS Drugs_Description, 
-            T.Code AS Drugs_Code, 
-            T.Price AS Drugs_Price, 
-            T.SectionId AS Drugs_SectionId, 
-            T.Notes AS Drugs_Notes, 
-            T.CompanyId AS Drugs_CompanyId, 
-            T.DeletedBy AS Drugs_DeletedBy, 
+            T.Id AS Drug_Id, 
+            T.Name AS Drug_Name, 
+            T.Description AS Drug_Description, 
+            T.Code AS Drug_Code, 
+            T.Price AS Drug_Price, 
+            T.SectionId AS Drug_SectionId, 
+            T.Notes AS Drug_Notes, 
+            T.CompanyId AS Drug_CompanyId, 
+            T.DeletedBy AS Drug_DeletedBy, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Drugs AS T
-    ) AS T1");
-        }
-
-        /// <summary>
-        /// Gets the view for Entities.GroupPermissions.
-        /// </summary>
-        /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView32()
-        {
-            return new DbMappingView(@"
-    SELECT VALUE -- Constructing GroupPermissions
-        [MedicalTechnoModel.GroupPermissions](T1.GroupPermissions_Id, T1.GroupPermissions_GroupId, T1.GroupPermissions_PermissionCode, T1.GroupPermissions_Value)
-    FROM (
-        SELECT 
-            T.Id AS GroupPermissions_Id, 
-            T.GroupId AS GroupPermissions_GroupId, 
-            T.PermissionCode AS GroupPermissions_PermissionCode, 
-            T.[Value] AS GroupPermissions_Value, 
-            True AS _from0
-        FROM MedicalTechnoModelStoreContainer.GroupPermissions AS T
+        FROM MedicalTechnoModelStoreContainer.Drug AS T
     ) AS T1");
         }
 
@@ -1001,17 +981,37 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for Entities.Groups.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView33()
+        private static DbMappingView GetView32()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Groups
-        [MedicalTechnoModel.Groups](T1.Groups_Id, T1.Groups_GroupName)
+        [MedicalTechnoModel.Group](T1.Group_Id, T1.Group_GroupName)
     FROM (
         SELECT 
-            T.Id AS Groups_Id, 
-            T.GroupName AS Groups_GroupName, 
+            T.Id AS Group_Id, 
+            T.GroupName AS Group_GroupName, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Groups AS T
+        FROM MedicalTechnoModelStoreContainer.[Group] AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for Entities.GroupPermissions.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView33()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing GroupPermissions
+        [MedicalTechnoModel.GroupPermission](T1.GroupPermission_Id, T1.GroupPermission_GroupId, T1.GroupPermission_PermissionCode, T1.GroupPermission_Value)
+    FROM (
+        SELECT 
+            T.Id AS GroupPermission_Id, 
+            T.GroupId AS GroupPermission_GroupId, 
+            T.PermissionCode AS GroupPermission_PermissionCode, 
+            T.[Value] AS GroupPermission_Value, 
+            True AS _from0
+        FROM MedicalTechnoModelStoreContainer.GroupPermission AS T
     ) AS T1");
         }
 
@@ -1023,20 +1023,20 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Hospitals
-        [MedicalTechnoModel.Hospitals](T1.Hospitals_Id, T1.Hospitals_Name, T1.Hospitals_AreaId, T1.Hospitals_Address, T1.Hospitals_Phone, T1.Hospitals_Email, T1.Hospitals_Type, T1.Hospitals_Code, T1.Hospitals_DeletedBy)
+        [MedicalTechnoModel.Hospital](T1.Hospital_Id, T1.Hospital_Name, T1.Hospital_AreaId, T1.Hospital_Address, T1.Hospital_Phone, T1.Hospital_Email, T1.Hospital_Type, T1.Hospital_Code, T1.Hospital_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Hospitals_Id, 
-            T.Name AS Hospitals_Name, 
-            T.AreaId AS Hospitals_AreaId, 
-            T.Address AS Hospitals_Address, 
-            T.Phone AS Hospitals_Phone, 
-            T.Email AS Hospitals_Email, 
-            T.Type AS Hospitals_Type, 
-            T.Code AS Hospitals_Code, 
-            T.DeletedBy AS Hospitals_DeletedBy, 
+            T.Id AS Hospital_Id, 
+            T.Name AS Hospital_Name, 
+            T.AreaId AS Hospital_AreaId, 
+            T.Address AS Hospital_Address, 
+            T.Phone AS Hospital_Phone, 
+            T.Email AS Hospital_Email, 
+            T.Type AS Hospital_Type, 
+            T.Code AS Hospital_Code, 
+            T.DeletedBy AS Hospital_DeletedBy, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Hospitals AS T
+        FROM MedicalTechnoModelStoreContainer.Hospital AS T
     ) AS T1");
         }
 
@@ -1048,14 +1048,14 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Locations
-        [MedicalTechnoModel.Locations](T1.Locations_Id, T1.Locations_Title, T1.Locations_DeletedBy)
+        [MedicalTechnoModel.Location](T1.Location_Id, T1.Location_Title, T1.Location_DeletedBy)
     FROM (
         SELECT 
-            T.Id AS Locations_Id, 
-            T.Title AS Locations_Title, 
-            T.DeletedBy AS Locations_DeletedBy, 
+            T.Id AS Location_Id, 
+            T.Title AS Location_Title, 
+            T.DeletedBy AS Location_DeletedBy, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Locations AS T
+        FROM MedicalTechnoModelStoreContainer.Location AS T
     ) AS T1");
         }
 
@@ -1067,26 +1067,26 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Orders
-        [MedicalTechnoModel.Orders](T1.Orders_id, T1.Orders_orderTo, T1.Orders_orderTypeId, T1.Orders_agentId, T1.Orders_subject, T1.Orders_orderDate, T1.Orders_estimateDate, T1.Orders_deliverdDate, T1.Orders_supervisorApprove, T1.Orders_isDeliverd, T1.Orders_supervisorDate, T1.Orders_noOfItems, T1.Orders_total, T1.Orders_netTotal, T1.Orders_lastEditBy, T1.Orders_lastEditDate, T1.Orders_deletedBy)
+        [MedicalTechnoModel.Order](T1.Order_id, T1.Order_orderTo, T1.Order_orderTypeId, T1.Order_agentId, T1.Order_subject, T1.Order_orderDate, T1.Order_estimateDate, T1.Order_deliverdDate, T1.Order_supervisorApprove, T1.Order_isDeliverd, T1.Order_supervisorDate, T1.Order_noOfItems, T1.Order_total, T1.Order_netTotal, T1.Order_lastEditBy, T1.Order_lastEditDate, T1.Order_deletedBy)
     FROM (
         SELECT 
-            T.id AS Orders_id, 
-            T.orderTo AS Orders_orderTo, 
-            T.orderTypeId AS Orders_orderTypeId, 
-            T.agentId AS Orders_agentId, 
-            T.subject AS Orders_subject, 
-            T.orderDate AS Orders_orderDate, 
-            T.estimateDate AS Orders_estimateDate, 
-            T.deliverdDate AS Orders_deliverdDate, 
-            T.supervisorApprove AS Orders_supervisorApprove, 
-            T.isDeliverd AS Orders_isDeliverd, 
-            T.supervisorDate AS Orders_supervisorDate, 
-            T.noOfItems AS Orders_noOfItems, 
-            T.total AS Orders_total, 
-            T.netTotal AS Orders_netTotal, 
-            T.lastEditBy AS Orders_lastEditBy, 
-            T.lastEditDate AS Orders_lastEditDate, 
-            T.deletedBy AS Orders_deletedBy, 
+            T.id AS Order_id, 
+            T.orderTo AS Order_orderTo, 
+            T.orderTypeId AS Order_orderTypeId, 
+            T.agentId AS Order_agentId, 
+            T.subject AS Order_subject, 
+            T.orderDate AS Order_orderDate, 
+            T.estimateDate AS Order_estimateDate, 
+            T.deliverdDate AS Order_deliverdDate, 
+            T.supervisorApprove AS Order_supervisorApprove, 
+            T.isDeliverd AS Order_isDeliverd, 
+            T.supervisorDate AS Order_supervisorDate, 
+            T.noOfItems AS Order_noOfItems, 
+            T.total AS Order_total, 
+            T.netTotal AS Order_netTotal, 
+            T.lastEditBy AS Order_lastEditBy, 
+            T.lastEditDate AS Order_lastEditDate, 
+            T.deletedBy AS Order_deletedBy, 
             True AS _from0
         FROM MedicalTechnoModelStoreContainer.Orders AS T
     ) AS T1");
@@ -1100,17 +1100,17 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ordersItems
-        [MedicalTechnoModel.ordersItems](T1.ordersItems_id, T1.ordersItems_description, T1.ordersItems_itemCode, T1.ordersItems_unitPrice, T1.ordersItems_quantity, T1.ordersItems_total, T1.ordersItems_drugsId, T1.ordersItems_orderId)
+        [MedicalTechnoModel.ordersItem](T1.ordersItem_id, T1.ordersItem_description, T1.ordersItem_itemCode, T1.ordersItem_unitPrice, T1.ordersItem_quantity, T1.ordersItem_total, T1.ordersItem_drugsId, T1.ordersItem_orderId)
     FROM (
         SELECT 
-            T.id AS ordersItems_id, 
-            T.description AS ordersItems_description, 
-            T.itemCode AS ordersItems_itemCode, 
-            T.unitPrice AS ordersItems_unitPrice, 
-            T.quantity AS ordersItems_quantity, 
-            T.total AS ordersItems_total, 
-            T.drugsId AS ordersItems_drugsId, 
-            T.orderId AS ordersItems_orderId, 
+            T.id AS ordersItem_id, 
+            T.description AS ordersItem_description, 
+            T.itemCode AS ordersItem_itemCode, 
+            T.unitPrice AS ordersItem_unitPrice, 
+            T.quantity AS ordersItem_quantity, 
+            T.total AS ordersItem_total, 
+            T.drugsId AS ordersItem_drugsId, 
+            T.orderId AS ordersItem_orderId, 
             True AS _from0
         FROM MedicalTechnoModelStoreContainer.ordersItems AS T
     ) AS T1");
@@ -1124,20 +1124,20 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Pharmacies
-        [MedicalTechnoModel.Pharmacies](T1.Pharmacies_Id, T1.Pharmacies_Name, T1.Pharmacies_AreaId, T1.Pharmacies_Address, T1.Pharmacies_Phone, T1.Pharmacies_Email, T1.Pharmacies_OwnerName, T1.Pharmacies_OwnerPhone, T1.Pharmacies_code)
+        [MedicalTechnoModel.Pharmacy](T1.Pharmacy_Id, T1.Pharmacy_Name, T1.Pharmacy_AreaId, T1.Pharmacy_Address, T1.Pharmacy_Phone, T1.Pharmacy_Email, T1.Pharmacy_OwnerName, T1.Pharmacy_OwnerPhone, T1.Pharmacy_code)
     FROM (
         SELECT 
-            T.Id AS Pharmacies_Id, 
-            T.Name AS Pharmacies_Name, 
-            T.AreaId AS Pharmacies_AreaId, 
-            T.Address AS Pharmacies_Address, 
-            T.Phone AS Pharmacies_Phone, 
-            T.Email AS Pharmacies_Email, 
-            T.OwnerName AS Pharmacies_OwnerName, 
-            T.OwnerPhone AS Pharmacies_OwnerPhone, 
-            T.code AS Pharmacies_code, 
+            T.Id AS Pharmacy_Id, 
+            T.Name AS Pharmacy_Name, 
+            T.AreaId AS Pharmacy_AreaId, 
+            T.Address AS Pharmacy_Address, 
+            T.Phone AS Pharmacy_Phone, 
+            T.Email AS Pharmacy_Email, 
+            T.OwnerName AS Pharmacy_OwnerName, 
+            T.OwnerPhone AS Pharmacy_OwnerPhone, 
+            T.code AS Pharmacy_code, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Pharmacies AS T
+        FROM MedicalTechnoModelStoreContainer.Pharmacy AS T
     ) AS T1");
         }
 
@@ -1149,24 +1149,24 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Visits
-        [MedicalTechnoModel.Visits](T1.Visits_Id, T1.Visits_AgentId, T1.Visits_DrugsId, T1.Visits_TypeId, T1.Visits_VisitTo, T1.Visits_VisitDate, T1.Visits_Duration, T1.Visits_Description, T1.Visits_IsMorning, T1.Visits_Notes, T1.Visits_LastEditBy, T1.Visits_LastEditDate, T1.Visits_CreationDate)
+        [MedicalTechnoModel.Visit](T1.Visit_Id, T1.Visit_AgentId, T1.Visit_DrugsId, T1.Visit_TypeId, T1.Visit_VisitTo, T1.Visit_VisitDate, T1.Visit_Duration, T1.Visit_Description, T1.Visit_IsMorning, T1.Visit_Notes, T1.Visit_LastEditBy, T1.Visit_LastEditDate, T1.Visit_CreationDate)
     FROM (
         SELECT 
-            T.Id AS Visits_Id, 
-            T.AgentId AS Visits_AgentId, 
-            T.DrugsId AS Visits_DrugsId, 
-            T.TypeId AS Visits_TypeId, 
-            T.VisitTo AS Visits_VisitTo, 
-            T.VisitDate AS Visits_VisitDate, 
-            T.Duration AS Visits_Duration, 
-            T.Description AS Visits_Description, 
-            T.IsMorning AS Visits_IsMorning, 
-            T.Notes AS Visits_Notes, 
-            T.LastEditBy AS Visits_LastEditBy, 
-            T.LastEditDate AS Visits_LastEditDate, 
-            T.CreationDate AS Visits_CreationDate, 
+            T.Id AS Visit_Id, 
+            T.AgentId AS Visit_AgentId, 
+            T.DrugsId AS Visit_DrugsId, 
+            T.TypeId AS Visit_TypeId, 
+            T.VisitTo AS Visit_VisitTo, 
+            T.VisitDate AS Visit_VisitDate, 
+            T.Duration AS Visit_Duration, 
+            T.Description AS Visit_Description, 
+            T.IsMorning AS Visit_IsMorning, 
+            T.Notes AS Visit_Notes, 
+            T.LastEditBy AS Visit_LastEditBy, 
+            T.LastEditDate AS Visit_LastEditDate, 
+            T.CreationDate AS Visit_CreationDate, 
             True AS _from0
-        FROM MedicalTechnoModelStoreContainer.Visits AS T
+        FROM MedicalTechnoModelStoreContainer.Visit AS T
     ) AS T1");
         }
     }

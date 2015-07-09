@@ -4,7 +4,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IGroupPermissionsRepository : IGenericRepository<GroupPermissions>
+    public interface IGroupPermissionsRepository : IGenericRepository<GroupPermission>
     {
         List<DtoGroupPermissions> SelectAll(int groupId, string lang);
         List<int?> PermissionWithNumbersByGroupIdArray(int groupId);

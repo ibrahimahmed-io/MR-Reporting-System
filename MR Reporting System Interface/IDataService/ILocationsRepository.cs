@@ -4,7 +4,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface ILocationsRepository : IGenericRepository<Locations>
+    public interface ILocationsRepository : IGenericRepository<Location>
     {
         List<DtoLocations> SelectAll(string lang);
         DtoLocations SelectById(int id, string lang);

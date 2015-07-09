@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class GroupPermissionsRepository : GenericRepository<MedicalTechnoEntities, GroupPermissions>, IGroupPermissionsRepository
+    public class GroupPermissionsRepository : GenericRepository<MedicalTechnoEntities, GroupPermission>, IGroupPermissionsRepository
     {
         public List<DtoGroupPermissions> SelectAll(int groupId, string lang)
         {

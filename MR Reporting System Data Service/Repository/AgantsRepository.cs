@@ -7,7 +7,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class AgentsRepository : GenericRepository<MedicalTechnoEntities, Agents>, IAgentsRepository
+    public class AgentsRepository : GenericRepository<MedicalTechnoEntities, Agent>, IAgentsRepository
     {
         public List<DtoAgents> SelectAll(string lang)
         {
@@ -21,7 +21,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Id = q.id,
                             UserName = q.UserName,
                             PassWord = q.PassWord,
-                            AreaName = q.Areas.Title,
+                            AreaName = q.Area.Title,
                             ContactName = q.ContactName,
                             PositionId = q.PostionId,
                             PositionName = (Context.DefaultLists.FirstOrDefault(x => x.Id == q.PostionId).Title),
@@ -30,7 +30,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Phone = q.Phone,
                             Email = q.Email,
                             GroupId = q.GroupId,
-                            SupervisorName = q.Agents2.ContactName,
+                            SupervisorName = q.Agent2.ContactName,
                             Salary = q.Salary,
                             NoOfVisits = q.NoOfVisits,
                             SupervisorId = q.SupervisorId,
@@ -48,9 +48,9 @@ namespace MR_Reporting_System_Data_Service.Repository
                             UserName = q.UserName,
                             PassWord = q.PassWord,
                             ContactName = q.ContactName,
-                            AreaName = q.Areas.Title,
+                            AreaName = q.Area.Title,
                             PositionName = (Context.DefaultLists.FirstOrDefault(x => x.Id == q.PostionId).Title),
-                            SupervisorName = q.Agents2.ContactName,
+                            SupervisorName = q.Agent2.ContactName,
                             PositionId = q.PostionId,
                             AreaId = q.AreaId,
                             Address = q.Address,

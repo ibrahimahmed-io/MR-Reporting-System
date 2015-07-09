@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class AgentDrugsRepository : GenericRepository<MedicalTechnoEntities, AgentDrugs>, IAgentDrugsRepository
+    public class AgentDrugsRepository : GenericRepository<MedicalTechnoEntities, AgentDrug>, IAgentDrugsRepository
     {
         public List<DtoAgentDrugs> SelectAll(string lang, int agentId)
         {
@@ -20,7 +20,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Id = (int)q.DrugsId,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
-                            DrugsName = q.Drugs.Name
+                            DrugsName = q.Drug.Name
                         }).ToList();
             }
             else
@@ -32,7 +32,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Id = (int)q.DrugsId,
                             AgentId = q.AgentId,
                             DrugsId = q.DrugsId,
-                            DrugsName = q.Drugs.Name
+                            DrugsName = q.Drug.Name
                         }).ToList();
             } return list;
         }

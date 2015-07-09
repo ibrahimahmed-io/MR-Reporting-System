@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class PharmaciesRepository : GenericRepository<MedicalTechnoEntities, Pharmacies>, IPharmaciesRepository
+    public class PharmaciesRepository : GenericRepository<MedicalTechnoEntities, Pharmacy>, IPharmaciesRepository
     {
         public List<DtoPharmacies> SelectAll(string lang)
         {
@@ -22,7 +22,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             AreaId = q.AreaId,
                             Address = q.Address,
                             Phone = q.Phone,
-                            AreaName = q.Areas.Title,
+                            AreaName = q.Area.Title,
                             Email = q.Email,
                             OwnerName = q.OwnerName,
                             OwnerPhone = q.OwnerPhone,
@@ -37,7 +37,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Id = q.Id,
                             Name = q.Name,
                             AreaId = q.AreaId,
-                            AreaName = q.Areas.Title,
+                            AreaName = q.Area.Title,
                             Address = q.Address,
                             Phone = q.Phone,
                             Email = q.Email,

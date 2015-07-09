@@ -12,13 +12,13 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Drugs
+    public partial class Drug
     {
-        public Drugs()
+        public Drug()
         {
-            this.AgentDrugs = new HashSet<AgentDrugs>();
-            this.ordersItems = new HashSet<ordersItems>();
-            this.Visits = new HashSet<Visits>();
+            this.AgentDrugs = new HashSet<AgentDrug>();
+            this.ordersItems = new HashSet<ordersItem>();
+            this.Visits = new HashSet<Visit>();
         }
     
         public int Id { get; set; }
@@ -31,11 +31,11 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> DeletedBy { get; set; }
     
-        public virtual ICollection<AgentDrugs> AgentDrugs { get; set; }
-        public virtual Agents Agents { get; set; }
-        public virtual Companies Companies { get; set; }
-        public virtual DefaultLists DefaultLists { get; set; }
-        public virtual ICollection<ordersItems> ordersItems { get; set; }
-        public virtual ICollection<Visits> Visits { get; set; }
+        public virtual Agent Agent { get; set; }
+        public virtual ICollection<AgentDrug> AgentDrugs { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual DefaultList DefaultList { get; set; }
+        public virtual ICollection<ordersItem> ordersItems { get; set; }
+        public virtual ICollection<Visit> Visits { get; set; }
     }
 }

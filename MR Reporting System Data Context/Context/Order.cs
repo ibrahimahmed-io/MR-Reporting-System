@@ -12,11 +12,11 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Orders
+    public partial class Order
     {
-        public Orders()
+        public Order()
         {
-            this.ordersItems = new HashSet<ordersItems>();
+            this.ordersItems = new HashSet<ordersItem>();
         }
     
         public int id { get; set; }
@@ -37,10 +37,10 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<System.DateTime> lastEditDate { get; set; }
         public Nullable<int> deletedBy { get; set; }
     
-        public virtual Agents Agents { get; set; }
-        public virtual Agents Agents1 { get; set; }
-        public virtual Agents Agents2 { get; set; }
-        public virtual DefaultLists DefaultLists { get; set; }
-        public virtual ICollection<ordersItems> ordersItems { get; set; }
+        public virtual Agent Agent { get; set; }
+        public virtual Agent Agent1 { get; set; }
+        public virtual Agent Agent2 { get; set; }
+        public virtual DefaultList DefaultList { get; set; }
+        public virtual ICollection<ordersItem> ordersItems { get; set; }
     }
 }

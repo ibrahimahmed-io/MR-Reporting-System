@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class DrugsRepository : GenericRepository<MedicalTechnoEntities, Drugs>, IDrugsRepository
+    public class DrugsRepository : GenericRepository<MedicalTechnoEntities, Drug>, IDrugsRepository
     {
         public List<DtoDrugs> SelectAll(string lang)
         {
@@ -19,9 +19,9 @@ namespace MR_Reporting_System_Data_Service.Repository
                     Description = q.Description,
                     Code = q.Code,
                     Price = q.Price,
-                    SectionName = q.DefaultLists.Title,
+                    SectionName = q.DefaultList.Title,
                     Notes = q.Notes,
-                    CompanyName = q.Companies.Name
+                    CompanyName = q.Company.Name
                 }).ToList();
 
             return list;

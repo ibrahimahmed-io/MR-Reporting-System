@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class DocotorsRepository : GenericRepository<MedicalTechnoEntities, Docotors>, IDocotorsRepository
+    public class DocotorsRepository : GenericRepository<MedicalTechnoEntities, Docotor>, IDocotorsRepository
     {
         public List<DtoDocotors> SelectAll(string lang)
         {
@@ -25,7 +25,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             AreaId = q.AreaId,
                             ClassTypeId = q.ClassTypeId,
                             NoOfVisits = q.NoOfVisits,
-                            AreaName = q.Areas.Title,
+                            AreaName = q.Area.Title,
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
@@ -46,7 +46,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             AreaId = q.AreaId,
                             ClassTypeId = q.ClassTypeId,
                             NoOfVisits = q.NoOfVisits,
-                            AreaName = q.Areas.Title,
+                            AreaName = q.Area.Title,
                             Phone = q.Phone,
                             Telephone = q.Telephone,
                             Email = q.Email,
