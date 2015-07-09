@@ -12,13 +12,13 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class AgentDrug
+    public partial class AgentDrugs
     {
         public int Id { get; set; }
         public Nullable<int> AgentId { get; set; }
         public Nullable<int> DrugsId { get; set; }
     
-        public virtual Agent Agent { get; set; }
-        public virtual Drug Drug { get; set; }
+        public virtual Drugs Drugs { get; set; }
+        public virtual Agents Agents { get; set; }
     }
 }

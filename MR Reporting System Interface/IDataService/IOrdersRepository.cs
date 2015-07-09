@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IOrdersRepository : IGenericRepository<Order>
+    public interface IOrdersRepository : IGenericRepository<Orders>
     {
         List<DtoOrders> AlertsOrdersandApprvovedDetail(string type);
         List<DtoOrders> AlertsByOrdersCompleteDetail(string type);

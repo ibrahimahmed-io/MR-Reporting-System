@@ -18,7 +18,6 @@ namespace MR_Reporting_System_Data_Context.Context
         public MedicalTechnoEntities()
             : base("name=MedicalTechnoEntities")
         {
-            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -26,25 +25,25 @@ namespace MR_Reporting_System_Data_Context.Context
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Agent> Agents { get; set; }
-        public virtual DbSet<AgentArea> AgentAreas { get; set; }
-        public virtual DbSet<AgentDistributer> AgentDistributers { get; set; }
-        public virtual DbSet<AgentDrug> AgentDrugs { get; set; }
-        public virtual DbSet<AgentHospital> AgentHospitals { get; set; }
-        public virtual DbSet<AgentPharmacie> AgentPharmacies { get; set; }
-        public virtual DbSet<Area> Areas { get; set; }
-        public virtual DbSet<Company> Companies { get; set; }
-        public virtual DbSet<DefaultList> DefaultLists { get; set; }
-        public virtual DbSet<Distributer> Distributers { get; set; }
-        public virtual DbSet<Docotor> Docotors { get; set; }
-        public virtual DbSet<Drug> Drugs { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<GroupPermission> GroupPermissions { get; set; }
-        public virtual DbSet<Hospital> Hospitals { get; set; }
-        public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<ordersItem> ordersItems { get; set; }
-        public virtual DbSet<Pharmacy> Pharmacies { get; set; }
-        public virtual DbSet<Visit> Visits { get; set; }
+        public virtual DbSet<AgentAreas> AgentAreas { get; set; }
+        public virtual DbSet<AgentDistributers> AgentDistributers { get; set; }
+        public virtual DbSet<AgentDrugs> AgentDrugs { get; set; }
+        public virtual DbSet<AgentHospitals> AgentHospitals { get; set; }
+        public virtual DbSet<AgentPharmacies> AgentPharmacies { get; set; }
+        public virtual DbSet<Agents> Agents { get; set; }
+        public virtual DbSet<Areas> Areas { get; set; }
+        public virtual DbSet<Companies> Companies { get; set; }
+        public virtual DbSet<DefaultLists> DefaultLists { get; set; }
+        public virtual DbSet<Distributers> Distributers { get; set; }
+        public virtual DbSet<Docotors> Docotors { get; set; }
+        public virtual DbSet<Drugs> Drugs { get; set; }
+        public virtual DbSet<GroupPermissions> GroupPermissions { get; set; }
+        public virtual DbSet<Groups> Groups { get; set; }
+        public virtual DbSet<Hospitals> Hospitals { get; set; }
+        public virtual DbSet<Locations> Locations { get; set; }
+        public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<ordersItems> ordersItems { get; set; }
+        public virtual DbSet<Pharmacies> Pharmacies { get; set; }
+        public virtual DbSet<Visits> Visits { get; set; }
     }
 }

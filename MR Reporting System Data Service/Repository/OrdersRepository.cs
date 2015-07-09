@@ -7,7 +7,7 @@ using System;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class OrdersRepository : GenericRepository<MedicalTechnoEntities, Order>, IOrdersRepository
+    public class OrdersRepository : GenericRepository<MedicalTechnoEntities, Orders>, IOrdersRepository
     {
 
         public List<DtoOrders> selectAll(string lang)
@@ -21,7 +21,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         id = q.id,
                         orderTo = q.orderTo,
                         orderTypeId = q.orderTypeId,
-                        agentName = q.Agent.ContactName,
+                        agentName = q.Agents.ContactName,
                         agentId = q.agentId,
                         subject = q.subject,
                         orderDate = q.orderDate,
@@ -36,7 +36,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         total = q.total,
                         netTotal = q.netTotal,
                         lastEditBy = q.lastEditBy,
-                        lastEditName = q.Agent2.ContactName,
+                        lastEditName = q.Agents2.ContactName,
                         lastEditDate = q.lastEditDate
                     }).ToList();
 
@@ -80,7 +80,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         orderTo = q.orderTo,
                         orderTypeId = q.orderTypeId,
                         agentId = q.agentId,
-                        agentName = q.Agent1.ContactName,
+                        agentName = q.Agents1.ContactName,
                         subject = q.subject,
                         orderDate = q.orderDate,
                         estimateDate = q.estimateDate,
@@ -94,7 +94,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         total = q.total,
                         netTotal = q.netTotal,
                         lastEditBy = q.lastEditBy,
-                        lastEditName = q.Agent2.ContactName,
+                        lastEditName = q.Agents2.ContactName,
                         lastEditDate = q.lastEditDate
                     }).ToList();
 
@@ -139,7 +139,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
-                            agentName = q.Agent1.ContactName,
+                            agentName = q.Agents1.ContactName,
                             subject = q.subject,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
@@ -153,7 +153,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList();
             }
@@ -166,7 +166,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent1.ContactName,
+                            agentName = q.Agents1.ContactName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -181,7 +181,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList();
             }
@@ -226,7 +226,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
                             subject = q.subject,
-                            agentName = q.Agent1.ContactName,
+                            agentName = q.Agents1.ContactName,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
 
@@ -240,7 +240,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList();
             }
@@ -255,7 +255,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
                             subject = q.subject,
-                            agentName = q.Agent1.ContactName,
+                            agentName = q.Agents1.ContactName,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
                             deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
@@ -268,7 +268,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList();
             }
@@ -398,7 +398,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = q.Agents.ContactName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -413,7 +413,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
 
@@ -456,7 +456,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = q.Agents.ContactName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -471,7 +471,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).ToList();
 
@@ -578,7 +578,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = q.Agents.ContactName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -593,7 +593,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
 
@@ -634,7 +634,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = q.Agents.ContactName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -649,7 +649,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
 
@@ -690,7 +690,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = q.Agents.ContactName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -705,7 +705,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             total = q.total,
                             netTotal = q.netTotal,
                             lastEditBy = q.lastEditBy,
-                            lastEditName = q.Agent2.ContactName,
+                            lastEditName = q.Agents2.ContactName,
                             lastEditDate = q.lastEditDate
                         }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
 

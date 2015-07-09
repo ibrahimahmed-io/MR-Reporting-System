@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class OrdersItemsRepository : GenericRepository<MedicalTechnoEntities, ordersItem>, IOrderItemsRepository
+    public class OrdersItemsRepository : GenericRepository<MedicalTechnoEntities, ordersItems>, IOrderItemsRepository
     {
 
         public IQueryable<DtoOrdersItems> selectAll(int projectId, string lang)

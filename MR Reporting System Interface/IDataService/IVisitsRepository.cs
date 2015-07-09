@@ -5,7 +5,7 @@ using System;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IVisitsRepository:IGenericRepository<Visit>
+    public interface IVisitsRepository:IGenericRepository<Visits>
     {
         List<DtoVisits> SelectAll( string lang);
         DtoVisits SelectById(int id, string lang);

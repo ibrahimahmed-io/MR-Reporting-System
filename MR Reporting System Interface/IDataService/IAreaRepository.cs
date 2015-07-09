@@ -4,7 +4,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IAreaRepository:IGenericRepository<Area>
+    public interface IAreaRepository:IGenericRepository<Areas>
     {
         List<DtoArea> SelectAll( string lang);
         DtoArea SelectById(int id, string lang); 

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\mohamed.ramadan\Source\Repos\MR-Reporting-System\MR Reporting System Data Context\Context\MedicalTechnoEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Ibrahim\Source\Repos\MR-Reporting-System\MR Reporting System Data Context\Context\MedicalTechnoEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

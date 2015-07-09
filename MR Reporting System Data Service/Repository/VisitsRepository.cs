@@ -7,13 +7,13 @@ using System;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class VisitsRepository : GenericRepository<MedicalTechnoEntities, Visit>, IVisitsRepository
+    public class VisitsRepository : GenericRepository<MedicalTechnoEntities, Visits>, IVisitsRepository
     {
         public List<DtoVisits> SelectAll(string lang)
         {
             var list = (from q in
                             Context.Visits.Include("Agent.ContactName").Include("Drug.Name").Include("DefaultList.Title")
-                        let type = q.DefaultList.Action
+                        let type = q.DefaultLists.Action
                         let visitee =
                             (type == 1)
                                 ? Context.Docotors.Where(x => x.Id == q.VisitTo).Select(x => x.Name).FirstOrDefault()
@@ -23,16 +23,16 @@ namespace MR_Reporting_System_Data_Service.Repository
                         select new DtoVisits
                         {
                             Id = q.Id,
-                            AgentName = q.Agent.ContactName,
-                            DrugsName = q.Drug.Name,
-                            TypeName = q.DefaultList.Title,
+                            AgentName = q.Agents.ContactName,
+                            DrugsName = q.Drugs.Name,
+                            TypeName = q.DefaultLists.Title,
                             VisitToName = visitee,
                             VisitDate = q.VisitDate,
                             Duration = q.Duration,
                             Description = q.Description,
                             IsMorning = q.IsMorning,
                             Notes = q.Notes,
-                            LastEditByName = q.Agent1.ContactName,
+                            LastEditByName = q.Agents1.ContactName,
                             LastEditDate = q.LastEditDate,
                             CreationDate = q.CreationDate
                         }).ToList();
@@ -43,17 +43,17 @@ namespace MR_Reporting_System_Data_Service.Repository
         public DtoVisitCountForDrugReport SelectVisitsForDrugReport(int drugId)
         {
             var doctorsVisitCount = (from q in Context.Visits
-                                     let type = q.DefaultList.Action
+                                     let type = q.DefaultLists.Action
                                      where type == 1 && q.DrugsId == drugId
                                      select q.Id).Count();
 
             var pharmaciesVisitCount = (from q in Context.Visits
-                                        let type = q.DefaultList.Action
+                                        let type = q.DefaultLists.Action
                                         where type == 2 && q.DrugsId == drugId
                                         select q.Id).Count();
 
             var hospitalsVisitCount = (from q in Context.Visits
-                                       let type = q.DefaultList.Action
+                                       let type = q.DefaultLists.Action
                                        where type == 3 && q.DrugsId == drugId
                                        select q.Id).Count();
 
@@ -176,8 +176,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from visit in Context.Visits.Where(x => x.AgentId == AgentId && x.VisitDate >= stratDate && x.VisitDate <= finishDate)
                         select new DtoVisits
                         {
-                            AgentName = visit.Agent.ContactName,
-                            TypeName = visit.DefaultList.Title,
+                            AgentName = visit.Agents.ContactName,
+                            TypeName = visit.DefaultLists.Title,
                             VisitTo = visit.VisitTo,
                             TypeId = visit.TypeId,
                             CreationDate = visit.CreationDate,
@@ -185,7 +185,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             VisitDate = visit.VisitDate,
                             Duration = visit.Duration,
                             Description = visit.Description,
-                            DrugsName = visit.Drug.Name,
+                            DrugsName = visit.Drugs.Name,
                             status = (bool)visit.IsMorning ? "Morning" : "Night"
                         }).ToList();
             }
@@ -194,8 +194,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from visit in Context.Visits.Where(x => x.VisitDate >= stratDate && x.VisitDate <= finishDate)
                         select new DtoVisits
                         {
-                            AgentName = visit.Agent.ContactName,
-                            TypeName = visit.DefaultList.Title,
+                            AgentName = visit.Agents.ContactName,
+                            TypeName = visit.DefaultLists.Title,
                             VisitTo = visit.VisitTo,
                             TypeId = visit.TypeId,
                             CreationDate = visit.CreationDate,
@@ -203,7 +203,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             VisitDate = visit.VisitDate,
                             Duration = visit.Duration,
                             Description = visit.Description,
-                            DrugsName = visit.Drug.Name,
+                            DrugsName = visit.Drugs.Name,
                             status = (bool)visit.IsMorning ? "Morning" : "Night"
                         }).ToList();
             }
@@ -240,8 +240,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                 list = (from visit in Context.Visits.Where(x => x.VisitDate >= stratDate && x.VisitDate <= finishDate)
                         select new DtoVisits
                         {
-                            AgentName = visit.Agent.ContactName,
-                            TypeName = visit.DefaultList.Title,
+                            AgentName = visit.Agents.ContactName,
+                            TypeName = visit.DefaultLists.Title,
                             VisitTo = visit.VisitTo,
                             TypeId = visit.TypeId,
                             CreationDate = visit.CreationDate,
@@ -249,7 +249,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             VisitDate = visit.VisitDate,
                             Duration = visit.Duration,
                             Description = visit.Description,
-                            DrugsName = visit.Drug.Name,
+                            DrugsName = visit.Drugs.Name,
                             status = (bool)visit.IsMorning ? "Morning" : "Night"
                         }).ToList();
             }
@@ -260,12 +260,12 @@ namespace MR_Reporting_System_Data_Service.Repository
                               select area.AgentId).FirstOrDefault();
 
                 list = (from visit in Context.Visits.Where(x => x.VisitDate >= stratDate && x.VisitDate <= finishDate && result == x.AgentId)
-                        let areaName = Context.AgentAreas.Where(x => x.AreaId == AreaId).Select(x => x.Area.Title).FirstOrDefault()
+                        let areaName = Context.AgentAreas.Where(x => x.AreaId == AreaId).Select(x => x.Areas.Title).FirstOrDefault()
                         select new DtoVisits
                         {
-                            AgentName = visit.Agent.ContactName,
+                            AgentName = visit.Agents.ContactName,
                             areaName = areaName,
-                            TypeName = visit.DefaultList.Title,
+                            TypeName = visit.DefaultLists.Title,
                             VisitTo = visit.VisitTo,
                             TypeId = visit.TypeId,
                             CreationDate = visit.CreationDate,
@@ -273,7 +273,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             VisitDate = visit.VisitDate,
                             Duration = visit.Duration,
                             Description = visit.Description,
-                            DrugsName = visit.Drug.Name,
+                            DrugsName = visit.Drugs.Name,
                             status = (bool)visit.IsMorning ? "Morning" : "Night"
                         }).ToList();
             }
@@ -353,8 +353,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                     list = (from visit in Context.Visits
                             select new DtoVisits
                             {
-                                AgentName = visit.Agent.ContactName,
-                                TypeName = visit.DefaultList.Title,
+                                AgentName = visit.Agents.ContactName,
+                                TypeName = visit.DefaultLists.Title,
                                 VisitTo = visit.VisitTo,
                                 TypeId = visit.TypeId,
                                 CreationDate = visit.CreationDate,
@@ -362,7 +362,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                                 VisitDate = visit.VisitDate,
                                 Duration = visit.Duration,
                                 Description = visit.Description,
-                                DrugsName = visit.Drug.Name,
+                                DrugsName = visit.Drugs.Name,
                                 status = (bool)visit.IsMorning ? "Morning" : "Night"
                             }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-7)).ToList();
                     break;
@@ -371,8 +371,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                     list = (from visit in Context.Visits
                             select new DtoVisits
                             {
-                                AgentName = visit.Agent.ContactName,
-                                TypeName = visit.DefaultList.Title,
+                                AgentName = visit.Agents.ContactName,
+                                TypeName = visit.DefaultLists.Title,
                                 VisitTo = visit.VisitTo,
                                 TypeId = visit.TypeId,
                                 CreationDate = visit.CreationDate,
@@ -380,7 +380,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                                 VisitDate = visit.VisitDate,
                                 Duration = visit.Duration,
                                 Description = visit.Description,
-                                DrugsName = visit.Drug.Name,
+                                DrugsName = visit.Drugs.Name,
                                 status = (bool)visit.IsMorning ? "Morning" : "Night"
                             }).ToList().Where(x => x.VisitDate >= currentDate.Value.AddDays(-14)).ToList();
                     break;
@@ -389,8 +389,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                     list = (from visit in Context.Visits
                             select new DtoVisits
                             {
-                                AgentName = visit.Agent.ContactName,
-                                TypeName = visit.DefaultList.Title,
+                                AgentName = visit.Agents.ContactName,
+                                TypeName = visit.DefaultLists.Title,
                                 VisitTo = visit.VisitTo,
                                 TypeId = visit.TypeId,
                                 CreationDate = visit.CreationDate,
@@ -398,7 +398,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                                 VisitDate = visit.VisitDate,
                                 Duration = visit.Duration,
                                 Description = visit.Description,
-                                DrugsName = visit.Drug.Name,
+                                DrugsName = visit.Drugs.Name,
                                 status = (bool)visit.IsMorning ? "Morning" : "Night"
                             }).ToList().Where(x => x.VisitDate <= currentDate.Value.AddDays(-14)).ToList();
                     break;

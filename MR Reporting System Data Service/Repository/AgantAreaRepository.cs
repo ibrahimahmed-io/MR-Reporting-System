@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class AgentAreaRepository : GenericRepository<MedicalTechnoEntities, AgentArea>, IAgentAreaRepository
+    public class AgentAreaRepository : GenericRepository<MedicalTechnoEntities, AgentAreas>, IAgentAreaRepository
     {
         public List<DtoAgentArea> SelectAll(string lang, int agentId)
         {
@@ -20,7 +20,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Id = (int)q.AreaId,
                             AgentId = q.AgentId,
                             AreaId = q.AreaId,
-                            AreaName = q.Area.Title
+                            AreaName = q.Areas.Title
                         }).ToList();
             }
             else
@@ -34,7 +34,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             Id = (int)q.AreaId,
                             AgentId = q.AgentId,
                             AreaId = q.AreaId,
-                            AreaName = q.Area.Title
+                            AreaName = q.Areas.Title
                         }).ToList();
             } return list;
         }

@@ -12,11 +12,11 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Distributer
+    public partial class Distributers
     {
-        public Distributer()
+        public Distributers()
         {
-            this.AgentDistributers = new HashSet<AgentDistributer>();
+            this.AgentDistributers = new HashSet<AgentDistributers>();
         }
     
         public int Id { get; set; }
@@ -28,8 +28,8 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<int> NoOfVisits { get; set; }
         public Nullable<int> DeletedBy { get; set; }
     
-        public virtual Agent Agent { get; set; }
-        public virtual ICollection<AgentDistributer> AgentDistributers { get; set; }
-        public virtual Area Area { get; set; }
+        public virtual ICollection<AgentDistributers> AgentDistributers { get; set; }
+        public virtual Agents Agents { get; set; }
+        public virtual Areas Areas { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IDocotorsRepository:IGenericRepository<Docotor>
+    public interface IDocotorsRepository:IGenericRepository<Docotors>
     {
         List<DtoDocotors> SelectAll( string lang);
         DtoDocotors SelectById(int id, string lang); 

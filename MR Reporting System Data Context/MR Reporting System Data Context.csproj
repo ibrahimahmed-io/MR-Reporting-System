@@ -48,52 +48,52 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\Agent.cs">
+    <Compile Include="Context\AgentAreas.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\AgentArea.cs">
+    <Compile Include="Context\AgentDistributers.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\AgentDistributer.cs">
+    <Compile Include="Context\AgentDrugs.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\AgentDrug.cs">
+    <Compile Include="Context\AgentHospitals.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\AgentHospital.cs">
+    <Compile Include="Context\AgentPharmacies.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\AgentPharmacie.cs">
+    <Compile Include="Context\Agents.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Area.cs">
+    <Compile Include="Context\Areas.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Company.cs">
+    <Compile Include="Context\Companies.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\DefaultList.cs">
+    <Compile Include="Context\DefaultLists.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Distributer.cs">
+    <Compile Include="Context\Distributers.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Docotor.cs">
+    <Compile Include="Context\Docotors.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Drug.cs">
+    <Compile Include="Context\Drugs.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Group.cs">
+    <Compile Include="Context\GroupPermissions.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\GroupPermission.cs">
+    <Compile Include="Context\Groups.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Hospital.cs">
+    <Compile Include="Context\Hospitals.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Location.cs">
+    <Compile Include="Context\Locations.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Context\MedicalTechnoEntities.Context.cs">
@@ -112,16 +112,16 @@
       <DependentUpon>MedicalTechnoEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Context\MedicalTechnoEntities.Views.cs" />
-    <Compile Include="Context\Order.cs">
+    <Compile Include="Context\Orders.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\ordersItem.cs">
+    <Compile Include="Context\ordersItems.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Pharmacy.cs">
+    <Compile Include="Context\Pharmacies.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Context\Visit.cs">
+    <Compile Include="Context\Visits.cs">
       <DependentUpon>MedicalTechnoEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

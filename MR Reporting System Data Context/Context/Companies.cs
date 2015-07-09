@@ -12,13 +12,21 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class GroupPermission
+    public partial class Companies
     {
-        public int Id { get; set; }
-        public Nullable<int> GroupId { get; set; }
-        public Nullable<int> PermissionCode { get; set; }
-        public Nullable<bool> Value { get; set; }
+        public Companies()
+        {
+            this.Drugs = new HashSet<Drugs>();
+        }
     
-        public virtual Group Group { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Notes { get; set; }
+        public string code { get; set; }
+    
+        public virtual ICollection<Drugs> Drugs { get; set; }
     }
 }

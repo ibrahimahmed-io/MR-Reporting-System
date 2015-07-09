@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IOrderItemsRepository : IGenericRepository<ordersItem>
+    public interface IOrderItemsRepository : IGenericRepository<ordersItems>
     {
         IQueryable<DtoOrdersItems> selectAll(int orderId, string lang);
 

@@ -12,11 +12,11 @@ namespace MR_Reporting_System_Data_Context.Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Hospital
+    public partial class Hospitals
     {
-        public Hospital()
+        public Hospitals()
         {
-            this.AgentHospitals = new HashSet<AgentHospital>();
+            this.AgentHospitals = new HashSet<AgentHospitals>();
         }
     
         public int Id { get; set; }
@@ -29,9 +29,9 @@ namespace MR_Reporting_System_Data_Context.Context
         public string Code { get; set; }
         public Nullable<int> DeletedBy { get; set; }
     
-        public virtual Agent Agent { get; set; }
-        public virtual ICollection<AgentHospital> AgentHospitals { get; set; }
-        public virtual Area Area { get; set; }
-        public virtual DefaultList DefaultList { get; set; }
+        public virtual ICollection<AgentHospitals> AgentHospitals { get; set; }
+        public virtual Agents Agents { get; set; }
+        public virtual Areas Areas { get; set; }
+        public virtual DefaultLists DefaultLists { get; set; }
     }
 }

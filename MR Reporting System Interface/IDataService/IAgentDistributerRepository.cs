@@ -4,7 +4,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Interface.IDataService
 {
-    public interface IAgentDistributerRepository:IGenericRepository<AgentDistributer>
+    public interface IAgentDistributerRepository:IGenericRepository<AgentDistributers>
     {
         List<DtoAgentDistributer> SelectAll( string lang);
         DtoAgentDistributer SelectById(int id, string lang); 

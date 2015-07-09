@@ -6,7 +6,7 @@ using MR_Reporting_System_Model.DataTransferObjectModel;
 
 namespace MR_Reporting_System_Data_Service.Repository
 {
-    public class GroupsRepository : GenericRepository<MedicalTechnoEntities, Group>, IGroupsRepository
+    public class GroupsRepository : GenericRepository<MedicalTechnoEntities, Groups>, IGroupsRepository
     {
         public List<DtoGroups> SelectAll(string lang)
         {
