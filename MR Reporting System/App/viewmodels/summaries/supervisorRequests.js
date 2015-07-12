@@ -21,12 +21,20 @@
         $(".jarviswidget-toggle-btn").attr("data-original-title", config.language.collapse[config.currentLanguage()]);
         $(".jarviswidget-fullscreen-btn").attr("data-original-title", config.language.fullscreen[config.currentLanguage()]);
     });
+
     vm.requestsArray = ko.observableArray([]);
 
     vm.activate = function () {
 
+        //dataservice.getOrdersSupervisorApproval().done(function (data) {
+        //    vm.summary(data);
+        //});
+
         dataservice.getOrdersSupervisorApproval().done(function (data) {
-            vm.summary(data);
+
+            vm.knockoutGrid.setInitialData(data);
+
+            $(".loading-data").addClass("hidden");
         });
 
         vm.knockoutGrid = new config.KoGridInstanceCreator();
@@ -34,12 +42,12 @@
 
         vm.knockoutGrid.columnDefs([
              vm.knockoutGrid.createColumnDefinition('agentName', config.language.agent[config.currentLanguage()], 150, '10%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('subject', config.language.subject[config.currentLanguage()], 150, '10%', 'string'),
              vm.knockoutGrid.createColumnDefinition('orderTypeName', config.language.type[config.currentLanguage()], 150, '10%', 'string'),
              vm.knockoutGrid.createColumnDefinition('clientName', config.language.client[config.currentLanguage()], 150, '15%', 'string'),
              vm.knockoutGrid.createColumnDefinition('orderDate', config.language.orderDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
              vm.knockoutGrid.createColumnDefinition('estimateDate', config.language.estimateDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
              vm.knockoutGrid.createColumnDefinition('deliverdDate', config.language.visitDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-             vm.knockoutGrid.createColumnDefinition('subject', config.language.subject[config.currentLanguage()], 150, '20%', 'string'),
              vm.knockoutGrid.createColumnDefinition('netTotal', config.language.total[config.currentLanguage()], 150, '5%', 'string'),
              vm.knockoutGrid.createColumnDefinition('supervisorStatus', config.language.supervisorStatus[config.currentLanguage()], 150, '10%', 'string'),
              vm.knockoutGrid.createColumnDefinition('deliverdStatus', config.language.deliverdStatus[config.currentLanguage()], 150, '10%', 'string'),
