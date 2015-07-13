@@ -15,13 +15,15 @@ namespace MR_Reporting_System_Data_Service.Repository
             var list = new List<DtoOrders>();
 
             list = (from q in Context.Orders.Include("agent")
+
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                     where q.deletedBy == null
                     select new DtoOrders
                     {
                         id = q.id,
                         orderTo = q.orderTo,
                         orderTypeId = q.orderTypeId,
-                        agentName = q.Agent.ContactName,
+                        agentName = AgentName,
                         agentId = q.agentId,
                         subject = q.subject,
                         orderDate = q.orderDate,
@@ -29,6 +31,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         deliverdDate = q.deliverdDate,
                         supervisorApprove = q.supervisorApprove,
                         deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
+                        ready = q.isReady != null ? ((bool)q.isReady ? "Ready" : "Not Ready") : "Pending",
                         supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending",
                         isDeliverd = q.isDeliverd,
                         supervisorDate = q.supervisorDate,
@@ -72,7 +75,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             var list = new List<DtoOrders>();
 
             list = (from q in Context.Orders
-                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                     where q.deletedBy == null && q.supervisorApprove == null
                     && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
                     select new DtoOrders
@@ -133,7 +136,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Orders
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.deletedBy == null && q.orderTo == clientId
                         select new DtoOrders
                         {
@@ -162,7 +165,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             else
             {
                 list = (from q in Context.Orders
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.deletedBy == null && q.orderTo == clientId
                         select new DtoOrders
                         {
@@ -397,7 +400,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 #region orders that superVisor was approved
 
                 list = (from q in Context.Orders.Include("agent")
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.isDeliverd == true && q.deletedBy == null
                         select new DtoOrders
                         {
@@ -456,7 +459,7 @@ namespace MR_Reporting_System_Data_Service.Repository
 
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.isDeliverd == true && q.deletedBy == null
                         select new DtoOrders
                         {
@@ -554,7 +557,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                                  select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
 
             var ordersCompleted = (from o in Context.Orders
-                                   where o.isDeliverd == false && o.deletedBy == null
+                                   where o.supervisorApprove == false && o.deletedBy == null
                                    select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).Count();
 
 
@@ -577,7 +580,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             {
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.supervisorApprove == true && q.deletedBy == null
                         select new DtoOrders
                         {
@@ -634,7 +637,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             {
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.deletedBy == null
                         select new DtoOrders
                         {
@@ -691,7 +694,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             {
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
-                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                         where q.supervisorApprove == false && q.deletedBy == null
                         select new DtoOrders
                         {
@@ -754,7 +757,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             var list = new List<DtoOrders>();
 
             list = (from q in Context.Orders
-                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                     where q.deletedBy == null && q.supervisorApprove == true && q.isReady == null
                         //&& (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
                     && Context.Agents.FirstOrDefault(x => x.id == supervisorId).UserType != "Agent"
@@ -813,7 +816,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             var list = new List<DtoOrders>();
 
             list = (from q in Context.Orders
-                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
                     where q.deletedBy == null && q.isReady == true
                     && q.agentId == supervisorId
                     select new DtoOrders

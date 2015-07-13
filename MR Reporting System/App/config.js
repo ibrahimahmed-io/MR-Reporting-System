@@ -523,17 +523,24 @@
 
         var filterBoolean = function (value, field, filteredData) {
 
-            if (field === 'statusName') {
+            if (field === 'supervisorStatus') {
                 if (value || (typeof value === 'boolean')) {
-                    value = value ? language.oppened[currentLanguage()] : language.closed[currentLanguage()];
+                    value = value ? language.approved[currentLanguage()] : 'Not Approved';
                 } else {
                     value = null;
                 }
             }
 
-            if (field === 'readUnread') {
+            if (field === 'ready') {
                 if (value || (typeof value === 'boolean')) {
-                    value = value ? language.read[currentLanguage()] : language.unRead[currentLanguage()];
+                    value = value ? language.ready[currentLanguage()] : language.notReady[currentLanguage()];
+                } else {
+                    value = null;
+                }
+            }
+            if (field === 'deliverdStatus') {
+                if (value || (typeof value === 'boolean')) {
+                    value = value ? language.ready[currentLanguage()] : language.notReady[currentLanguage()];
                 } else {
                     value = null;
                 }
@@ -641,7 +648,11 @@
                 });
                 filterTemplate = '<div style="margin: 5px"><div class="input-daterange input-group"><input data-bind="datepicker: filterValue().startDate, datepickerOptions: { format: \'dd/mm/yyyy\', todayBtn: \'linked\', autoclose: true, clearBtn: true }" type="text" class="input-sm form-control" /><span class="input-group-addon">to</span><input data-bind="datepicker: filterValue().endDate, datepickerOptions: { format: \'dd/mm/yyyy\', todayBtn: \'linked\', autoclose: true, clearBtn: true }" type="text" class="input-sm form-control" /></div></div>';
             } else if (filterType === 'status') {
-                filterTemplate = '<div style="margin: 5px; width: 75%;"><select class="form-control" data-bind="booleanValue: filterValue" required><option>' + language.selectStatus[currentLanguage()] + '</option> <option value="true">' + language.oppened[currentLanguage()] + '</option><option value="false">' + language.closed[currentLanguage()] + '</option></select></div>';
+                filterTemplate = '<div style="margin: 5px; width: 75%;"><select class="form-control" data-bind="booleanValue: filterValue" required><option>' + language.selectStatus[currentLanguage()] + '</option> <option value="true">Approved</option><option value="false">Not Approved</option></select></div>';
+            } else if (filterType === 'deliverd') {
+                filterTemplate = '<div style="margin: 5px; width: 75%;"><select class="form-control" data-bind="booleanValue: filterValue" required><option>' + language.selectStatus[currentLanguage()] + '</option> <option value="true">Deliverd</option><option value="false">Not Deliverd</option></select></div>';
+            } else if (filterType === 'ready') {
+                filterTemplate = '<div style="margin: 5px; width: 75%;"><select class="form-control" data-bind="booleanValue: filterValue" required><option>' + language.selectStatus[currentLanguage()] + '</option> <option value="true">Ready</option><option value="false">Not Ready</option></select></div>';
             }
 
             return '<div><div style="border-bottom: 1px solid rgb(212,212,212);" data-bind="click: sort, css: {\'kgSorted\': !noSortVisible }, attr: {\'class\': \'kgHeaderSortColumn \' + headerClass()}" draggable="true"><div data-bind="attr: { \'class\': \'colt\' + $index() + \' kgHeaderText\' }, html: displayName"></div><div class="kgSortButtonDown" data-bind="visible: showSortButtonDown" style="display: none;"></div><div class="kgSortButtonUp" data-bind="visible: showSortButtonUp" style="display: none;"></div><div data-bind="visible: resizable, click: gripClick, mouseEvents: { mouseDown: gripOnMouseDown }" class="kgHeaderGrip"></div></div>' + filterTemplate + '</div>';

@@ -86,19 +86,19 @@
 
         orderGrid.columnDefs([
             orderGrid.createColumnDefinition('agentName', config.language.agent[config.currentLanguage()], 150, '10%', 'string'),
-            orderGrid.createColumnDefinition('orderTypeName', config.language.type[config.currentLanguage()], 150, '10%', 'string'),
             orderGrid.createColumnDefinition('clientName', config.language.client[config.currentLanguage()], 150, '15%', 'string'),
+            orderGrid.createColumnDefinition('subject', config.language.subject[config.currentLanguage()], 150, '20%', 'string'),
             orderGrid.createColumnDefinition('orderDate', config.language.orderDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
+            orderGrid.createColumnDefinition('supervisorStatus', config.language.supervisorStatus[config.currentLanguage()], 150, '10%', 'status'),
+            orderGrid.createColumnDefinition('ready', config.language.ready[config.currentLanguage()], 150, '10%', 'ready'),
+            orderGrid.createColumnDefinition('deliverdStatus', config.language.deliverdStatus[config.currentLanguage()], 150, '10%', 'deliverd'),
             orderGrid.createColumnDefinition('estimateDate', config.language.estimateDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
             orderGrid.createColumnDefinition('deliverdDate', config.language.visitDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            orderGrid.createColumnDefinition('subject', config.language.subject[config.currentLanguage()], 150, '20%', 'string'),
             orderGrid.createColumnDefinition('netTotal', config.language.total[config.currentLanguage()], 150, '5%', 'string'),
-            orderGrid.createColumnDefinition('supervisorStatus', config.language.supervisorStatus[config.currentLanguage()], 150, '10%', 'string'),
-            orderGrid.createColumnDefinition('deliverdStatus', config.language.deliverdStatus[config.currentLanguage()], 150, '10%', 'string'),
+            orderGrid.createColumnDefinition('orderTypeName', config.language.type[config.currentLanguage()], 150, '10%', 'string'),
             orderGrid.createColumnDefinition('supervisorDate', config.language.supervisorDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            orderGrid.createColumnDefinition('lastEditByName', config.language.lastEditBy[config.currentLanguage()], 150, '15%', 'string'),
-            orderGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            orderGrid.createColumnDefinition('creationDate', config.language.creationDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
+            orderGrid.createColumnDefinition('lastEditName', config.language.lastEditBy[config.currentLanguage()], 150, '15%', 'string'),
+            orderGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
         ]);
 
         orderGrid.gridSelectionChange(function (rowItem, event) {

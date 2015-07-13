@@ -45,6 +45,11 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
             get;
             set;
         }
+        public string ready
+        {
+            get;
+            set;
+        }
         public string clientName
         {
             get;

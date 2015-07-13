@@ -112,8 +112,8 @@
         "en": "left",
         "ar": "right"
     },
-    "copy": {
-        "en": "Copy",
+    "ready": {
+        "en": "Ready",
         "ar": "انسخ"
     },
     "excel": {
@@ -170,8 +170,8 @@
         "en": "Cancel",
         "ar": "الغاء"
     },
-    "salaryCategoryAdd": {
-        "en": "Salary Category Add",
+    "notReady": {
+        "en": "Not Ready",
         "ar": "اضافة شريحة مرتبات"
     },
     "addSalaryCategory": {

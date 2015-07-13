@@ -13,7 +13,7 @@
 
     vm.currentLanguage = config.currentLanguage;
 
-    vm.title = 'Agent Orders';
+    vm.title = 'Close Orders';
 
     vm.summary = ko.observableArray([]);
 
