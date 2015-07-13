@@ -35,6 +35,14 @@
         return $.post(config.remoteServerName + "/ApprovalRequestsOfOrdersSupervisor?id=" + id + "&type=" + type);
     };
 
+    var approvalRequestsOfOrdersSales = function (id, type) {
+        return $.post(config.remoteServerName + "/ApprovalRequestsOfOrdersSales?id=" + id + "&type=" + type);
+    };
+
+    var approvalRequestsOfOrdersAccountant = function (id, type) {
+        return $.post(config.remoteServerName + "/ApprovalRequestsOfOrdersAccountant?id=" + id + "&type=" + type);
+    };
+
 
     var getGroup = function (groupsObservable) {
         return $.getJSON(config.remoteServerName + "/GetGroup").done(function (data) {
@@ -415,6 +423,18 @@
         return $.getJSON(config.remoteServerName + "/GetOrdersSupervisorApproval");
 
     };
+
+    var getOrdersSalesApproval = function () {
+        return $.getJSON(config.remoteServerName + "/GetOrdersSalesApproval");
+
+    };
+
+    var getOrdersAccountantApproval = function () {
+        return $.getJSON(config.remoteServerName + "/GetOrdersAccountantApproval");
+
+    };
+
+
     var getAlertsOnOrders = function () {
         return $.getJSON(config.remoteServerName + "/GetAlertsOnOrders");
 
@@ -483,8 +503,11 @@
 
 
     var dataservice = {
-
+        getOrdersSalesApproval: getOrdersSalesApproval,
+        getOrdersAccountantApproval: getOrdersAccountantApproval,
         approvalRequestsOfOrdersSupervisor: approvalRequestsOfOrdersSupervisor,
+        approvalRequestsOfOrdersSales: approvalRequestsOfOrdersSales,
+        approvalRequestsOfOrdersAccountant: approvalRequestsOfOrdersAccountant,
         getOrdersSupervisorApproval: getOrdersSupervisorApproval,
         getAlertsOnOrders: getAlertsOnOrders,
         getAlertsOnOrdersApproved: getAlertsOnOrdersApproved,

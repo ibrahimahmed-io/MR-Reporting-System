@@ -1,0 +1,23 @@
+﻿<div class="jarviswidget" id="viewmodels-summary-supervisorRequests">
+
+    <header>
+        <h2 data-bind="text: title"></h2>
+    </header>
+
+    <div class="summary-widget">
+        <div class="jarviswidget-editbox">
+            <input class="form-control" type="text">
+        </div>
+        <div class="widget-body">
+            <div style="height: 30px;">
+                <button type="button" class="btn btn-success btn-xs" data-bind="click: approvalRequests, style: { float: language.btnFloat[currentLanguage()] }, visible: requestsArray().length > 0" style="margin-left: 5px;">
+                    <i class="fa fa-thumbs-up"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" data-bind="click: approvalRequestsRejected, style: { float: language.btnFloat[currentLanguage()] }, visible: requestsArray().length > 0">
+                    <i class="fa fa-thumbs-down"></i>
+                </button>
+            </div>
+            <div class="gridStyle" id="dataTableOppenedDocuments" data-bind="koGrid: gridOptions()"></div>
+        </div>
+    </div>
+</div>

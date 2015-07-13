@@ -1926,6 +1926,24 @@ namespace MR_Reporting_System.API
 
         [AuthorizeUser]
         [HttpGet]
+        [Route("GetOrdersSalesApproval")]
+        public IHttpActionResult GetOrdersSalesApproval()
+        {
+            var result = _order.selectBySales(_accountId);
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetOrdersAccountantApproval")]
+        public IHttpActionResult GetOrdersAccountantApproval()
+        {
+            var result = _order.selectByAccountant(_accountId);
+            return Ok(result);
+        }
+
+        [AuthorizeUser]
+        [HttpGet]
         [Route("GetAlertsOnOrders")]
         public IHttpActionResult GetAlertsOnOrders()
         {
@@ -2182,6 +2200,40 @@ namespace MR_Reporting_System.API
             }
             return Ok();
         }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("ApprovalRequestsOfOrdersSales")]
+        public IHttpActionResult ApprovalRequestsOfOrdersSales(int id, bool type)
+        {
+            var obj = _order.FindBy(x => x.id == id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.isDeliverd = type;
+                obj.deliverdDate = DateTime.Now.Date;
+
+                _order.Edit(obj);
+                _order.Save();
+            }
+            return Ok();
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("ApprovalRequestsOfOrdersAccountant")]
+        public IHttpActionResult ApprovalRequestsOfOrdersAccountant(int id, bool type)
+        {
+            var obj = _order.FindBy(x => x.id == id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.isReady = type;
+
+                _order.Edit(obj);
+                _order.Save();
+            }
+            return Ok();
+        }
+
     }
 }
 

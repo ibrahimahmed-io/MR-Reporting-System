@@ -158,6 +158,14 @@
 
                 moduleTitle: "Requests Approval",
                 moduleId: "viewmodels/summaries/supervisorRequests"
+            }, {
+
+                moduleTitle: "Office Manager Approval",
+                moduleId: "viewmodels/summaries/managerAudit"
+            }, {
+
+                moduleTitle: "Complete Requests",
+                moduleId: "viewmodels/summaries/agentOrders"
             }]
         }, {
             widgetsCategory: "widgetsCharts",
@@ -181,7 +189,9 @@
                 { "moduleId": "viewmodels/summaries/alerts", "column": "left" },
                 { "moduleId": "viewmodels/summaries/alertOrders", "column": "right" },
                 { "moduleId": "viewmodels/summaries/alertOrdersCompleted", "column": "left" },
-                { "moduleId": "viewmodels/summaries/supervisorRequests", "column": "left" }]));
+                { "moduleId": "viewmodels/summaries/agentOrders", "column": "right" },
+                { "moduleId": "viewmodels/summaries/managerAudit", "column": "left" },
+                { "moduleId": "viewmodels/summaries/supervisorRequests", "column": "right" }]));
         }
 
         var selectedWidgets = JSON.parse(window.localStorage.getItem("SelectedWidgets")) || [];

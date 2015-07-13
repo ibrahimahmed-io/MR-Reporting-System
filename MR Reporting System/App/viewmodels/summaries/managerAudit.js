@@ -13,7 +13,7 @@
 
     vm.currentLanguage = config.currentLanguage;
 
-    vm.title = 'Agent Orders';
+    vm.title = 'Manager Audit';
 
     vm.summary = ko.observableArray([]);
 
@@ -26,7 +26,7 @@
 
     vm.activate = function () {
 
-        dataservice.getOrdersSalesApproval().done(function (data) {
+        dataservice.getOrdersAccountantApproval().done(function (data) {
 
             vm.knockoutGrid.setInitialData(data);
 
@@ -66,7 +66,7 @@
 
         vm.gridOptions(vm.knockoutGrid.getGridOptions()());
 
-
+ 
     };
 
     vm.approvalRequests = function (obj, e) {
@@ -74,11 +74,11 @@
         $(e.target).button('loading');
 
         ko.utils.arrayForEach(vm.requestsArray(), function (_obj) {
-            dataservice.approvalRequestsOfOrdersSales(_obj, true);
+            dataservice.approvalRequestsOfOrdersAccountant(_obj, true);
         });
 
 
-        dataservice.getOrdersSalesApproval().done(function (data) {
+        dataservice.getOrdersAccountantApproval().done(function (data) {
             vm.requestsArray([]);
 
             vm.knockoutGrid.setInitialData(data);
@@ -95,10 +95,10 @@
         $(e.target).button('loading');
 
         ko.utils.arrayForEach(vm.requestsArray(), function (_obj) {
-            dataservice.approvalRequestsOfOrdersSales(_obj, false);
+            dataservice.approvalRequestsOfOrdersAccountant(_obj, false);
         });
 
-        dataservice.getOrdersSalesApproval().done(function (data) {
+        dataservice.getOrdersAccountantApproval().done(function (data) {
             vm.requestsArray([]);
 
             vm.knockoutGrid.setInitialData(data);

@@ -230,7 +230,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
                             subject = q.subject,
-                            agentName =AgentName,
+                            agentName = AgentName,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
 
@@ -755,11 +755,12 @@ namespace MR_Reporting_System_Data_Service.Repository
 
             list = (from q in Context.Orders
                     let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
-                    where q.deletedBy == null && q.supervisorApprove == true
-                    && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
+                    where q.deletedBy == null && q.supervisorApprove == true && q.isReady == null
+                        //&& (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
+                    && Context.Agents.FirstOrDefault(x => x.id == supervisorId).UserType != "Agent"
                     select new DtoOrders
                     {
-                        id = q.id, 
+                        id = q.id,
                         agentName = AgentName,
                         subject = q.subject,
                         orderDate = q.orderDate,
@@ -767,14 +768,16 @@ namespace MR_Reporting_System_Data_Service.Repository
                         deliverdDate = q.deliverdDate,
                         supervisorApprove = q.supervisorApprove,
                         deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
-                        supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending", 
+                        supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending",
                         supervisorDate = q.supervisorDate,
                         noOfItems = q.noOfItems,
                         total = q.total,
                         netTotal = q.netTotal,
                         lastEditBy = q.lastEditBy,
                         lastEditName = q.Agent2.ContactName,
-                        lastEditDate = q.lastEditDate
+                        lastEditDate = q.lastEditDate,
+                        orderTypeId = q.orderTypeId,
+                        orderTo = q.orderTo
                     }).ToList().OrderByDescending(x => x.id).ToList();
 
             foreach (DtoOrders item in list)
@@ -812,7 +815,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             list = (from q in Context.Orders
                     let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                     where q.deletedBy == null && q.isReady == true
-                    && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
+                    && q.agentId == supervisorId
                     select new DtoOrders
                     {
                         id = q.id,
@@ -830,7 +833,9 @@ namespace MR_Reporting_System_Data_Service.Repository
                         netTotal = q.netTotal,
                         lastEditBy = q.lastEditBy,
                         lastEditName = q.Agent2.ContactName,
-                        lastEditDate = q.lastEditDate
+                        lastEditDate = q.lastEditDate,
+                        orderTypeId = q.orderTypeId,
+                        orderTo = q.orderTo
                     }).ToList().OrderByDescending(x => x.id).ToList();
 
             foreach (DtoOrders item in list)
