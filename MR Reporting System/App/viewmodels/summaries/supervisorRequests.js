@@ -48,9 +48,10 @@
              vm.knockoutGrid.createColumnDefinition('supervisorStatus', config.language.supervisorStatus[config.currentLanguage()], 150, '10%', 'string'),
              vm.knockoutGrid.createColumnDefinition('deliverdStatus', config.language.deliverdStatus[config.currentLanguage()], 150, '10%', 'string'),
              vm.knockoutGrid.createColumnDefinition('supervisorDate', config.language.supervisorDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-             vm.knockoutGrid.createColumnDefinition('lastEditByName', config.language.lastEditBy[config.currentLanguage()], 150, '10%', 'string'),
-             vm.knockoutGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-             vm.knockoutGrid.createColumnDefinition('creationDate', config.language.creationDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
+             vm.knockoutGrid.createColumnDefinition('lastEditName', config.language.lastEditBy[config.currentLanguage()], 150, '10%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
+             //,
+             //vm.knockoutGrid.createColumnDefinition('creationDate', config.language.creationDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
         ]);
 
         vm.knockoutGrid.gridSelectionChange(function (rowItem, event) {

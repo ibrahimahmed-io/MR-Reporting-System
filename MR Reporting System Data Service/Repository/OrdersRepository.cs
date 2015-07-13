@@ -72,6 +72,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             var list = new List<DtoOrders>();
 
             list = (from q in Context.Orders
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                     where q.deletedBy == null && q.supervisorApprove == null
                     && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
                     select new DtoOrders
@@ -80,7 +81,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         orderTo = q.orderTo,
                         orderTypeId = q.orderTypeId,
                         agentId = q.agentId,
-                        agentName = q.Agent1.ContactName,
+                        agentName = AgentName,
                         subject = q.subject,
                         orderDate = q.orderDate,
                         estimateDate = q.estimateDate,
@@ -96,7 +97,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         lastEditBy = q.lastEditBy,
                         lastEditName = q.Agent2.ContactName,
                         lastEditDate = q.lastEditDate
-                    }).ToList();
+                    }).ToList().OrderByDescending(x => x.id).ToList();
 
             foreach (DtoOrders item in list)
             {
@@ -132,6 +133,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Orders
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.deletedBy == null && q.orderTo == clientId
                         select new DtoOrders
                         {
@@ -139,7 +141,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
-                            agentName = q.Agent1.ContactName,
+                            agentName = AgentName,
                             subject = q.subject,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
@@ -160,13 +162,14 @@ namespace MR_Reporting_System_Data_Service.Repository
             else
             {
                 list = (from q in Context.Orders
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.deletedBy == null && q.orderTo == clientId
                         select new DtoOrders
                         {
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent1.ContactName,
+                            agentName = AgentName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -209,7 +212,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         break;
                 }
             }
-            return list;
+            return list.OrderByDescending(x => x.id).ToList();
         }
 
         public List<DtoOrders> getOrdersByAgentId(int agentId, string lang)
@@ -218,6 +221,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             if (lang == "en")
             {
                 list = (from q in Context.Orders
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.deletedBy == null && q.agentId == agentId
                         select new DtoOrders
                         {
@@ -226,7 +230,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
                             subject = q.subject,
-                            agentName = q.Agent1.ContactName,
+                            agentName =AgentName,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
 
@@ -247,6 +251,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             else
             {
                 list = (from q in Context.Orders
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.deletedBy == null && q.agentId == agentId
                         select new DtoOrders
                         {
@@ -255,7 +260,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             orderTypeId = q.orderTypeId,
                             agentId = q.agentId,
                             subject = q.subject,
-                            agentName = q.Agent1.ContactName,
+                            agentName = AgentName,
                             orderDate = q.orderDate,
                             estimateDate = q.estimateDate,
                             deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
@@ -296,7 +301,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                         break;
                 }
             }
-            return list;
+            return list.OrderByDescending(x => x.id).ToList();
         }
 
         public DtoOrders selectById(int id, string lang)
@@ -392,13 +397,14 @@ namespace MR_Reporting_System_Data_Service.Repository
                 #region orders that superVisor was approved
 
                 list = (from q in Context.Orders.Include("agent")
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.isDeliverd == true && q.deletedBy == null
                         select new DtoOrders
                         {
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = AgentName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -415,7 +421,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.deliverdDate >= currentDate.Value.AddDays(-7)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -450,13 +456,14 @@ namespace MR_Reporting_System_Data_Service.Repository
 
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.isDeliverd == true && q.deletedBy == null
                         select new DtoOrders
                         {
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = AgentName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -473,7 +480,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.deliverdDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -503,10 +510,8 @@ namespace MR_Reporting_System_Data_Service.Repository
                 #endregion
             }
 
-            //list.Add(new DtoSummaryWords { item = "This Week", total = week });
-            //list.Add(new DtoSummaryWords { item = "Two Week", total = week2 });
-            //list.Add(new DtoSummaryWords { item = "More Two Week", total = moreWeeks });
-            return list;
+
+            return list.OrderByDescending(x => x.id).ToList();
         }
 
         public List<DtoSummaryWords> AlertsApproved()
@@ -517,16 +522,16 @@ namespace MR_Reporting_System_Data_Service.Repository
 
             var week = (from o in Context.Orders
                         where o.supervisorApprove == true && o.deletedBy == null
-                        select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
+                        select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).Count();
 
             var week2 = (from o in Context.Orders
                          where o.supervisorApprove == true && o.deletedBy == null
-                         select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).Count();
+                         select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-14) && o.orderDate <= currentDate.Value.AddDays(-7)).Count();
 
             var moreWeeks = (from o in Context.Orders
                              where o.supervisorApprove == true && o.deletedBy == null
 
-                             select o).ToList().Where(o => o.orderDate <= currentDate.Value.AddDays(-14)).Count();
+                             select o).ToList().Where(o => o.supervisorDate <= currentDate.Value.AddDays(-14)).Count();
 
             list.Add(new DtoSummaryWords { item = "This Week", total = week });
             list.Add(new DtoSummaryWords { item = "Two Week", total = week2 });
@@ -542,22 +547,22 @@ namespace MR_Reporting_System_Data_Service.Repository
 
             var ordersSupervisorApproved = (from o in Context.Orders
                                             where o.supervisorApprove == true && o.deletedBy == null
-                                            select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
+                                            select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).Count();
 
             var ordersApplied = (from o in Context.Orders
                                  where o.deletedBy == null
                                  select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
 
             var ordersCompleted = (from o in Context.Orders
-                                   where o.isDeliverd == true && o.deletedBy == null
-                                   select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
+                                   where o.isDeliverd == false && o.deletedBy == null
+                                   select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).Count();
 
 
             list.Add(new DtoSummaryWords { item = "Orders Was Supervisor Approved", total = ordersSupervisorApproved });
 
             list.Add(new DtoSummaryWords { item = "Orders Was Applied", total = ordersApplied });
 
-            list.Add(new DtoSummaryWords { item = "Orders Was Completed", total = ordersCompleted });
+            list.Add(new DtoSummaryWords { item = "Orders Was Rejected", total = ordersCompleted });
             return list;
         }
 
@@ -572,13 +577,14 @@ namespace MR_Reporting_System_Data_Service.Repository
             {
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.supervisorApprove == true && q.deletedBy == null
                         select new DtoOrders
                         {
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = AgentName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -595,7 +601,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -628,13 +634,14 @@ namespace MR_Reporting_System_Data_Service.Repository
             {
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
                         where q.deletedBy == null
                         select new DtoOrders
                         {
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = AgentName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -680,17 +687,18 @@ namespace MR_Reporting_System_Data_Service.Repository
                 }
                 #endregion
             }
-            else if (type == "Orders Was Completed")
+            else if (type == "Orders Was Rejected")
             {
                 #region orders that superVisor was approved
                 list = (from q in Context.Orders.Include("agent")
-                        where q.isDeliverd == true && q.deletedBy == null
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                        where q.supervisorApprove == false && q.deletedBy == null
                         select new DtoOrders
                         {
                             id = q.id,
                             orderTo = q.orderTo,
                             orderTypeId = q.orderTypeId,
-                            agentName = q.Agent.ContactName,
+                            agentName = AgentName,
                             agentId = q.agentId,
                             subject = q.subject,
                             orderDate = q.orderDate,
@@ -707,7 +715,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -738,7 +746,7 @@ namespace MR_Reporting_System_Data_Service.Repository
             }
 
 
-            return list;
+            return list.OrderByDescending(x => x.id).ToList();
         }
 
 
