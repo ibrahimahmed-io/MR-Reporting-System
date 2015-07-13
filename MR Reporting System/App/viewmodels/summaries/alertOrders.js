@@ -72,6 +72,16 @@
 
     vm.showModal = function (obj, event) {
 
+        switch (obj.item) {
+            case 'Orders Was Supervisor Approved':
+                break;
+            case 'Orders Was Supervisor Approved':
+                break;
+            case 'Orders Was Supervisor Approved':
+                break;
+
+
+        }
         dataservice.alertsOrdersandApprvovedDetail(obj.item).success(function (data) {
 
             vm.knockoutGrid.setInitialData(data);

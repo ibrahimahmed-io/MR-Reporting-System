@@ -31,6 +31,11 @@
         });
     };
 
+    var approvalRequestsOfOrdersSupervisor = function (id, type) {
+        return $.post(config.remoteServerName + "/ApprovalRequestsOfOrdersSupervisor?id=" + id + "&type=" + type);
+    };
+
+
     var getGroup = function (groupsObservable) {
         return $.getJSON(config.remoteServerName + "/GetGroup").done(function (data) {
             if (groupsObservable) {
@@ -478,6 +483,8 @@
 
 
     var dataservice = {
+
+        approvalRequestsOfOrdersSupervisor: approvalRequestsOfOrdersSupervisor,
         getOrdersSupervisorApproval: getOrdersSupervisorApproval,
         getAlertsOnOrders: getAlertsOnOrders,
         getAlertsOnOrdersApproved: getAlertsOnOrdersApproved,
@@ -591,6 +598,8 @@
         getVisitsForDrugReport: getVisitsForDrugReport,
         getVisitsMorningCountForDrugReport: getVisitsMorningCountForDrugReport
         //#endregion
+
+
     };
 
     return dataservice;

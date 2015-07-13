@@ -26,10 +26,6 @@
 
     vm.activate = function () {
 
-        //dataservice.getOrdersSupervisorApproval().done(function (data) {
-        //    vm.summary(data);
-        //});
-
         dataservice.getOrdersSupervisorApproval().done(function (data) {
 
             vm.knockoutGrid.setInitialData(data);
@@ -57,12 +53,13 @@
              vm.knockoutGrid.createColumnDefinition('creationDate', config.language.creationDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
         ]);
 
-        //vm.knockoutGrid.displaySelectionCheckbox(false);
-
         vm.knockoutGrid.gridSelectionChange(function (rowItem, event) {
             if (event.target.type && (event.target.type.toLowerCase() === 'checkbox')) {
                 if (rowItem.selected()) {
                     vm.requestsArray.push(rowItem.entity.id);
+                    return true;
+                } else {
+                    vm.requestsArray.pop(rowItem.entity.id);
                     return true;
                 }
             }
@@ -79,6 +76,46 @@
 
 
     };
- 
+
+    vm.approvalRequests = function (obj, e) {
+
+        $(e.target).button('loading');
+
+        ko.utils.arrayForEach(vm.requestsArray(), function (_obj) {
+            dataservice.approvalRequestsOfOrdersSupervisor(_obj, true);
+        });
+
+        vm.requestsArray([]);
+
+        dataservice.getOrdersSupervisorApproval().done(function (data) {
+
+            vm.knockoutGrid.setInitialData(data);
+
+            $(".loading-data").addClass("hidden");
+        });
+
+        $(e.target).button('reset');
+
+
+    };
+    vm.approvalRequestsRejected = function (obj, e) {
+
+        $(e.target).button('loading');
+
+        ko.utils.arrayForEach(vm.requestsArray(), function (_obj) {
+            dataservice.approvalRequestsOfOrdersSupervisor(_obj, false);
+        });
+
+        dataservice.getOrdersSupervisorApproval().done(function (data) {
+
+            vm.knockoutGrid.setInitialData(data);
+
+            $(".loading-data").addClass("hidden");
+        });
+
+        $(e.target).button('reset');
+    };
+
+
     return vm;
 });

@@ -161,7 +161,7 @@ namespace MR_Reporting_System.API
                         return ResponseMessage(response);
 
                     }
-                    if (agent.UserType.Equals("User")||agent.UserType.Equals("Agent"))
+                    if (agent.UserType.Equals("User") || agent.UserType.Equals("Agent"))
                     {
 
                         string secret = TokenManager.Base64Encode(SecurityConstants.KeyForHmacSha256);
@@ -1959,7 +1959,7 @@ namespace MR_Reporting_System.API
             var result = _order.AlertsOrdersandApprvovedDetail(type);
             return Ok(result);
         }
-   [AuthorizeUser]
+        [AuthorizeUser]
         [HttpGet]
         [Route("AlertsByOrdersCompleteDetail")]
         public IHttpActionResult AlertsByOrdersCompleteDetail(string type)
@@ -2165,6 +2165,23 @@ namespace MR_Reporting_System.API
         }
 
         #endregion
+
+        [AuthorizeUser]
+        [HttpPost]
+        [Route("ApprovalRequestsOfOrdersSupervisor")]
+        public IHttpActionResult ApprovalRequestsOfOrdersSupervisor(int id, bool type)
+        {
+            var obj = _order.FindBy(x => x.id == id).FirstOrDefault();
+            if (obj != null)
+            {
+                obj.supervisorApprove = type;
+                obj.supervisorDate = DateTime.Now.Date;
+
+                _order.Edit(obj);
+                _order.Save();
+            }
+            return Ok();
+        }
     }
 }
 
