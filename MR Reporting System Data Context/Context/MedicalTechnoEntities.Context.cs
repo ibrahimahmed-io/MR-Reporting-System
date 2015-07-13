@@ -18,6 +18,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public MedicalTechnoEntities()
             : base("name=MedicalTechnoEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

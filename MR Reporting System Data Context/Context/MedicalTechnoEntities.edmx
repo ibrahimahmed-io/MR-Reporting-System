@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MedicalTechnoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MedicalTechnoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="id" />
@@ -199,6 +199,7 @@
           <Property Name="lastEditBy" Type="int" />
           <Property Name="lastEditDate" Type="date" />
           <Property Name="deletedBy" Type="int" />
+          <Property Name="isReady" Type="bit" />
         </EntityType>
         <EntityType Name="ordersItems">
           <Key>
@@ -1381,6 +1382,7 @@
           <NavigationProperty Name="Agent2" Relationship="MedicalTechnoModel.FK_Orders_Orders" FromRole="Order" ToRole="Agent" />
           <NavigationProperty Name="DefaultList" Relationship="MedicalTechnoModel.FK_Orders_DefaultList" FromRole="Order" ToRole="DefaultList" />
           <NavigationProperty Name="ordersItems" Relationship="MedicalTechnoModel.fk_ordersItems_orderId" FromRole="Order" ToRole="ordersItem" />
+          <Property Name="isReady" Type="Boolean" />
         </EntityType>
         <EntityType Name="ordersItem">
           <Key>
@@ -2125,6 +2127,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="MedicalTechnoModel.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="isReady" ColumnName="isReady" />
                 <ScalarProperty Name="deletedBy" ColumnName="deletedBy" />
                 <ScalarProperty Name="lastEditDate" ColumnName="lastEditDate" />
                 <ScalarProperty Name="lastEditBy" ColumnName="lastEditBy" />

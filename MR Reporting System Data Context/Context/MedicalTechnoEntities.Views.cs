@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(MR_Reporting_System_Data_Context.Context.MedicalTechnoEntities),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsc43fda65f874c2c1ed594eb364cf1c0da638c0412be5b12314c54c14da11d924))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets3d94dea769e345bcfb6c6be974a997ce5e46a1d8bc411707d9c7c6f36baf617c))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySetsc43fda65f874c2c1ed594eb364cf1c0da638c0412be5b12314c54c14da11d924 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets3d94dea769e345bcfb6c6be974a997ce5e46a1d8bc411707d9c7c6f36baf617c : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "c43fda65f874c2c1ed594eb364cf1c0da638c0412be5b12314c54c14da11d924"; }
+            get { return "3d94dea769e345bcfb6c6be974a997ce5e46a1d8bc411707d9c7c6f36baf617c"; }
         }
 
         /// <summary>
@@ -607,7 +607,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Orders
-        [MedicalTechnoModel.Store.Orders](T1.Orders_id, T1.Orders_orderTo, T1.Orders_orderTypeId, T1.Orders_agentId, T1.Orders_subject, T1.Orders_orderDate, T1.Orders_estimateDate, T1.Orders_deliverdDate, T1.Orders_supervisorApprove, T1.Orders_isDeliverd, T1.Orders_supervisorDate, T1.Orders_noOfItems, T1.Orders_total, T1.Orders_netTotal, T1.Orders_lastEditBy, T1.Orders_lastEditDate, T1.Orders_deletedBy)
+        [MedicalTechnoModel.Store.Orders](T1.Orders_id, T1.Orders_orderTo, T1.Orders_orderTypeId, T1.Orders_agentId, T1.Orders_subject, T1.Orders_orderDate, T1.Orders_estimateDate, T1.Orders_deliverdDate, T1.Orders_supervisorApprove, T1.Orders_isDeliverd, T1.Orders_supervisorDate, T1.Orders_noOfItems, T1.Orders_total, T1.Orders_netTotal, T1.Orders_lastEditBy, T1.Orders_lastEditDate, T1.Orders_deletedBy, T1.Orders_isReady)
     FROM (
         SELECT 
             T.id AS Orders_id, 
@@ -627,6 +627,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.lastEditBy AS Orders_lastEditBy, 
             T.lastEditDate AS Orders_lastEditDate, 
             T.deletedBy AS Orders_deletedBy, 
+            T.isReady AS Orders_isReady, 
             True AS _from0
         FROM Entities.Orders AS T
     ) AS T1");
@@ -1067,7 +1068,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Orders
-        [MedicalTechnoModel.Order](T1.Order_id, T1.Order_orderTo, T1.Order_orderTypeId, T1.Order_agentId, T1.Order_subject, T1.Order_orderDate, T1.Order_estimateDate, T1.Order_deliverdDate, T1.Order_supervisorApprove, T1.Order_isDeliverd, T1.Order_supervisorDate, T1.Order_noOfItems, T1.Order_total, T1.Order_netTotal, T1.Order_lastEditBy, T1.Order_lastEditDate, T1.Order_deletedBy)
+        [MedicalTechnoModel.Order](T1.Order_id, T1.Order_orderTo, T1.Order_orderTypeId, T1.Order_agentId, T1.Order_subject, T1.Order_orderDate, T1.Order_estimateDate, T1.Order_deliverdDate, T1.Order_supervisorApprove, T1.Order_isDeliverd, T1.Order_supervisorDate, T1.Order_noOfItems, T1.Order_total, T1.Order_netTotal, T1.Order_lastEditBy, T1.Order_lastEditDate, T1.Order_deletedBy, T1.Order_isReady)
     FROM (
         SELECT 
             T.id AS Order_id, 
@@ -1087,6 +1088,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.lastEditBy AS Order_lastEditBy, 
             T.lastEditDate AS Order_lastEditDate, 
             T.deletedBy AS Order_deletedBy, 
+            T.isReady AS Order_isReady, 
             True AS _from0
         FROM MedicalTechnoModelStoreContainer.Orders AS T
     ) AS T1");

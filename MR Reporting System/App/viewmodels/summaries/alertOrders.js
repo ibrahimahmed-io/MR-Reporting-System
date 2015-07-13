@@ -44,23 +44,21 @@
         });
 
         vm.knockoutGrid = new config.KoGridInstanceCreator();
-
-
+         
         vm.knockoutGrid.columnDefs([
-            vm.knockoutGrid.createColumnDefinition('agentName', config.language.agent[config.currentLanguage()], 150, '10%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('orderTypeName', config.language.type[config.currentLanguage()], 150, '10%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('clientName', config.language.client[config.currentLanguage()], 150, '15%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('orderDate', config.language.orderDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            vm.knockoutGrid.createColumnDefinition('estimateDate', config.language.estimateDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            vm.knockoutGrid.createColumnDefinition('deliverdDate', config.language.visitDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            vm.knockoutGrid.createColumnDefinition('subject', config.language.subject[config.currentLanguage()], 150, '20%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('netTotal', config.language.total[config.currentLanguage()], 150, '5%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('supervisorStatus', config.language.supervisorStatus[config.currentLanguage()], 150, '10%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('deliverdStatus', config.language.deliverdStatus[config.currentLanguage()], 150, '10%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('supervisorDate', config.language.supervisorDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            vm.knockoutGrid.createColumnDefinition('lastEditByName', config.language.lastEditBy[config.currentLanguage()], 150, '10%', 'string'),
-            vm.knockoutGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
-            vm.knockoutGrid.createColumnDefinition('creationDate', config.language.creationDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') })
+             vm.knockoutGrid.createColumnDefinition('agentName', config.language.agent[config.currentLanguage()], 150, '10%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('subject', config.language.subject[config.currentLanguage()], 150, '10%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('orderTypeName', config.language.type[config.currentLanguage()], 150, '10%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('clientName', config.language.client[config.currentLanguage()], 150, '15%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('orderDate', config.language.orderDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
+             vm.knockoutGrid.createColumnDefinition('estimateDate', config.language.estimateDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
+             vm.knockoutGrid.createColumnDefinition('deliverdDate', config.language.visitDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
+             vm.knockoutGrid.createColumnDefinition('Total', config.language.total[config.currentLanguage()], 150, '5%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('supervisorStatus', config.language.supervisorStatus[config.currentLanguage()], 150, '10%', 'status'),
+             vm.knockoutGrid.createColumnDefinition('deliverdStatus', config.language.deliverdStatus[config.currentLanguage()], 150, '10%', 'status'),
+             vm.knockoutGrid.createColumnDefinition('supervisorDate', config.language.supervisorDate[config.currentLanguage()], 150, '15%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }),
+             vm.knockoutGrid.createColumnDefinition('lastEditName', config.language.lastEditBy[config.currentLanguage()], 150, '10%', 'string'),
+             vm.knockoutGrid.createColumnDefinition('lastEditDate', config.language.lastEditDate[config.currentLanguage()], 150, '10%', 'date', function (data) { return moment(data).format('DD/MM/YYYY') }) 
         ]);
 
         vm.knockoutGrid.displaySelectionCheckbox(false);
@@ -72,16 +70,6 @@
 
     vm.showModal = function (obj, event) {
 
-        switch (obj.item) {
-            case 'Orders Was Supervisor Approved':
-                break;
-            case 'Orders Was Supervisor Approved':
-                break;
-            case 'Orders Was Supervisor Approved':
-                break;
-
-
-        }
         dataservice.alertsOrdersandApprvovedDetail(obj.item).success(function (data) {
 
             vm.knockoutGrid.setInitialData(data);

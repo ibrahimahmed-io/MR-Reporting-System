@@ -36,6 +36,7 @@ namespace MR_Reporting_System_Data_Context.Context
         public Nullable<int> lastEditBy { get; set; }
         public Nullable<System.DateTime> lastEditDate { get; set; }
         public Nullable<int> deletedBy { get; set; }
+        public Nullable<bool> isReady { get; set; }
     
         public virtual Agent Agent { get; set; }
         public virtual Agent Agent1 { get; set; }

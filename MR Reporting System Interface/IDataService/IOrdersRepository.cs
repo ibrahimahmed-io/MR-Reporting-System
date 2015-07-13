@@ -16,7 +16,9 @@ namespace MR_Reporting_System_Interface.IDataService
         List<DtoSummaryWords> AlertsByOrders();
         List<DtoSummaryWords> AlertsApproved();
         List<DtoSummaryWords> AlertsOrdersandApprvoved();
-        DtoOrders selectById(int id, string lang); 
+        DtoOrders selectById(int id, string lang);
+        List<DtoOrders> selectByAccountant(int supervisorId);
+        List<DtoOrders> selectBySales(int supervisorId);
     }
 }
 

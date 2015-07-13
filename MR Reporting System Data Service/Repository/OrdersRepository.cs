@@ -749,6 +749,117 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list.OrderByDescending(x => x.id).ToList();
         }
 
+        public List<DtoOrders> selectByAccountant(int supervisorId)
+        {
+            var list = new List<DtoOrders>();
+
+            list = (from q in Context.Orders
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                    where q.deletedBy == null && q.supervisorApprove == true
+                    && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
+                    select new DtoOrders
+                    {
+                        id = q.id, 
+                        agentName = AgentName,
+                        subject = q.subject,
+                        orderDate = q.orderDate,
+                        estimateDate = q.estimateDate,
+                        deliverdDate = q.deliverdDate,
+                        supervisorApprove = q.supervisorApprove,
+                        deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
+                        supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending", 
+                        supervisorDate = q.supervisorDate,
+                        noOfItems = q.noOfItems,
+                        total = q.total,
+                        netTotal = q.netTotal,
+                        lastEditBy = q.lastEditBy,
+                        lastEditName = q.Agent2.ContactName,
+                        lastEditDate = q.lastEditDate
+                    }).ToList().OrderByDescending(x => x.id).ToList();
+
+            foreach (DtoOrders item in list)
+            {
+                var obj = Context.DefaultLists.FirstOrDefault(x => x.Id == item.orderTypeId).Action;
+
+                switch (obj)
+                {
+                    case 1:
+
+                        item.orderTypeName = "Doctors";
+                        item.clientName = Context.Docotors.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                    case 2:
+                        item.orderTypeName = "Pharmacies";
+                        item.clientName = Context.Pharmacies.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                    case 3:
+                        item.orderTypeName = "Hospitals";
+                        item.clientName = Context.Hospitals.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                    case 4:
+                        item.orderTypeName = "Distributers";
+                        item.clientName = Context.Distributers.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                }
+            }
+            return list;
+        }
+
+        public List<DtoOrders> selectBySales(int supervisorId)
+        {
+            var list = new List<DtoOrders>();
+
+            list = (from q in Context.Orders
+                    let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.orderTo).ContactName
+                    where q.deletedBy == null && q.isReady == true
+                    && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
+                    select new DtoOrders
+                    {
+                        id = q.id,
+                        agentName = AgentName,
+                        subject = q.subject,
+                        orderDate = q.orderDate,
+                        estimateDate = q.estimateDate,
+                        deliverdDate = q.deliverdDate,
+                        supervisorApprove = q.supervisorApprove,
+                        deliverdStatus = q.isDeliverd != null ? ((bool)q.isDeliverd ? "Deliverd" : "Not Deliverd") : "Pending",
+                        supervisorStatus = q.supervisorApprove != null ? ((bool)q.supervisorApprove ? "Approved" : "Not Approved") : "Pending",
+                        supervisorDate = q.supervisorDate,
+                        noOfItems = q.noOfItems,
+                        total = q.total,
+                        netTotal = q.netTotal,
+                        lastEditBy = q.lastEditBy,
+                        lastEditName = q.Agent2.ContactName,
+                        lastEditDate = q.lastEditDate
+                    }).ToList().OrderByDescending(x => x.id).ToList();
+
+            foreach (DtoOrders item in list)
+            {
+                var obj = Context.DefaultLists.FirstOrDefault(x => x.Id == item.orderTypeId).Action;
+
+                switch (obj)
+                {
+                    case 1:
+
+                        item.orderTypeName = "Doctors";
+                        item.clientName = Context.Docotors.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                    case 2:
+                        item.orderTypeName = "Pharmacies";
+                        item.clientName = Context.Pharmacies.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                    case 3:
+                        item.orderTypeName = "Hospitals";
+                        item.clientName = Context.Hospitals.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                    case 4:
+                        item.orderTypeName = "Distributers";
+                        item.clientName = Context.Distributers.FirstOrDefault(x => x.Id == item.orderTo).Name;
+                        break;
+                }
+            }
+            return list;
+        }
 
 
     }
