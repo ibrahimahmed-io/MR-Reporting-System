@@ -869,6 +869,40 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list;
         }
 
+        //DateTime currentDate = DateTime.Now.Date;
+
+        //int year = DateTime.Now.Date.Year;
+
+        // e = new DateTime(d.Year, 12, 31);
+
+        public List<DtoAuditSales> GetTargetBySupervisor(int supervisorId)
+        {
+            DateTime startDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            DateTime endDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            var list = new List<DtoAuditSales>();
+            for (int i = 0; i < 11; i++)
+            {
+                startDate = startDate.AddMonths(i);
+
+                endDate = endDate.AddMonths(1);
+
+                list = (from q in Context.Orders
+                        let AgentName = Context.Agents.FirstOrDefault(x => x.id == q.agentId).ContactName
+                        where q.deletedBy == null && q.isDeliverd == true
+                        && q.orderDate >= startDate && q.orderDate <= endDate
+                        && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
+                        select new DtoAuditSales
+                        {
+                           
+                        }).ToList();
+
+            }
+
+
+            return list;
+        }
 
     }
 }
