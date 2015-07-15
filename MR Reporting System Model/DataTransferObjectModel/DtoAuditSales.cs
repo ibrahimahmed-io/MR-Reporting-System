@@ -13,7 +13,7 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
         public string monthName { get; set; }
 
         public string equipment { get; set; }
-        public double? total { get; set; }
+        public double total { get; set; }
 
         public double? target { get; set; }
         public string equipmentCode { get; set; }

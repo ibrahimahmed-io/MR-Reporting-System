@@ -19,6 +19,8 @@ namespace MR_Reporting_System_Interface.IDataService
         DtoOrders selectById(int id, string lang);
         List<DtoOrders> selectByAccountant(int supervisorId);
         List<DtoOrders> selectBySales(int supervisorId);
+        List<DtoAuditSales> GetTargetBySupervisor(int supervisorId);
+        List<DtoAuditSales> GetTargetBySales(int agentId);
     }
 }
 
