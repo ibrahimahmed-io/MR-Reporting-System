@@ -4,6 +4,10 @@
         return $.getJSON(config.remoteServerName + "/GetAgents");
     };
 
+    var getTargetBySales = function () {
+        return $.getJSON(config.remoteServerName + "/GetTargetBySales");
+    };
+
     var addAccount = function (newAccount) {
         return $.post(config.remoteServerName + "/AddAgents", newAccount).success(function (data) { });
     };
@@ -503,6 +507,8 @@
 
 
     var dataservice = {
+        getTargetBySales: getTargetBySales,
+
         getOrdersSalesApproval: getOrdersSalesApproval,
         getOrdersAccountantApproval: getOrdersAccountantApproval,
         approvalRequestsOfOrdersSupervisor: approvalRequestsOfOrdersSupervisor,

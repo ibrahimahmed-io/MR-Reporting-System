@@ -17,5 +17,6 @@ namespace MR_Reporting_System_Model.DataTransferObjectModel
 
         public double? target { get; set; }
         public string equipmentCode { get; set; }
+        public string agentName { get; set; }
     }
 }

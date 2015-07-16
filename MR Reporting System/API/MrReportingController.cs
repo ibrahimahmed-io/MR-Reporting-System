@@ -2234,6 +2234,16 @@ namespace MR_Reporting_System.API
             return Ok();
         }
 
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetTargetBySales")]
+        public IHttpActionResult GetTargetBySales()
+        {
+            var result = new List<DtoAuditSales>();
+            result = _order.GetTargetBySales();
+            return Ok(result);
+        }
+
     }
 }
 

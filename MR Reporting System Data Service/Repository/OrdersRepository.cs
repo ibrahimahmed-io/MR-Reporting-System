@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MR_Reporting_System_Data_Context.Context;
 using MR_Reporting_System_Interface.IDataService;
@@ -550,15 +550,15 @@ namespace MR_Reporting_System_Data_Service.Repository
 
             var ordersSupervisorApproved = (from o in Context.Orders
                                             where o.supervisorApprove == true && o.deletedBy == null
-                                            select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).Count();
+                                            select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-30)).Count();
 
             var ordersApplied = (from o in Context.Orders
                                  where o.deletedBy == null
-                                 select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).Count();
+                                 select o).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-30)).Count();
 
             var ordersCompleted = (from o in Context.Orders
                                    where o.supervisorApprove == false && o.deletedBy == null
-                                   select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).Count();
+                                   select o).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-30)).Count();
 
 
             list.Add(new DtoSummaryWords { item = "Orders Was Supervisor Approved", total = ordersSupervisorApproved });
@@ -604,7 +604,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-30)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -661,7 +661,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.orderDate >= currentDate.Value.AddDays(-30)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -718,7 +718,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                             lastEditBy = q.lastEditBy,
                             lastEditName = q.Agent2.ContactName,
                             lastEditDate = q.lastEditDate
-                        }).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-7)).ToList();
+                        }).ToList().Where(o => o.supervisorDate >= currentDate.Value.AddDays(-30)).ToList();
 
                 foreach (DtoOrders item in list)
                 {
@@ -890,7 +890,7 @@ namespace MR_Reporting_System_Data_Service.Repository
                 endDate = endDate.AddMonths(1);
 
                 var result = (from q in Context.Orders
-                            
+
                               where q.deletedBy == null && q.isDeliverd == true
                               && q.orderDate >= startDate && q.orderDate <= endDate
                               && (Context.Agents.Where(x => x.SupervisorId == supervisorId).Select(x => x.id).ToList()).Contains((int)q.agentId)
@@ -924,47 +924,67 @@ namespace MR_Reporting_System_Data_Service.Repository
 
             return list;
         }
-
-        public List<DtoAuditSales> GetTargetBySales(int agentId)
+        /// <summary>
+        /// مبيعات كل الموظفين لكل الشهور خلال سنة
+        /// </summary>
+        /// <param name="agentId"></param>
+        /// <returns></returns>
+        public List<DtoAuditSales> GetTargetBySales()
         {
-            DateTime startDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+            DateTime tempStartDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
 
-            DateTime endDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+            DateTime tempEndDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            int length = DateTime.Now.Date.Month - ((tempStartDate.Year - DateTime.Now.Date.Year) * 12) + tempStartDate.Month;
+
+            string monthName = "";
 
             var list = new List<DtoAuditSales>();
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < length; i++)
             {
-                startDate = startDate.AddMonths(i);
+                DateTime startDate = tempStartDate.AddMonths(i);
 
-                endDate = endDate.AddMonths(1);
+                DateTime endDate = tempEndDate.AddMonths(1 + i);
 
-                var result = (from q in Context.Agents
-                              
-                              select new DtoOrders
-                              {
-                                  id = q.id
+                monthName = startDate.ToString("MMMM");
 
-                              }).ToList();
 
-                var tempList = (from item in Context.ordersItems
-                                let productName = Context.Drugs.Where(x => x.Id == item.drugsId).FirstOrDefault().Name ?? ""
-                                let productCode = Context.Drugs.Where(x => x.Id == item.drugsId).FirstOrDefault().Name ?? ""
-                                let SalesTotals = Context.ordersItems.Where(x => result.Any(c => c.id == x.orderId)).ToList().Sum(x => x.total) ?? 0
-                                select new DtoAuditSales
-                                {
-                                    equipment = productName,
-                                    equipmentCode = productCode,
-                                    total = SalesTotals,
-                                    monthName = startDate.ToString("MMMM")
+                var agentList = (from agent in Context.Agents
+                                 join order in Context.Orders.Where(x => x.deletedBy == null && x.isDeliverd == true && x.orderDate >= startDate && x.orderDate < endDate) on agent.id equals order.agentId
+                                 select agent).ToList().Distinct();
 
-                                }).ToList().GroupBy(x => x.equipmentCode).Select(x => x.First());
-
-                if (tempList != null)
+                foreach (var salesMan in agentList)
                 {
 
-                    list.AddRange(tempList);
+                    var tempList = (from item in Context.ordersItems.Where(x => x.Order.agentId == salesMan.id && x.Order.isDeliverd == true
+                                                                                                               && x.Order.deletedBy == null && x.Order.orderDate >= startDate
+                                                                                                               && x.Order.orderDate < endDate)
+
+                                    let productName = Context.Drugs.Where(x => x.Id == item.drugsId).FirstOrDefault().Name
+                                    let productCode = Context.Drugs.Where(x => x.Id == item.drugsId).FirstOrDefault().Code
+                                    let SalesTotals = Context.ordersItems.Where(x => x.Order.agentId == salesMan.id && x.Order.isDeliverd == true
+                                                                                                                    && x.Order.deletedBy == null && x.Order.orderDate >= startDate
+                                                                                                                    && x.Order.orderDate < endDate).ToList().Sum(x => x.total) ?? 0
+                                    select new DtoAuditSales
+                                    {
+                                        equipment = productName,
+                                        equipmentCode = productCode,
+                                        total = SalesTotals,
+                                        monthName = monthName,
+                                        agentName = salesMan.ContactName
+
+
+                                    }).ToList().GroupBy(x => x.equipment).Select(x => x.First());
+
+                    if (tempList != null)
+                    {
+
+                        list.AddRange(tempList);
+                    }
                 }
+
+
 
             }
 
