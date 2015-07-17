@@ -21,6 +21,8 @@ namespace MR_Reporting_System_Interface.IDataService
         List<DtoOrders> selectBySales(int supervisorId);
         List<DtoAuditSales> GetTargetBySupervisor(int supervisorId);
         List<DtoAuditSales> GetTargetBySales();
+        List<DtoAuditSales> GetTargetByAgentId(int agentId);
+        List<DtoAuditSales> GetTotalByAgentId(int agentId);
     }
 }
 

@@ -145,6 +145,7 @@
     <Content Include="App\viewmodels\daily\drugs.js" />
     <Content Include="App\viewmodels\dashboard.js" />
     <Content Include="App\viewmodels\ERPReports\totalOfSales.js" />
+    <Content Include="App\viewmodels\ERPReports\AgentsPereformance.js" />
     <Content Include="App\viewmodels\login.js" />
     <Content Include="App\viewmodels\reports\visitsByArea.js" />
     <Content Include="App\viewmodels\reports\visitsByAgent.js" />
@@ -181,6 +182,7 @@
     <Content Include="App\views\daily\doctors.html" />
     <Content Include="App\views\dashboard.html" />
     <Content Include="App\views\ERPReports\totalOfSales.html" />
+    <Content Include="App\views\ERPReports\AgentsPereformance.html" />
     <Content Include="App\views\login.html" />
     <Content Include="App\views\reports\visitsByArea.html" />
     <Content Include="App\views\reports\visitsByAgent.html" />

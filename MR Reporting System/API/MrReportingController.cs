@@ -2234,6 +2234,8 @@ namespace MR_Reporting_System.API
             return Ok();
         }
 
+        #region Reporting
+
         [AuthorizeUser]
         [HttpGet]
         [Route("GetTargetBySales")]
@@ -2243,6 +2245,28 @@ namespace MR_Reporting_System.API
             result = _order.GetTargetBySales();
             return Ok(result);
         }
+
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetTargetByAgentId")]
+        public IHttpActionResult GetTargetByAgentId(int agentId)
+        {
+            var result = new List<DtoAuditSales>();
+            result = _order.GetTargetByAgentId(agentId);
+            return Ok(result);
+        }
+        [AuthorizeUser]
+        [HttpGet]
+        [Route("GetTotalByAgentId")]
+        public IHttpActionResult GetTotalByAgentId(int agentId)
+        {
+            var result = new List<DtoAuditSales>();
+            result = _order.GetTotalByAgentId(agentId);
+            return Ok(result);
+        }
+
+        #endregion
+
 
     }
 }

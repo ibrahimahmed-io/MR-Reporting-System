@@ -8,6 +8,14 @@
         return $.getJSON(config.remoteServerName + "/GetTargetBySales");
     };
 
+    var getTotalByAgentId = function (agentId) {
+        return $.getJSON(config.remoteServerName + "/GetTotalByAgentId?agentId=" + agentId);
+    };
+
+    var getTargetByAgentId = function (agentId) {
+        return $.getJSON(config.remoteServerName + "/GetTargetByAgentId?agentId=" + agentId);
+    };
+
     var addAccount = function (newAccount) {
         return $.post(config.remoteServerName + "/AddAgents", newAccount).success(function (data) { });
     };
@@ -508,6 +516,8 @@
 
     var dataservice = {
         getTargetBySales: getTargetBySales,
+        getTotalByAgentId: getTotalByAgentId,
+        getTargetByAgentId: getTargetByAgentId,
 
         getOrdersSalesApproval: getOrdersSalesApproval,
         getOrdersAccountantApproval: getOrdersAccountantApproval,

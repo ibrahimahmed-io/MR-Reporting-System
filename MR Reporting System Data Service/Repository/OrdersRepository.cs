@@ -992,6 +992,97 @@ namespace MR_Reporting_System_Data_Service.Repository
             return list;
         }
 
+        public List<DtoAuditSales> GetTargetByAgentId(int agentId)
+        {
+            DateTime tempStartDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            DateTime tempEndDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            int length = DateTime.Now.Date.Month - ((tempStartDate.Year - DateTime.Now.Date.Year) * 12) + tempStartDate.Month;
+
+            string monthName = "";
+
+            var list = new List<DtoAuditSales>();
+
+            for (int i = 0; i < length; i++)
+            {
+                DateTime startDate = tempStartDate.AddMonths(i);
+
+                DateTime endDate = tempEndDate.AddMonths(1 + i);
+
+                monthName = startDate.ToString("MMMM");
+
+                var tempList = (from item in Context.ordersItems.Where(x => x.Order.agentId == agentId && x.Order.isDeliverd == true
+                                                                                                           && x.Order.deletedBy == null && x.Order.orderDate >= startDate
+                                                                                                           && x.Order.orderDate < endDate)
+
+                                let ContactName = Context.Agents.Where(x => x.id == agentId).FirstOrDefault().ContactName
+                                let productName = Context.Drugs.Where(x => x.Id == item.drugsId).FirstOrDefault().Name
+                                let productCode = Context.Drugs.Where(x => x.Id == item.drugsId).FirstOrDefault().Code
+                                let SalesTotals = Context.ordersItems.Where(x => x.Order.agentId == agentId && x.Order.isDeliverd == true
+                                                                                                                && x.Order.deletedBy == null && x.Order.orderDate >= startDate
+                                                                                                                && x.Order.orderDate < endDate).ToList().Sum(x => x.total) ?? 0
+                                select new DtoAuditSales
+                                {
+                                    equipment = productName,
+                                    equipmentCode = productCode,
+                                    total = SalesTotals,
+                                    monthName = monthName,
+                                    agentName = ContactName
+
+
+                                }).ToList().GroupBy(x => x.equipment).Select(x => x.First());
+
+                if (tempList != null)
+                {
+
+                    list.AddRange(tempList);
+                }
+
+
+            }
+
+
+            return list;
+        }
+        public List<DtoAuditSales> GetTotalByAgentId(int agentId)
+        {
+            DateTime tempStartDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            DateTime tempEndDate = new DateTime(DateTime.Now.Date.Year, 1, 1);
+
+            int length = DateTime.Now.Date.Month - ((tempStartDate.Year - DateTime.Now.Date.Year) * 12) + tempStartDate.Month;
+
+            string monthName = "";
+
+            var list = new List<DtoAuditSales>();
+
+            for (int i = 0; i < length; i++)
+            {
+                DateTime startDate = tempStartDate.AddMonths(i);
+
+                DateTime endDate = tempEndDate.AddMonths(1 + i);
+
+                monthName = startDate.ToString("MMMM");
+
+                var total = (from item in Context.Orders.Where(x => x.agentId == agentId && x.isDeliverd == true
+                                                                                            && x.deletedBy == null && x.orderDate >= startDate
+                                                                                            && x.orderDate < endDate)
+                             select item).ToList().Sum(x => (x.total) ?? 0);
+
+                if (total != null)
+                {
+
+                    list.Add(new DtoAuditSales { total = total, monthName = monthName });
+                }
+
+
+            }
+
+
+            return list;
+        }
+
 
     }
 }
