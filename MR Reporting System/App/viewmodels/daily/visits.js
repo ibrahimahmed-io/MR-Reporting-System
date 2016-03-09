@@ -4,7 +4,7 @@
 
     var visitsGridOptions = ko.observable();
 
-    var visitId = ko.observable();
+    var visitId = ko.observable(0);
 
     var selectedRowId = ko.observable();
 
@@ -119,7 +119,7 @@
         visitsGridOptions(visitsGrid.getGridOptions()());
 
 
-        dataservice.getVisits().done(function (data) {
+        dataservice.getVisits(undefined).done(function (data) {
             visitsGrid.setInitialData(data);
         });
     }

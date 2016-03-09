@@ -17,7 +17,7 @@
     }
 
     var getTypesForVisits = function () {
-        return $.getJSON(config.remoteServerName + "/GetDefaultListByListType", { listType: 'locationType' });
+        return $.getJSON(config.remoteServerName + "/GetDefaultListByListType?listType=visitlocations");//locationType
     }
 
     var editAccount = function (editAccountObservable) {

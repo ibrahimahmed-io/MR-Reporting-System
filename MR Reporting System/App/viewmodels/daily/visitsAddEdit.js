@@ -67,11 +67,24 @@
     var visitsAddEditLabel = ko.observable();
 
     var activate = function (visitId) {
+
         visitees([]);
 
         visitObject(new visit());
 
         visitObject().initialize();
+
+        dataservice.getAccounts().success(function (data) {
+            agents(data);
+        });
+
+        dataservice.getDrugs().success(function (data) {
+            drugs(data);
+        });
+
+        dataservice.getTypesForVisits().success(function (data) {
+            types(data);
+        });
 
         visitObject().typeId.subscribe(function (value) {
             var type = ko.utils.arrayFirst(types(), function (item) {
@@ -100,23 +113,13 @@
         visitsAddEditLabel(config.language.visits[config.currentLanguage()] + ' - ' + config.language.goAdd[config.currentLanguage()]);
 
         if (isEdit()) {
+            
             dataservice.getVisitsById(undefined, parseInt(visitId)).success(function (data) {
                 visitObject().fill(data);
             });
             visitsAddEditLabel(config.language.visits[config.currentLanguage()] + ' - ' + config.language.goEdit[config.currentLanguage()]);
         }
 
-        dataservice.getAccounts().success(function (data) {
-            agents(data);
-        });
-
-        dataservice.getDrugs().success(function (data) {
-            drugs(data);
-        });
-
-        dataservice.getTypesForVisits().success(function (data) {
-            types(data);
-        });
     };
 
     var addVisit = function (obj, e) {

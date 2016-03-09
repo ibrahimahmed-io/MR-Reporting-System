@@ -7711,6 +7711,7 @@
     <Content Include="node_modules\gulp\node_modules\vinyl-fs\README.md" />
     <Content Include="node_modules\gulp\package.json" />
     <Content Include="node_modules\gulp\README.md" />
+    <None Include="Properties\PublishProfiles\Medical.pubxml" />
     <None Include="Properties\PublishProfiles\medicalreporting.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -7733,7 +7734,9 @@
     <Content Include="sound\voice_off.ogg" />
     <Content Include="sound\voice_on.mp3" />
     <Content Include="sound\voice_on.ogg" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\MrReportingController.cs" />
