@@ -144,6 +144,8 @@
     <Content Include="App\viewmodels\daily\doctors.js" />
     <Content Include="App\viewmodels\daily\drugs.js" />
     <Content Include="App\viewmodels\dashboard.js" />
+    <Content Include="App\viewmodels\ERPReports\totalOfSales.js" />
+    <Content Include="App\viewmodels\ERPReports\AgentsPereformance.js" />
     <Content Include="App\viewmodels\login.js" />
     <Content Include="App\viewmodels\reports\visitsByArea.js" />
     <Content Include="App\viewmodels\reports\visitsByAgent.js" />
@@ -179,6 +181,8 @@
     <Content Include="App\views\daily\doctorsAdd.html" />
     <Content Include="App\views\daily\doctors.html" />
     <Content Include="App\views\dashboard.html" />
+    <Content Include="App\views\ERPReports\totalOfSales.html" />
+    <Content Include="App\views\ERPReports\AgentsPereformance.html" />
     <Content Include="App\views\login.html" />
     <Content Include="App\views\reports\visitsByArea.html" />
     <Content Include="App\views\reports\visitsByAgent.html" />
@@ -7767,8 +7771,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\viewmodels\ERPReports\" />
-    <Folder Include="App\views\ERPReports\" />
     <Folder Include="node_modules\gulp-concat\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-header\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />
     <Folder Include="node_modules\gulp-jshint\node_modules\gulp-util\node_modules\dateformat\node_modules\meow\node_modules\indent-string\node_modules\repeating\node_modules\is-finite\node_modules\" />

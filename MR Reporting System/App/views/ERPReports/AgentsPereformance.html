@@ -1,0 +1,50 @@
+﻿<div id="content">
+    <!-- RIBBON -->
+    <div id="ribbon">
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li data-bind="text: language.Reports[currentLanguage()]"></li>
+            <li data-bind="text: 'Pereformance Of Agent'"></li>
+        </ol>
+        <!-- end breadcrumb -->
+
+    </div>
+    <!-- END RIBBON -->
+
+    <section id="widget-grid">
+        <!-- row -->
+        <div class="row">
+            <!-- SINGLE GRID -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" data-widget-sortable="false" id="visits-grid">
+                    <header>
+                        <h2 data-bind="text: 'Pereformance Of Agent'"></h2>
+                    </header>
+                    <div>
+                        <div class="widget-body" data-bind="css: { rtlTable: language.rtl[currentLanguage()] }" style="overflow-x: hidden">
+                            <form class="smart-form" id="netSalaryForm">
+                                <fieldset>
+                                    <section>
+                                        <label class="label" for="agents" data-bind="text: language.ContactName[currentLanguage()]"></label>
+                                        <label class="select">
+                                            <select id="agents" style="width: 100%" data-bind="options: agents, optionsText: 'contactName', optionsValue: 'id', value: selectedAgentId, optionsCaption: '', select2: { placeholder: language.selectValue[currentLanguage()], allowClear: true }"></select>
+                                        </label>
+                                    </section>
+                                </fieldset>
+                            </form>
+
+                            <section class="col col-sm-12 col-md-12 col-xs-12 col-lg-12">
+                                <div id="visitsOnDrugchart" class="chart" data-bind="chart: chartData, chartOptions: chartOptions"></div>
+                            </section>
+                            <section class="col col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+                                <div class="gridStyle" id="agentTotals" data-bind="koGrid: gridOptions()"></div>
+
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>

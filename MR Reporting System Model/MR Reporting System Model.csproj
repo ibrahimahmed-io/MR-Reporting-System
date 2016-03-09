@@ -46,6 +46,7 @@
     <Compile Include="DataTransferObjectModel\DtoAgentPharmacies.cs" />
     <Compile Include="DataTransferObjectModel\DtoAgents.cs" />
     <Compile Include="DataTransferObjectModel\DtoArea.cs" />
+    <Compile Include="DataTransferObjectModel\DtoAuditSales.cs" />
     <Compile Include="DataTransferObjectModel\DtoCompanies.cs" />
     <Compile Include="DataTransferObjectModel\DtoDefaultList.cs" />
     <Compile Include="DataTransferObjectModel\DtoDistributers.cs" />

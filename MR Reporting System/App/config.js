@@ -143,6 +143,18 @@
         title: 'Visits On Drug',
         nav: true,
         settings: { reports: true }
+    }, {
+        route: 'totalOfSales',
+        moduleId: 'ERPReports/totalOfSales',
+        title: 'Agent Of Totals',
+        nav: true,
+        settings: { ERPReports: true }
+    }, {
+        route: 'AgentsPereformance',
+        moduleId: 'ERPReports/AgentsPereformance',
+        title: 'Agent Of Pereformance',
+        nav: true,
+        settings: { ERPReports: true }
     }];
 
     var isPageSetup = ko.observable(false);
